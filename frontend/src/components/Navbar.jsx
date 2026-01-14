@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { navLinks, browseByStreamData, testPrepData } from '../data';
-import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaDownload } from 'react-icons/fa';
+import { FaSearch, FaUser, FaTh, FaChevronDown, FaAngleRight, FaDownload } from 'react-icons/fa';
 import './Navbar.css';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [activeStream, setActiveStream] = useState('engineering'); // Default active stream
@@ -49,9 +49,6 @@ const Navbar = () => {
             </div>
           </div>
           <div className="navbar-actions flex items-center gap-md">
-            <div className="search-icon-wrapper">
-              <FaSearch className="icon" />
-            </div>
             <a href="#" className="btn-login flex items-center gap-sm">
               <FaUser /> <span>Login / Register</span>
             </a>
@@ -61,9 +58,7 @@ const Navbar = () => {
 
       <div className="navbar-main">
         <div className="container">
-          <button className="mobile-menu-btn" onClick={() => setIsOpen(!isOpen)}>
-            <FaBars />
-          </button>
+
 
           <ul className="nav-menu flex items-center">
             {navLinks.map((link, index) => (
@@ -102,60 +97,65 @@ const Navbar = () => {
                       </div>
 
                       <div className="mega-menu-content">
-                        <div className="content-grid-3">
-                          {/* Column 1: Exams */}
+                        <div className="content-grid-2">
+                          {/* Column 1: Exams & Predictors */}
                           <div className="content-col">
-                            <h4 className="col-heading">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
-                            <ul className="content-list">
-                              {currentStreamContent.exams.map((item, idx) => (
-                                <li key={idx}>
-                                  <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
-                                    {item.title}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
+                              <ul className="content-list">
+                                {currentStreamContent.exams.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
+                              <ul className="content-list">
+                                {currentStreamContent.predictors.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           </div>
 
-                          {/* Column 2: Colleges */}
+                          {/* Column 2: Colleges & Resources */}
                           <div className="content-col">
-                            <h4 className="col-heading">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
-                            <ul className="content-list">
-                              {currentStreamContent.colleges.map((item, idx) => (
-                                <li key={idx}>
-                                  <a href={item.href} className="content-link">
-                                    {item.title}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
+                              <ul className="content-list">
+                                {currentStreamContent.colleges.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
 
-                          {/* Column 3: Predictors & Resources */}
-                          <div className="content-col">
-                            <h4 className="col-heading">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
-                            <ul className="content-list mb-4">
-                              {currentStreamContent.predictors.map((item, idx) => (
-                                <li key={idx}>
-                                  <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
-                                    {item.title}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
+                              <ul className="content-list">
+                                {currentStreamContent.resources.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
 
-                            <h4 className="col-heading">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
-                            <ul className="content-list">
-                              {currentStreamContent.resources.map((item, idx) => (
-                                <li key={idx}>
-                                  <a href={item.href} className="content-link">
-                                    {item.title}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-
-                            <div className="app-download-banner">
+                            <div className="app-download-banner mt-6">
                               <FaDownload /> Download App
                             </div>
                           </div>
