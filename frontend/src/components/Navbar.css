@@ -61,25 +61,6 @@
   margin-top: 2px;
 }
 
-.search-icon-wrapper {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--bg-body);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  cursor: pointer;
-
-  transition: all 0.2s ease;
-}
-
-.search-icon-wrapper:hover {
-  background: #e2e8f0;
-  color: var(--primary-blue);
-}
-
 .btn-login {
   background-color: var(--primary-orange);
   color: #fff;
@@ -101,9 +82,16 @@
   position: relative;
 }
 
+.navbar-main .container {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
 .nav-menu {
   height: 100%;
-  gap: 4px;
+  gap: 32px;
+  /* Increased gap for better spacing */
 }
 
 .nav-item {
@@ -135,14 +123,12 @@
   position: absolute;
   top: 100%;
   left: 0;
-  /* Important: Position it relative to the container, 
-     but since nav-item is static?, we need to calculate offset or use fixed/absolute from nav-main */
-  /* For simplicity, we can align it to left 0 of navbar-main which is relative */
   width: 1000px;
-  /* Fixed broad width */
-  min-height: 480px;
+  /* Adjust based on container width or make 100% of container */
+  height: 550px;
+  /* Fixed height for consistent look */
   background: white;
-  box-shadow: var(--shadow-xl);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   border-radius: 0 0 12px 12px;
   display: flex;
   overflow: hidden;
@@ -152,11 +138,26 @@
 
 /* Sidebar */
 .mega-menu-sidebar {
-  width: 300px;
+  width: 280px;
   background: #fff;
   border-right: 1px solid var(--border-subtle);
   padding: 12px 0;
   flex-shrink: 0;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for Sidebar */
+.mega-menu-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mega-menu-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mega-menu-sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 }
 
 .sidebar-item {
@@ -193,14 +194,28 @@
 .mega-menu-content {
   flex: 1;
   background-color: #f9faff;
-  /* Slightly lighter bg for distinction */
-  padding: 24px 32px;
+  padding: 32px 40px;
+  overflow-y: auto;
 }
 
-.content-grid-3 {
+.content-grid-2 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 40px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+  /* More space between main columns */
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.mb-6 {
+  margin-bottom: 32px;
+}
+
+.mt-6 {
+  margin-top: 32px;
 }
 
 .col-heading {
@@ -215,15 +230,13 @@
 .content-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-.mb-4 {
-  margin-bottom: 24px;
+  gap: 12px;
+  /* Slightly more gap */
 }
 
 .content-link {
-  font-size: 13px;
+  font-size: 14px;
+  /* Slightly larger for readability */
   color: var(--text-secondary);
   transition: color 0.1s;
   display: block;
@@ -239,17 +252,17 @@
 }
 
 .app-download-banner {
-  margin-top: 24px;
   background: #e8eaf6;
   color: var(--primary-blue);
-  padding: 10px 16px;
+  padding: 12px 20px;
   border-radius: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  align-self: flex-start;
 }
 
 .app-download-banner:hover {
