@@ -1,7 +1,97 @@
 import {
   FaUniversity, FaBookOpen, FaLaptopCode, FaStethoscope,
-  FaBalanceScale, FaChartLine, FaDraftingCompass, FaGlobeAmericas
+  FaBalanceScale, FaChartLine, FaDraftingCompass, FaGlobeAmericas,
+  FaListUl, FaRegComments
 } from 'react-icons/fa';
+
+/**
+ * Main Data File
+ */
+
+export const testPrepData = [
+  {
+    id: 'engineering-prep',
+    label: 'Engineering',
+    titles: { col1: 'Exam Prep', col2: 'Mock Tests', col3_1: 'Previous Papers', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'JEE Main Preparation', href: '#' },
+        { title: 'JEE Advanced Preparation', href: '#' },
+        { title: 'BITSAT Preparation', href: '#' },
+        { title: 'VITEEE Preparation', href: '#' }
+      ],
+      colleges: [
+        { title: 'JEE Main Mock Test', href: '#' },
+        { title: 'JEE Advanced Mock Test', href: '#' },
+        { title: 'BITSAT Mock Test', href: '#' },
+        { title: 'VITEEE Mock Test', href: '#' }
+      ],
+      predictors: [
+        { title: 'JEE Main 2025 Paper', href: '#' },
+        { title: 'JEE Advanced 2024 Paper', href: '#' },
+        { title: 'BITSAT Previous Papers', href: '#' }
+      ],
+      resources: [
+        { title: 'Engineering Study Material', href: '#' },
+        { title: 'Toppers Strategy', href: '#' },
+        { title: 'Important Topics', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'medical-prep',
+    label: 'Medical',
+    titles: { col1: 'Exam Prep', col2: 'Mock Tests', col3_1: 'Previous Papers', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'NEET UG Preparation', href: '#' },
+        { title: 'NEET PG Preparation', href: '#' },
+        { title: 'AIIMS Preparation', href: '#' }
+      ],
+      colleges: [
+        { title: 'NEET Free Mock Test', href: '#' },
+        { title: 'NEET PG Mock Test', href: '#' },
+        { title: 'Biology Chapter-wise Test', href: '#' },
+        { title: 'Physics Chapter-wise Test', href: '#' }
+      ],
+      predictors: [
+        { title: 'NEET 2025 Question Paper', href: '#' },
+        { title: 'NEET 2024 Question Paper', href: '#' },
+        { title: 'AIIMS Previous Papers', href: '#' }
+      ],
+      resources: [
+        { title: 'NCERT Solutions', href: '#' },
+        { title: 'NEET Biology Notes', href: '#' },
+        { title: 'Medical Counselling', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'mba-prep',
+    label: 'MBA',
+    titles: { col1: 'Exam Prep', col2: 'Mock Tests', col3_1: 'Previous Papers', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'CAT Preparation', href: '#' },
+        { title: 'XAT Preparation', href: '#' },
+        { title: 'MAT Preparation', href: '#' }
+      ],
+      colleges: [
+        { title: 'CAT Free Mock Test', href: '#' },
+        { title: 'XAT Mock Test', href: '#' },
+        { title: 'NMAT Mock Test', href: '#' }
+      ],
+      predictors: [
+        { title: 'CAT 2024 Question Paper', href: '#' },
+        { title: 'XAT Previous Papers', href: '#' }
+      ],
+      resources: [
+        { title: 'Data Interpretation Notes', href: '#' },
+        { title: 'Verbal Ability Tips', href: '#' }
+      ]
+    }
+  }
+];
 
 export const browseByStreamData = [
   {
@@ -283,15 +373,410 @@ export const browseByStreamData = [
       resources: [] /* Empty second list */
     }
   },
-  { id: 'finance', label: 'Finance & Accounts', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'computer', label: 'Computer Application and IT', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'pharmacy', label: 'Pharmacy', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'hospitality', label: 'Hospitality and Tourism', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'competition', label: 'Competition', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'school', label: 'School', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'abroad', label: 'Study Abroad', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'arts', label: 'Arts, Commerce & Sciences', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
-  { id: 'learn', label: 'Learn', titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' }, content: { exams: [], colleges: [], predictors: [], resources: [] } },
+  {
+    id: 'finance',
+    label: 'Finance & Accounts',
+    titles: {
+      col1: 'Exams',
+      col2: 'Resources',
+      col3_1: 'Top Courses & Careers',
+      col3_2: 'Colleges'
+    },
+    content: {
+      exams: [
+        { title: 'CA Intermediate', href: '#' },
+        { title: 'CA Foundation', href: '#' },
+        { title: 'CA Final', href: '#' },
+        { title: 'CS Executive', href: '#' },
+        { title: 'CS Professional', href: '#' },
+        { title: 'CFA Exam', href: '#' },
+        { title: 'CSEET', href: '#' },
+        { title: 'ACET', href: '#' }
+      ],
+      colleges: [
+        { title: 'Difference between CA and CS', href: '#' },
+        { title: 'Difference between CA and CMA', href: '#' },
+        { title: 'CA Full form', href: '#' },
+        { title: 'CMA Full form', href: '#' },
+        { title: 'CS Full form', href: '#' },
+        { title: 'E-books and Sample Papers', href: '#' },
+        { title: 'Free Sample Papers', href: '#' },
+        { title: 'CA Salary In India', href: '#' }
+      ],
+      predictors: [
+        { title: 'Bachelor of Commerce (B.Com)', href: '#' },
+        { title: 'Master of Commerce (M.Com)', href: '#' },
+        { title: 'Company Secretary', href: '#' },
+        { title: 'Cost Accountant', href: '#' },
+        { title: 'Charted Accountant', href: '#' },
+        { title: 'Credit Manager', href: '#' },
+        { title: 'Financial Advisor', href: '#' }
+      ],
+      resources: [
+        { title: 'Top Commerce Colleges in India', href: '#' },
+        { title: 'Top Government Commerce Colleges in India', href: '#' },
+        { title: 'Top Private Commerce Colleges in India', href: '#' },
+        { title: 'Top M.Com Colleges in Mumbai', href: '#' },
+        { title: 'Top B.Com Colleges in India', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ]
+    }
+  },
+  {
+    id: 'computer',
+    label: 'Computer Application and IT',
+    titles: {
+      col1: 'Exams',
+      col2: 'Colleges',
+      col3_1: 'Resources',
+      col3_2: 'Quick Links'
+    },
+    content: {
+      exams: [
+        { title: 'NIMCET', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Compare Colleges', href: '#' },
+        { title: 'IT Colleges in Tamil Nadu', href: '#' },
+        { title: 'IT Colleges in Uttar Pradesh', href: '#' },
+        { title: 'Colleges Accepting Admissions', href: '#' },
+        { title: 'MCA Colleges in India', href: '#' },
+        { title: 'BCA Colleges in India', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      predictors: [
+        { title: 'Sample Papers', href: '#' },
+        { title: 'Free Ebooks', href: '#' },
+        { title: 'QnA - Get answers to your doubts', href: '#' },
+        { title: 'Collegedost Youtube Channel', href: '#' }
+      ],
+      resources: [
+        { title: 'MCA', href: '#' },
+        { title: 'BCA', href: '#' },
+        { title: 'Information Technology Courses', href: '#' },
+        { title: 'Programming Courses', href: '#' },
+        { title: 'Web Development Courses', href: '#' },
+        { title: 'Data Analytics Courses', href: '#' },
+        { title: 'Big Data Analytics Courses', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'pharmacy',
+    label: 'Pharmacy',
+    titles: {
+      col1: 'Exams',
+      col2: 'Colleges',
+      col3_1: 'Resources',
+      col3_2: ' '
+    },
+    content: {
+      exams: [
+        { title: 'GPAT', href: '#' },
+        { title: 'RUHS Pharmacy Admission Test', href: '#' },
+        { title: 'KAHER-AIET', href: '#' },
+        { title: 'NIPER JEE', href: '#' },
+        { title: 'UPESPAT', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Top Pharmacy Colleges in India', href: '#' },
+        { title: 'Pharmacy Colleges in Pune', href: '#' },
+        { title: 'Pharmacy Colleges in Mumbai', href: '#' },
+        { title: 'Colleges Accepting GPAT Score', href: '#' },
+        { title: 'Pharmacy Colleges in Lucknow', href: '#' },
+        { title: 'List of Pharmacy Colleges in Nagpur', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      predictors: [
+        { title: 'GPAT Result', href: '#' },
+        { title: 'GPAT 2025 Admit Card', href: '#' },
+        { title: 'GPAT Question Papers', href: '#' },
+        { title: 'B. Pharma', href: '#' },
+        { title: 'M. Pharma', href: '#' },
+        { title: 'Free Ebooks', href: '#' },
+        { title: 'Free Sample Papers', href: '#' },
+        { title: 'Collegedost Youtube Channel', href: '#' }
+      ],
+      resources: []
+    }
+  },
+  {
+    id: 'hospitality',
+    label: 'Hospitality and Tourism',
+    titles: {
+      col1: 'Exams',
+      col2: 'Colleges',
+      col3_1: 'Resources',
+      col3_2: 'Diploma Colleges'
+    },
+    content: {
+      exams: [
+        { title: 'NCHMCT JEE 2025', href: '#' },
+        { title: 'Mah BHMCT CET', href: '#' },
+        { title: 'MAH HM CET', href: '#' },
+        { title: 'PUTHAT', href: '#' },
+        { title: 'IHM-A', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Top Hotel Management Colleges in Delhi', href: '#' },
+        { title: 'Top Hotel Management Colleges in Hyderabad', href: '#' },
+        { title: 'Top Hotel Management Colleges in Mumbai', href: '#' },
+        { title: 'Top Hotel Management Colleges in Tamil Nadu', href: '#' },
+        { title: 'Top Hotel Management Colleges in Maharashtra', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      predictors: [
+        { title: 'Free Hospitality E-books', href: '#' },
+        { title: 'Free Hospitality Sample Papers', href: '#' },
+        { title: 'BHM Course', href: '#' },
+        { title: 'B.Sc Hotel Management', href: '#' },
+        { title: 'Hotel Management', href: '#' },
+        { title: 'Diploma in Hotel Management and Catering Technology', href: '#' },
+        { title: 'List of Popular Branches', href: '#' }
+      ],
+      resources: [
+        { title: 'Top Diploma Colleges in Maharashtra', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'competition',
+    label: 'Competition',
+    titles: {
+      col1: 'Exams',
+      col2: 'Resources',
+      col3_1: 'Upcoming Events',
+      col3_2: 'Other Exams'
+    },
+    content: {
+      exams: [
+        { title: 'NDA Exam', href: '#' },
+        { title: 'UPSC IAS Exam', href: '#' },
+        { title: 'CDS Exam', href: '#' },
+        { title: 'AFCAT Exam', href: '#' },
+        { title: 'SSC CGL Exam', href: '#' },
+        { title: 'IBPS RRB Exam', href: '#' },
+        { title: 'CTET Exam', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Previous Year Sample Papers', href: '#' },
+        { title: 'Free Competition E-books', href: '#' },
+        { title: 'Sarkari Result', href: '#' },
+        { title: 'QnA - Get answers to your doubts', href: '#' },
+        { title: 'UPSC Previous Year Sample Papers', href: '#' },
+        { title: 'CTET Previous Year Sample Papers', href: '#' },
+        { title: 'SBI Clerk Previous Year Sample Papers', href: '#' },
+        { title: 'NDA Previous Year Sample Papers', href: '#' }
+      ],
+      predictors: [
+        { title: 'AFCAT 1 Result 2025', href: '#' },
+        { title: 'UPSC CAPF Admit card 2025', href: '#' },
+        { title: 'SSC GD Constable Result 2025', href: '#' },
+        { title: 'UPSC CMS Admit Card 2025', href: '#' },
+        { title: 'RRB ALP Result 2025', href: '#' },
+        { title: 'CTET Notification 2025', href: '#' },
+        { title: 'NDA 1 Admit card 2025', href: '#' },
+        { title: 'CDS 1 Admit Card 2025', href: '#' }
+      ],
+      resources: [
+        { title: 'TNPSC Group 4 Exam', href: '#' },
+        { title: 'UPSC CMS Exam', href: '#' },
+        { title: 'UPSC IFS Exam', href: '#' },
+        { title: 'UGC NET Exam', href: '#' },
+        { title: 'RRB NTPC Exam', href: '#' },
+        { title: 'IBPS PO Exam', href: '#' },
+        { title: 'IBPS Clerk Exam', href: '#' },
+        { title: 'SSC GD Constable Exam', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'school',
+    label: 'School',
+    titles: {
+      col1: 'Exams',
+      col2: 'Top Schools',
+      col3_1: 'Products & Resources',
+      col3_2: 'NCERT Study Material'
+    },
+    content: {
+      exams: [
+        { title: 'CBSE Class 10th', href: '#' },
+        { title: 'CBSE Class 12th', href: '#' },
+        { title: 'UP Board 10th', href: '#' },
+        { title: 'UP Board 12th', href: '#' },
+        { title: 'Bihar Board 10th', href: '#' },
+        { title: 'Bihar Board 12th', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Top Schools in India', href: '#' },
+        { title: 'Top Schools in Delhi', href: '#' },
+        { title: 'Top Schools in Mumbai', href: '#' },
+        { title: 'Top Schools in Chennai', href: '#' },
+        { title: 'Top Schools in Hyderabad', href: '#' },
+        { title: 'Top Schools in Kolkata', href: '#' },
+        { title: 'Top Schools in Pune', href: '#' },
+        { title: 'Top Schools in Bangalore', href: '#' }
+      ],
+      predictors: [
+        { title: 'JEE Main Knockout April', href: '#' },
+        { title: 'Free eBooks & Sample Papers', href: '#' },
+        { title: 'RD Sharma Solutions', href: '#' },
+        { title: 'State Boards Results 2025', href: '#' }
+      ],
+      resources: [
+        { title: 'NCERT Notes', href: '#' },
+        { title: 'NCERT Books', href: '#' },
+        { title: 'NCERT Syllabus', href: '#' },
+        { title: 'NCERT Solutions', href: '#' },
+        { title: 'NCERT Solutions for Class 12', href: '#' },
+        { title: 'NCERT Solutions for Class 11', href: '#' },
+        { title: 'NCERT Solutions for Class 10', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'abroad',
+    label: 'Study Abroad',
+    titles: {
+      col1: 'Exams',
+      col2: 'Colleges',
+      col3_1: 'Top Countries',
+      col3_2: 'Resources'
+    },
+    content: {
+      exams: [
+        { title: 'TOEFL', href: '#' },
+        { title: 'PTE', href: '#' },
+        { title: 'IELTS', href: '#' },
+        { title: 'GMAT', href: '#' },
+        { title: 'GRE', href: '#' },
+        { title: 'SAT', href: '#' },
+        { title: 'LNAT UK', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      colleges: [
+        { title: 'Top University in USA', href: '#' },
+        { title: 'Top University in Canada', href: '#' },
+        { title: 'Top University in Ireland', href: '#' },
+        { title: 'Top Universities in UK', href: '#' },
+        { title: 'Top Universities in Australia', href: '#' },
+        { title: 'Best MBA Colleges in Abroad', href: '#' },
+        { title: 'Business Management Studies Colleges', href: '#' },
+        { title: 'View All', href: '#', isLink: true }
+      ],
+      predictors: [
+        { title: 'Study in USA', href: '#' },
+        { title: 'Study in UK', href: '#' },
+        { title: 'Study in Canada', href: '#' },
+        { title: 'Study in Australia', href: '#' },
+        { title: 'Study in Ireland', href: '#' },
+        { title: 'Study in Germany', href: '#' },
+        { title: 'Study in China', href: '#' },
+        { title: 'Study in Europe', href: '#' }
+      ],
+      resources: [
+        { title: 'Student Visa Canada', href: '#' },
+        { title: 'Student Visa UK', href: '#' },
+        { title: 'Student Visa USA', href: '#' },
+        { title: 'Download E-books and Sample Papers', href: '#' },
+        { title: 'Free Exam Sample Papers', href: '#' },
+        { title: 'IELTS Reading Practice E-book', href: '#' },
+        { title: 'IELTS 2025 Writing Task 1 & Task 2', href: '#' },
+        { title: 'Know All About Education Loan', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'arts',
+    label: 'Arts, Commerce & Sciences',
+    titles: {
+      col1: 'Exams',
+      col2: 'Colleges',
+      col3_1: 'Upcoming Events',
+      col3_2: 'Resources'
+    },
+    content: {
+      exams: [
+        { title: 'CUET Exam', href: '#' },
+        { title: 'CUET PG', href: '#' },
+        { title: 'NFAT', href: '#' },
+        { title: 'NEST', href: '#' },
+        { title: 'UP B.Ed JEE', href: '#' },
+        { title: 'TS EDCET Exam', href: '#' },
+        { title: 'IIT JAM', href: '#' },
+        { title: 'AP PGCET Exam', href: '#' }
+      ],
+      colleges: [
+        { title: 'Universities in India', href: '#' },
+        { title: 'Top Universities in India', href: '#' },
+        { title: 'Top Colleges in India', href: '#' },
+        { title: 'Top Universities in Uttar Pradesh', href: '#' },
+        { title: 'Top Universities in Bihar', href: '#' },
+        { title: 'Top Universities in Madhya Pradesh', href: '#' },
+        { title: 'Top Universities in Tamil Nadu', href: '#' },
+        { title: 'Central Universities in India', href: '#' }
+      ],
+      predictors: [
+        { title: 'DU Cut Off', href: '#' },
+        { title: 'IGNOU Date Sheet 2025', href: '#' },
+        { title: 'CUET 2026', href: '#' },
+        { title: 'CUET Cut Off', href: '#' },
+        { title: 'IIT JAM Syllabus', href: '#' },
+        { title: 'CUET Participating Universities 2026', href: '#' },
+        { title: 'CUET Previous Year Question Paper', href: '#' },
+        { title: 'IGNOU Result', href: '#' }
+      ],
+      resources: [
+        { title: 'E-Books and Sample Papers', href: '#' },
+        { title: 'CUET College Predictor', href: '#' },
+        { title: 'IIT JAM Exam Dates 2026', href: '#' },
+        { title: 'CUET PG Cut Off', href: '#' },
+        { title: 'IGNOU Exam Form', href: '#' },
+        { title: 'CUET Syllabus', href: '#' },
+        { title: 'CUET Counselling', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'learn',
+    label: 'Learn',
+    titles: {
+      col1: 'Engineering Preparation',
+      col2: 'Medical Preparation',
+      col3_1: 'Law Preparation',
+      col3_2: 'MBA Preparation'
+    },
+    content: {
+      exams: [
+        { title: 'JEE Main Free Mock Test', href: '#' },
+        { title: 'BITSAT Free Mock Test', href: '#' },
+        { title: 'VITEEE Free Mock Test', href: '#' },
+        { title: 'MET Free Mock Test', href: '#' }
+      ],
+      colleges: [
+        { title: 'NEET UG Free Mock Test', href: '#' },
+        { title: 'NEET PG Free Mock Test', href: '#' }
+      ],
+      predictors: [
+        { title: 'CLAT Free Mock Test', href: '#' },
+        { title: 'AILET Free Mock Test', href: '#' },
+        { title: 'AP LAWCET Free Mock Test', href: '#' },
+        { title: 'TS LAWCET Free Mock Test', href: '#' }
+      ],
+      resources: [
+        { title: 'CAT Free Mock Test', href: '#' },
+        { title: 'MAT Free Mock Test', href: '#' },
+        { title: 'XAT Free Mock Test', href: '#' },
+        { title: 'CMAT Free Mock Test', href: '#' }
+      ]
+    }
+  },
   {
     id: 'online',
     label: 'Online Courses and Certifications',

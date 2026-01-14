@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import { heroTabs } from '../data';
+import React from 'react';
 import { FaSearch } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import './Hero.css';
 
 const Hero = () => {
-  const [activeTab, setActiveTab] = useState('all');
 
   return (
     <section className="hero-section">
@@ -35,18 +33,6 @@ const Hero = () => {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="search-container glass-effect"
         >
-          <div className="hero-tabs flex">
-            {heroTabs.map(tab => (
-              <button 
-                key={tab.id}
-                className={`hero-tab ${activeTab === tab.id ? 'active' : ''}`}
-                onClick={() => setActiveTab(tab.id)}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-          
           <div className="search-box-wrapper">
             <div className="search-box flex items-center">
               <FaSearch className="search-input-icon" />
