@@ -1,0 +1,59 @@
+.news-ticker-container {
+    background-color: var(--primary-blue);
+    color: white;
+    height: 48px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: 20;
+}
+
+.ticker-label {
+    background-color: #ffc107;
+    color: var(--primary-blue);
+    padding: 0 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-right: 16px;
+    clip-path: polygon(0 0, 90% 0, 100% 100%, 0% 100%);
+    flex-shrink: 0;
+}
+
+.ticker-wrapper {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    mask-image: linear-gradient(to right, transparent, black 20px, black 95%, transparent);
+}
+
+.ticker-track {
+    display: inline-block;
+    animation: scroll 40s linear infinite;
+}
+
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 48px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.ticker-item:hover {
+    color: #ffc107;
+}
+
+.dot {
+    color: #ffc107;
+    font-size: 20px;
+    margin-right: 12px;
+    line-height: 0;
+}
