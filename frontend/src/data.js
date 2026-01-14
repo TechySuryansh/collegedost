@@ -8,6 +8,90 @@ import {
  * Main Data File
  */
 
+export const collegesData = [
+  {
+    id: 'top-colleges',
+    label: 'Top Colleges',
+    titles: { col1: 'Top Ranked', col2: 'By Placement', col3_1: 'By City', col3_2: 'By State' },
+    content: {
+      exams: [
+        { title: 'Top Engineering Colleges', href: '#' },
+        { title: 'Top MBA Colleges', href: '#' },
+        { title: 'Top Medical Colleges', href: '#' },
+        { title: 'Top Law Colleges', href: '#' }
+      ],
+      colleges: [
+        { title: 'Colleges with Best ROI', href: '#' },
+        { title: 'Best Placements 2025', href: '#' },
+        { title: 'Highest Package Colleges', href: '#' }
+      ],
+      predictors: [
+        { title: 'Colleges in Delhi NCR', href: '#' },
+        { title: 'Colleges in Bangalore', href: '#' },
+        { title: 'Colleges in Mumbai', href: '#' }
+      ],
+      resources: [
+        { title: 'Colleges in Uttar Pradesh', href: '#' },
+        { title: 'Colleges in Maharashtra', href: '#' },
+        { title: 'Colleges in Karnataka', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'state-colleges',
+    label: 'Colleges By State',
+    titles: { col1: 'North India', col2: 'South India', col3_1: 'East India', col3_2: 'West India' },
+    content: {
+      exams: [
+        { title: 'Delhi', href: '#' },
+        { title: 'Uttar Pradesh', href: '#' },
+        { title: 'Punjab', href: '#' }
+      ],
+      colleges: [
+        { title: 'Tamil Nadu', href: '#' },
+        { title: 'Karnataka', href: '#' },
+        { title: 'Kerala', href: '#' }
+      ],
+      predictors: [
+        { title: 'West Bengal', href: '#' },
+        { title: 'Bihar', href: '#' }
+      ],
+      resources: [
+        { title: 'Maharashtra', href: '#' },
+        { title: 'Gujarat', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'city-colleges',
+    label: 'Colleges By City',
+    titles: { col1: 'Metro Cities', col2: 'Education Hubs', col3_1: 'Tier 2 Cities', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'Delhi', href: '#' },
+        { title: 'Mumbai', href: '#' },
+        { title: 'Bangalore', href: '#' },
+        { title: 'Chennai', href: '#' }
+      ],
+      colleges: [
+        { title: 'Kota', href: '#' },
+        { title: 'Pune', href: '#' },
+        { title: 'Hyderabad', href: '#' }
+      ],
+      predictors: [
+        { title: 'Lucknow', href: '#' },
+        { title: 'Jaipur', href: '#' },
+        { title: 'Chandigarh', href: '#' }
+      ],
+      resources: [
+        { title: 'Indore', href: '#' },
+        { title: 'Bhopal', href: '#' },
+        { title: 'Nagpur', href: '#' }
+      ]
+    }
+  }
+];
+
 export const testPrepData = [
   {
     id: 'engineering-prep',
@@ -828,6 +912,158 @@ export const browseByStreamData = [
       ]
     }
   },
+];
+
+export const examsData = [
+  {
+    id: 'engineering',
+    label: 'Engineering',
+    titles: { col1: 'Entrance Exams', col2: 'dates & Applications', col3_1: 'Preparation', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'JEE Main', href: '#' },
+        { title: 'JEE Advanced', href: '#' },
+        { title: 'GATE', href: '#' },
+        { title: 'BITSAT', href: '#' }
+      ],
+      colleges: [
+        { title: 'JEE Main 2026 Dates', href: '#' },
+        { title: 'Application Process', href: '#' },
+        { title: 'Exam Centers', href: '#' }
+      ],
+      predictors: [
+        { title: 'Syllabus', href: '#' },
+        { title: 'Mock Tests', href: '#' },
+        { title: 'Previous Papers', href: '#' }
+      ],
+      resources: [
+        { title: 'Coaching Centers', href: '#' },
+        { title: 'Best Books', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'medical',
+    label: 'Medical',
+    titles: { col1: 'Entrance Exams', col2: 'dates & Applications', col3_1: 'Preparation', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'NEET UG', href: '#' },
+        { title: 'NEET PG', href: '#' },
+        { title: 'AIIMS', href: '#' }
+      ],
+      colleges: [
+        { title: 'NEET 2026 Dates', href: '#' },
+        { title: 'Application Form', href: '#' }
+      ],
+      predictors: [
+        { title: 'Biology Notes', href: '#' },
+        { title: 'Chemistry Notes', href: '#' }
+      ],
+      resources: [
+        { title: 'Top Medical Colleges', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'management',
+    label: 'Management',
+    titles: { col1: 'Entrance Exams', col2: 'dates & Applications', col3_1: 'Preparation', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'CAT', href: '#' },
+        { title: 'MAT', href: '#' },
+        { title: 'XAT', href: '#' }
+      ],
+      colleges: [
+        { title: 'CAT 2025 Registration', href: '#' },
+        { title: 'MBA Admission', href: '#' }
+      ],
+      predictors: [
+        { title: 'Data Interpretation', href: '#' },
+        { title: 'Verbal Ability', href: '#' }
+      ],
+      resources: [
+        { title: 'Top B-Schools', href: '#' }
+      ]
+    }
+  }
+];
+
+export const coursesData = [
+  {
+    id: 'degree',
+    label: 'Degree Courses',
+    titles: { col1: 'Bachelors', col2: 'Masters', col3_1: 'Doctoral', col3_2: 'Popular' },
+    content: {
+      exams: [
+        { title: 'B.Tech', href: '#' },
+        { title: 'B.Sc', href: '#' },
+        { title: 'B.Com', href: '#' },
+        { title: 'B.A', href: '#' }
+      ],
+      colleges: [
+        { title: 'M.Tech', href: '#' },
+        { title: 'M.Sc', href: '#' },
+        { title: 'MBA', href: '#' },
+        { title: 'M.A', href: '#' }
+      ],
+      predictors: [
+        { title: 'Ph.D in Engineering', href: '#' },
+        { title: 'Ph.D in Science', href: '#' }
+      ],
+      resources: [
+        { title: 'Computer Science', href: '#' },
+        { title: 'Data Science', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'diploma',
+    label: 'Diploma',
+    titles: { col1: 'Engineering', col2: 'Medical', col3_1: 'Management', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'Polytechnic', href: '#' },
+        { title: 'Diploma in CS', href: '#' }
+      ],
+      colleges: [
+        { title: 'D.Pharma', href: '#' },
+        { title: 'Paramedical', href: '#' }
+      ],
+      predictors: [
+        { title: 'Diploma in Management', href: '#' }
+      ],
+      resources: [
+        { title: 'Event Management', href: '#' },
+        { title: 'Hotel Management', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'certification',
+    label: 'Certifications',
+    titles: { col1: 'IT & Software', col2: 'Business', col3_1: 'Marketing', col3_2: 'Design' },
+    content: {
+      exams: [
+        { title: 'AWS Certified', href: '#' },
+        { title: 'Google Cloud', href: '#' },
+        { title: 'Full Stack Dev', href: '#' }
+      ],
+      colleges: [
+        { title: 'PMP Certification', href: '#' },
+        { title: 'Six Sigma', href: '#' }
+      ],
+      predictors: [
+        { title: 'Digital Marketing', href: '#' },
+        { title: 'SEO Expert', href: '#' }
+      ],
+      resources: [
+        { title: 'UI/UX Design', href: '#' },
+        { title: 'Graphic Design', href: '#' }
+      ]
+    }
+  }
 ];
 
 export const navLinks = [
