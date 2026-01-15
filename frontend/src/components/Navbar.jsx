@@ -35,7 +35,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
   const handleMouseLeave = () => {
     setActiveDropdown(null);
   };
-   // ... rest of stream logic ...
+  // ... rest of stream logic ...
 
   // Find the active stream data
   const currentStreamDataObj = browseByStreamData.find(s => s.id === activeStream) || {};
@@ -82,8 +82,8 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
       <div className="py-3 border-b border-gray-100 bg-white">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-             {/* Mobile Menu Toggle */}
-            <button 
+            {/* Mobile Menu Toggle */}
+            <button
               className="lg:hidden text-gray-700 text-xl"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
@@ -134,90 +134,107 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                 {/* Specific Layout for "Browse by Stream" */}
                 <AnimatePresence>
                   {link.title === 'Browse by Stream' && activeDropdown === 'Browse by Stream' && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
-                    >
-                      <div className="w-72 bg-white border-r border-gray-100 flex-shrink-0 py-4 overflow-y-auto">
-                        {browseByStreamData.map((stream) => (
-                          <div
-                            key={stream.id}
-                            className={`flex items-center justify-between px-6 py-3 text-sm font-medium transition-all cursor-pointer ${activeStream === stream.id ? 'bg-slate-50 text-brand-orange font-semibold' : 'text-gray-600 hover:bg-slate-50 hover:text-brand-orange'}`}
-                            onMouseEnter={() => setActiveStream(stream.id)}
-                          >
-                            {stream.label}
-                            <FaAngleRight className="text-xs opacity-0 group-hover:opacity-100 transition-opacity" />
-                          </div>
-                        ))}
-                      </div>
+                    <>
+                      {/* Backdrop - Visual only, allows hover-out to underlying elements to trigger close */}
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="fixed inset-0 top-[110px] bg-black/40 backdrop-blur-[2px] z-[55]"
+                        style={{ height: 'calc(100vh - 110px)' }}
+                      />
 
-                      <div className="flex-1 bg-slate-50 p-10 overflow-y-auto">
-                        <div className="grid grid-cols-2 gap-16">
-                          {/* Column 1: Exams & Predictors */}
-                          <div className="flex flex-col">
-                            <div className="mb-8">
-                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
-                              <ul className="flex flex-col gap-3">
-                                {currentStreamContent.exams.map((item, idx) => (
-                                  <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
-                                      {item.title}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
+                      {/* Pop-up Menu Container */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute top-full left-0 w-full bg-white shadow-2xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                        style={{ height: 'calc(100vh - 120px)' }}
+                      >
+                        {/* Sidebar */}
+                        <div className="w-80 bg-white border-r border-gray-100 flex-shrink-0 py-4 overflow-y-auto h-full scrollbar-thin scrollbar-thumb-gray-200">
+                          {browseByStreamData.map((stream) => (
+                            <div
+                              key={stream.id}
+                              className={`flex items-center justify-between px-6 py-3.5 text-[15px] transition-all cursor-pointer relative ${activeStream === stream.id ? 'text-brand-orange font-bold bg-orange-50/50' : 'text-gray-600 hover:bg-slate-50 hover:text-brand-orange'}`}
+                              onMouseEnter={() => setActiveStream(stream.id)}
+                            >
+                              {activeStream === stream.id && (
+                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange"></div>
+                              )}
+                              {stream.label}
+                              <FaAngleRight className={`text-xs transition-opacity ${activeStream === stream.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}`} />
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Content Area */}
+                        <div className="flex-1 bg-white p-10 overflow-y-auto h-full scrollbar-thin scrollbar-thumb-gray-200">
+                          <div className="grid grid-cols-2 gap-x-20 gap-y-12 pb-20">
+                            {/* Column 1: Exams & Predictors */}
+                            <div className="flex flex-col gap-10">
+                              <div>
+                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
+                                <ul className="flex flex-col gap-3.5">
+                                  {currentStreamContent.exams.map((item, idx) => (
+                                    <li key={idx}>
+                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-blue font-semibold mt-1' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                        {item.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="content-section">
+                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
+                                <ul className="flex flex-col gap-3.5">
+                                  {currentStreamContent.predictors.map((item, idx) => (
+                                    <li key={idx}>
+                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-blue font-semibold mt-1' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                        {item.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
 
-                            <div className="content-section">
-                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
-                              <ul className="flex flex-col gap-3">
-                                {currentStreamContent.predictors.map((item, idx) => (
-                                  <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
-                                      {item.title}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
+                            {/* Column 2: Colleges & Resources */}
+                            <div className="flex flex-col gap-10">
+                              <div>
+                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
+                                <ul className="flex flex-col gap-3.5">
+                                  {currentStreamContent.colleges.map((item, idx) => (
+                                    <li key={idx}>
+                                      <a href={item.href} className="text-[14px] transition-colors block text-gray-600 hover:text-brand-orange">
+                                        {item.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+
+                              <div className="content-section">
+                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
+                                <ul className="flex flex-col gap-3.5">
+                                  {currentStreamContent.resources.map((item, idx) => (
+                                    <li key={idx}>
+                                      <a href={item.href} className="text-[14px] transition-colors block text-gray-600 hover:text-brand-orange">
+                                        {item.title}
+                                      </a>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
                             </div>
-                          </div>
-
-                          {/* Column 2: Colleges & Resources */}
-                          <div className="flex flex-col">
-                            <div className="mb-8">
-                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
-                              <ul className="flex flex-col gap-3">
-                                {currentStreamContent.colleges.map((item, idx) => (
-                                  <li key={idx}>
-                                    <a href={item.href} className="text-sm transition-colors block text-gray-600 hover:text-brand-orange">
-                                      {item.title}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-                            <div className="content-section">
-                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
-                              <ul className="flex flex-col gap-3">
-                                {currentStreamContent.resources.map((item, idx) => (
-                                  <li key={idx}>
-                                    <a href={item.href} className="text-sm transition-colors block text-gray-600 hover:text-brand-orange">
-                                      {item.title}
-                                    </a>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-
-
                           </div>
                         </div>
-                      </div>
-                    </motion.div>
+                      </motion.div>
+                    </>
                   )}
                 </AnimatePresence>
 
@@ -749,7 +766,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                   )}
                 </AnimatePresence>
 
-               {/* Rankings Mega Menu */}
+                {/* Rankings Mega Menu */}
                 <AnimatePresence>
                   {link.title === 'Rankings' && activeDropdown === 'Rankings' && (
                     <motion.div
@@ -910,7 +927,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                   )}
                 </AnimatePresence>
 
-               {/* More Mega Menu */}
+                {/* More Mega Menu */}
                 <AnimatePresence>
                   {link.title === 'More' && activeDropdown === 'More' && (
                     <motion.div
@@ -1007,7 +1024,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
               className="fixed inset-0 bg-black/50 z-[60] lg:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
-            
+
             {/* Drawer */}
             <motion.div
               initial={{ x: '-100%' }}
@@ -1018,14 +1035,14 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
             >
               <div className="p-4 border-b border-gray-100 flex items-center justify-between">
                 <span className="font-heading font-bold text-xl text-brand-blue">Menu</span>
-                <button 
+                <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200"
                 >
                   ✕
                 </button>
               </div>
-              
+
               <div className="p-4">
                 <div className="flex gap-4 mb-6">
                   <button onClick={onOpenAskModal} className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-slate-50 text-gray-700 font-medium text-sm hover:bg-slate-100 border border-gray-200">
@@ -1040,11 +1057,11 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                   {navLinks.map((link, index) => (
                     <li key={index} className="border-b border-gray-50 last:border-0">
                       <div className="py-3">
-                         <a 
-                            href={link.href} 
-                            className="flex items-center justify-between text-gray-700 font-medium hover:text-brand-orange"
-                            onClick={() => !link.hasDropdown && setIsMobileMenuOpen(false)}
-                          >
+                        <a
+                          href={link.href}
+                          className="flex items-center justify-between text-gray-700 font-medium hover:text-brand-orange"
+                          onClick={() => !link.hasDropdown && setIsMobileMenuOpen(false)}
+                        >
                           {link.title}
                           {link.hasDropdown && <FaChevronDown className="text-xs text-gray-400" />}
                         </a>
