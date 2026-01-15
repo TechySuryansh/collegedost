@@ -10,15 +10,20 @@ import PillSection from './components/PillSection';
 import PredictorsSection from './components/PredictorsSection';
 import CommunityBanner from './components/CommunityBanner';
 import AskModal from './components/AskModal';
+import ShareModal from './components/ShareModal';
 import { featuredColleges, examCategories, homeCounsellingData, homeStatsData, homeRankingsData, homeExamsData, homePredictorsData, homeCoursesData } from './data';
 
 import { useState } from 'react';
 
 function App() {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans">
-      <Navbar onOpenAskModal={() => setIsAskModalOpen(true)} />
+      <Navbar 
+        onOpenAskModal={() => setIsAskModalOpen(true)}
+        onOpenShareModal={() => setIsShareModalOpen(true)}
+      />
       <Hero />
       <NewsSection />
       
@@ -61,6 +66,7 @@ function App() {
       
       <Footer />
       <AskModal isOpen={isAskModalOpen} onClose={() => setIsAskModalOpen(false)} />
+      <ShareModal isOpen={isShareModalOpen} onClose={() => setIsShareModalOpen(false)} />
     </div>
   )
 }

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData, predictorsData, rankingsData, counsellingData } from '../data';
-import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaDownload, FaQuestion, FaShareAlt } from 'react-icons/fa';
+import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData, predictorsData, rankingsData, counsellingData, careersData, moreData } from '../data';
+import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
 
-const Navbar = ({ onOpenAskModal }) => {
+const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -16,6 +16,8 @@ const Navbar = ({ onOpenAskModal }) => {
   const [activePredictorStream, setActivePredictorStream] = useState('engineering');
   const [activeRankingStream, setActiveRankingStream] = useState('engineering');
   const [activeCounsellingStream, setActiveCounsellingStream] = useState('engineering');
+  const [activeCareerStream, setActiveCareerStream] = useState('stream');
+  const [activeMoreStream, setActiveMoreStream] = useState('learn');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -66,6 +68,14 @@ const Navbar = ({ onOpenAskModal }) => {
   const currentCounsellingDataObj = counsellingData.find(s => s.id === activeCounsellingStream) || {};
   const currentCounsellingContent = currentCounsellingDataObj.content || { exams: [], colleges: [], predictors: [], resources: [] };
 
+  // Find active Career data
+  const currentCareerDataObj = careersData.find(s => s.id === activeCareerStream) || {};
+  const currentCareerContent = currentCareerDataObj.content || { col1: [], col2: [], col3_1: [] };
+
+  // Find active More data
+  const currentMoreDataObj = moreData.find(s => s.id === activeMoreStream) || {};
+  const currentMoreContent = currentMoreDataObj.content || { col1: [], col2: [], col3_1: [] };
+
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-gray-100 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}>
       <div className="py-3 border-b border-gray-100 bg-white">
@@ -84,12 +94,12 @@ const Navbar = ({ onOpenAskModal }) => {
               <button onClick={onOpenAskModal} className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
                 <FaQuestion className="text-gray-400" /> <span>Ask</span>
               </button>
-              <a href="#" className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
+              <button onClick={onOpenShareModal} className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
                 <FaShareAlt className="text-gray-400" /> <span>Share</span>
-              </a>
+              </button>
             </div>
             <a href="#" className="flex items-center gap-2 bg-brand-orange text-white px-5 py-2 rounded-full text-sm font-semibold shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 hover:-translate-y-0.5 transition-all duration-300">
-              <FaUser className="text-xs" /> <span>Login / Register</span>
+              <FaUser className="text-xs" /> <span>Login / Signup</span>
             </a>
           </div>
         </div>
@@ -808,9 +818,7 @@ const Navbar = ({ onOpenAskModal }) => {
                               </ul>
                             </div>
 
-                            <div className="app-download-banner mt-6">
-                              <FaDownload /> Download App
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -819,18 +827,14 @@ const Navbar = ({ onOpenAskModal }) => {
                 </AnimatePresence>
 
                 {/* Generic Dropdown for others (simpler) */}
-                {link.title !== 'Browse by Stream' && link.title !== 'Test Prep' && link.title !== 'Colleges' && link.title !== 'Exams' && link.title !== 'Courses' && link.title !== 'Rankings' && link.title !== 'Predictors' && link.title !== 'Counselling' && link.hasDropdown && activeDropdown === link.title && (
+                {link.title !== 'Browse by Stream' && link.title !== 'Test Prep' && link.title !== 'Colleges' && link.title !== 'Exams' && link.title !== 'Courses' && link.title !== 'Rankings' && link.title !== 'Predictors' && link.title !== 'Counselling' && link.title !== 'Careers' && link.title !== 'More' && link.hasDropdown && activeDropdown === link.title && (
                   <div className="simple-dropdown">
                     {/* ... other dropdowns can be implemented similarly ... */}
                   </div>
                 )}
               </li>
             ))}
-            <li className="h-full">
-              <a href="#" className="flex items-center gap-1.5 h-full px-4 text-sm font-medium text-gray-600 border-b-2 border-transparent hover:text-brand-blue hover:bg-gray-50 hover:border-brand-orange transition-all duration-200">
-                <FaTh /> More
-              </a>
-            </li>
+
           </ul>
         </div>
       </div>

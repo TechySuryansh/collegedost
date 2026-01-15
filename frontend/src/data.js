@@ -1282,13 +1282,15 @@ export const counsellingData = [
 
 export const navLinks = [
   { title: 'Browse by Stream', href: '#', hasDropdown: true },
-  { title: 'Counselling', href: '#', hasDropdown: true },
-  { title: 'Rankings', href: '#', hasDropdown: true },
-  { title: 'Predictors', href: '#', hasDropdown: true },
+  { title: 'Test Prep', href: '#', hasDropdown: true },
   { title: 'Colleges', href: '#', hasDropdown: true },
   { title: 'Exams', href: '#', hasDropdown: true },
   { title: 'Courses', href: '#', hasDropdown: true },
-  { title: 'Careers', href: '#', hasDropdown: false },
+  { title: 'Predictors', href: '#', hasDropdown: true },
+  { title: 'Rankings', href: '#', hasDropdown: true },
+  { title: 'Counselling', href: '#', hasDropdown: true },
+  { title: 'Careers', href: '#', hasDropdown: true },
+  { title: 'More', href: '#', hasDropdown: true }
 ];
 
 export const heroTabs = [
@@ -1464,4 +1466,93 @@ export const homeExamsData = [
   { name: "XAT 2025", link: "#" },
   { name: "CLAT 2025", link: "#" },
   { name: "MAT 2025", link: "#" }
+];
+
+export const careersData = [
+  {
+    id: 'stream',
+    label: 'By Stream',
+    content: {
+      col1: [
+        { title: 'Engineer', href: '#', isLink: true },
+        { title: 'Doctor', href: '#', isLink: true },
+        { title: 'Designer', href: '#', isLink: true }
+      ],
+      col2: [
+        { title: 'Manager', href: '#', isLink: true },
+        { title: 'CA / CS', href: '#', isLink: true },
+        { title: 'Lawyer', href: '#', isLink: true }
+      ],
+      col3_1: [
+        { title: 'Know More', href: '#', isLink: true },
+        { title: 'Career Options', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'class',
+    label: 'By Class',
+    content: {
+      col1: [
+        { title: 'Class 10th', href: '#', isLink: true },
+        { title: 'Class 12th PCM', href: '#', isLink: true }
+      ],
+      col2: [
+        { title: 'Class 12th PCB', href: '#', isLink: true },
+        { title: 'Class 12th Commerce', href: '#', isLink: true }
+      ],
+      col3_1: [
+        { title: 'Class 12th Arts', href: '#', isLink: true }
+      ]
+    }
+  }
+];
+
+export const moreData = [
+  {
+    id: 'learn',
+    label: 'Learn',
+    content: {
+      col1: [
+        { title: 'Online Courses', href: '#', isLink: true },
+        { title: 'Mock Tests', href: '#', isLink: true }
+      ],
+      col2: [
+        { title: 'E-Books', href: '#', isLink: true },
+        { title: 'Sample Papers', href: '#', isLink: true }
+      ],
+      col3_1: []
+    }
+  },
+  {
+    id: 'study-abroad',
+    label: 'Study Abroad',
+    content: {
+      col1: [
+        { title: 'Colleges in USA', href: '#', isLink: true },
+        { title: 'Colleges in UK', href: '#', isLink: true }
+      ],
+      col2: [
+        { title: 'Colleges in Canada', href: '#', isLink: true },
+        { title: 'Colleges in Germany', href: '#', isLink: true }
+      ],
+      col3_1: [
+        { title: 'IELTS Preparation', href: '#', isLink: true },
+        { title: 'GRE Preparation', href: '#', isLink: true }
+      ]
+    }
+  },
+  {
+    id: 'counselling',
+    label: 'Counselling',
+    content: {
+      col1: [
+        { title: 'B.Tech Companion', href: '#', isLink: true },
+        { title: 'MBBS Companion', href: '#', isLink: true }
+      ],
+      col2: [
+        { title: 'MBA Companion', href: '#', isLink: true }
+      ]
+    }
+  }
 ];
