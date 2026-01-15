@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUserMd, FaQuestionCircle, FaArrowRight } from 'react-icons/fa';
 
-const Counselling = ({ items }) => {
+const Counselling = ({ items, onOpenAskModal }) => {
   return (
     <section className="mb-16">
       <div className="container mx-auto px-4">
@@ -14,12 +14,21 @@ const Counselling = ({ items }) => {
               <div className="flex-1 z-10">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-gray-600 mb-6">{item.description}</p>
-                <a 
-                  href={item.link} 
-                  className="inline-flex items-center gap-2 font-bold text-brand-orange hover:gap-3 transition-all"
-                >
-                  {item.cta} <FaArrowRight />
-                </a>
+                {item.cta === "Ask Now" ? (
+                  <button 
+                    onClick={onOpenAskModal}
+                    className="inline-flex items-center gap-2 font-bold text-brand-orange hover:gap-3 transition-all"
+                  >
+                    {item.cta} <FaArrowRight />
+                  </button>
+                ) : (
+                  <a 
+                    href={item.link} 
+                    className="inline-flex items-center gap-2 font-bold text-brand-orange hover:gap-3 transition-all"
+                  >
+                    {item.cta} <FaArrowRight />
+                  </a>
+                )}
               </div>
               <div className="w-full md:w-1/3 h-40 md:h-auto relative z-10 flex items-center justify-center">
                  {/* Placeholder for image or icon if actual image fails */}

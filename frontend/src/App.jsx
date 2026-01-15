@@ -9,12 +9,16 @@ import StatsSection from './components/StatsSection';
 import PillSection from './components/PillSection';
 import PredictorsSection from './components/PredictorsSection';
 import CommunityBanner from './components/CommunityBanner';
+import AskModal from './components/AskModal';
 import { featuredColleges, examCategories, homeCounsellingData, homeStatsData, homeRankingsData, homeExamsData, homePredictorsData, homeCoursesData } from './data';
 
+import { useState } from 'react';
+
 function App() {
+  const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans">
-      <Navbar />
+      <Navbar onOpenAskModal={() => setIsAskModalOpen(true)} />
       <Hero />
       <NewsSection />
       
@@ -25,7 +29,7 @@ function App() {
           type="category" 
         />
         
-        <Counselling items={homeCounsellingData} />
+        <Counselling items={homeCounsellingData} onOpenAskModal={() => setIsAskModalOpen(true)} />
         
         <Section 
           title="Featured Colleges" 
@@ -56,6 +60,7 @@ function App() {
       <OtherProducts />
       
       <Footer />
+      <AskModal isOpen={isAskModalOpen} onClose={() => setIsAskModalOpen(false)} />
     </div>
   )
 }

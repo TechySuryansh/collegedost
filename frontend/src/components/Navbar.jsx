@@ -3,7 +3,8 @@ import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, co
 import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaDownload, FaQuestion, FaShareAlt } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const Navbar = () => {
+
+const Navbar = ({ onOpenAskModal }) => {
 
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -31,6 +32,7 @@ const Navbar = () => {
   const handleMouseLeave = () => {
     setActiveDropdown(null);
   };
+   // ... rest of stream logic ...
 
   // Find the active stream data
   const currentStreamDataObj = browseByStreamData.find(s => s.id === activeStream) || {};
@@ -79,9 +81,9 @@ const Navbar = () => {
           </div>
           <div className="flex items-center gap-4">
             <div className="hidden md:flex items-center gap-6 text-gray-600">
-              <a href="#" className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
+              <button onClick={onOpenAskModal} className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
                 <FaQuestion className="text-gray-400" /> <span>Ask</span>
-              </a>
+              </button>
               <a href="#" className="flex items-center gap-1.5 hover:text-brand-orange transition-colors font-medium text-sm">
                 <FaShareAlt className="text-gray-400" /> <span>Share</span>
               </a>

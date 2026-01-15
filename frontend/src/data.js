@@ -1392,11 +1392,29 @@ export const homePredictorsData = [
 export const homeCoursesData = [
   {
     title: "Trending Specializations",
-    items: ["Data Science", "Artificial Intelligence", "Machine Learning", "Digital Marketing", "Cyber Security", "Cloud Computing"]
+    items: [
+      { name: "Data Science", link: "#" },
+      { name: "Artificial Intelligence", link: "#" },
+      { name: "Machine Learning", link: "#" },
+      { name: "Digital Marketing", link: "#" },
+      { name: "Cyber Security", link: "#" },
+      { name: "Cloud Computing", link: "#" },
+      { name: "Business Analytics", link: "#" },
+      { name: "Project Management", link: "#" }
+    ]
   },
   {
     title: "Trending Courses",
-    items: ["Python", "Java", "C++", "React", "Node.js", "SQL"]
+    items: [
+      { name: "Python Programming", link: "#" },
+      { name: "Java Development", link: "#" },
+      { name: "Web Design for Beginners", link: "#" },
+      { name: "SQL Database Masterclass", link: "#" },
+      { name: "React JS - Complete Guide", link: "#" },
+      { name: "Excel Mastery Course", link: "#" },
+      { name: "Google Data Analytics", link: "#" },
+      { name: "AWS Certified Solutions", link: "#" }
+    ]
   }
 ];
 
@@ -1410,9 +1428,9 @@ export const homeCounsellingData = [
     color: "bg-blue-50"
   },
   {
-    title: "Ask Q&A",
-    description: "Have questions? Ask our community of students and experts.",
-    image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+    title: "Ask Now",
+    description: "Have a question? Ask and get answers from experts.",
+    image: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
     cta: "Ask Now",
     link: "#",
     color: "bg-orange-50"
