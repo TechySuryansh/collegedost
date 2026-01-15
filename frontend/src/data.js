@@ -1066,9 +1066,225 @@ export const coursesData = [
   }
 ];
 
+export const predictorsData = [
+  {
+    id: 'engineering',
+    label: 'Engineering',
+    titles: { col1: 'Jee Main', col2: 'Advanced & BIT', col3_1: 'State Level', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'JEE Main College Predictor', href: '#' },
+        { title: 'JEE Main Rank Predictor', href: '#' },
+        { title: 'JEE Main B.Arch Predictor', href: '#' }
+      ],
+      colleges: [
+        { title: 'JEE Advanced College Predictor', href: '#' },
+        { title: 'BITSAT College Predictor', href: '#' }
+      ],
+      predictors: [
+        { title: 'MHT CET College Predictor', href: '#' },
+        { title: 'AP EAMCET College Predictor', href: '#' },
+        { title: 'TS EAMCET College Predictor', href: '#' },
+        { title: 'KCET College Predictor', href: '#' }
+      ],
+      resources: [
+        { title: 'VITEEE College Predictor', href: '#' },
+        { title: 'SRMJEEE College Predictor', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'medical',
+    label: 'Medical',
+    titles: { col1: 'NEET', col2: 'AIIMS', col3_1: 'State Quota', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'NEET College Predictor', href: '#' },
+        { title: 'NEET Rank Predictor', href: '#' }
+      ],
+      colleges: [
+        { title: 'AIIMS College Predictor', href: '#' }
+      ],
+      predictors: [
+        { title: 'Maharashtra NEET Predictor', href: '#' },
+        { title: 'Karnataka NEET Predictor', href: '#' }
+      ],
+      resources: [
+        { title: 'AFMC College Predictor', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'management',
+    label: 'Management',
+    titles: { col1: 'CAT', col2: 'XAT & CMAT', col3_1: 'MAT', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'CAT Percentile Predictor', href: '#' },
+        { title: 'CAT College Predictor', href: '#' }
+      ],
+      colleges: [
+        { title: 'XAT College Predictor', href: '#' },
+        { title: 'CMAT College Predictor', href: '#' }
+      ],
+      predictors: [
+        { title: 'MAT College Predictor', href: '#' },
+        { title: 'NMAT College Predictor', href: '#' }
+      ],
+      resources: [
+        { title: 'SNAP College Predictor', href: '#' }
+      ]
+    }
+  }
+];
+
+export const rankingsData = [
+  {
+    id: 'engineering',
+    label: 'Engineering',
+    titles: { col1: 'NIRF Ranking', col2: 'Careers360 Ranking', col3_1: 'By Placement', col3_2: 'International' },
+    content: {
+      exams: [
+        { title: 'Top Engineering Colleges (NIRF)', href: '#' },
+        { title: 'Best Engineering Colleges India', href: '#' }
+      ],
+      colleges: [
+        { title: 'Top Rated Engineering Colleges', href: '#' },
+        { title: 'AAA+ Rated Colleges', href: '#' }
+      ],
+      predictors: [
+        { title: 'Best Placement Colleges', href: '#' },
+        { title: 'Best ROI Colleges', href: '#' }
+      ],
+      resources: [
+        { title: 'QS World University Rankings', href: '#' },
+        { title: 'THE World Rankings', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'medical',
+    label: 'Medical',
+    titles: { col1: 'Government', col2: 'Private', col3_1: 'By City', col3_2: 'International' },
+    content: {
+      exams: [
+        { title: 'Top Govt Medical Colleges', href: '#' },
+        { title: 'AIIMS Ranking', href: '#' }
+      ],
+      colleges: [
+        { title: 'Top Private Medical Colleges', href: '#' }
+      ],
+      predictors: [
+        { title: 'Top Medical Colleges in Delhi', href: '#' }
+      ],
+      resources: [
+        { title: 'Top Medical Colleges in World', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'mba',
+    label: 'MBA',
+    titles: { col1: 'IIMs', col2: 'Private B-Schools', col3_1: 'Executive MBA', col3_2: 'Global' },
+    content: {
+      exams: [
+        { title: 'Top IIMs in India', href: '#' },
+        { title: 'NIRF Management Ranking', href: '#' }
+      ],
+      colleges: [
+        { title: 'Top Private MBA Colleges', href: '#' }
+      ],
+      predictors: [
+        { title: 'One Year MBA Ranking', href: '#' }
+      ],
+      resources: [
+        { title: 'FT Global MBA Ranking', href: '#' }
+      ]
+    }
+  }
+];
+
+export const counsellingData = [
+  {
+    id: 'engineering',
+    label: 'Engineering',
+    titles: { col1: 'JoSAA / CSAB', col2: 'State Counselling', col3_1: 'Private Colleges', col3_2: 'Resources' },
+    content: {
+      exams: [
+        { title: 'JoSAA 2026 Process', href: '#' },
+        { title: 'CSAB Special Round', href: '#' },
+        { title: 'JEE Main Counselling', href: '#' }
+      ],
+      colleges: [
+        { title: 'MHT CET CAP Rounds', href: '#' },
+        { title: 'TNEA Counselling', href: '#' },
+        { title: 'UPTAC Counselling', href: '#' }
+      ],
+      predictors: [
+        { title: 'VIT Counselling Process', href: '#' },
+        { title: 'SRMJEEE Counselling', href: '#' },
+        { title: 'BITSAT Iterations', href: '#' }
+      ],
+      resources: [
+        { title: 'Counselling Seat Matrix', href: '#' },
+        { title: 'Choice Filling Tips', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'medical',
+    label: 'Medical',
+    titles: { col1: 'MCC (AIQ)', col2: 'State Quota', col3_1: 'AYUSH / Veterinary', col3_2: 'Documents' },
+    content: {
+      exams: [
+        { title: 'NEET AIQ Counselling', href: '#' },
+        { title: 'MCC Registration', href: '#' },
+        { title: 'Deemed Universities', href: '#' }
+      ],
+      colleges: [
+        { title: 'Maharashtra NEET Counselling', href: '#' },
+        { title: 'UP NEET Counselling', href: '#' },
+        { title: 'Karnataka NEET Counselling', href: '#' }
+      ],
+      predictors: [
+        { title: 'AYUSH Counselling (AACCC)', href: '#' },
+        { title: 'BVSc & AH Counselling', href: '#' }
+      ],
+      resources: [
+        { title: 'Documents Required', href: '#' },
+        { title: 'Bond Policy', href: '#' }
+      ]
+    }
+  },
+  {
+    id: 'mba',
+    label: 'MBA',
+    titles: { col1: 'IIMs', col2: 'Non-IIMs', col3_1: 'State MBA', col3_2: 'Others' },
+    content: {
+      exams: [
+        { title: 'IIM CAP Process', href: '#' },
+        { title: 'WAT/PI Preparation', href: '#' }
+      ],
+      colleges: [
+        { title: 'XAT Selection Process', href: '#' },
+        { title: 'NMAT Counselling', href: '#' }
+      ],
+      predictors: [
+        { title: 'MAH MBA CET CAP', href: '#' },
+        { title: 'TS ICET Counselling', href: '#' }
+      ],
+      resources: [
+        { title: 'GD Topics', href: '#' }
+      ]
+    }
+  }
+];
+
 export const navLinks = [
   { title: 'Browse by Stream', href: '#', hasDropdown: true },
-  { title: 'Test Prep', href: '#', hasDropdown: true },
+  { title: 'Counselling', href: '#', hasDropdown: true },
+  { title: 'Rankings', href: '#', hasDropdown: true },
+  { title: 'Predictors', href: '#', hasDropdown: true },
   { title: 'Colleges', href: '#', hasDropdown: true },
   { title: 'Exams', href: '#', hasDropdown: true },
   { title: 'Courses', href: '#', hasDropdown: true },

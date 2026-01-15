@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData } from '../data';
+import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData, predictorsData, rankingsData, counsellingData } from '../data';
 import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaDownload } from 'react-icons/fa';
 import './Navbar.css';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -13,6 +13,9 @@ const Navbar = () => {
   const [activeCollegeStream, setActiveCollegeStream] = useState('top-colleges');
   const [activeExamStream, setActiveExamStream] = useState('engineering');
   const [activeCourseStream, setActiveCourseStream] = useState('degree');
+  const [activePredictorStream, setActivePredictorStream] = useState('engineering');
+  const [activeRankingStream, setActiveRankingStream] = useState('engineering');
+  const [activeCounsellingStream, setActiveCounsellingStream] = useState('engineering');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +52,18 @@ const Navbar = () => {
   // Find active Course data
   const currentCourseDataObj = coursesData.find(s => s.id === activeCourseStream) || {};
   const currentCourseContent = currentCourseDataObj.content || { exams: [], colleges: [], predictors: [], resources: [] };
+
+  // Find active Predictor data
+  const currentPredictorDataObj = predictorsData.find(s => s.id === activePredictorStream) || {};
+  const currentPredictorContent = currentPredictorDataObj.content || { exams: [], colleges: [], predictors: [], resources: [] };
+
+  // Find active Ranking data
+  const currentRankingDataObj = rankingsData.find(s => s.id === activeRankingStream) || {};
+  const currentRankingContent = currentRankingDataObj.content || { exams: [], colleges: [], predictors: [], resources: [] };
+
+  // Find active Counselling data
+  const currentCounsellingDataObj = counsellingData.find(s => s.id === activeCounsellingStream) || {};
+  const currentCounsellingContent = currentCounsellingDataObj.content || { exams: [], colleges: [], predictors: [], resources: [] };
 
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
@@ -170,9 +185,7 @@ const Navbar = () => {
                               </ul>
                             </div>
 
-                            <div className="app-download-banner mt-6">
-                              <FaDownload /> Download App
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -260,9 +273,7 @@ const Navbar = () => {
                               </ul>
                             </div>
 
-                            <div className="app-download-banner mt-6">
-                              <FaDownload /> Download App
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -350,9 +361,7 @@ const Navbar = () => {
                               </ul>
                             </div>
 
-                            <div className="app-download-banner mt-6">
-                              <FaDownload /> Download App
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -440,9 +449,7 @@ const Navbar = () => {
                               </ul>
                             </div>
 
-                            <div className="app-download-banner mt-6">
-                              <FaDownload /> Download App
-                            </div>
+
                           </div>
                         </div>
                       </div>
@@ -530,6 +537,270 @@ const Navbar = () => {
                               </ul>
                             </div>
 
+
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Predictors Mega Menu */}
+                <AnimatePresence>
+                  {link.title === 'Predictors' && activeDropdown === 'Predictors' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="mega-menu split-layout"
+                    >
+                      <div className="mega-menu-sidebar">
+                        {predictorsData.map((stream) => (
+                          <div
+                            key={stream.id}
+                            className={`sidebar-item ${activePredictorStream === stream.id ? 'active' : ''}`}
+                            onMouseEnter={() => setActivePredictorStream(stream.id)}
+                          >
+                            {stream.label}
+                            <FaAngleRight className="sidebar-arrow" />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mega-menu-content">
+                        <div className="content-grid-2">
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentPredictorDataObj.titles?.col1 || 'Section 1'}</h4>
+                              <ul className="content-list">
+                                {currentPredictorContent.exams?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentPredictorDataObj.titles?.col3_1 || 'Section 3'}</h4>
+                              <ul className="content-list">
+                                {currentPredictorContent.predictors?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentPredictorDataObj.titles?.col2 || 'Section 2'}</h4>
+                              <ul className="content-list">
+                                {currentPredictorContent.colleges?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentPredictorDataObj.titles?.col3_2 || 'Section 4'}</h4>
+                              <ul className="content-list">
+                                {currentPredictorContent.resources?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Counselling Mega Menu */}
+                <AnimatePresence>
+                  {link.title === 'Counselling' && activeDropdown === 'Counselling' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="mega-menu split-layout"
+                    >
+                      <div className="mega-menu-sidebar">
+                        {counsellingData.map((stream) => (
+                          <div
+                            key={stream.id}
+                            className={`sidebar-item ${activeCounsellingStream === stream.id ? 'active' : ''}`}
+                            onMouseEnter={() => setActiveCounsellingStream(stream.id)}
+                          >
+                            {stream.label}
+                            <FaAngleRight className="sidebar-arrow" />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mega-menu-content">
+                        <div className="content-grid-2">
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentCounsellingDataObj.titles?.col1 || 'Section 1'}</h4>
+                              <ul className="content-list">
+                                {currentCounsellingContent.exams?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentCounsellingDataObj.titles?.col3_1 || 'Section 3'}</h4>
+                              <ul className="content-list">
+                                {currentCounsellingContent.predictors?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentCounsellingDataObj.titles?.col2 || 'Section 2'}</h4>
+                              <ul className="content-list">
+                                {currentCounsellingContent.colleges?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentCounsellingDataObj.titles?.col3_2 || 'Section 4'}</h4>
+                              <ul className="content-list">
+                                {currentCounsellingContent.resources?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+               {/* Rankings Mega Menu */}
+                <AnimatePresence>
+                  {link.title === 'Rankings' && activeDropdown === 'Rankings' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="mega-menu split-layout"
+                    >
+                      <div className="mega-menu-sidebar">
+                        {rankingsData.map((stream) => (
+                          <div
+                            key={stream.id}
+                            className={`sidebar-item ${activeRankingStream === stream.id ? 'active' : ''}`}
+                            onMouseEnter={() => setActiveRankingStream(stream.id)}
+                          >
+                            {stream.label}
+                            <FaAngleRight className="sidebar-arrow" />
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="mega-menu-content">
+                        <div className="content-grid-2">
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentRankingDataObj.titles?.col1 || 'Section 1'}</h4>
+                              <ul className="content-list">
+                                {currentRankingContent.exams?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentRankingDataObj.titles?.col3_1 || 'Section 3'}</h4>
+                              <ul className="content-list">
+                                {currentRankingContent.predictors?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`content-link ${item.isLink ? 'highlight' : ''}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="content-col">
+                            <div className="content-section mb-6">
+                              <h4 className="col-heading">{currentRankingDataObj.titles?.col2 || 'Section 2'}</h4>
+                              <ul className="content-list">
+                                {currentRankingContent.colleges?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="col-heading">{currentRankingDataObj.titles?.col3_2 || 'Section 4'}</h4>
+                              <ul className="content-list">
+                                {currentRankingContent.resources?.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="content-link">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
                             <div className="app-download-banner mt-6">
                               <FaDownload /> Download App
                             </div>
@@ -541,7 +812,7 @@ const Navbar = () => {
                 </AnimatePresence>
 
                 {/* Generic Dropdown for others (simpler) */}
-                {link.title !== 'Browse by Stream' && link.title !== 'Test Prep' && link.title !== 'Colleges' && link.title !== 'Exams' && link.title !== 'Courses' && link.hasDropdown && activeDropdown === link.title && (
+                {link.title !== 'Browse by Stream' && link.title !== 'Test Prep' && link.title !== 'Colleges' && link.title !== 'Exams' && link.title !== 'Courses' && link.title !== 'Rankings' && link.title !== 'Predictors' && link.title !== 'Counselling' && link.hasDropdown && activeDropdown === link.title && (
                   <div className="simple-dropdown">
                     {/* ... other dropdowns can be implemented similarly ... */}
                   </div>
