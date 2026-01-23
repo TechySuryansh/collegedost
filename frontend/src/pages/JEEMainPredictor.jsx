@@ -95,26 +95,18 @@ const JEEMainPredictor = ({ onOpenAuthModal }) => {
     return (
         <div className="min-h-screen bg-gray-50 pt-20 pb-12 overflow-x-hidden">
             {/* Header Section */}
-            <div className="bg-brand-blue text-white py-16 mb-10 relative overflow-hidden">
-                <motion.div 
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1 }}
-                    className="absolute top-0 right-0 w-96 h-96 bg-brand-orange/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"
-                />
-                <motion.div 
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.2 }}
-                    className="absolute bottom-0 left-0 w-64 h-64 bg-blue-400/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"
-                />
+            <div className="bg-brand-deep-bg relative overflow-hidden text-white pt-24 pb-20 mb-10">
+                 {/* Premium Gradient Background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0f172a] z-0"></div>
+                {/* Grid Pattern Overlay */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)] z-0 pointer-events-none"></div>
 
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <motion.h1 
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-bold mb-4 font-heading"
+                        className="text-4xl md:text-5xl font-bold mb-4 font-heading tracking-tight"
                     >
                         JEE Main College Predictor 2026
                     </motion.h1>
@@ -122,7 +114,7 @@ const JEEMainPredictor = ({ onOpenAuthModal }) => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.6, delay: 0.2 }}
-                        className="text-xl text-blue-100 max-w-2xl mx-auto font-light"
+                        className="text-xl text-blue-100/80 max-w-2xl mx-auto font-light"
                     >
                          Enter your JEE Main Percentile to find the best engineering colleges you can get into.
                     </motion.p>

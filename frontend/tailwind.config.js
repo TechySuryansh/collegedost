@@ -8,16 +8,19 @@ export default {
         extend: {
             colors: {
                 brand: {
-                    indigo: '#4f46e5', // Primary Academy Indigo
+                    indigo: '#4338ca', // Deep Indigo
                     violet: '#7c3aed', // Deep Violet
                     'violet-dark': '#5b21b6',
                     cyan: '#06b6d4', // Accent Cyan
                     mint: '#10b981', // Success/Growth Mint
-                    orange: '#f59e0b', // Warm accent
+                    orange: '#f97316', // Vibrant Orange
                     dark: '#0f172a', // Slate 900
                     'dark-light': '#1e293b', // Slate 800
                     light: '#f8fafc', // Slate 50
                     surface: '#ffffff',
+                    blue: '#2563eb', // Royal Blue
+                    'blue-dark': '#1e40af', // Darker Royal Blue
+                    'deep-bg': '#0B1120', // Very dark blue/slate for backgrounds
                 }
             },
             fontFamily: {

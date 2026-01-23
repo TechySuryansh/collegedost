@@ -39,7 +39,7 @@ const HomePage = ({ onOpenAskModal }) => {
       <Hero />
       <NewsSection />
       
-      <div className="container mx-auto px-4 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
         <motion.div variants={itemVariants}>
           <Section 
             title="Explore by Category" 
@@ -72,7 +72,7 @@ const HomePage = ({ onOpenAskModal }) => {
         <StatsSection items={homeStatsData} />
       </motion.div>
 
-      <div className="container mx-auto px-4 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
         <motion.div variants={itemVariants}>
           <Counselling items={homeCounsellingData} onOpenAskModal={onOpenAskModal} />
         </motion.div>
