@@ -1,46 +1,50 @@
 import React from 'react';
-import { FaUserMd, FaQuestionCircle, FaArrowRight } from 'react-icons/fa';
+import { FaUserMd, FaQuestionCircle, FaArrowRight, FaHeadset } from 'react-icons/fa';
 
 const Counselling = ({ items, onOpenAskModal }) => {
   return (
-    <section className="mb-16">
+    <section className="mb-20">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {items.map((item, index) => (
             <div 
               key={index} 
-              className="rounded-3xl p-0 flex flex-col md:flex-row items-center relative overflow-hidden group transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl bg-white border border-gray-100 shadow-lg"
+              className="glass-card rounded-[32px] p-0 flex flex-col items-center relative overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:shadow-premium border border-white/60"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-white via-white to-transparent z-10"></div>
-              <div className={`absolute right-0 top-0 bottom-0 w-1/2 ${item.color} opacity-20`}></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/50 to-brand-indigo/5 z-0"></div>
               
-              <div className="flex-1 z-20 p-8 md:pr-0">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-brand-orange transition-colors">{item.title}</h3>
-                <p className="text-gray-600 mb-8 leading-relaxed">{item.description}</p>
-                {item.cta === "Ask Now" ? (
-                  <button 
-                    onClick={onOpenAskModal}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-brand-orange text-white text-sm font-bold shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:gap-3 transition-all"
-                  >
-                    {item.cta} <FaArrowRight />
-                  </button>
-                ) : (
-                  <a 
-                    href={item.link} 
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-brand-orange border border-brand-orange text-sm font-bold shadow-md hover:bg-orange-50 hover:gap-3 transition-all"
-                  >
-                    {item.cta} <FaArrowRight />
-                  </a>
-                )}
-              </div>
-              
-              <div className="w-full md:w-1/2 h-48 md:h-64 relative z-0">
-                 <img 
-                    src={item.image} 
-                    alt={item.title} 
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                 />
-                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white md:via-white/20"></div>
+              <div className="flex w-full h-full relative z-10">
+                 <div className="flex-1 p-10 flex flex-col justify-center">
+                    <div className="w-12 h-12 rounded-xl bg-orange-50 text-brand-orange flex items-center justify-center text-xl mb-6 shadow-sm">
+                       <FaHeadset />
+                    </div>
+                    <h3 className="text-2xl font-bold font-heading text-gray-900 mb-3 group-hover:text-brand-indigo transition-colors leading-tight">{item.title}</h3>
+                    <p className="text-gray-600 mb-8 leading-relaxed text-sm">{item.description}</p>
+                    {item.cta === "Ask Now" ? (
+                      <button 
+                        onClick={onOpenAskModal}
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-brand-orange text-white text-sm font-bold shadow-lg shadow-brand-orange/20 hover:shadow-brand-orange/40 hover:-translate-y-0.5 transition-all w-fit"
+                      >
+                        {item.cta} <FaArrowRight />
+                      </button>
+                    ) : (
+                      <a 
+                        href={item.link} 
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white text-gray-900 border border-gray-200 text-sm font-bold shadow-sm hover:border-brand-indigo hover:text-brand-indigo hover:-translate-y-0.5 transition-all w-fit"
+                      >
+                        {item.cta} <FaArrowRight />
+                      </a>
+                    )}
+                 </div>
+                 
+                 <div className="w-2/5 relative overflow-hidden hidden md:block">
+                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/90 z-20"></div>
+                    <img 
+                       src={item.image} 
+                       alt={item.title} 
+                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                 </div>
               </div>
             </div>
           ))}

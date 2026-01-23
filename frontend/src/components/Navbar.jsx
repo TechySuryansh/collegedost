@@ -81,7 +81,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
   const currentMoreContent = currentMoreDataObj.content || { col1: [], col2: [], col3_1: [] };
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-gray-100 ${scrolled ? 'bg-white/95 backdrop-blur-md shadow-md' : 'bg-white'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b border-white/10 ${scrolled ? 'glass' : 'bg-white/90 backdrop-blur-md shadow-sm'}`}>
       <div className="py-3 border-b border-gray-100 bg-white">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -98,7 +98,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                 <span className="text-lg">CD</span>
               </div>
               <div className="flex flex-col">
-                <span className="font-heading font-bold text-xl text-brand-blue leading-tight tracking-tight">Collegedost</span>
+                <span className="font-heading font-bold text-xl text-brand-indigo leading-tight tracking-tight">Collegedost</span>
                 <span className="text-[10px] text-gray-500 font-medium uppercase tracking-wider">The Education Hub</span>
               </div>
             </div>
@@ -129,7 +129,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                 onMouseEnter={() => handleMouseEnter(link.title)}
                 onMouseLeave={handleMouseLeave}
               >
-                <a href={link.href} className="flex items-center gap-1.5 h-full px-4 text-sm font-medium text-gray-600 border-b-2 border-transparent hover:text-brand-blue hover:bg-gray-50 hover:border-brand-orange transition-all duration-200">
+                <a href={link.href} className="flex items-center gap-1.5 h-full px-4 text-sm font-medium text-slate-600 border-b-2 border-transparent hover:text-brand-indigo hover:bg-slate-50/50 hover:border-brand-orange transition-all duration-200">
                   {link.title}
                   {link.hasDropdown && <FaChevronDown className="text-[10px] opacity-60 group-hover:opacity-100 transition-opacity" />}
                 </a>
@@ -150,11 +150,11 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
 
                       {/* Pop-up Menu Container */}
                       <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute top-full left-0 w-full bg-white shadow-2xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                        initial={{ opacity: 0, y: 15, scale: 0.99 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 10, scale: 0.99 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                        className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-2xl shadow-premium-hover rounded-b-2xl border-t border-white/20 z-[60] overflow-hidden flex"
                         style={{ height: 'calc(100vh - 120px)' }}
                       >
                         {/* Sidebar */}
@@ -184,7 +184,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                                 <ul className="flex flex-col gap-3.5">
                                   {currentStreamContent.exams.map((item, idx) => (
                                     <li key={idx}>
-                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-blue font-semibold mt-1' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold mt-1' : 'text-slate-600 hover:text-brand-orange'}`}>
                                         {item.title}
                                       </a>
                                     </li>
@@ -197,7 +197,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                                 <ul className="flex flex-col gap-3.5">
                                   {currentStreamContent.predictors.map((item, idx) => (
                                     <li key={idx}>
-                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-blue font-semibold mt-1' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold mt-1' : 'text-slate-600 hover:text-brand-orange'}`}>
                                         {item.title}
                                       </a>
                                     </li>
@@ -272,7 +272,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentTestPrepContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -285,7 +285,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentTestPrepContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -360,7 +360,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCollegeContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -373,7 +373,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCollegeContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -448,7 +448,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentExamContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -461,7 +461,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentExamContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -536,7 +536,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCourseContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -549,7 +549,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCourseContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -624,7 +624,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentPredictorContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -637,7 +637,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentPredictorContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -712,7 +712,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCounsellingContent.exams?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>
@@ -725,7 +725,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal }) => {
                               <ul className="flex flex-col gap-3">
                                 {currentCounsellingContent.predictors?.map((item, idx) => (
                                   <li key={idx}>
-                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-blue font-semibold' : 'text-gray-600 hover:text-brand-orange'}`}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
                                       {item.title}
                                     </a>
                                   </li>

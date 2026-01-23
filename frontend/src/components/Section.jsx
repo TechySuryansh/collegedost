@@ -1,15 +1,23 @@
 import React from 'react';
-import { FaStar, FaMapMarkerAlt, FaLocationArrow, FaArrowRight } from 'react-icons/fa';
+import { FaStar, FaMapMarkerAlt, FaLocationArrow, FaArrowRight, FaDownload, FaPaperPlane } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 const Section = ({ title, items, type = 'card' }) => {
   return (
-    <section className="py-16">
+    <section className="py-16 relative">
+       {/* Decorative subtle background for sections */}
+       {type === 'category' && (
+         <div className="absolute inset-0 bg-brand-light/50 skew-y-1 -z-10"></div>
+       )}
+
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-brand-blue">{title}</h2>
-          <a href="#" className="flex items-center gap-2 text-sm font-semibold text-brand-orange hover:translate-x-1 transition-transform">
-            View All <FaArrowRight />
+        <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center gap-3">
+             <div className="h-8 w-1 bg-brand-orange rounded-full"></div>
+             <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">{title}</h2>
+          </div>
+          <a href="#" className="flex items-center gap-2 text-sm font-bold text-brand-indigo hover:text-brand-orange transition-colors group">
+            View All <span className="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-all"><FaArrowRight className="text-xs" /></span>
           </a>
         </div>
         
@@ -19,10 +27,10 @@ const Section = ({ title, items, type = 'card' }) => {
           {items.map((item, index) => (
             <motion.div 
               key={item.id || index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05 }}
+              transition={{ delay: index * 0.05, duration: 0.5 }}
               className="h-full"
             >
               {type === 'category' ? (
@@ -31,64 +39,78 @@ const Section = ({ title, items, type = 'card' }) => {
                   const props = item.link ? { href: item.link } : {};
                   return (
                     <Component 
-                      className="bg-white rounded-2xl p-6 text-center transition-all duration-300 hover:-translate-y-2 hover:shadow-xl shadow-sm border border-transparent hover:border-brand-orange/20 flex flex-col items-center justify-center relative overflow-hidden group h-full cursor-pointer"
+                      className="glass-card rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
                       style={{ '--hover-color': item.color }}
                       {...props}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-white to-slate-50 opacity-100 group-hover:opacity-0 transition-opacity"></div>
-                      <div className="absolute inset-0 rounded-2xl border-2 border-[var(--hover-color)] opacity-0 group-hover:opacity-10 opacity-5 transition-opacity pointer-events-none"></div>
-                      <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--hover-color)] opacity-5 rounded-bl-[100px] -mr-4 -mt-4 transition-transform group-hover:scale-150"></div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-transparent z-0"></div>
+                      <div className="absolute inset-0 bg-[var(--hover-color)] opacity-0 group-hover:opacity-5 transition-opacity duration-500 z-0"></div>
+                      
+                      {/* Animated Border */}
+                      <div className="absolute inset-0 border-2 border-transparent group-hover:border-[var(--hover-color)]/30 rounded-2xl transition-colors duration-300 pointer-events-none z-10"></div>
                       
                       <div 
-                        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4 transition-transform duration-300 group-hover:scale-110 shadow-sm relative z-10" 
-                        style={{ background: `${item.color}10`, color: item.color }}
+                        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm relative z-10 bg-white" 
+                        style={{ color: item.color, boxShadow: `0 10px 30px -10px ${item.color}40` }}
                       >
                         <item.icon />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 mb-1 relative z-10">{item.title}</h3>
+                      
+                      <h3 className="text-lg font-bold text-gray-800 mb-1 relative z-10 group-hover:text-[var(--hover-color)] transition-colors">{item.title}</h3>
                       {item.subtext && <p className="text-xs text-gray-500 relative z-10">{item.subtext}</p>}
+                      
+                      <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0">
+                         <FaArrowRight className="text-[var(--hover-color)]/50 text-sm" />
+                      </div>
                     </Component>
                   );
                 })()
               ) : (
-                <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-orange-500/10 group border border-gray-100/50">
-                  <div className="p-5 flex gap-4 items-start relative bg-gradient-to-b from-white to-gray-50/50">
-                    <div className="w-14 h-14 rounded-xl p-0.5 bg-white shadow-sm border border-gray-100 flex-shrink-0">
+                <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-lg hover:shadow-premium-hover transition-all duration-300 hover:-translate-y-2 group border border-gray-100">
+                  <div className="p-5 flex gap-4 items-start relative">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-50"></div>
+                    
+                    <div className="w-16 h-16 rounded-xl p-1 bg-white shadow-sm border border-gray-100 flex-shrink-0 relative z-10">
                        <img src={item.logo} alt={item.name} className="w-full h-full rounded-lg object-contain" />
                     </div>
-                    <div>
-                      <h3 className="text-base font-bold mb-1 text-gray-900 pr-10 line-clamp-2 leading-tight group-hover:text-brand-orange transition-colors">{item.name}</h3>
-                      <div className="text-xs flex items-center gap-1 text-gray-500 font-medium">
-                        <FaMapMarkerAlt className="text-brand-orange/60" /> {item.location}
+                    <div className="relative z-10 flex-1 min-w-0">
+                      <h3 className="text-base font-bold mb-2 text-gray-900 line-clamp-2 leading-tight group-hover:text-brand-indigo transition-colors font-heading">{item.name}</h3>
+                      <div className="text-xs flex items-center gap-1.5 text-gray-500 font-medium">
+                        <FaMapMarkerAlt className="text-brand-orange/80" /> <span className="truncate">{item.location}</span>
                       </div>
                     </div>
-                    <span className="absolute top-5 right-5 bg-gradient-to-r from-amber-50 to-orange-50 text-orange-600 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 border border-orange-100 shadow-sm">
+                    <span className="absolute top-4 right-4 bg-white text-brand-orange text-[10px] font-bold px-2 py-1 rounded-lg flex items-center gap-1 border border-orange-100 shadow-sm z-20">
                       <FaStar className="text-[9px]" /> {item.rating}
                     </span>
                   </div>
                   
-                  <div className="px-5 pb-5 flex-1 flex flex-col bg-white">
-                    <div className="flex justify-between mb-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                  <div className="px-5 pb-5 flex-1 flex flex-col relative z-10">
+                    <div className="flex justify-between mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-100 group-hover:border-brand-indigo/10 transition-colors">
                        <div className="flex flex-col">
-                          <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-0.5">Fees</span>
-                          <span className="text-sm font-bold text-gray-900">{item.fees}</span>
+                          <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider mb-1">Total Fees</span>
+                          <span className="text-sm font-extrabold text-gray-800">{item.fees}</span>
                        </div>
                        <div className="flex flex-col text-right">
-                          <span className="text-[10px] uppercase text-gray-400 font-bold tracking-wider mb-0.5">Avg Package</span>
-                          <span className="text-sm font-bold text-emerald-600">{item.placement}</span>
+                          <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider mb-1">Avg Package</span>
+                          <span className="text-sm font-extrabold text-brand-mint">{item.placement}</span>
                        </div>
                     </div>
                     
                     <div className="flex flex-wrap gap-2 mb-auto">
                       {item.tags.map(tag => (
-                        <span key={tag} className="bg-white text-gray-600 text-[10px] px-2.5 py-1 rounded-full font-semibold border border-gray-200 shadow-sm">{tag}</span>
+                        <span key={tag} className="bg-white text-gray-600 text-[10px] px-2.5 py-1 rounded-full font-semibold border border-gray-200 group-hover:border-brand-indigo/20 transition-colors">{tag}</span>
                       ))}
                     </div>
                   </div>
                   
-                  <div className="p-4 bg-white border-t border-gray-100 flex gap-3 mt-auto">
-                    <button className="flex-1 py-3 rounded-xl text-xs font-bold border border-brand-orange/30 text-brand-orange bg-orange-50/50 hover:bg-orange-50 transition-colors">Download Brochure</button>
-                    <button className="flex-1 py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-brand-orange to-orange-600 text-white hover:shadow-lg hover:shadow-orange-500/30 transition-all transform active:scale-95">Apply Now</button>
+                  <div className="p-4 bg-white border-t border-gray-100 flex gap-3 mt-auto relative z-10">
+                    <button className="flex-1 py-3 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:text-brand-indigo hover:border-brand-indigo hover:bg-indigo-50 transition-all flex items-center justify-center gap-2">
+                       <FaDownload /> Brochure
+                    </button>
+                    <button className="flex-1 py-3 rounded-xl text-xs font-bold bg-brand-orange text-white hover:bg-orange-600 shadow-lg shadow-orange-500/20 hover:shadow-orange-500/40 transition-all flex items-center justify-center gap-2">
+                       Apply Now <FaPaperPlane />
+                    </button>
                   </div>
                 </div>
               )}
