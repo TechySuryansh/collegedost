@@ -328,6 +328,7 @@ export const browseByStreamData = [
   {
     id: 'law',
     label: 'Law',
+    link: '/law',
     titles: {
       col1: 'Exams',
       col2: 'Colleges',
@@ -550,6 +551,7 @@ export const browseByStreamData = [
   {
     id: 'pharmacy',
     label: 'Pharmacy',
+    link: '/pharmacy',
     titles: {
       col1: 'Exams',
       col2: 'Colleges',
@@ -728,6 +730,7 @@ export const browseByStreamData = [
   {
     id: 'abroad',
     label: 'Study Abroad',
+    link: '/international-colleges',
     titles: {
       col1: 'Exams',
       col2: 'Colleges',

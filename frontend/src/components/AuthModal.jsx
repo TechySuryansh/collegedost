@@ -4,15 +4,23 @@ import { FaTimes, FaCheckCircle, FaGoogle, FaEnvelope, FaLock, FaUser, FaPhone, 
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 
+import { useAuth } from '../context/AuthContext';
+
+
 const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
+  const { login } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab); // 'login' or 'signup'
   const [loading, setLoading] = useState(false);
+  
+  const [step, setStep] = useState(1); // 1: Email, 2: OTP & New Password
   
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     mobile: '',
     password: '',
+    confirmPassword: '',
+    otp: '',
     currentClass: '',
     interest: '',
     city: '',
@@ -26,6 +34,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
       setActiveTab(initialTab);
+      setStep(1);
     } else {
       document.body.style.overflow = 'unset';
     }
@@ -43,34 +52,77 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
         return;
     }
     
-    // Basic validation
-    if (!formData.password) {
-        setError('Please enter password');
-        return;
+    // Validation
+    if (activeTab === 'signup' || activeTab === 'login') {
+         if (!formData.password) {
+            setError('Please enter password');
+            return;
+        }
+    }
+
+    if (activeTab === 'forgotPassword' && step === 2) {
+        if (!formData.otp) {
+            setError('Please enter the OTP sent to your email');
+            return;
+        }
+        if (!formData.password) {
+             setError('Please enter new password');
+             return;
+        }
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
     }
 
     setLoading(true);
     try {
-        const endpoint = activeTab === 'signup' 
-            ? 'http://localhost:5000/api/auth/register' 
-            : 'http://localhost:5000/api/auth/login';
+        let endpoint = '';
+        let payload = {};
 
-        const payload = activeTab === 'signup' 
-            ? formData 
-            : { email: formData.email, password: formData.password };
+        if (activeTab === 'signup') {
+             endpoint = 'http://localhost:5001/api/auth/register';
+             payload = formData;
+        } else if (activeTab === 'login') {
+             endpoint = 'http://localhost:5001/api/auth/login';
+             payload = { email: formData.email, password: formData.password };
+        } else if (activeTab === 'forgotPassword') {
+             if (step === 1) {
+                 endpoint = 'http://localhost:5001/api/auth/forgot-password';
+                 payload = { email: formData.email };
+             } else {
+                 endpoint = 'http://localhost:5001/api/auth/reset-password';
+                 payload = { email: formData.email, otp: formData.otp, password: formData.password };
+             }
+        }
 
         const response = await axios.post(endpoint, payload);
 
         if (response.data.success) {
-            // Save token
-            localStorage.setItem('token', response.data.token);
-            localStorage.setItem('user', JSON.stringify(response.data.user));
-            // Close
-            onClose();
-            window.location.reload();
+            if (activeTab === 'forgotPassword') {
+                if (step === 1) {
+                    setStep(2);
+                    setError(''); // Clear any previous errors
+                } else {
+                    // Password reset successful
+                    setError('');
+                    alert('Password reset successfully! Please login with your new password.');
+                    setActiveTab('login');
+                    setStep(1);
+                }
+            } else {
+                // Login via Context
+                login(response.data.user, response.data.token);
+                // Modal closes automatically via login -> isAuthModalOpen false in context (if App uses it)
+                // But we passed onClose here, so we should call it just in case or depend on parent.
+                // The parent App.jsx will close it if it's synced.
+                if (onClose) onClose(); 
+            }
         }
     } catch (err) {
-        setError(err.response?.data?.message || 'Authentication failed');
+        console.error("Auth Error:", err);
+        const errMsg = err.response?.data?.message || err.message || 'Authentication failed';
+        setError(errMsg);
     } finally {
         setLoading(false);
     }
@@ -79,15 +131,13 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
         setLoading(true);
-        const res = await axios.post('http://localhost:5000/api/auth/google', {
+        const res = await axios.post('http://localhost:5001/api/auth/google', {
             token: credentialResponse.credential
         });
         
         if (res.data.success) {
-            localStorage.setItem('token', res.data.token);
-            localStorage.setItem('user', JSON.stringify(res.data.user));
-            onClose();
-            window.location.reload();
+             login(res.data.user, res.data.token);
+             if (onClose) onClose();
         }
     } catch (err) {
         console.error("Google Login Error", err);
@@ -183,12 +233,108 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                 </div>
 
                 <div className="mb-6">
-                    <h3 className="text-2xl font-bold text-gray-900">{activeTab === 'signup' ? 'Create Account' : 'Welcome Back'}</h3>
-                    <p className="text-sm text-gray-500 mt-1">{activeTab === 'signup' ? 'Get started for free today.' : 'Enter your details to access your account.'}</p>
+                    <h3 className="text-2xl font-bold text-gray-900">
+                        {activeTab === 'signup' ? 'Create Account' : activeTab === 'forgotPassword' ? 'Reset Password' : 'Welcome Back'}
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-1">
+                        {activeTab === 'signup' ? 'Get started for free today.' : activeTab === 'forgotPassword' ? (step === 1 ? 'Enter your email to receive a reset code.' : 'Enter the code sent to your email.') : 'Enter your details to access your account.'}
+                    </p>
                 </div>
 
                     {/* Content */}
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {activeTab === 'forgotPassword' ? (
+                           <>
+                             {step === 1 ? (
+                                 <div className="space-y-1">
+                                     <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                                     <div className="relative group">
+                                         <FaEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                         <input 
+                                             type="email" 
+                                             placeholder="john@example.com" 
+                                             className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                             value={formData.email}
+                                             onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                             required
+                                         />
+                                     </div>
+                                 </div>
+                             ) : (
+                                 <>
+                                     <div className="space-y-1">
+                                         <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Reset Code (OTP)</label>
+                                         <div className="relative group">
+                                             <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                             <input 
+                                                 type="text" 
+                                                 placeholder="123456" 
+                                                 className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400 tracking-widest"
+                                                 value={formData.otp}
+                                                 onChange={(e) => setFormData({...formData, otp: e.target.value})}
+                                                 required
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="space-y-1">
+                                         <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">New Password</label>
+                                         <div className="relative group">
+                                             <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                             <input 
+                                                 type="password" 
+                                                 placeholder="••••••••" 
+                                                 className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                 value={formData.password}
+                                                 onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                                 required
+                                             />
+                                         </div>
+                                     </div>
+                                     <div className="space-y-1">
+                                         <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Confirm Password</label>
+                                         <div className="relative group">
+                                             <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                             <input 
+                                                 type="password" 
+                                                 placeholder="••••••••" 
+                                                 className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                 value={formData.confirmPassword}
+                                                 onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                                                 required
+                                             />
+                                         </div>
+                                     </div>
+                                 </>
+                             )}
+
+                             {error && (
+                                <div className={`text-xs font-medium px-3 py-2 rounded-lg flex items-center gap-2 ${error.includes('sent') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                                    {error.includes('sent') ? <FaCheckCircle /> : <FaTimes />} {error}
+                                </div>
+                             )}
+
+                             <button 
+                                 type="submit"
+                                 disabled={loading}
+                                 className="w-full bg-brand-deep-bg hover:bg-brand-blue-dark text-white shadow-lg shadow-brand-blue/30 font-bold py-3.5 rounded-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                             >
+                                 {loading ? (
+                                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                                 ) : (
+                                     step === 1 ? 'Send Reset Code' : 'Reset Password'
+                                 )}
+                             </button>
+
+                             <button 
+                                type="button"
+                                onClick={() => setActiveTab('login')}
+                                className="w-full text-sm text-gray-500 hover:text-gray-800 font-medium py-2"
+                             >
+                                Back to Login
+                             </button>
+                           </>
+                        ) : (
+                        <>
                         {activeTab === 'signup' && (
                             <div className="space-y-1">
                                 <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
@@ -252,6 +398,18 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                                 />
                             </div>
                         </div>
+                        
+                        {activeTab === 'login' && (
+                            <div className="flex justify-end">
+                                <button 
+                                    type="button"
+                                    onClick={() => setActiveTab('forgotPassword')}
+                                    className="text-xs font-semibold text-brand-blue hover:text-brand-blue-dark transition-colors"
+                                >
+                                    Forgot Password?
+                                </button>
+                            </div>
+                        )}
 
                         {activeTab === 'signup' && (
                             <>
@@ -337,6 +495,8 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                                 text="continue_with"
                             />
                         </div>
+                        </>
+                        )}
                     </form>
                   </div>
               </motion.div>

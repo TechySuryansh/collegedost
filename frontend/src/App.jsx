@@ -30,15 +30,18 @@ const PostArticle = lazy(() => import('./pages/admin/PostArticle'));
 const AdminColleges = lazy(() => import('./pages/admin/AdminColleges'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AddCollege = lazy(() => import('./pages/admin/AddCollege'));
+const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 
 
 import { HelmetProvider } from 'react-helmet-async';
 import AdminRoute from './components/AdminRoute';
 
+import { useAuth } from './context/AuthContext';
+
 function App() {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const { isAuthModalOpen, openAuthModal, closeAuthModal } = useAuth(); // Use Context
 
   // Simple loading spinner
   const LoadingFallback = () => (
@@ -54,7 +57,7 @@ function App() {
           <Navbar
             onOpenAskModal={() => setIsAskModalOpen(true)}
             onOpenShareModal={() => setIsShareModalOpen(true)}
-            onOpenAuthModal={() => setIsAuthModalOpen(true)}
+            onOpenAuthModal={openAuthModal}
           />
 
           <Suspense fallback={<LoadingFallback />}>
@@ -62,8 +65,8 @@ function App() {
               <Route path="/" element={<HomePage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
               <Route path="/pharmacy" element={<PharmacyPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
               <Route path="/law" element={<LawPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
-              <Route path="/jee-main-predictor" element={<JEEMainPredictor onOpenAuthModal={() => setIsAuthModalOpen(true)} />} />
-              <Route path="/jee-main-rank-predictor" element={<JEEMainRankPredictor onOpenAuthModal={() => setIsAuthModalOpen(true)} />} />
+              <Route path="/jee-main-predictor" element={<JEEMainPredictor onOpenAuthModal={openAuthModal} />} />
+              <Route path="/jee-main-rank-predictor" element={<JEEMainRankPredictor onOpenAuthModal={openAuthModal} />} />
               <Route path="/international-colleges" element={<InternationalColleges />} />
               <Route path="/exams" element={<ExamsPage />} />
               <Route path="/exams/:slug" element={<ExamDetailPage />} />
@@ -72,8 +75,8 @@ function App() {
               <Route path="/courses" element={<CoursesPage />} />
               <Route path="/courses/:slug" element={<CourseDetailPage />} />
               <Route path="/predict-colleges" element={<CollegePredictor />} />
-              <Route path="/jee-main-college-predictor" element={<JEEMainPredictor onOpenAuthModal={() => setIsAuthModalOpen(true)} />} />
-              <Route path="/jee-main-rank-predictor" element={<JEEMainRankPredictor onOpenAuthModal={() => setIsAuthModalOpen(true)} />} />
+              <Route path="/jee-main-college-predictor" element={<JEEMainPredictor onOpenAuthModal={openAuthModal} />} />
+              <Route path="/jee-main-rank-predictor" element={<JEEMainRankPredictor onOpenAuthModal={openAuthModal} />} />
               <Route path="/rank-predictor" element={<GenericRankPredictor />} />
               <Route path="/news" element={<NewsPage />} />
               <Route path="/news/:slug" element={<NewsDetailPage />} />
@@ -89,13 +92,14 @@ function App() {
               </Route>
 
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
             </Routes>
           </Suspense>
 
           <Footer />
           <AskModal isOpen={isAskModalOpen} onClose={() => setIsAskModalOpen(false)} />
           <ShareModal isOpen={isShareModalOpen} onClose={() => setIsShareModalOpen(false)} />
-          <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+          <AuthModal isOpen={isAuthModalOpen} onClose={closeAuthModal} />
         </div>
       </Router>
     </HelmetProvider>

@@ -2,9 +2,9 @@ const User = require('../models/User.model');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', {
-    expiresIn: '30d'
-  });
+    return jwt.sign({ id }, process.env.JWT_SECRET || 'fallback_secret', {
+        expiresIn: '30d'
+    });
 };
 
 // @desc    Register user
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
     } catch (error) {
         console.error(error);
         if (error.code === 11000) {
-             return res.status(400).json({ success: false, message: 'Email or Mobile already exists' });
+            return res.status(400).json({ success: false, message: 'Email or Mobile already exists' });
         }
         res.status(500).json({ success: false, message: 'Server Error' });
     }
@@ -73,7 +73,7 @@ exports.login = async (req, res) => {
         const user = await User.findOne({ email }).select('+password');
 
         if (!user) {
-             return res.status(401).json({ success: false, message: 'Invalid credentials' });
+            return res.status(401).json({ success: false, message: 'Invalid credentials' });
         }
 
         // Check password
@@ -113,23 +113,23 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 exports.googleLogin = async (req, res) => {
     try {
         const { token } = req.body; // ID Token from frontend
-        
+
         let payload;
         try {
-             const ticket = await client.verifyIdToken({
-                 idToken: token,
-                 audience: process.env.GOOGLE_CLIENT_ID
-             });
-             payload = ticket.getPayload();
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+            payload = ticket.getPayload();
         } catch (verifyError) {
-             console.error("Google verify error:", verifyError);
-             return res.status(401).json({ success: false, message: 'Invalid Google Token' });
+            console.error("Google verify error:", verifyError);
+            return res.status(401).json({ success: false, message: 'Invalid Google Token' });
         }
 
         const { name, email, sub: googleId } = payload;
 
-        let user = await User.findOne({ 
-             $or: [{ googleId }, { email }]
+        let user = await User.findOne({
+            $or: [{ googleId }, { email }]
         });
 
         if (user) {
@@ -157,6 +157,113 @@ exports.googleLogin = async (req, res) => {
                 name: user.name,
                 email: user.email,
                 googleId: user.googleId,
+                role: user.role
+            }
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+const crypto = require('crypto');
+const sendEmail = require('../utils/sendEmail');
+
+// @desc    Forgot Password
+// @route   POST /api/auth/forgot-password
+// @access  Public
+exports.forgotPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.body.email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'There is no user with that email' });
+        }
+
+        // Get reset token (OTP)
+        const resetToken = user.getResetPasswordToken();
+
+        await user.save({ validateBeforeSave: false });
+
+        const message = `You are receiving this email because you (or someone else) has requested the reset of a password. \n\n Your Password Reset Code is: ${resetToken}`;
+        const html = `
+            <div style="font-family: sans-serif; padding: 20px; color: #333;">
+                <h1 style="color: #1e3a8a;">Reset Password Code</h1>
+                <p>You requested a password reset. Please use the following code to reset your password:</p>
+                <div style="font-size: 24px; font-weight: bold; letter-spacing: 5px; color: #1e3a8a; padding: 20px 0;">${resetToken}</div>
+                <p>This code will expire in 10 minutes.</p>
+                <p>If you did not request this, please ignore this email.</p>
+            </div>
+        `;
+
+        try {
+            await sendEmail({
+                email: user.email,
+                subject: 'Password Reset Code',
+                message,
+                html
+            });
+
+            res.status(200).json({ success: true, data: 'Email sent' });
+        } catch (err) {
+            console.error(err);
+            user.resetPasswordToken = undefined;
+            user.resetPasswordExpire = undefined;
+
+            await user.save({ validateBeforeSave: false });
+
+            return res.status(500).json({ success: false, message: 'Email could not be sent' });
+        }
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
+
+// @desc    Reset Password
+// @route   POST /api/auth/reset-password
+// @access  Public
+exports.resetPassword = async (req, res) => {
+    try {
+        const { email, otp, password } = req.body;
+
+        if (!email || !otp || !password) {
+            return res.status(400).json({ success: false, message: 'Please provide email, OTP and new password' });
+        }
+
+        // Get hashed token
+        const resetPasswordToken = crypto
+            .createHash('sha256')
+            .update(otp.toString()) // Ensure string
+            .digest('hex');
+
+        const user = await User.findOne({
+            email,
+            resetPasswordToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'Invalid or expired OTP' });
+        }
+
+        // Set new password
+        user.password = password;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: 'Password updated successfully',
+            token: generateToken(user._id),
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
                 role: user.role
             }
         });

@@ -1,0 +1,30 @@
+
+2026-01-25T07:52:57.821Z - Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to
+534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d9443c01a7336-2a802dcd760sm61119475ad.22 - gsmtp
+Stack: Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to
+534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d9443c01a7336-2a802dcd760sm61119475ad.22 - gsmtp
+    at SMTPConnection._formatError (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:1617:34)
+    at SMTPConnection.<anonymous> (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at SMTPConnection._onSocketData (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)
+
+2026-01-25T07:59:00.650Z - Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to
+534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d9443c01a7336-2a802dcd8cdsm60662255ad.27 - gsmtp
+Stack: Error: Invalid login: 534-5.7.9 Application-specific password required. For more information, go to
+534 5.7.9  https://support.google.com/mail/?p=InvalidSecondFactor d9443c01a7336-2a802dcd8cdsm60662255ad.27 - gsmtp
+    at SMTPConnection._formatError (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:809:19)
+    at SMTPConnection._actionAUTHComplete (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:1617:34)
+    at SMTPConnection.<anonymous> (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:556:26)
+    at SMTPConnection._processResponse (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:993:20)
+    at SMTPConnection._onData (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:774:14)
+    at SMTPConnection._onSocketData (/Users/pranjalmodi/Desktop/collegedost/backend/node_modules/nodemailer/lib/smtp-connection/index.js:195:44)
+    at TLSSocket.emit (node:events:508:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+    at Readable.push (node:internal/streams/readable:390:5)

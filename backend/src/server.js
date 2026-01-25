@@ -18,7 +18,7 @@ const startDB = async () => {
 // startDB(); // Commented out to force file-mode stability if user has no DB
 // Or better, let's just accept that we aren't using DB for this feature.
 // But to be safe if user fixes DB later:
-connectDB().catch(err => console.log("DB Failed"));
+connectDB().catch(err => console.log("DB Failed")); // Port changed to 5001
 
 const app = express();
 
@@ -38,6 +38,7 @@ app.use('/api/exams', require('./routes/exam.routes'));
 app.use('/api/colleges', require('./routes/college.routes'));
 app.use('/api/courses', require('./routes/course.routes'));
 app.use('/api/articles', require('./routes/article.routes'));
+app.use('/api/ask', require('./routes/ask.routes'));
 
 const PORT = process.env.PORT || 5000;
 

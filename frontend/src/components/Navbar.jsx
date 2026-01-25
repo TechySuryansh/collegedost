@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData, predictorsData, rankingsData, counsellingData, careersData, moreData } from '../data';
 import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt, FaBookOpen, FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaArrowLeft } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-
-
+import { useAuth } from '../context/AuthContext';
 
 const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
+  const { user, logout, protectAction } = useAuth(); // Context Hook
   const location = useLocation();
+  const navigate = useNavigate();
   const isAdminMode = location.pathname.startsWith('/admin');
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
@@ -24,22 +25,10 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
   const [activeMoreStream, setActiveMoreStream] = useState('learn');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-      // Check user
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-          setUser(JSON.parse(storedUser));
-      }
-  }, []);
-
+  
   const handleLogout = () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      setUser(null);
+      logout();
       setIsUserDropdownOpen(false);
-      window.location.href = '/';
   };
 
   useEffect(() => {
@@ -57,7 +46,6 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
   const handleMouseLeave = () => {
     setActiveDropdown(null);
   };
-  // ... rest of stream logic ...
 
   // Find the active stream data
   const currentStreamDataObj = browseByStreamData.find(s => s.id === activeStream) || {};
@@ -143,6 +131,9 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
               )}
             </Link>
           </div>
+
+
+
           <div className="flex items-center gap-4">
             {!isAdminMode && (
                 <div className="hidden md:flex items-center gap-6 text-gray-600">
@@ -273,6 +264,12 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                               key={stream.id}
                               className={`flex items-center justify-between px-6 py-3.5 text-[15px] transition-all cursor-pointer relative ${activeStream === stream.id ? 'text-brand-orange font-bold bg-orange-50/50' : 'text-gray-600 hover:bg-slate-50 hover:text-brand-orange'}`}
                               onMouseEnter={() => setActiveStream(stream.id)}
+                              onClick={() => {
+                                if (stream.link) {
+                                  navigate(stream.link);
+                                  setActiveDropdown(null);
+                                }
+                              }}
                             >
                               {activeStream === stream.id && (
                                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange"></div>
