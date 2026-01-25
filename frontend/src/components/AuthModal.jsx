@@ -3,16 +3,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaCheckCircle, FaGoogle, FaEnvelope, FaLock, FaUser, FaPhone, FaGraduationCap, FaMapMarkerAlt, FaArrowRight } from 'react-icons/fa';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
-
 import { useAuth } from '../context/AuthContext';
-
 
 const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
   const { login } = useAuth();
   const [activeTab, setActiveTab] = useState(initialTab); // 'login' or 'signup'
   const [loading, setLoading] = useState(false);
   
-  const [step, setStep] = useState(1); // 1: Email, 2: OTP & New Password
+  const [step, setStep] = useState(1); // 1: Email, 2: OTP & New Password (only for forgot password)
   
   const [formData, setFormData] = useState({
     name: '',
@@ -43,95 +41,120 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
     };
   }, [isOpen, initialTab]);
 
+  // Multi-step verification removed
+  const apiCall = async (method, endpoint, data = {}) => {
+      const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001/api';
+      const url = `${BASE_URL}${endpoint}`;
+      const token = localStorage.getItem('token');
+      const config = {
+          withCredentials: true,
+          headers: {
+              'Content-Type': 'application/json',
+              ...(token && { Authorization: `Bearer ${token}` })
+          }
+      };
+      
+      return axios({ method, url, data, ...config });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (activeTab === 'signup' && !formData.agree) {
-        setError('Please agree to terms and conditions');
+    // --- LOGIN LOGIC ---
+    if (activeTab === 'login') {
+        if (!formData.email || !formData.password) {
+            setError('Please enter email and password');
+            return;
+        }
+        setLoading(true);
+        try {
+            const response = await apiCall('post', '/auth/login', { email: formData.email, password: formData.password });
+            if (response.data.success) {
+                login(response.data.user, response.data.token);
+                if (onClose) onClose();
+            }
+        } catch (err) {
+             setError(err.response?.data?.message || 'Login failed');
+        } finally {
+            setLoading(false);
+        }
         return;
     }
     
-    // Validation
-    if (activeTab === 'signup' || activeTab === 'login') {
-         if (!formData.password) {
-            setError('Please enter password');
+    // --- SIGNUP LOGIC ---
+    if (activeTab === 'signup') {
+        if (!formData.name || !formData.email || !formData.mobile || !formData.password) {
+            setError('Please fill all required fields');
             return;
         }
-    }
-
-    if (activeTab === 'forgotPassword' && step === 2) {
-        if (!formData.otp) {
-            setError('Please enter the OTP sent to your email');
+        if (!formData.agree) {
+            setError('Please agree to terms');
             return;
         }
-        if (!formData.password) {
-             setError('Please enter new password');
-             return;
-        }
-        if (formData.password !== formData.confirmPassword) {
-            setError('Passwords do not match');
-            return;
-        }
-    }
 
-    setLoading(true);
-    try {
-        let endpoint = '';
-        let payload = {};
-
-        if (activeTab === 'signup') {
-             endpoint = 'http://localhost:5001/api/auth/register';
-             payload = formData;
-        } else if (activeTab === 'login') {
-             endpoint = 'http://localhost:5001/api/auth/login';
-             payload = { email: formData.email, password: formData.password };
-        } else if (activeTab === 'forgotPassword') {
-             if (step === 1) {
-                 endpoint = 'http://localhost:5001/api/auth/forgot-password';
-                 payload = { email: formData.email };
-             } else {
-                 endpoint = 'http://localhost:5001/api/auth/reset-password';
-                 payload = { email: formData.email, otp: formData.otp, password: formData.password };
-             }
-        }
-
-        const response = await axios.post(endpoint, payload);
-
-        if (response.data.success) {
-            if (activeTab === 'forgotPassword') {
-                if (step === 1) {
-                    setStep(2);
-                    setError(''); // Clear any previous errors
-                } else {
-                    // Password reset successful
-                    setError('');
-                    alert('Password reset successfully! Please login with your new password.');
-                    setActiveTab('login');
-                    setStep(1);
-                }
-            } else {
-                // Login via Context
+        setLoading(true);
+        try {
+            const response = await apiCall('post', '/auth/register', formData);
+            if (response.data.success) {
                 login(response.data.user, response.data.token);
-                // Modal closes automatically via login -> isAuthModalOpen false in context (if App uses it)
-                // But we passed onClose here, so we should call it just in case or depend on parent.
-                // The parent App.jsx will close it if it's synced.
-                if (onClose) onClose(); 
+                if (onClose) onClose();
             }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Registration failed');
+        } finally {
+            setLoading(false);
         }
-    } catch (err) {
-        console.error("Auth Error:", err);
-        const errMsg = err.response?.data?.message || err.message || 'Authentication failed';
-        setError(errMsg);
-    } finally {
-        setLoading(false);
+        return;
+    }
+
+    // --- FORGOT PASSWORD LOGIC ---
+    if (activeTab === 'forgotPassword') {
+         // Validation for forgot password steps
+         if (step === 1 && !formData.email) {
+             setError('Please enter your email address');
+             return;
+         }
+         if (step === 2) {
+             if (!formData.otp) {
+                 setError('Please enter the OTP sent to your email');
+                 return;
+             }
+             if (!formData.password) {
+                  setError('Please enter new password');
+                  return;
+             }
+             if (formData.password !== formData.confirmPassword) {
+                 setError('Passwords do not match');
+                 return;
+             }
+         }
+
+         setLoading(true);
+         try {
+            if (step === 1) { 
+                 await apiCall('post', '/auth/forgot-password', { email: formData.email });
+                 setStep(2);
+                 setError(''); 
+            } else {
+                 await apiCall('post', '/auth/reset-password', { email: formData.email, otp: formData.otp, password: formData.password });
+                 alert('Password reset successfully!');
+                 setActiveTab('login');
+                 setStep(1);
+            }
+         } catch(err) {
+             setError(err.response?.data?.message || 'Operation failed');
+         } finally {
+             setLoading(false);
+         }
     }
   };
+
 
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
         setLoading(true);
-        const res = await axios.post('http://localhost:5001/api/auth/google', {
+        const res = await apiCall('post', '/auth/google', {
             token: credentialResponse.credential
         });
         
@@ -184,7 +207,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                   <div className="hidden md:flex md:w-5/12 bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0f172a] text-white p-8 flex-col relative overflow-hidden">
                      {/* Decorative Elements */}
                      <div className="absolute top-0 left-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2"></div>
-                     <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-[80px] translate-x-1/2 translate-y-1/2"></div>
+                     <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-[80px] translate-x-1/2 -translate-y-1/2"></div>
                      {/* Mesh */}
                      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
 
@@ -220,13 +243,13 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                 <div className="flex bg-gray-200/80 p-1 rounded-xl mb-6 self-start w-full sm:w-auto">
                     <button 
                         className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'signup' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-                        onClick={() => setActiveTab('signup')}
+                        onClick={() => {setActiveTab('signup'); setError(''); setStep(1);}}
                     >
                         Sign Up
                     </button>
                     <button 
                         className={`flex-1 sm:flex-none px-6 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === 'login' ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
-                        onClick={() => setActiveTab('login')}
+                        onClick={() => {setActiveTab('login'); setError(''); setStep(1);}}
                     >
                         Login
                     </button>
@@ -327,7 +350,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
 
                              <button 
                                 type="button"
-                                onClick={() => setActiveTab('login')}
+                                onClick={() => {setActiveTab('login'); setError(''); setStep(1);}}
                                 className="w-full text-sm text-gray-500 hover:text-gray-800 font-medium py-2"
                              >
                                 Back to Login
@@ -336,128 +359,158 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                         ) : (
                         <>
                         {activeTab === 'signup' && (
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
-                                <div className="relative group">
-                                    <FaUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                    <input 
-                                        type="text" 
-                                        placeholder="John Doe" 
-                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
-                                        value={formData.name}
-                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                        required
-                                    />
-                                </div>
-                            </div>
+                             <>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                                                <div className="relative group">
+                                                    <FaUser className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="John Doe" 
+                                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                        value={formData.name}
+                                                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                             <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile</label>
+                                                <div className="relative group">
+                                                    <FaPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                    <input 
+                                                        type="tel" 
+                                                        placeholder="+91 98765 43210" 
+                                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                        value={formData.mobile}
+                                                        onChange={(e) => setFormData({...formData, mobile: e.target.value})}
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email</label>
+                                            <div className="relative group">
+                                                <FaEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                <input 
+                                                    type="email" 
+                                                    placeholder="john@example.com" 
+                                                    className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                    value={formData.email}
+                                                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="space-y-1">
+                                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Password</label>
+                                            <div className="relative group">
+                                                <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                <input 
+                                                    type="password" 
+                                                    placeholder="••••••••" 
+                                                    className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                    value={formData.password}
+                                                    onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Studying In</label>
+                                                <div className="relative group">
+                                                    <FaGraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                    <select 
+                                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-700 appearance-none"
+                                                        value={formData.currentClass}
+                                                        onChange={(e) => setFormData({...formData, currentClass: e.target.value})}
+                                                    >
+                                                        <option value="">Select Class</option>
+                                                        <option value="Class 12th">Class 12th</option>
+                                                        <option value="Class 11th">Class 11th</option>
+                                                        <option value="Dropper">Dropper</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">City</label>
+                                                <div className="relative group">
+                                                    <FaMapMarkerAlt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                                    <input 
+                                                        type="text" 
+                                                        placeholder="Mumbai" 
+                                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                                        value={formData.city}
+                                                        onChange={(e) => setFormData({...formData, city: e.target.value})}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-start gap-2 mt-2">
+                                            <input 
+                                                type="checkbox" 
+                                                id="agree" 
+                                                className="mt-1 w-4 h-4 text-brand-blue border-gray-300 rounded focus:ring-brand-blue cursor-pointer"
+                                                checked={formData.agree}
+                                                onChange={(e) => setFormData({...formData, agree: e.target.checked})}
+                                            />
+                                            <label htmlFor="agree" className="text-xs text-gray-500 leading-tight cursor-pointer">
+                                                I agree to <span className="text-brand-blue font-bold">Privacy Policy</span> & <span className="text-brand-blue font-bold">Terms</span>.
+                                            </label>
+                                        </div>
+                             </>
                         )}
 
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email</label>
-                            <div className="relative group">
-                                <FaEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                <input 
-                                    type="email" 
-                                    placeholder="john@example.com" 
-                                    className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
-                                    value={formData.email}
-                                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        {activeTab === 'signup' && (
-                            <div className="space-y-1">
-                                <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Mobile</label>
-                                <div className="relative group">
-                                    <FaPhone className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                    <input 
-                                        type="tel" 
-                                        placeholder="+91 98765 43210" 
-                                        className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
-                                        value={formData.mobile}
-                                        onChange={(e) => setFormData({...formData, mobile: e.target.value})}
-                                        required
-                                    />
+                        {activeTab === 'login' && (
+                            <>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Email</label>
+                                    <div className="relative group">
+                                        <FaEnvelope className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                        <input 
+                                            type="email" 
+                                            placeholder="john@example.com" 
+                                            className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                            required
+                                        />
+                                    </div>
                                 </div>
-                            </div>
+                                <div className="space-y-1">
+                                    <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Password</label>
+                                    <div className="relative group">
+                                        <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
+                                        <input 
+                                            type="password" 
+                                            placeholder="••••••••" 
+                                            className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
+                                            value={formData.password}
+                                            onChange={(e) => setFormData({...formData, password: e.target.value})}
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                            </>
                         )}
-
-                        <div className="space-y-1">
-                            <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Password</label>
-                            <div className="relative group">
-                                <FaLock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                <input 
-                                    type="password" 
-                                    placeholder="••••••••" 
-                                    className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
-                                    value={formData.password}
-                                    onChange={(e) => setFormData({...formData, password: e.target.value})}
-                                    required
-                                />
-                            </div>
-                        </div>
                         
                         {activeTab === 'login' && (
-                            <div className="flex justify-end">
+                             <div className="flex justify-end">
                                 <button 
                                     type="button"
-                                    onClick={() => setActiveTab('forgotPassword')}
+                                    onClick={() => {setActiveTab('forgotPassword'); setError(''); setStep(1);}}
                                     className="text-xs font-semibold text-brand-blue hover:text-brand-blue-dark transition-colors"
                                 >
                                     Forgot Password?
                                 </button>
                             </div>
-                        )}
-
-                        {activeTab === 'signup' && (
-                            <>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">Studying In</label>
-                                        <div className="relative group">
-                                            <FaGraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                            <select 
-                                                className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-700 appearance-none"
-                                                value={formData.currentClass}
-                                                onChange={(e) => setFormData({...formData, currentClass: e.target.value})}
-                                            >
-                                                <option value="">Select Class</option>
-                                                <option value="Class 12th">Class 12th</option>
-                                                <option value="Class 11th">Class 11th</option>
-                                                <option value="Dropper">Dropper</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="space-y-1">
-                                        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">City</label>
-                                        <div className="relative group">
-                                            <FaMapMarkerAlt className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-                                            <input 
-                                                type="text" 
-                                                placeholder="Mumbai" 
-                                                className="w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400"
-                                                value={formData.city}
-                                                onChange={(e) => setFormData({...formData, city: e.target.value})}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-start gap-2 mt-2">
-                                    <input 
-                                        type="checkbox" 
-                                        id="agree" 
-                                        className="mt-1 w-4 h-4 text-brand-blue border-gray-300 rounded focus:ring-brand-blue cursor-pointer"
-                                        checked={formData.agree}
-                                        onChange={(e) => setFormData({...formData, agree: e.target.checked})}
-                                    />
-                                    <label htmlFor="agree" className="text-xs text-gray-500 leading-tight cursor-pointer">
-                                        I agree to <span className="text-brand-blue font-bold">Privacy Policy</span> & <span className="text-brand-blue font-bold">Terms</span>.
-                                    </label>
-                                </div>
-                            </>
                         )}
                         
                         {error && (
@@ -475,7 +528,8 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    {activeTab === 'signup' ? 'Create Account' : 'Login'} <FaArrowRight className="text-xs" />
+                                    {activeTab === 'signup' ? 'Create Account' : 'Login'} 
+                                    <FaArrowRight className="text-xs" />
                                 </>
                             )}
                         </button>

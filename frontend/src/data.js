@@ -1,12 +1,33 @@
 import {
   FaUniversity, FaBookOpen, FaLaptopCode, FaStethoscope,
   FaBalanceScale, FaChartLine, FaDraftingCompass, FaGlobeAmericas,
-  FaListUl, FaRegComments
+  FaListUl, FaRegComments, FaConciergeBell, FaBroadcastTower,
+  FaCalculator, FaAtom, FaPalette, FaChalkboardTeacher, FaDesktop
 } from 'react-icons/fa';
 
-/**
- * Main Data File
- */
+// ... (existing code)
+
+export const examCategories = [
+  { id: 1, title: 'Engineering', subtext: 'JEE Main, GATE', icon: FaLaptopCode, color: '#4CAF50' },
+  { id: 2, title: 'Medical', subtext: 'NEET, AIIMS', icon: FaStethoscope, color: '#2196F3' },
+  { id: 3, title: 'MBA', subtext: 'CAT, XAT, MAT', icon: FaChartLine, color: '#FF9800' },
+  { id: 4, title: 'Law', subtext: 'CLAT, AILET', icon: FaBalanceScale, color: '#9C27B0', link: '/law' },
+  { id: 5, title: 'Pharmacy', subtext: 'GPAT, NIPER', icon: FaBookOpen, color: '#f44336', link: '/pharmacy' },
+  { id: 6, title: 'Universities', subtext: 'CUET, DUET', icon: FaUniversity, color: '#607D8B' },
+  { id: 7, title: 'Design', subtext: 'NIFT, NID', icon: FaDraftingCompass, color: '#E91E63' },
+  { id: 8, title: 'Study Abroad', subtext: 'GRE, GMAT', icon: FaGlobeAmericas, color: '#3F51B5' },
+];
+
+export const allExamCategories = [
+  ...examCategories,
+  { id: 9, title: 'Hospitality', subtext: 'NCHMCT JEE', icon: FaConciergeBell, color: '#FF5722' },
+  { id: 10, title: 'Media', subtext: 'IIMC, JMI', icon: FaBroadcastTower, color: '#795548' },
+  { id: 11, title: 'Commerce', subtext: 'CA, CS, CMA', icon: FaCalculator, color: '#607D8B' },
+  { id: 12, title: 'Science', subtext: 'CUET, NEST', icon: FaAtom, color: '#00BCD4' },
+  { id: 13, title: 'Arts', subtext: 'Humanities', icon: FaPalette, color: '#FFEB3B' },
+  { id: 14, title: 'Education', subtext: 'B.Ed, TET', icon: FaChalkboardTeacher, color: '#8BC34A' },
+  { id: 15, title: 'Computer App', subtext: 'BCA, MCA', icon: FaDesktop, color: '#3F51B5' },
+];
 
 export const collegesData = [
   {
@@ -182,6 +203,7 @@ export const browseByStreamData = [
   {
     id: 'engineering',
     label: 'Engineering and Architecture',
+    link: '/engineering',
     titles: {
       col1: 'Exams',
       col2: 'Colleges',
@@ -234,6 +256,7 @@ export const browseByStreamData = [
   {
     id: 'management',
     label: 'Management and Business Administration',
+    link: '/management',
     titles: {
       col1: 'Exams',
       col2: 'Colleges & Courses',
@@ -286,6 +309,7 @@ export const browseByStreamData = [
   {
     id: 'medical',
     label: 'Medicine and Allied Sciences',
+    link: '/medicine',
     titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' },
     content: {
       exams: [
@@ -1307,16 +1331,7 @@ export const heroTabs = [
   { id: 'reviews', label: 'Reviews' },
 ];
 
-export const examCategories = [
-  { id: 1, title: 'Engineering', subtext: 'JEE Main, GATE', icon: FaLaptopCode, color: '#4CAF50' },
-  { id: 2, title: 'Medical', subtext: 'NEET, AIIMS', icon: FaStethoscope, color: '#2196F3' },
-  { id: 3, title: 'MBA', subtext: 'CAT, XAT, MAT', icon: FaChartLine, color: '#FF9800' },
-  { id: 4, title: 'Law', subtext: 'CLAT, AILET', icon: FaBalanceScale, color: '#9C27B0', link: '/law' },
-  { id: 5, title: 'Pharmacy', subtext: 'GPAT, NIPER', icon: FaBookOpen, color: '#f44336', link: '/pharmacy' },
-  { id: 6, title: 'Universities', subtext: 'CUET, DUET', icon: FaUniversity, color: '#607D8B' },
-  { id: 7, title: 'Design', subtext: 'NIFT, NID', icon: FaDraftingCompass, color: '#E91E63' },
-  { id: 8, title: 'Study Abroad', subtext: 'GRE, GMAT', icon: FaGlobeAmericas, color: '#3F51B5' },
-];
+
 
 export const latestNews = [
   "JEE Main 2026 Admit Card Released: Available at jeemain.nta.nic.in",

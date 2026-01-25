@@ -3,7 +3,7 @@ import { FaStar, FaMapMarkerAlt, FaLocationArrow, FaArrowRight, FaDownload, FaPa
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const Section = ({ title, items, type = 'card' }) => {
+const Section = ({ title, items, type = 'card', viewAllLink }) => {
   return (
     <section className="py-16 relative">
        {/* Decorative subtle background for sections */}
@@ -17,7 +17,7 @@ const Section = ({ title, items, type = 'card' }) => {
              <div className="h-8 w-1 bg-brand-orange rounded-full"></div>
              <h2 className="text-2xl md:text-3xl font-heading font-bold text-gray-900">{title}</h2>
           </div>
-          <Link to={title.includes('Colleges') ? '/colleges' : '#'} className="flex items-center gap-2 text-sm font-bold text-brand-indigo hover:text-brand-orange transition-colors group">
+          <Link to={viewAllLink || (title.includes('Colleges') ? '/colleges' : '#')} className="flex items-center gap-2 text-sm font-bold text-brand-indigo hover:text-brand-orange transition-colors group">
             View All <span className="w-6 h-6 rounded-full bg-indigo-50 flex items-center justify-center group-hover:bg-brand-orange group-hover:text-white transition-all"><FaArrowRight className="text-xs" /></span>
           </Link>
         </div>

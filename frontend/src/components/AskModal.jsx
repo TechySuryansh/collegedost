@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaQuestionCircle, FaPaperPlane, FaSpinner, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 
 const AskModal = ({ isOpen, onClose }) => {
@@ -23,21 +23,13 @@ const AskModal = ({ isOpen, onClose }) => {
     setStatus({ type: '', message: '' });
 
     try {
-      // Get token for auth header
-      const token = localStorage.getItem('token');
-      const config = {
-           headers: {
-               Authorization: `Bearer ${token}`
-           }
-      };
-
       const payload = {
           question,
           userEmail: user?.email,
           userName: user?.name
       };
       
-      const res = await axios.post('http://localhost:5001/api/ask/question', payload, config);
+      const res = await api.post('/ask/question', payload);
       
       if (res.data.success) {
           setStatus({ type: 'success', message: 'Question sent successfully!' });

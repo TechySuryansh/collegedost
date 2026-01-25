@@ -8,8 +8,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Lazy load pages for performance
 const HomePage = lazy(() => import('./pages/HomePage'));
+const EngineeringPage = lazy(() => import('./pages/EngineeringPage'));
 const PharmacyPage = lazy(() => import('./pages/PharmacyPage'));
 const LawPage = lazy(() => import('./pages/LawPage'));
+const ManagementPage = lazy(() => import('./pages/ManagementPage'));
+const MedicinePage = lazy(() => import('./pages/MedicinePage'));
 const JEEMainPredictor = lazy(() => import('./pages/JEEMainPredictor'));
 const JEEMainRankPredictor = lazy(() => import('./pages/JEEMainRankPredictor'));
 const InternationalColleges = lazy(() => import('./pages/InternationalColleges'));
@@ -31,6 +34,7 @@ const AdminColleges = lazy(() => import('./pages/admin/AdminColleges'));
 const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AddCollege = lazy(() => import('./pages/admin/AddCollege'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
+const AllCategoriesPage = lazy(() => import('./pages/AllCategoriesPage'));
 
 
 import { HelmetProvider } from 'react-helmet-async';
@@ -63,8 +67,11 @@ function App() {
           <Suspense fallback={<LoadingFallback />}>
             <Routes>
               <Route path="/" element={<HomePage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/engineering" element={<EngineeringPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
               <Route path="/pharmacy" element={<PharmacyPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
               <Route path="/law" element={<LawPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/management" element={<ManagementPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/medicine" element={<MedicinePage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
               <Route path="/jee-main-predictor" element={<JEEMainPredictor onOpenAuthModal={openAuthModal} />} />
               <Route path="/jee-main-rank-predictor" element={<JEEMainRankPredictor onOpenAuthModal={openAuthModal} />} />
               <Route path="/international-colleges" element={<InternationalColleges />} />
@@ -93,6 +100,7 @@ function App() {
 
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+              <Route path="/categories" element={<AllCategoriesPage />} />
             </Routes>
           </Suspense>
 

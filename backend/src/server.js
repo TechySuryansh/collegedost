@@ -24,7 +24,26 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+
+const whitelist = [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'].filter(Boolean);
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || whitelist.indexOf(origin) !== -1 || origin.startsWith('http://localhost:')) {
+            callback(null, true);
+        } else {
+            console.log("CORS Blocked:", origin);
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+};
+app.use(cors(corsOptions));
+
+// Root Route
+app.get('/', (req, res) => {
+    res.send('API is running...');
+});
 
 // Import Routes
 const predictorRoutes = require('./routes/predictor.routes');
@@ -39,6 +58,7 @@ app.use('/api/colleges', require('./routes/college.routes'));
 app.use('/api/courses', require('./routes/course.routes'));
 app.use('/api/articles', require('./routes/article.routes'));
 app.use('/api/ask', require('./routes/ask.routes'));
+app.use('/api/verification', require('./routes/verification.routes'));
 
 const PORT = process.env.PORT || 5000;
 

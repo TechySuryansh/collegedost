@@ -10,17 +10,27 @@ const generateToken = (id) => {
 // @desc    Register user
 // @route   POST /api/auth/register
 // @access  Public
+// @desc    Register user
+// @route   POST /api/auth/register
+// @access  Public
 exports.register = async (req, res) => {
     try {
         const { name, email, mobile, password, currentClass, interest, city } = req.body;
 
-        // Check if user exists
+        // Verification skipped as per requirement
+
+        // 3. Check if user exists (Redundant if 'send-otp' checks it, but safe to keep)
         const userExists = await User.findOne({ mobile });
         if (userExists) {
             return res.status(400).json({ success: false, message: 'User already exists with this mobile number' });
         }
 
-        // Create user
+        const emailExists = await User.findOne({ email });
+        if (emailExists) {
+            return res.status(400).json({ success: false, message: 'Email already exists' });
+        }
+
+        // 4. Create user
         const user = await User.create({
             name,
             email,
@@ -28,7 +38,8 @@ exports.register = async (req, res) => {
             password,
             currentClass,
             interest,
-            city
+            city,
+            isVerified: true // Explicitly set as they passed verification
         });
 
         if (user) {

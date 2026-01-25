@@ -9,7 +9,7 @@ import PillSection from '../components/PillSection';
 import PredictorsSection from '../components/PredictorsSection';
 import Testimonials from '../components/Testimonials';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import SEO from '../components/SEO';
 
 import { 
@@ -32,7 +32,7 @@ const HomePage = ({ onOpenAskModal }) => {
      const fetchData = async () => {
          try {
              // Fetch Colleges
-             const collegesRes = await axios.get('http://localhost:5000/api/colleges');
+             const collegesRes = await api.get('/colleges');
              if (collegesRes.data.success && collegesRes.data.data.length > 0) {
                  // Map to required format
                  const mappedColleges = collegesRes.data.data.slice(0, 8).map(col => ({
@@ -50,7 +50,7 @@ const HomePage = ({ onOpenAskModal }) => {
              }
 
              // Fetch News
-             const newsRes = await axios.get('http://localhost:5000/api/articles');
+             const newsRes = await api.get('/articles');
              if (newsRes.data.success) {
                  setNews(newsRes.data.data);
              }
@@ -100,6 +100,7 @@ const HomePage = ({ onOpenAskModal }) => {
             title="Explore by Category" 
             items={examCategories} 
             type="category" 
+            viewAllLink="/categories"
           />
         </motion.div>
         
