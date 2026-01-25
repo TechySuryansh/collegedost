@@ -14,7 +14,7 @@ const NewsPage = () => {
 
     const fetchArticles = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/articles');
+            const res = await axios.get('http://localhost:5001/api/articles');
             if (res.data.success && Array.isArray(res.data.data)) {
                 setArticles(res.data.data);
             } else {

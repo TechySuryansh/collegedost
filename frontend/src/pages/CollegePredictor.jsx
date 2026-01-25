@@ -23,7 +23,7 @@ const CollegePredictor = () => {
         setSearched(true);
         try {
             const params = new URLSearchParams(formData);
-            const res = await axios.get(`http://localhost:5000/api/colleges/predict?${params.toString()}`);
+            const res = await axios.get(`http://localhost:5001/api/colleges/predict?${params.toString()}`);
             if (res.data.success) {
                 setResults(res.data.data);
             }

@@ -41,7 +41,7 @@ const AddCollege = () => {
                 images: formData.images ? [formData.images] : [] // quick hack for single image input
             };
             
-            await axios.post('http://localhost:5000/api/colleges', payload, {
+            await axios.post('http://localhost:5001/api/colleges', payload, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             alert('College added successfully');

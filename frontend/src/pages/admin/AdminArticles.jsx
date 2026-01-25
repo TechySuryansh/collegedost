@@ -15,7 +15,7 @@ const AdminArticles = () => {
 
     const fetchArticles = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/articles');
+            const res = await axios.get('http://localhost:5001/api/articles');
             if (res.data.success) {
                 setArticles(res.data.data);
             }
@@ -31,7 +31,7 @@ const AdminArticles = () => {
             try {
                 const token = localStorage.getItem('token');
                 // Assuming you have a delete endpoint, if not we need to create it
-                await axios.delete(`http://localhost:5000/api/articles/${slug}`, {
+                await axios.delete(`http://localhost:5001/api/articles/${slug}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setArticles(articles.filter(a => a.slug !== slug));

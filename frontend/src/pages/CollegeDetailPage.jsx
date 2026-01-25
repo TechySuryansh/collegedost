@@ -11,7 +11,7 @@ const CollegeDetailPage = () => {
     useEffect(() => {
         const fetchCollege = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/colleges/${slug}`);
+                const res = await axios.get(`http://localhost:5001/api/colleges/${slug}`);
                 if (res.data.success) {
                     setCollege(res.data.data);
                 }

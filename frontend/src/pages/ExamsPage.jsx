@@ -13,7 +13,7 @@ const ExamsPage = () => {
         const fetchExams = async () => {
              // ... existing fetch logic
             try {
-                const res = await axios.get('http://localhost:5000/api/exams');
+                const res = await axios.get('http://localhost:5001/api/exams');
                 if (res.data.success) {
                     setExams(res.data.data);
                 }

@@ -15,7 +15,7 @@ const AdminColleges = () => {
 
     const fetchColleges = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/colleges');
+            const res = await axios.get('http://localhost:5001/api/colleges');
             if (res.data.success) {
                 setColleges(res.data.data);
             }

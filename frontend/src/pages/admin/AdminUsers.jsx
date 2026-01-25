@@ -16,7 +16,7 @@ const AdminUsers = () => {
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://localhost:5000/api/users', {
+            const res = await axios.get('http://localhost:5001/api/users', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.success) {
@@ -35,7 +35,7 @@ const AdminUsers = () => {
                 // Assuming delete endpoint exists, currently it may not
                  alert("Delete functionality not yet enabled in backend for safety.");
                  // const token = localStorage.getItem('token');
-                 // await axios.delete(`http://localhost:5000/api/users/${id}`, {
+                 // await axios.delete(`http://localhost:5001/api/users/${id}`, {
                  //    headers: { Authorization: `Bearer ${token}` }
                  // });
                  // setUsers(users.filter(u => u._id !== id));

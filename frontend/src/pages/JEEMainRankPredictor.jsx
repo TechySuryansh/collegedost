@@ -70,7 +70,7 @@ const JEEMainRankPredictor = ({ onOpenAuthModal }) => {
 
             console.log('Sending payload:', payload);
 
-            const response = await axios.post('http://localhost:5000/api/predictor/jee-main-rank', payload);
+            const response = await axios.post('http://localhost:5001/api/predictor/jee-main-rank', payload);
             console.log('Response:', response.data);
 
             if (response.data.success) {

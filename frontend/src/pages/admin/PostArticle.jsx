@@ -51,7 +51,7 @@ const PostArticle = () => {
                 tags: formData.tags.split(',').map(t => t.trim()).filter(t => t) // process tags
             };
             
-            await axios.post('http://localhost:5000/api/articles', dataToSubmit, {
+            await axios.post('http://localhost:5001/api/articles', dataToSubmit, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

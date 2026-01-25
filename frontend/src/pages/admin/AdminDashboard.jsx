@@ -18,8 +18,8 @@ const AdminDashboard = () => {
         const fetchStats = async () => {
              try {
                  const [collegesRes, articlesRes] = await Promise.all([
-                     axios.get('http://localhost:5000/api/colleges'),
-                     axios.get('http://localhost:5000/api/articles')
+                     axios.get('http://localhost:5001/api/colleges'),
+                     axios.get('http://localhost:5001/api/articles')
                  ]);
                  
                  setStats({

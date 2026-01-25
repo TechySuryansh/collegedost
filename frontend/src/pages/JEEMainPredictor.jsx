@@ -56,7 +56,7 @@ const JEEMainPredictor = ({ onOpenAuthModal }) => {
         const rank = Math.floor(calculatedRank);
 
         try {
-            const response = await axios.post('http://localhost:5000/api/predictor/jee-main', {
+            const response = await axios.post('http://localhost:5001/api/predictor/jee-main', {
                 rank: rank, // Send calculated rank to backend
                 category,
                 homeState,

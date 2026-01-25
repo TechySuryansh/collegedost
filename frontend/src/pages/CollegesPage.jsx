@@ -31,7 +31,7 @@ const CollegesPage = () => {
             if(filters.type) params.append('type', filters.type);
             if(filters.exam) params.append('exam', filters.exam);
 
-            const res = await axios.get(`http://localhost:5000/api/colleges?${params.toString()}`);
+            const res = await axios.get(`http://localhost:5001/api/colleges?${params.toString()}`);
             if (res.data.success) {
                 setColleges(res.data.data);
             }

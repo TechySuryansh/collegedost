@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { navLinks, browseByStreamData, testPrepData, collegesData, examsData, coursesData, predictorsData, rankingsData, counsellingData, careersData, moreData } from '../data';
-import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt, FaBookOpen, FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaArrowLeft, FaTimes, FaGraduationCap, FaTrophy, FaBriefcase, FaEllipsisH, FaComments, FaHome, FaCompass } from 'react-icons/fa';
+import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt, FaBookOpen, FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaArrowLeft, FaTimes, FaGraduationCap, FaTrophy, FaBriefcase, FaEllipsisH, FaComments, FaHome, FaCompass, FaChartLine, FaStethoscope, FaLaptopCode, FaBalanceScale, FaPalette, FaMicrophone, FaCoins, FaDesktop, FaFlask, FaPlane, FaSchool, FaGlobeAmericas, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -13,6 +13,8 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
   const isAdminMode = location.pathname.startsWith('/admin');
   const [scrolled, setScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
+  const [expandedCategory, setExpandedCategory] = useState(null); // Mobile Accordion State (Level 2)
+  const [expandedSection, setExpandedSection] = useState(null); // Mobile Main Section State (Level 1)
   const [activeStream, setActiveStream] = useState('engineering'); // Default active stream
   const [activeTestPrepStream, setActiveTestPrepStream] = useState('engineering-prep');
   const [activeCollegeStream, setActiveCollegeStream] = useState('top-colleges');
@@ -1121,117 +1123,179 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
           </ul>
         </div>
       </div>
-      {/* Mobile Menu Drawer */}
+      {/* Mobile Menu Sidebar (Careers360 Style) */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <>
-            {/* Backdrop */}
+            {/* Dark Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 z-[60] lg:hidden"
+              className="fixed inset-0 bg-black/60 z-[999] lg:hidden"
               onClick={() => setIsMobileMenuOpen(false)}
             />
 
-            {/* Drawer */}
+            {/* Sidebar Container */}
             <motion.div
               initial={{ x: '-100%' }}
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed top-0 left-0 h-full w-[70vw] z-[200] shadow-2xl overflow-hidden lg:hidden"
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="fixed top-0 left-0 h-screen w-[85%] max-w-[400px] bg-white z-[1000] overflow-y-auto lg:hidden shadow-2xl flex flex-col"
             >
-              <div className="h-full w-full bg-white overflow-y-auto">
-              <div className="p-4 pl-6 flex items-center justify-between sticky top-0 bg-white z-10 transition-all border-b border-gray-100">
-                 <div className="flex items-center gap-1">
+              
+              {/* 1. Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-100 sticky top-0 bg-white z-10">
+                 <div className="flex items-center gap-2">
                     <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-brand-orange text-white font-bold text-xs shadow-md shadow-orange-500/20">
                         CD
                     </div>
-                    <span className="font-heading font-bold text-lg text-gray-900 tracking-tight ml-2">Collegedost</span>
+                    <span className="font-heading font-bold text-xl text-gray-800 tracking-tight">CollegeDost</span>
                  </div>
-                 <button
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                 <button 
+                   onClick={() => setIsMobileMenuOpen(false)}
+                   className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
                  >
-                    <FaTimes />
+                   <FaTimes className="text-lg" />
                  </button>
               </div>
 
-              <div className="py-2 px-3">
-                 {/* Main Navigation */}
-                 <ul className="space-y-1">
-                    <li>
-                       <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-900 transition-colors font-medium">
-                          <FaHome className="text-xl min-w-[24px] text-gray-400" />
-                          <span className="text-[14px]">Home</span>
-                       </Link>
-                    </li>
-                    
-                    {navLinks.map((link, index) => {
-                       const Icon = {
-                          'Browse by Stream': FaCompass,
-                          'Test Prep': FaBookOpen,
-                          'Colleges': FaUniversity,
-                          'Exams': FaNewspaper,
-                          'Courses': FaGraduationCap,
-                          'Rankings': FaTrophy,
-                          'Predictors': FaChartPie,
-                          'Counselling': FaComments,
-                          'Careers': FaBriefcase,
-                          'More': FaEllipsisH
-                       }[link.title] || FaTh;
+              <div className="p-4 space-y-6 pb-20">
+                
+                
 
-                       return (
-                        <li key={index}>
-                          <a
-                            href={link.href}
-                            className="flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors group font-medium"
-                            onClick={() => !link.hasDropdown && setIsMobileMenuOpen(false)}
-                          >
-                            <Icon className="text-lg min-w-[24px] text-gray-400 group-hover:text-brand-orange transition-colors" />
-                            <span className="text-[14px] flex-1">{link.title}</span>
-                          </a>
-                        </li>
-                       );
-                    })}
-                 </ul>
 
-                 <div className="my-4 border-t border-gray-100 mx-3"></div>
+                {/* 3. Categories List */}
+                <div>
+                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">Browse Categories</h4>
+                   <div className="flex flex-col pb-24">
+                      {[
+                        { name: 'Browse by Stream', data: browseByStreamData, icon: FaTh },
+                        { name: 'Test Prep', data: testPrepData, icon: FaLaptopCode },
+                        { name: 'Colleges', data: collegesData, icon: FaUniversity },
+                        { name: 'Exams', data: examsData, icon: FaNewspaper },
+                        { name: 'Courses', data: coursesData, icon: FaBookOpen },
+                        { name: 'News', link: '/news', icon: FaNewspaper },
+                        { name: 'Rankings', data: rankingsData, icon: FaTrophy },
+                        { name: 'International', link: '/international-colleges', icon: FaGlobeAmericas },
+                        { name: 'Counselling', data: counsellingData, icon: FaUserShield },
+                        { name: 'Careers', data: careersData, icon: FaBriefcase },
+                        { name: 'More', data: moreData, icon: FaEllipsisH },
+                      ].map((section, idx) => {
+                         const isSectionExpanded = expandedSection === section.name;
+                         
+                         return (
+                            <div key={idx} className="border-b border-gray-50 last:border-0">
+                                {/* Level 1: Main Section */}
+                                {section.data ? (
+                                    <button 
+                                       onClick={() => setExpandedSection(isSectionExpanded ? null : section.name)}
+                                       className={`w-full flex items-center justify-between py-4 px-4 hover:bg-gray-50 transition-colors ${isSectionExpanded ? 'bg-orange-50/50' : ''}`}
+                                    >
+                                       <div className="flex items-center gap-3">
+                                           <span className={`text-lg transition-colors ${isSectionExpanded ? 'text-brand-orange' : 'text-gray-400'}`}><section.icon /></span>
+                                           <span className={`font-bold text-sm ${isSectionExpanded ? 'text-brand-orange' : 'text-gray-700'}`}>{section.name}</span>
+                                       </div>
+                                       {isSectionExpanded ? <FaChevronDown className="text-brand-orange text-xs" /> : <FaChevronRight className="text-gray-300 text-xs" />}
+                                    </button>
+                                ) : (
+                                    <Link to={section.link} onClick={() => setIsMobileMenuOpen(false)} className="w-full flex items-center justify-between py-4 px-4 hover:bg-gray-50 transition-colors">
+                                        <div className="flex items-center gap-3">
+                                           <span className="text-gray-400 text-lg"><section.icon /></span>
+                                           <span className="font-bold text-sm text-gray-700">{section.name}</span>
+                                        </div>
+                                    </Link>
+                                )}
 
-                 <div className="px-3 py-2">
-                    <h3 className="text-[14px] font-bold text-gray-400 mb-2 px-3 uppercase tracking-wider text-[11px]">You</h3>
-                    <ul className="space-y-1">
-                        <li>
-                           <button onClick={() => { onOpenAskModal(); setIsMobileMenuOpen(false); }} className="w-full flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors font-medium">
-                              <FaQuestion className="text-xl min-w-[24px] text-gray-400" />
-                              <span className="text-[14px]">Ask Question</span>
-                           </button>
-                        </li>
-                        <li>
-                           <button onClick={() => { onOpenShareModal(); setIsMobileMenuOpen(false); }} className="w-full flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors font-medium">
-                              <FaShareAlt className="text-xl min-w-[24px] text-gray-400" />
-                              <span className="text-[14px]">Share App</span>
-                           </button>
-                        </li>
-                        {user ? (
-                           <li>
-                              <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="w-full flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors font-medium">
-                                 <FaUser className="text-xl min-w-[24px] text-gray-400" />
-                                 <span className="text-[14px]">Profile</span>
-                              </Link>
-                           </li>
-                        ) : (
-                           <li>
-                              <button onClick={() => { onOpenAuthModal(); setIsMobileMenuOpen(false); }} className="w-full flex items-center gap-5 px-3 py-3 rounded-lg hover:bg-gray-50 text-gray-700 hover:text-gray-900 transition-colors font-medium">
-                                 <FaUser className="text-xl min-w-[24px] text-gray-400" />
-                                 <span className="text-[14px]">Login</span>
-                              </button>
-                           </li>
-                        )}
-                    </ul>
-                 </div>
-              </div>
+                                {/* Level 2: Sub Items (Accordion) */}
+                                <AnimatePresence>
+                                    {isSectionExpanded && section.data && (
+                                       <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden bg-gray-50">
+                                           {section.data.map((subItem, subIdx) => {
+                                                if (!subItem.label) return null;
+                                                const isCategoryExpanded = expandedCategory === subItem.label;
+                                                
+                                                return (
+                                                    <div key={subIdx} className="border-t border-gray-100">
+                                                        <button 
+                                                           onClick={() => setExpandedCategory(isCategoryExpanded ? null : subItem.label)}
+                                                           className="w-full flex items-center justify-between py-3 px-8 hover:bg-gray-100 transition-colors"
+                                                        >
+                                                            <span className={`text-sm ${isCategoryExpanded ? 'text-brand-orange font-medium' : 'text-gray-600'}`}>{subItem.label}</span>
+                                                            {isCategoryExpanded ? <FaChevronDown className="text-[10px] text-brand-orange" /> : <FaChevronRight className="text-[10px] text-gray-300" />}
+                                                        </button>
+                                                        
+                                                        {/* Level 3: Details */}
+                                                        <AnimatePresence>
+                                                            {isCategoryExpanded && (
+                                                                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden bg-white/80 pl-4 border-l-2 border-orange-200 ml-8 my-1">
+                                                                    <div className="p-3 space-y-4">
+                                                                        {subItem.titles && Object.entries(subItem.titles).map(([key, title]) => {
+                                                                            let contentKey = '';
+                                                                            if (key === 'col1') contentKey = 'exams'; 
+                                                                            else if (key === 'col2') contentKey = 'colleges';
+                                                                            else if (key === 'col3_1') contentKey = 'predictors';
+                                                                            else if (key === 'col3_2') contentKey = 'resources';
+                                                                            
+                                                                            const items = subItem.content?.[contentKey];
+                                                                            if (!items || items.length === 0) return null;
+                                                                            
+                                                                            return (
+                                                                                <div key={key}>
+                                                                                    <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2">{title}</h6>
+                                                                                    <ul className="space-y-2">
+                                                                                        {items.slice(0, 5).map((l, i) => (
+                                                                                            <li key={i}>
+                                                                                                <Link 
+                                                                                                    to={l.href || '#'} 
+                                                                                                    onClick={() => setIsMobileMenuOpen(false)}
+                                                                                                    className={`text-[13px] block hover:text-brand-orange transition-colors ${l.isLink ? 'text-brand-orange font-bold' : 'text-gray-600'}`}
+                                                                                                >
+                                                                                                    {l.title}
+                                                                                                </Link>
+                                                                                            </li>
+                                                                                        ))}
+                                                                                    </ul>
+                                                                                </div>
+                                                                            )
+                                                                        })}
+                                                                    </div>
+                                                                </motion.div>
+                                                            )}
+                                                        </AnimatePresence>
+                                                    </div>
+                                                );
+                                           })}
+                                       </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                         );
+                      })}
+                   </div>
+                </div>
+                
+                {/* 4. Bottom User Section */}
+                <div className="pt-4">
+                    <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">You</h4>
+                    {user ? (
+                        <Link to="/profile" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 px-2 py-3 bg-gray-50 rounded-lg">
+                            <div className="w-10 h-10 rounded-full bg-brand-orange text-white flex items-center justify-center font-bold">
+                                {user.name?.[0] || 'U'}
+                            </div>
+                            <div className="flex flex-col">
+                                <span className="font-bold text-gray-800 text-sm">{user.name}</span>
+                                <span className="text-xs text-gray-500">View Profile</span>
+                            </div>
+                        </Link>
+                    ) : (
+                        <button onClick={() => { onOpenAuthModal(); setIsMobileMenuOpen(false); }} className="w-full flex items-center justify-center gap-2 bg-brand-orange text-white py-3 rounded-lg font-bold shadow-lg shadow-orange-500/30 active:scale-95 transition-transform">
+                             <FaUser /> Login / Register
+                        </button>
+                    )}
+                </div>
+
               </div>
             </motion.div>
           </>
@@ -1244,3 +1308,4 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
 
 
 export default Navbar;
+// HMR Trigger

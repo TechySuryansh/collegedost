@@ -12,7 +12,7 @@ const NewsDetailPage = () => {
     useEffect(() => {
         const fetchArticle = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/articles/${slug}`);
+                const res = await axios.get(`http://localhost:5001/api/articles/${slug}`);
                 if (res.data.success) {
                     setArticle(res.data.data);
                 }

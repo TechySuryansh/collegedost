@@ -14,7 +14,7 @@ const InternationalColleges = () => {
   const fetchColleges = async () => {
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/predictor/colleges?type=International&limit=${limit}`);
+      const res = await fetch(`http://localhost:5001/api/predictor/colleges?type=International&limit=${limit}`);
       const data = await res.json();
       if (data.success) {
         setColleges(data.data);

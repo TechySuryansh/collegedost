@@ -27,7 +27,7 @@ const ProfilePage = () => {
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            const res = await axios.put('http://localhost:5000/api/users/updatedetails', {
+            const res = await axios.put('http://localhost:5001/api/users/updatedetails', {
                 name,
                 email,
                 currentPassword: currentPasswordForEmail
@@ -60,7 +60,7 @@ const ProfilePage = () => {
             const config = {
                 headers: { Authorization: `Bearer ${token}` }
             };
-            const res = await axios.put('http://localhost:5000/api/users/updatepassword', {
+            const res = await axios.put('http://localhost:5001/api/users/updatepassword', {
                 currentPassword,
                 newPassword
             }, config);
