@@ -24,20 +24,11 @@ const EngineeringPage = ({ onOpenAskModal }) => {
         keywords="Engineering colleges, B.Tech, JEE Main, IIT, NIT, B.Arch, Architecture"
       />
       <Hero 
-        title={
-          <>
-            Build the Future. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600">Study Engineering.</span>
-          </>
-        }
-        subtitle="Explore top Engineering colleges, exams, and admission guidance."
+        title={<><span className="block whitespace-nowrap">Engineering the Impossible.</span> <span className="block mt-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-500 whitespace-nowrap">Designing the Extraordinary.</span></>}
+        subtitle=""
+        showBadge={false}
         bgImage="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=85"
-        trending={[
-          { text: "JEE Main 2025", link: "/exams/jee-main" },
-          { text: "IIT Madras", link: "#" },
-          { text: "Rank Predictor", link: "/jee-main-rank-predictor" },
-          { text: "College Predictor", link: "/jee-main-predictor" }
-        ]}
+        trending={[]}
       />
       
       <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">

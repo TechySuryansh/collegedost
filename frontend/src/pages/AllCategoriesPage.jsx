@@ -12,7 +12,7 @@ const AllCategoriesPage = () => {
   }, []);
 
   return (
-    <div className="pt-24 pb-16 min-h-screen bg-slate-50 relative overflow-hidden">
+    <div className="pt-32 pb-16 min-h-screen bg-slate-50 relative overflow-hidden">
       <SEO 
         title="All Categories" 
         description="Explore all education categories including Engineering, Medical, MBA, Law, and more."

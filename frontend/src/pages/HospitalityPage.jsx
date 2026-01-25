@@ -1,0 +1,61 @@
+import React from 'react';
+import Hero from '../components/Hero';
+import Section from '../components/Section';
+import Counselling from '../components/Counselling';
+import PillSection from '../components/PillSection';
+import PredictorsSection from '../components/PredictorsSection';
+import SEO from '../components/SEO';
+import { browseByStreamData } from '../data';
+
+const HospitalityPage = ({ onOpenAskModal }) => {
+  const data = browseByStreamData.find(d => d.id === 'hospitality');
+
+  if (!data) return <div>Loading...</div>;
+
+  return (
+    <>
+      <SEO 
+        title="Hospitality & Tourism" 
+        description="Find top Hotel Management colleges, NCHMCT JEE info, and hospitality career paths."
+        keywords="Hotel Management, Hospitality, Tourism, NCHMCT JEE, IHM"
+      />
+      <Hero 
+        title={<>Service with a Smile. <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">Leading in Hospitality.</span></>}
+        subtitle="Explore top Hotel Management Institutes, Exams, and Global Career Opportunities."
+        bgImage="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=85"
+        trending={[]}
+        showBadge={false}
+      />
+      
+      <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+        
+        <PillSection title="Hospitality Entrance Exams" items={data.content.exams} color="border-gray-200" />
+        
+        <Section 
+          title="Top Hotel Management Colleges" 
+          items={data.content.colleges} 
+          type="card" 
+        />
+
+        <Counselling items={[]} onOpenAskModal={onOpenAskModal} />
+        
+        <PillSection title="Course Predictors" items={data.content.predictors} color="border-gray-200" />
+
+      </div>
+
+      <div className="bg-gray-50 py-12">
+        <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+             <PredictorsSection 
+              title="Hospitality Courses" 
+              mainTitle="Hotel & Travel Management"
+              subText="Pursue degrees in Hotel Management, Culinary Arts, and Travel & Tourism."
+              data={[]} 
+              illustration="https://img.freepik.com/free-vector/hotel-staff-concept-illustration_114360-12966.jpg"
+            />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default HospitalityPage;

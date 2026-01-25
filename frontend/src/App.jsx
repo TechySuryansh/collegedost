@@ -35,6 +35,16 @@ const AdminUsers = lazy(() => import('./pages/admin/AdminUsers'));
 const AddCollege = lazy(() => import('./pages/admin/AddCollege'));
 const ResetPasswordPage = lazy(() => import('./pages/ResetPasswordPage'));
 const AllCategoriesPage = lazy(() => import('./pages/AllCategoriesPage'));
+const UniversitiesPage = lazy(() => import('./pages/UniversitiesPage'));
+const DesignPage = lazy(() => import('./pages/DesignPage'));
+const HospitalityPage = lazy(() => import('./pages/HospitalityPage'));
+const MediaPage = lazy(() => import('./pages/MediaPage'));
+const CommercePage = lazy(() => import('./pages/CommercePage'));
+const SciencePage = lazy(() => import('./pages/SciencePage'));
+const ArtsPage = lazy(() => import('./pages/ArtsPage'));
+const EducationPage = lazy(() => import('./pages/EducationPage'));
+const ComputerPage = lazy(() => import('./pages/ComputerPage'));
+const StudyAbroadPage = lazy(() => import('./pages/StudyAbroadPage'));
 
 
 import { HelmetProvider } from 'react-helmet-async';
@@ -101,6 +111,16 @@ function App() {
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
               <Route path="/categories" element={<AllCategoriesPage />} />
+              <Route path="/universities" element={<UniversitiesPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/design" element={<DesignPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/hospitality" element={<HospitalityPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/media" element={<MediaPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/commerce" element={<CommercePage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/science" element={<SciencePage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/arts" element={<ArtsPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/education" element={<EducationPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/computer-applications" element={<ComputerPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
+              <Route path="/study-abroad" element={<StudyAbroadPage onOpenAskModal={() => setIsAskModalOpen(true)} />} />
             </Routes>
           </Suspense>
 

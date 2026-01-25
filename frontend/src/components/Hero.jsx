@@ -11,7 +11,8 @@ const Hero = ({
     { text: "NEET UG", link: "/exams/neet-ug" },
     { text: "IIT Bombay", link: "#" },
     { text: "Computer Science", link: "#" }
-  ]
+  ],
+  showBadge = true
 }) => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
@@ -69,16 +70,17 @@ const Hero = ({
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
-          className="max-w-4xl mx-auto"
+          className="max-w-7xl mx-auto"
         >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 shadow-neon">
-                <span className="w-2 h-2 rounded-full bg-brand-mint animate-pulse"></span>
-                <span className="text-xs font-medium tracking-wide text-blue-200 uppercase">Admissions 2026 Open</span>
-            </div>
+            {showBadge && (
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8 shadow-neon">
+                    <span className="w-2 h-2 rounded-full bg-brand-mint animate-pulse"></span>
+                    <span className="text-xs font-medium tracking-wide text-blue-200 uppercase">Admissions 2026 Open</span>
+                </div>
+            )}
 
-            <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight drop-shadow-2xl">
-              Empowering Students.<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 via-white to-brand-cyan">Building Futures.</span>
+            <h1 className="font-heading text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight drop-shadow-2xl">
+              {title}
             </h1>
             
             <p className="text-lg md:text-xl text-blue-100/80 max-w-2xl mx-auto font-light leading-relaxed mb-10">
@@ -122,20 +124,22 @@ const Hero = ({
             </div>
 
             {/* Trending Tags */}
-            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-               <span className="text-sm font-medium text-blue-200/70 mr-2 flex items-center gap-1.5 uppercase tracking-wider text-[10px]"><FaChartLine /> Trending searches:</span> 
-               {trending.map((item, index) => (
-                  <motion.a 
-                    key={index} 
-                    href={item.link} 
-                    whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-4 py-1.5 rounded-full text-xs font-medium text-blue-100 bg-white/5 border border-white/10 hover:border-white/30 transition-all cursor-pointer backdrop-blur-sm shadow-sm"
-                  >
-                    {item.text}
-                  </motion.a>
-               ))}
-            </div>
+            {trending.length > 0 && (
+                <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+                <span className="text-sm font-medium text-blue-200/70 mr-2 flex items-center gap-1.5 uppercase tracking-wider text-[10px]"><FaChartLine /> Trending searches:</span> 
+                {trending.map((item, index) => (
+                    <motion.a 
+                        key={index} 
+                        href={item.link} 
+                        whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 255, 255, 0.15)" }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-4 py-1.5 rounded-full text-xs font-medium text-blue-100 bg-white/5 border border-white/10 hover:border-white/30 transition-all cursor-pointer backdrop-blur-sm shadow-sm"
+                    >
+                        {item.text}
+                    </motion.a>
+                ))}
+                </div>
+            )}
 
         </motion.div>
 
