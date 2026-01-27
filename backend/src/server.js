@@ -34,7 +34,7 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
-app.options('(.*)', cors()); // Enable pre-flight for all routes (Express 5 syntax)
+app.options(/.*/, cors()); // Enable pre-flight for all routes (RegExp avoids Express 5 string parser issues)
 
 // Root Route
 app.get('/', (req, res) => {
