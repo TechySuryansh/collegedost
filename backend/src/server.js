@@ -31,16 +31,20 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow server-to-server / Postman / cron jobs
-      if (!origin) {
-        return callback(null, true);
-      }
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
 
+      // Check against static allowed origins
       if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       }
 
-      // ❗ IMPORTANT: do NOT throw error
+      // Check for Vercel Preview Deployments (Dynamic)
+      // Matches https://<project>-<hash>-<user>.vercel.app
+      if (origin.endsWith('.vercel.app')) {
+          return callback(null, true);
+      }
+
       console.warn(`🚫 CORS blocked for origin: ${origin}`);
       return callback(null, false);
     },
