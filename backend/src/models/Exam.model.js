@@ -59,7 +59,22 @@ const examSchema = new mongoose.Schema({
   logoUrl: {
       type: String,
       default: 'https://via.placeholder.com/150'
-  }
+  },
+  rssFeedUrl: {
+      type: String,
+      trim: true
+  },
+  registrationLink: {
+      type: String,
+      trim: true
+  },
+  news: [{
+      title: String,
+      link: String,
+      pubDate: Date,
+      contentSnippet: String,
+      guid: { type: String, unique: false } // guid might not be unique across ALL exams, so loosen constraint or just store
+  }]
 }, {
   timestamps: true
 });

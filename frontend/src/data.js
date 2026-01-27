@@ -238,23 +238,23 @@ export const browseByStreamData = [
     content: {
       exams: [
         { title: 'JEE Main Exam', href: '/exams/jee-main' },
-        { title: 'BITSAT Exam', href: '#' },
-        { title: 'JEE Advanced Exam', href: '#' },
-        { title: 'VITEEE Exam', href: '#' },
-        { title: 'UPESEAT- B.Tech', href: '#' },
-        { title: 'AEEE Exam', href: '#' },
-        { title: 'MHT CET', href: '#' },
-        { title: 'View All Engineering Exams', href: '#', isLink: true }
+        { title: 'BITSAT Exam', href: '/exams/bitsat' },
+        { title: 'JEE Advanced Exam', href: '/exams/jee-advanced' },
+        { title: 'VITEEE Exam', href: '/exams/viteee' },
+        { title: 'UPESEAT- B.Tech', href: '/exams/upeseat' },
+        { title: 'AEEE Exam', href: '/exams/aeee' },
+        { title: 'MHT CET', href: '/exams/mht-cet' },
+        { title: 'View All Engineering Exams', href: '/exams?level=Engineering', isLink: true }
       ],
       colleges: [
-        { title: 'Colleges Accepting B.Tech Applications', href: '#' },
-        { title: 'Top Engineering Colleges in India', href: '#' },
-        { title: 'Engineering Colleges in India', href: '#' },
-        { title: 'Engineering Colleges in Tamil Nadu', href: '#' },
-        { title: 'Engineering Colleges Accepting JEE Main', href: '#' },
-        { title: 'Top IITs in India', href: '#' },
-        { title: 'Top NITs in India', href: '#' },
-        { title: 'Top IIITs in India', href: '#' }
+        { title: 'Colleges Accepting B.Tech Applications', href: '/colleges?course=B.Tech' },
+        { title: 'Top Engineering Colleges in India', href: '/colleges?nirfCategory=Engineering' },
+        { title: 'Engineering Colleges in India', href: '/colleges?branch=Engineering' },
+        { title: 'Engineering Colleges in Tamil Nadu', href: '/colleges?branch=Engineering&state=Tamil Nadu' },
+        { title: 'Engineering Colleges Accepting JEE Main', href: '/colleges?branch=Engineering&exam=JEE Main' },
+        { title: 'Top IITs in India', href: '/colleges?search=IIT' },
+        { title: 'Top NITs in India', href: '/colleges?search=NIT' },
+        { title: 'Top IIITs in India', href: '/colleges?search=IIIT' }
       ],
       predictors: [
         { title: 'JEE Main College Predictor', href: '/jee-main-predictor' },
@@ -290,14 +290,14 @@ export const browseByStreamData = [
     },
     content: {
       exams: [
-        { title: 'XAT Exam', href: '#' },
-        { title: 'CAT Exam', href: '#' },
-        { title: 'IBSAT Exam', href: '#' },
-        { title: 'NMAT Exam', href: '#' },
-        { title: 'MICAT Exam', href: '#' },
-        { title: 'CMAT Exam', href: '#' },
-        { title: 'SNAP Exam', href: '#' },
-        { title: 'View All Management Exams', href: '#', isLink: true }
+        { title: 'CAT Exam', href: '/exams/cat' },
+        { title: 'XAT Exam', href: '/exams/xat' },
+        { title: 'CMAT Exam', href: '/exams/cmat' },
+        { title: 'NMAT Exam', href: '/exams/nmat-by-gmac' },
+        { title: 'SNAP Exam', href: '/exams/snap' },
+        { title: 'MAT Exam', href: '/exams/mat' },
+        { title: 'IBSAT Exam', href: '/exams/ibsat' },
+        { title: 'View All Management Exams', href: '/exams?level=National', isLink: true }
       ],
       colleges: [
         { title: 'Top MBA Colleges in India', href: '#' },
@@ -322,7 +322,7 @@ export const browseByStreamData = [
       resources: [
         { title: 'Top MBA Entrance Exams in India', href: '#' },
         { title: 'CAT Result 2025', href: '#' },
-        { title: 'XAT Admit Card 2026', href: '#' },
+
         { title: 'IBSAT Mock Test', href: '#' },
         { title: 'Download Helpful Ebooks', href: '#' },
         { title: 'List of Popular Branches', href: '#' },
@@ -338,14 +338,14 @@ export const browseByStreamData = [
     titles: { col1: 'Exams', col2: 'Colleges', col3_1: 'Predictors', col3_2: 'Resources' },
     content: {
       exams: [
-        { title: 'NEET', href: '/exams/neet-ug' },
-        { title: 'NEET PG', href: '#' },
-        { title: 'NEET MDS', href: '#' },
-        { title: 'FMGE', href: '#' },
-        { title: 'INI CET', href: '#' },
-        { title: 'AIIMS Nursing', href: '#' },
-        { title: 'AIAPGET', href: '#' },
-        { title: 'View All Medicine Exams', href: '#', isLink: true }
+        { title: 'NEET UG', href: '/exams/neet-ug' },
+        { title: 'NEET PG', href: '/exams/neet-pg' },
+        { title: 'AIIMS Nursing', href: '/exams/aiims-bsc-nursing' },
+        { title: 'NEET MDS', href: '/exams/neet-mds' },
+        { title: 'INI CET', href: '/exams/ini-cet' },
+        { title: 'FMGE', href: '/exams/fmge' },
+        { title: 'AIAPGET', href: '/exams/aiapget' },
+        { title: 'View All Medicine Exams', href: '/exams?level=Medical', isLink: true }
       ],
       colleges: [
         { title: 'Top Medical Colleges in India', href: '#' },
@@ -386,14 +386,14 @@ export const browseByStreamData = [
     },
     content: {
       exams: [
-        { title: 'CLAT', href: '#' },
+        { title: 'CLAT', href: '/exams/clat' },
         { title: 'AILET', href: '#' },
         { title: 'SLAT', href: '#' },
         { title: 'AP LAWCET', href: '#' },
         { title: 'MH CET Law', href: '#' },
         { title: 'AIBE', href: '#' },
         { title: 'ULSAT-LLB', href: '#' },
-        { title: 'View All', href: '#', isLink: true }
+        { title: 'View All', href: '/exams?level=Law', isLink: true }
       ],
       colleges: [
         { title: 'Colleges Accepting Admissions', href: '#' },
@@ -433,14 +433,14 @@ export const browseByStreamData = [
     },
     content: {
       exams: [
-        { title: 'NIFT 2026', href: '#' },
+        { title: 'NIFT 2026', href: '/exams/nift' },
         { title: 'UCEED Exam', href: '#' },
         { title: 'NID DAT Exam', href: '#' },
         { title: 'JNAFAU FADEE Exam', href: '#' },
         { title: 'CEED Exam', href: '#' },
         { title: 'FDDI AIST Exam', href: '#' },
         { title: 'MITID DAT Exam', href: '#' },
-        { title: 'View All', href: '#', isLink: true }
+        { title: 'View All', href: '/exams?level=Design', isLink: true }
       ],
       colleges: [
         { title: 'Design Colleges in India', href: '#' },

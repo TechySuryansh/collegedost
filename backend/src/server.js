@@ -73,6 +73,7 @@ app.use('/api/predictor', require('./routes/predictor.routes'));
 
 
 require('./automation/nirfIngestion').initCron();
+require('./cron/examCron')();
 
 
 
