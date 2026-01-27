@@ -2,11 +2,18 @@ import axios from 'axios';
 
 // Create a configured axios instance
 const api = axios.create({
-    // Logic: If VITE_API_BASE_URL is set, use it (and ensure we append /api). 
-    // If not set, fallback to localhost.
-    baseURL: `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api`,
-    withCredentials: true // Important if using cookies
+    baseURL: import.meta.env.VITE_API_BASE_URL 
+        ? `${import.meta.env.VITE_API_BASE_URL}/api`
+        : import.meta.env.MODE === 'production' 
+            ? 'https://collegedost-backend.vercel.app/api' // Try a likely default or hold instructions.
+            : 'http://localhost:5001/api', 
+    withCredentials: true 
 });
+
+// Fallback: If we contain 'undefined' or fail, we log.
+if (!import.meta.env.VITE_API_BASE_URL && import.meta.env.MODE === 'production') {
+    console.warn("⚠️ VITE_API_BASE_URL is missing! Defaulting to presumed backend URL. If this fails, set the variable in Vercel.");
+}
 
 // Add a request interceptor to attach auth token
 api.interceptors.request.use(
