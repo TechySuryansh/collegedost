@@ -207,7 +207,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
       </div>
 
       <div className={`relative h-[52px] hidden lg:block ${isAdminMode ? 'bg-gray-800 border-t border-gray-700' : 'bg-white'}`}>
-        <div className="container mx-auto px-4 h-full flex items-center justify-between">
+        <div className="container mx-auto px-4 h-full flex items-center justify-center relative">
           <ul className="flex items-center gap-1 h-full">
             {isAdminMode ? (
                 // ADMIN LINKS
@@ -245,7 +245,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {browseByStreamData.map((stream) => (
@@ -337,7 +337,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {testPrepData.map((stream) => (
@@ -425,7 +425,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {collegesData.map((stream) => (
@@ -513,7 +513,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {examsData.map((stream) => (
@@ -601,7 +601,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {coursesData.map((stream) => (
@@ -689,7 +689,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {predictorsData.map((stream) => (
@@ -777,7 +777,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {counsellingData.map((stream) => (
@@ -865,7 +865,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {rankingsData.map((stream) => (
@@ -953,7 +953,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {careersData.map((stream) => (
@@ -1026,7 +1026,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                      className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {moreData.map((stream) => (

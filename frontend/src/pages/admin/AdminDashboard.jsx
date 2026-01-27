@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { FaUserGraduate, FaUniversity, FaNewspaper, FaChartLine } from 'react-icons/fa';
-import axios from 'axios';
+import { FaUserGraduate, FaUniversity, FaNewspaper } from 'react-icons/fa';
+import api from '../../api/axios';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -11,24 +11,23 @@ const AdminDashboard = () => {
         users: 0,
         articles: 0
     });
+    const [recentUsers, setRecentUsers] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Mock fetch stats or replace with real API
         const fetchStats = async () => {
              try {
-                 const [collegesRes, articlesRes] = await Promise.all([
-                     axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges`),
-                     axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`)
-                 ]);
-                 
-                 setStats({
-                     colleges: collegesRes.data.count || 0,
-                     users: 12, // Still mocked for now as user count endpoint is protected and this page is currently mock-heavy for dashboard
-                     articles: articlesRes.data.count || 0
-                 });
+                 const { data } = await api.get('/admin/stats');
+                 if (data.success) {
+                     setStats({
+                         colleges: data.stats.colleges,
+                         users: data.stats.users,
+                         articles: data.stats.articles
+                     });
+                     setRecentUsers(data.recentUsers || []);
+                 }
              } catch (err) {
-                 console.error(err);
+                 console.error("Failed to fetch admin stats:", err);
              } finally {
                  setLoading(false);
              }
@@ -40,7 +39,6 @@ const AdminDashboard = () => {
         { title: 'Total Colleges', value: stats.colleges, icon: FaUniversity, color: 'bg-blue-500' },
         { title: 'Registered Users', value: stats.users, icon: FaUserGraduate, color: 'bg-green-500' },
         { title: 'Total Articles', value: stats.articles, icon: FaNewspaper, color: 'bg-orange-500' },
-        { title: 'Page Views', value: '1.2M', icon: FaChartLine, color: 'bg-purple-500' },
     ];
 
     const containerVariants = {
@@ -72,7 +70,7 @@ const AdminDashboard = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
             >
                 {statCards.map((card, i) => (
                     <motion.div 
@@ -100,18 +98,26 @@ const AdminDashboard = () => {
                 >
                     <h3 className="font-bold text-lg mb-4 text-gray-800">Recent Users</h3>
                     <div className="flex flex-col gap-4">
-                        {[1,2,3].map(i => (
-                             <div key={i} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                 <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                     <FaUserGraduate />
-                                 </div>
-                                 <div>
-                                     <p className="font-bold text-sm text-gray-900">New User {i}</p>
-                                     <p className="text-xs text-gray-500">user{i}@example.com</p>
-                                 </div>
-                                 <span className="ml-auto text-xs font-bold text-green-600 bg-green-50 px-2 py-1 rounded">Active</span>
-                             </div>
-                        ))}
+                        {loading ? <p>Loading users...</p> : (
+                            recentUsers.length > 0 ? (
+                                recentUsers.map((user) => (
+                                    <div key={user._id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                            <FaUserGraduate />
+                                        </div>
+                                        <div className="overflow-hidden">
+                                            <p className="font-bold text-sm text-gray-900 truncate">{user.name}</p>
+                                            <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                                        </div>
+                                        <span className={`ml-auto text-xs font-bold px-2 py-1 rounded ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-green-50 text-green-600'}`}>
+                                            {user.role || 'user'}
+                                        </span>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-500 text-sm">No recent users found.</p>
+                            )
+                        )}
                     </div>
                 </motion.div>
 

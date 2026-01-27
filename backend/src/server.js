@@ -9,22 +9,18 @@ const connectDB = require('./config/db');
 dotenv.config();
 
 // Connect to MongoDB
-// Connect to MongoDB
 connectDB()
   .then(() => console.log('✅ MongoDB Connected Successfully'))
   .catch(err => {
     console.error('❌ MongoDB Connection Failed:', err.message);
-    // process.exit(1); // Optional: Exit if you want Render to restart, but maybe keep running for debug
   });
 
 const app = express();
 
-// =======================
-// MIDDLEWARES
-// =======================
+
 app.use(express.json());
 
-// ✅ ALLOWED ORIGINS (IMPORTANT)
+
 const allowedOrigins = [
   'https://collegedost.vercel.app',
   'http://localhost:5173',
@@ -32,34 +28,36 @@ const allowedOrigins = [
   'http://localhost:3000'
 ];
 
-// ✅ CORRECT CORS CONFIG (NO origin:true)
-app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests without origin (Postman, server-to-server)
-    if (!origin) return callback(null, true);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow server-to-server / Postman / cron jobs
+      if (!origin) {
+        return callback(null, true);
+      }
 
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('CORS not allowed'), false);
-    }
-  },
-  credentials: false, // ✅ JWT header based auth (stable)
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
 
-// =======================
-// ROOT ROUTE
-// =======================
+      // ❗ IMPORTANT: do NOT throw error
+      console.warn(`🚫 CORS blocked for origin: ${origin}`);
+      return callback(null, false);
+    },
+    credentials: false, // JWT-based auth
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+  })
+);
+
+
 app.get('/', (req, res) => {
   res.send('CollegeDost API is running...');
 });
 
-// =======================
-// ROUTES
-// =======================
+
 app.use('/api/auth', require('./routes/auth.routes'));
+app.use('/api/admin', require('./routes/admin.routes'));
 app.use('/api/users', require('./routes/user.routes'));
 app.use('/api/exams', require('./routes/exam.routes'));
 app.use('/api/colleges', require('./routes/college.routes'));
@@ -69,16 +67,13 @@ app.use('/api/ask', require('./routes/ask.routes'));
 app.use('/api/verification', require('./routes/verification.routes'));
 app.use('/api/predictor', require('./routes/predictor.routes'));
 
-// =======================
-// NIRF CRON JOB
-// =======================
+
 require('./automation/nirfIngestion').initCron();
 
-// =======================
-// START SERVER
-// =======================
+
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
