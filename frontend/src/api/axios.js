@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 // Create a configured axios instance
+// Determine backend URL dynamically if env var is missing
+const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+const defaultBackend = isLocal ? 'http://localhost:5001' : 'https://collegedost-backend.vercel.app';
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL 
-        ? `${import.meta.env.VITE_API_BASE_URL}/api`
-        : import.meta.env.MODE === 'production' 
-            ? 'https://collegedost-backend.vercel.app/api' // Try a likely default or hold instructions.
-            : 'http://localhost:5001/api', 
+    baseURL: `${import.meta.env.VITE_API_BASE_URL || defaultBackend}/api`,
     withCredentials: true 
 });
 
