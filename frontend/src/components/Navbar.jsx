@@ -240,112 +240,92 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                 {/* Specific Layout for "Browse by Stream" */}
                 <AnimatePresence>
                   {link.title === 'Browse by Stream' && activeDropdown === 'Browse by Stream' && (
-                    <>
-                      {/* Backdrop - Visual only, allows hover-out to underlying elements to trigger close */}
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed inset-0 bg-black/40 z-[-1] pointer-events-none"
-                      />
-
-                      {/* Pop-up Menu Container */}
-                      <motion.div
-                        initial={{ opacity: 0, y: 15, scale: 0.99 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.99 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="absolute top-full left-0 w-full bg-white/95 backdrop-blur-2xl shadow-premium-hover rounded-b-2xl z-[60] overflow-hidden flex"
-                        style={{ height: 'calc(100vh - 120px)' }}
-                      >
-                        {/* Sidebar */}
-                        <div className="w-80 bg-white flex-shrink-0 py-4 overflow-y-auto h-full scrollbar-thin scrollbar-thumb-transparent hover:scrollbar-thumb-gray-200">
-                          {browseByStreamData.map((stream) => (
-                            <div
-                              key={stream.id}
-                              className={`flex items-center justify-between px-6 py-3.5 text-[15px] transition-all cursor-pointer relative ${activeStream === stream.id ? 'text-brand-orange font-bold bg-orange-50/50' : 'text-gray-600 hover:bg-slate-50 hover:text-brand-orange'}`}
-                              onMouseEnter={() => setActiveStream(stream.id)}
-                              onClick={() => {
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
+                    >
+                      <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
+                        {browseByStreamData.map((stream) => (
+                          <div
+                            key={stream.id}
+                            className={`flex items-center justify-between px-6 py-3 text-sm font-medium transition-all cursor-pointer ${activeStream === stream.id ? 'bg-slate-50 text-brand-orange font-semibold' : 'text-gray-600 hover:bg-slate-50 hover:text-brand-orange'}`}
+                            onMouseEnter={() => setActiveStream(stream.id)}
+                            onClick={() => {
                                 if (stream.link) {
                                   navigate(stream.link);
                                   setActiveDropdown(null);
                                 }
                               }}
-                            >
-                              {activeStream === stream.id && (
-                                <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-orange"></div>
-                              )}
-                              {stream.label}
-                              <FaAngleRight className={`text-xs transition-opacity ${activeStream === stream.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-50'}`} />
-                            </div>
-                          ))}
-                        </div>
+                          >
+                            {stream.label}
+                            <FaAngleRight className="text-xs opacity-0 group-hover:opacity-100 transition-opacity" />
+                          </div>
+                        ))}
+                      </div>
 
-                        {/* Content Area */}
-                        <div className="flex-1 bg-white p-10 overflow-y-auto h-full scrollbar-thin scrollbar-thumb-transparent hover:scrollbar-thumb-gray-200">
-                          <div className="grid grid-cols-2 gap-x-20 gap-y-12 pb-20">
-                            {/* Column 1: Exams & Predictors */}
-                            <div className="flex flex-col gap-10">
-                              <div>
-                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
-                                <ul className="flex flex-col gap-3.5">
-                                  {currentStreamContent.exams.map((item, idx) => (
-                                    <li key={idx}>
-                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold mt-1' : 'text-slate-600 hover:text-brand-orange'}`}>
-                                        {item.title}
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="content-section">
-                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
-                                <ul className="flex flex-col gap-3.5">
-                                  {currentStreamContent.predictors.map((item, idx) => (
-                                    <li key={idx}>
-                                      <a href={item.href} className={`text-[14px] transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold mt-1' : 'text-slate-600 hover:text-brand-orange'}`}>
-                                        {item.title}
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                      <div className="flex-1 bg-slate-50 p-10 overflow-y-auto">
+                        <div className="grid grid-cols-2 gap-16">
+                          <div className="flex flex-col">
+                            <div className="mb-8">
+                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col1 || 'Exams'}</h4>
+                              <ul className="flex flex-col gap-3">
+                                {currentStreamContent.exams.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
 
-                            {/* Column 2: Colleges & Resources */}
-                            <div className="flex flex-col gap-10">
-                              <div>
-                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
-                                <ul className="flex flex-col gap-3.5">
-                                  {currentStreamContent.colleges.map((item, idx) => (
-                                    <li key={idx}>
-                                      <a href={item.href} className="text-[14px] transition-colors block text-gray-600 hover:text-brand-orange">
-                                        {item.title}
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                            <div className="content-section">
+                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_1 || 'Predictors'}</h4>
+                              <ul className="flex flex-col gap-3">
+                                {currentStreamContent.predictors.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className={`text-sm transition-colors block ${item.isLink ? 'text-brand-indigo font-semibold' : 'text-slate-600 hover:text-brand-orange'}`}>
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
 
-                              <div className="content-section">
-                                <h4 className="text-base font-bold text-gray-900 mb-5 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
-                                <ul className="flex flex-col gap-3.5">
-                                  {currentStreamContent.resources.map((item, idx) => (
-                                    <li key={idx}>
-                                      <a href={item.href} className="text-[14px] transition-colors block text-gray-600 hover:text-brand-orange">
-                                        {item.title}
-                                      </a>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
+                          <div className="flex flex-col">
+                            <div className="mb-8">
+                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col2 || 'Colleges'}</h4>
+                              <ul className="flex flex-col gap-3">
+                                {currentStreamContent.colleges.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="text-sm transition-colors block text-gray-600 hover:text-brand-orange">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div className="content-section">
+                              <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4 border-b border-gray-100 pb-2">{currentStreamDataObj.titles?.col3_2 || 'Resources'}</h4>
+                              <ul className="flex flex-col gap-3">
+                                {currentStreamContent.resources.map((item, idx) => (
+                                  <li key={idx}>
+                                    <a href={item.href} className="text-sm transition-colors block text-gray-600 hover:text-brand-orange">
+                                      {item.title}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
                             </div>
                           </div>
                         </div>
-                      </motion.div>
-                    </>
+                      </div>
+                    </motion.div>
                   )}
                 </AnimatePresence>
 
@@ -357,7 +337,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {testPrepData.map((stream) => (
@@ -445,7 +425,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {collegesData.map((stream) => (
@@ -533,7 +513,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {examsData.map((stream) => (
@@ -621,7 +601,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {coursesData.map((stream) => (
@@ -709,7 +689,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {predictorsData.map((stream) => (
@@ -797,7 +777,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {counsellingData.map((stream) => (
@@ -885,7 +865,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {rankingsData.map((stream) => (
@@ -973,7 +953,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {careersData.map((stream) => (
@@ -1046,7 +1026,7 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full left-0 w-full bg-white shadow-xl rounded-b-xl border-t border-gray-100 z-[60] overflow-hidden flex"
+                      className="absolute top-full left-0 w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[60] overflow-hidden flex max-h-[600px] mt-1"
                     >
                       <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
                         {moreData.map((stream) => (
