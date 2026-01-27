@@ -27,22 +27,14 @@ app.use(express.json());
 
 const whitelist = [process.env.FRONTEND_URL, 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:3000'].filter(Boolean);
 
-const corsOptions = {
-
-    origin: function (origin, callback) {
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return callback(null, true);
-        
-        if (whitelist.indexOf(origin) !== -1 || origin.startsWith('http://localhost:') || origin.endsWith('.vercel.app')) {
-            callback(null, true);
-        } else {
-            console.log("CORS Blocked:", origin);
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    credentials: true
-};
-app.use(cors(corsOptions));
+// Permissive CORS for debugging/production to fix Vercel issues
+app.use(cors({
+    origin: true, // Reflects the request origin, causing the server to allow any origin
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
+}));
+app.options('(.*)', cors()); // Enable pre-flight for all routes (Express 5 syntax)
 
 // Root Route
 app.get('/', (req, res) => {
