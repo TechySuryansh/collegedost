@@ -94,14 +94,23 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
         }
 
         setLoading(true);
+        console.log("Submitting Signup to:", '/auth/signup-new', formData);
+        
         try {
-            const response = await apiCall('post', '/auth/register', formData);
+            // Use signup-new to avoid adblockers
+            const response = await apiCall('post', '/auth/signup-new', formData);
             if (response.data.success) {
                 login(response.data.user, response.data.token);
                 if (onClose) onClose();
             }
         } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed');
+            console.error("Signup Error:", err);
+            // Detect AdBlocker (Network Error)
+            if (err.message === "Network Error" && !err.response) {
+                setError("Network error. Server unreachable or AdBlocker detected.");
+            } else {
+                setError(err.response?.data?.message || 'Registration failed');
+            }
         } finally {
             setLoading(false);
         }
