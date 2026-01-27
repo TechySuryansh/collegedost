@@ -2,22 +2,24 @@
  * ingest_aishe.js
  * 
  * Ingestion script for INDIA (AISHE Data).
- * Supports CSV converted from AISHE Portal Excel.
+ * Supports CSV files: 
+ * 1. College-ALL COLLEGE.csv
+ * 2. University-ALL UNIVERSITIES.csv
+ * 
+ * Handles preamble lines (garbage at top of file).
  */
 
 const mongoose = require('mongoose');
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
-const slugify = require('slugify'); // Requires slugify
+const slugify = require('slugify'); 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
-// Error Logging
+// Logger
 function log(msg) {
-    const logFile = path.join(__dirname, 'ingest_aishe_debug.log');
     const timestamp = new Date().toISOString();
-    fs.appendFileSync(logFile, `[${timestamp}] ${msg}\n`);
-    console.log(msg);
+    console.log(`[${timestamp}] ${msg}`);
 }
 
 process.on('uncaughtException', (err) => {
@@ -31,7 +33,7 @@ process.on('unhandledRejection', (reason, promise) => {
 
 const College = require('../src/models/College.model');
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/collegedost';
-const BATCH_SIZE = 100;
+const BATCH_SIZE = 500;
 
 async function connectDB() {
     try {
@@ -51,11 +53,12 @@ function toTitleCase(str) {
     ).join(' ').trim();
 }
 
-async function ingestIndiaData(filePath) {
-    log(`🚀 Starting India Ingestion from: ${filePath}`);
+async function processFile(filePath, fileType) {
+    log(`\n🚀 Starting Ingestion for: ${path.basename(filePath)} (${fileType})`);
     
     if (!fs.existsSync(filePath)) {
-        throw new Error(`File not found: ${filePath}`);
+        log(`❌ File not found: ${filePath}`);
+        return;
     }
 
     const fileStream = fs.createReadStream(filePath);
@@ -66,68 +69,114 @@ async function ingestIndiaData(filePath) {
 
     let headers = [];
     let batch = [];
-    let lineCount = 0;
     let savedCount = 0;
+    let lineCount = 0;
 
     for await (const line of rl) {
-        if (!line.trim()) continue; 
-
-        // CSV Regex Split (Handling content with commas)
-        const values = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, '').trim());
-
-        // Header Auto-Detection
-        if (headers.length === 0) {
-            // Remove BOM
-            if (values[0] && values[0].charCodeAt(0) === 0xFEFF) values[0] = values[0].substring(1);
-            
-            const potentialHeaders = values.map(h => h.trim().toUpperCase());
-            
-            // Check if this row looks like a header (contains key terms)
-            if (potentialHeaders.includes('AISHE CODE') || potentialHeaders.includes('AISHECODE') || potentialHeaders.includes('ID') || potentialHeaders.includes('NAME')) {
-                headers = potentialHeaders;
-                log(`✅ Headers found: ${headers.join(', ')}`);
-            } else {
-                // log(`Skipping preamble row: ${values[0]}`);
-            }
+        let cleanLine = line.trim();
+        if (lineCount === 0 && cleanLine.charCodeAt(0) === 0xFEFF) {
+            cleanLine = cleanLine.slice(1);
+        }
+        if (!cleanLine) {
+            lineCount++;
             continue;
         }
 
-        const row = {};
-        headers.forEach((h, i) => row[h] = values[i]);
+        // Split while handling quoted fields correctly
+        const values = cleanLine.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(v => v.trim().replace(/^"|"$/g, '').trim());
 
-        // AISHE Typical Columns: "COLLEGE NAME", "STATE NAME", "DISTRICT NAME", "MANAGEMENT", "AISHE CODE"
-        // Adjust these keys based on the actual CSV headers you see in log
-        const name = row['COLLEGE NAME'] || row['NAME'] || row['INSTITUTION NAME'];
+        // --- HEADER DETECTION ---
+        if (headers.length === 0) {
+            const potentialHeaders = values.map(h => h.toUpperCase());
+            // Check for key columns to identify header row
+            if (potentialHeaders.includes('AISHE CODE') || potentialHeaders.includes('AISHECODE')) {
+                headers = potentialHeaders;
+                log(`✅ Headers found on line ${lineCount + 1}: ${headers.join(', ')}`);
+                lineCount++;
+                continue; // Move to next line (data)
+            } else {
+                if (lineCount < 5) log(`Skipping preamble line ${lineCount + 1}: ${cleanLine.substring(0, 50)}...`);
+            }
+            lineCount++;
+            continue; 
+        }
         
-        if (!name) continue;
+        lineCount++;
 
-        const collegeData = {
+        const row = {};
+        headers.forEach((h, i) => {
+            if (i < values.length) row[h] = values[i];
+        });
+
+        // --- MAPPING LOGIC ---
+        const aisheCode = row['AISHE CODE'];
+        const name = row['NAME'] || row['COLLEGE NAME'] || row['INSTITUTION NAME'];
+        
+        if (!aisheCode || !name) continue;
+
+        let collegeData = {
             name: toTitleCase(name),
             location: {
-                city: toTitleCase(row['DISTRICT NAME'] || row['CITY'] || ''),
-                state: toTitleCase(row['STATE NAME'] || row['STATE'] || ''),
+                city: toTitleCase(row['DISTRICT'] || row['DISTRICT NAME'] || ''),
+                state: toTitleCase(row['STATE'] || row['STATE NAME'] || ''),
                 country: 'India',
-                address: toTitleCase(row['ADDRESS'] || '')
+                address: row['ADDRESS'] 
+                    ? toTitleCase(row['ADDRESS']) 
+                    : `${toTitleCase(row['DISTRICT'] || '')}, ${toTitleCase(row['STATE'] || '')}`
             },
-            type: (row['MANAGEMENT'] && row['MANAGEMENT'].toLowerCase().includes('govt')) ? 'Government' : 'Private',
+            website: (row['WEBSITE'] && row['WEBSITE'] !== '0') ? row['WEBSITE'].toLowerCase() : '',
+            details: {
+                establishedYear: row['YEAR OF ESTABLISHMENT'] ? parseInt(row['YEAR OF ESTABLISHMENT']) : null,
+                locationType: row['LOCATION'], // Rural/Urban
+            },
             dataSources: [{
-                sourceName: 'AISHE_RAW',
-                sourceId: row['AISHE CODE'] || row['ID'],
+                sourceName: 'AISHE_2024',
+                sourceId: aisheCode,
                 fetchedAt: new Date()
             }],
             fees: { currency: 'INR' }
         };
 
-        // Generate Slug
-        const slugBase = slugify(collegeData.name, { lower: true, strict: true });
-        collegeData.slug = `${slugBase}-${row['AISHE CODE'] || Math.floor(Math.random()*100000)}`;
+        // Specific Logic
+        if (fileType === 'UNIVERSITY') {
+            collegeData.type = 'University';
+        } else {
+            // College File
+            collegeData.type = 'College';
+            
+            // Refine type if possible
+            const cType = row['COLLEGE TYPE'];
+            if (cType && cType.includes('University')) {
+                 collegeData.type = 'University';
+            }
 
+            collegeData.affiliation = {
+                universityName: toTitleCase(row['UNIVERSITY NAME'] || ''),
+                universityId: row['UNIVERSITY AISHE CODE']
+            };
+
+            const mgmt = row['MANEGEMENT'] || row['MANAGEMENT'];
+            if (mgmt) {
+                if (mgmt.toLowerCase().includes('govt') || mgmt.toLowerCase().includes('university')) {
+                    collegeData.ownership = 'Public';
+                } else {
+                    collegeData.ownership = 'Private';
+                }
+            }
+        }
+
+        // Generate Slug
+        // Ensure slug is unique-ish by appending partial ID if needed, but AISHE code is best.
+        // Actually, we upsert based on ID, so slug changes are fine.
+        const slugBase = slugify(collegeData.name, { lower: true, strict: true });
+        collegeData.slug = `${slugBase}-${aisheCode.toLowerCase()}`;
+
+        // Upsert Operation (ID-based is safest)
         batch.push({
             updateOne: {
                 filter: { 
-                    name: collegeData.name, 
-                    "location.country": "India", 
-                    "location.state": collegeData.location.state 
+                    "dataSources.sourceId": aisheCode,
+                    "dataSources.sourceName": "AISHE_2024"
                 },
                 update: { $set: collegeData },
                 upsert: true
@@ -135,52 +184,60 @@ async function ingestIndiaData(filePath) {
         });
 
         if (batch.length >= BATCH_SIZE) {
-            await College.bulkWrite(batch);
-            savedCount += batch.length;
-            if (savedCount % 1000 === 0) log(`Processed: ${savedCount} Indian colleges...`);
+            try {
+                const result = await College.bulkWrite(batch, { ordered: false });
+                savedCount += result.modifiedCount + result.upsertedCount; 
+                console.log(`Processed: ${savedCount} ${fileType}s...`);
+            } catch (e) {
+                // With ordered: false, 'e' is thrown if there are errors, but successful ops are committed.
+                // We need to calculate how many succeeded.
+                const successes = batch.length - (e.writeErrors ? e.writeErrors.length : 0);
+                savedCount += successes;
+                log(`Batch Error (Partial Success: ${successes}/${batch.length}): ${e.message}`);
+                fs.appendFileSync('ingest_error.log', `Batch Error: ${e.message}\n${JSON.stringify(e.writeErrors || {}, null, 2)}\n`);
+            }
             batch = [];
         }
-        lineCount++;
     }
 
     if (batch.length > 0) {
-        await College.bulkWrite(batch);
-        savedCount += batch.length;
+        try {
+            await College.bulkWrite(batch, { ordered: false });
+            savedCount += batch.length;
+        } catch (e) {
+            log(`Final Batch Error: ${e.message}`);
+             // If ordered:false, some might have succeeded.
+             // writeErrors contains details.
+             savedCount += (batch.length - (e.writeErrors ? e.writeErrors.length : 0));
+             fs.appendFileSync('ingest_error.log', `Final Batch Error: ${e.message}\n`);
+        }
     }
 
-    log(`\n✨ Ingestion Complete! Total Indian Colleges: ${savedCount}`);
+    log(`✅ Finished ${fileType}. Total: ${savedCount}`);
 }
 
 async function main() {
     log("Script Initialization...");
     await connectDB();
 
-    // Auto-detect ANY file with 'aishe' in name
     const rawDir = path.join(__dirname, '../data/raw');
-    let targetFile = null;
     
-    if (fs.existsSync(rawDir)) {
-        const files = fs.readdirSync(rawDir).filter(f => f.toLowerCase().includes('aishe') && f.endsWith('.csv'));
-        if (files.length > 0) targetFile = path.join(rawDir, files[0]);
+    // 1. Process Universities
+    const uniFile = path.join(rawDir, 'University-ALL UNIVERSITIES.csv');
+    if (fs.existsSync(uniFile)) {
+        await processFile(uniFile, 'UNIVERSITY');
+    } else {
+        log(`⚠️ University file missing: ${uniFile}`);
     }
 
-    if (!targetFile) {
-        // Fallback argument check
-        const args = process.argv.slice(2);
-        const fileArg = args.find(a => a.startsWith('--file='));
-        if (fileArg) targetFile = fileArg.split('=')[1];
-    }
-    
-    if (!targetFile) {
-        log("❌ No AISHE CSV file found. Please name your file 'aishe_something.csv' in data/raw.");
-        process.exit(1);
+    // 2. Process Colleges
+    const colFile = path.join(rawDir, 'College-ALL COLLEGE.csv');
+    if (fs.existsSync(colFile)) {
+        await processFile(colFile, 'COLLEGE');
+    } else {
+        log(`⚠️ College file missing: ${colFile}`);
     }
 
-    try {
-        await ingestIndiaData(targetFile);
-    } catch (error) {
-        log(`FATAL SCRIPT ERROR: ${error.stack}`);
-    }
     log("Exiting...");
     process.exit(0);
 }

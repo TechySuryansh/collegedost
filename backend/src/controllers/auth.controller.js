@@ -17,27 +17,26 @@ exports.register = async (req, res) => {
     try {
         const { name, email, mobile, password, currentClass, interest, city } = req.body;
 
-        // Verification skipped as per requirement
-
-        // 3. Check if user exists (Redundant if 'send-otp' checks it, but safe to keep)
+        // Check if user exists (Mobile)
         const userExists = await User.findOne({ mobile });
         if (userExists) {
             return res.status(400).json({ success: false, message: 'User already exists with this mobile number' });
         }
 
+        // Check if user exists (Email)
         const emailExists = await User.findOne({ email });
         if (emailExists) {
             return res.status(400).json({ success: false, message: 'Email already exists' });
         }
 
-        // 4. Create user
+        // Create user
         const user = await User.create({
             name,
             email,
             mobile,
             password,
             currentClass,
-            interest,
+            interest: interest || null, // Ensure empty string becomes null for cleaner DB
             city,
             isVerified: true // Explicitly set as they passed verification
         });
@@ -60,11 +59,15 @@ exports.register = async (req, res) => {
         }
 
     } catch (error) {
-        console.error(error);
+        console.error("Registration Error:", error);
         if (error.code === 11000) {
-            return res.status(400).json({ success: false, message: 'Email or Mobile already exists' });
+            // Check which field caused the duplicate key error
+            const field = Object.keys(error.keyPattern)[0];
+            const message = field ? `${field.charAt(0).toUpperCase() + field.slice(1)} already exists` : 'Email or Mobile already exists';
+            return res.status(400).json({ success: false, message });
         }
-        res.status(500).json({ success: false, message: 'Server Error' });
+        // Return actual error message for debugging
+        res.status(500).json({ success: false, message: error.message || 'Server Error' });
     }
 };
 

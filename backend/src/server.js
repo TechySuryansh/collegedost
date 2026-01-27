@@ -62,6 +62,9 @@ app.use('/api/verification', require('./routes/verification.routes'));
 
 const PORT = process.env.PORT || 5000;
 
+// Initialize NIRF Cron Job
+require('./automation/nirfIngestion').initCron();
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
