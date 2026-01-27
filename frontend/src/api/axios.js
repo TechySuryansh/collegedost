@@ -25,7 +25,7 @@ const getCurrentBackendUrl = () => {
     
     // 3. Fallback for Production (if Env Var is missing or points to localhost)
     // Hardcoded production backend to guarantee connectivity
-    return 'https://collegedost-backend.vercel.app/api';
+    return 'https://collegedost-929n.onrender.com/api/colleges';
 };
 
 const api = axios.create({
