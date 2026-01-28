@@ -8,9 +8,9 @@ const Hero = ({
   title = "Empowering Students. Building Futures.",
   subtitle = "Explore 30,000+ Colleges, exams, and courses to make the informed career choice.",
   trending = [
-    { text: "JEE Main 2026", link: "/colleges?exam=JEE Main" },
-    { text: "NEET UG", link: "/colleges?exam=NEET" },
-    { text: "IIT Bombay", link: "/colleges/indian-institute-of-technology-bombay-iitb-mumbai" },
+    { text: "JEE Mains College Predictor", link: "/jee-main-predictor" },
+    { text: "NEET College Predictor", link: "/predict-colleges?exam=NEET" },
+    { text: "IIT Bombay", link: "/colleges/iit-bombay" },
     { text: "Computer Science", link: "/colleges?branch=Computer Science" }
   ],
   showBadge = true
