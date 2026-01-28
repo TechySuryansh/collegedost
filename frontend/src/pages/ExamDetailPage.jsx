@@ -12,12 +12,12 @@ const ExamDetailPage = () => {
     const [exam, setExam] = useState(null);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
+    const [activeTab, setActiveTab] = useState('Overview');
     const { user } = useAuth();
 
     useEffect(() => {
         const fetchExam = async () => {
             try {
-                // Remove /api prefix if base URL already has it, or ensure it matches your setup
                  const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/exams/${slug}`);
                  if (res.data.success) {
                      setExam(res.data.data);
@@ -28,7 +28,6 @@ const ExamDetailPage = () => {
                 setLoading(false);
             }
         };
-
         fetchExam();
     }, [slug]);
 
@@ -38,168 +37,202 @@ const ExamDetailPage = () => {
         try {
             const res = await api.post(`/exams/${exam._id}/refresh-news`);
             if (res.data.success) {
-                // Update local state news
                 setExam(prev => ({ ...prev, news: res.data.data }));
                 alert("News refreshed successfully!");
             }
         } catch (error) {
             console.error(error);
-            alert("Failed to refresh news. Ensure RSS URL is valid.");
+            alert("Failed to refresh news.");
         } finally {
             setRefreshing(false);
         }
     };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center items-center h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-orange"></div>
-            </div>
-        );
-    }
+    if (loading) return <div className="min-h-screen pt-24 flex justify-center"><div className="animate-spin h-10 w-10 border-2 border-brand-orange rounded-full border-t-transparent"></div></div>;
+    if (!exam) return <div className="min-h-screen pt-24 text-center">Exam Not Found</div>;
 
-    if (!exam) {
-        return (
-            <>
-                <Navbar />
-                <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
-                    <FaExclamationTriangle className="text-4xl text-gray-300 mb-4" />
-                    <h1 className="text-2xl font-bold text-gray-800">Exam Not Found</h1>
-                    <p className="text-gray-500 mb-4">Request the admin to add data for "{slug}".</p>
-                    <Link to="/" className="text-brand-orange hover:underline">Go Home</Link>
-                </div>
-                <Footer />
-            </>
-        );
-    }
+    const tabs = ['Overview', 'Important Dates', 'Syllabus', 'Exam Pattern', 'Application', 'News'];
 
     return (
-        <div className="bg-gray-50 min-h-screen pt-28 pb-12">
+        <div className="bg-gray-50 min-h-screen pt-24 pb-12">
             
             {/* Hero Section */}
             <div className="bg-white border-b border-gray-200 mb-8">
                 <div className="container mx-auto px-4 py-8">
-                    <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-                        <div className="flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left">
-                            <img 
-                                src={exam.logoUrl} 
-                                alt={exam.examName} 
-                                className="w-24 h-24 object-contain p-2 bg-white border border-gray-100 rounded-xl shadow-sm"
-                            />
+                    <div className="flex flex-col md:flex-row items-start justify-between gap-6">
+                        <div className="flex gap-6">
+                            <img src={exam.logoUrl} alt={exam.examName} className="w-24 h-24 object-contain p-2 bg-white border border-gray-100 rounded-xl shadow-sm" />
                             <div>
-                                <div className="flex flex-wrap justify-center md:justify-start items-center gap-3 mb-2">
-                                    <span className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full uppercase tracking-wider">{exam.examLevel}</span>
+                                <div className="flex gap-3 mb-2">
+                                    <span className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full uppercase">{exam.examLevel}</span>
                                     <span className="px-3 py-1 bg-gray-100 text-gray-600 text-xs font-medium rounded-full">{exam.conductingAuthority}</span>
                                 </div>
-                                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">{exam.examName}</h1>
-                                <p className="text-gray-500 max-w-2xl text-sm md:text-base">{exam.description || `Complete guide, news, and updates for ${exam.examName}.`}</p>
+                                <h1 className="text-3xl font-bold text-gray-900 mb-2">{exam.examName}</h1>
+                                <p className="text-gray-500 max-w-2xl text-sm">{exam.description}</p>
                             </div>
                         </div>
-
-                        <div className="flex-shrink-0">
-                            {exam.registrationLink ? (
-                                <a 
-                                    href={exam.registrationLink} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-brand-orange text-white font-bold rounded-full hover:bg-orange-600 transition-all shadow-lg hover:shadow-orange-500/30 transform hover:-translate-y-0.5"
-                                >
-                                    Apply / Register Now <FaExternalLinkAlt className="text-sm" />
-                                </a>
-                            ) : (
-                                <button disabled className="px-8 py-3 bg-gray-200 text-gray-400 font-bold rounded-full cursor-not-allowed">
-                                    Registration Closed
-                                </button>
-                            )}
-                        </div>
+                        {exam.registrationLink && (
+                            <a href={exam.registrationLink} target="_blank" rel="noreferrer" className="px-8 py-3 bg-brand-orange text-white font-bold rounded-lg shadow hover:bg-orange-600 transition">
+                                Apply Now <FaExternalLinkAlt className="inline ml-2 text-xs" />
+                            </a>
+                        )}
                     </div>
                 </div>
             </div>
 
             <div className="container mx-auto px-4 grid grid-cols-1 lg:grid-cols-4 gap-8">
                 
-                {/* Sidebar: Important Dates */}
-                <div className="lg:col-span-1 space-y-6">
-                    <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
-                        <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                            <FaCalendarAlt className="text-brand-blue" /> Important Dates
-                        </h2>
-                        {exam.importantDates && exam.importantDates.length > 0 ? (
-                            <div className="space-y-4">
-                                {exam.importantDates.map((date, idx) => (
-                                    <div key={idx} className="pb-4 border-b border-gray-50 last:border-0 last:pb-0">
-                                        <p className="font-semibold text-gray-800 text-sm mb-1">{date.title}</p>
-                                        <div className="flex items-center justify-between">
-                                            <span className="text-xs text-brand-indigo font-bold bg-indigo-50 px-2 py-1 rounded">
-                                                {new Date(date.date).toLocaleDateString()}
-                                            </span>
-                                            {date.isTentative && <span className="text-[10px] text-gray-400">*Tentative</span>}
-                                        </div>
+                {/* Main Content Area */}
+                <div className="lg:col-span-3">
+                    
+                    {/* Tabs */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 mb-6 overflow-x-auto sticky top-20 z-10">
+                        <div className="flex">
+                            {tabs.map(tab => (
+                                <button
+                                    key={tab}
+                                    onClick={() => setActiveTab(tab)}
+                                    className={`px-6 py-4 font-bold text-sm whitespace-nowrap border-b-2 transition-colors ${
+                                        activeTab === tab 
+                                        ? 'border-brand-orange text-brand-orange bg-orange-50/50' 
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                                    }`}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[400px]">
+                        
+                        {activeTab === 'Overview' && (
+                            <div className="space-y-6 animate-fade-in">
+                                <div>
+                                    <h2 className="text-xl font-bold text-gray-900 mb-4">About the Exam</h2>
+                                    {exam.details ? (
+                                         <div className="prose max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: exam.details }} />
+                                    ) : (
+                                        <p className="text-gray-500">Detailed information not available.</p>
+                                    )}
+                                </div>
+                                {exam.eligibility && (
+                                    <div>
+                                        <h2 className="text-xl font-bold text-gray-900 mb-4">Eligibility Criteria</h2>
+                                        <div className="prose max-w-none text-gray-700 bg-blue-50 p-6 rounded-lg border border-blue-100" dangerouslySetInnerHTML={{ __html: exam.eligibility }} />
                                     </div>
-                                ))}
+                                )}
                             </div>
-                        ) : (
-                            <p className="text-gray-500 text-sm italic">No specific dates announced yet.</p>
                         )}
+
+                        {activeTab === 'Important Dates' && (
+                            <div className="animate-fade-in">
+                                <h2 className="text-xl font-bold text-gray-900 mb-6">Exam Schedule</h2>
+                                {exam.importantDates && exam.importantDates.length > 0 ? (
+                                    <div className="overflow-hidden border border-gray-200 rounded-lg">
+                                        <table className="w-full text-sm text-left">
+                                            <thead className="bg-gray-50 text-gray-700 font-bold">
+                                                <tr>
+                                                    <th className="px-6 py-4">Event</th>
+                                                    <th className="px-6 py-4">Date</th>
+                                                    <th className="px-6 py-4">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody className="divide-y divide-gray-200">
+                                                {exam.importantDates.map((date, idx) => (
+                                                    <tr key={idx} className="bg-white hover:bg-gray-50">
+                                                        <td className="px-6 py-4 font-medium text-gray-900">{date.title}</td>
+                                                        <td className="px-6 py-4 text-gray-600">{new Date(date.date).toLocaleDateString(undefined, { dateStyle: 'long' })}</td>
+                                                        <td className="px-6 py-4">
+                                                            {date.isTentative ? <span className="text-amber-600 bg-amber-50 px-2 py-1 rounded text-xs font-bold">Tentative</span> : <span className="text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-bold">Confirmed</span>}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                ) : <p className="text-gray-500">Dates not announced yet.</p>}
+                            </div>
+                        )}
+
+                        {activeTab === 'Syllabus' && (
+                            <div className="animate-fade-in">
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">Syllabus</h2>
+                                <div className="prose max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: exam.syllabus || '<p>Syllabus details coming soon.</p>' }} />
+                            </div>
+                        )}
+
+                        {activeTab === 'Exam Pattern' && (
+                            <div className="animate-fade-in">
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">Exam Pattern</h2>
+                                <div className="prose max-w-none text-gray-700" dangerouslySetInnerHTML={{ __html: exam.examPattern || '<p>Pattern details coming soon.</p>' }} />
+                            </div>
+                        )}
+
+                        {activeTab === 'Application' && (
+                            <div className="animate-fade-in">
+                                <h2 className="text-xl font-bold text-gray-900 mb-4">Application Process</h2>
+                                {exam.applicationProcess ? (
+                                    <div className="space-y-6">
+                                        <div className="bg-green-50 p-4 rounded-lg border border-green-100 flex justify-between items-center">
+                                            <span className="font-bold text-green-800">Application Fee</span>
+                                            <span className="text-green-900 font-bold text-lg">{exam.applicationProcess.fee}</span>
+                                        </div>
+                                        <div>
+                                            <h3 className="font-bold text-gray-800 mb-2">Steps to Apply:</h3>
+                                            <ul className="list-decimal pl-5 space-y-2 text-gray-700">
+                                                {exam.applicationProcess.steps.map((step, i) => (
+                                                    <li key={i}>{step}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        {exam.applicationProcess.websiteUrl && (
+                                            <a href={exam.applicationProcess.websiteUrl} target="_blank" rel="noreferrer" className="inline-block text-brand-blue font-bold hover:underline">
+                                                Visit Official Website →
+                                            </a>
+                                        )}
+                                    </div>
+                                ) : <p className="text-gray-500">Application details not available.</p>}
+                            </div>
+                        )}
+
+                        {activeTab === 'News' && (
+                            <div className="animate-fade-in">
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-xl font-bold text-gray-900">Latest News</h2>
+                                    {user && user.role === 'admin' && (
+                                        <button onClick={handleRefreshNews} disabled={refreshing} className="text-sm text-brand-blue font-bold hover:underline">
+                                            {refreshing ? 'Refreshing...' : 'Refresh Feed'}
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="grid gap-4">
+                                    {exam.news && exam.news.length > 0 ? exam.news.map((item, idx) => (
+                                        <a key={idx} href={item.link} target="_blank" rel="noreferrer" className="block p-4 border border-gray-100 rounded-lg hover:bg-gray-50 group">
+                                            <div className="flex justify-between items-start">
+                                                <h3 className="font-bold text-gray-800 group-hover:text-brand-orange transition line-clamp-2">{item.title}</h3>
+                                                <FaExternalLinkAlt className="text-gray-300 text-xs flex-shrink-0 ml-2" />
+                                            </div>
+                                            <span className="text-xs text-gray-400 mt-2 block">{new Date(item.pubDate).toLocaleDateString()}</span>
+                                        </a>
+                                    )) : <p className="text-gray-500">No recent news.</p>}
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
 
-                {/* Main Content: News Grid */}
-                <div className="lg:col-span-3 space-y-6">
-                    <div className="flex items-center justify-between mb-2">
-                        <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-                            <FaNewspaper className="text-brand-orange" /> Latest News & Updates
-                        </h2>
-                        {user && user.role === 'admin' && (
-                            <button 
-                                onClick={handleRefreshNews}
-                                disabled={refreshing}
-                                className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-brand-blue bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
-                            >
-                                <FaSync className={refreshing ? "animate-spin" : ""} /> {refreshing ? 'Refreshing...' : 'Refresh Feed'}
-                            </button>
-                        )}
+                {/* Sidebar */}
+                <div className="lg:col-span-1 space-y-6">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                       <h3 className="font-bold text-gray-900 mb-4 border-b pb-2">Related Exams</h3>
+                       <ul className="space-y-3">
+                            <li className="text-sm text-gray-600 hover:text-brand-orange cursor-pointer transition">JEE Advanced</li>
+                            <li className="text-sm text-gray-600 hover:text-brand-orange cursor-pointer transition">BITSAT</li>
+                            <li className="text-sm text-gray-600 hover:text-brand-orange cursor-pointer transition">VITEEE</li>
+                       </ul>
                     </div>
-
-                    {exam.news && exam.news.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            {exam.news.map((item, idx) => (
-                                <a 
-                                    key={idx} 
-                                    href={item.link} 
-                                    target="_blank" 
-                                    rel="noopener noreferrer"
-                                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:border-brand-orange/30 transition-all group flex flex-col h-full"
-                                >
-                                    <div className="flex items-start justify-between mb-3">
-                                        <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                            {new Date(item.pubDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                                        </span>
-                                        <FaExternalLinkAlt className="text-gray-300 group-hover:text-brand-orange text-xs transition-colors" />
-                                    </div>
-                                    <h3 className="font-bold text-gray-800 mb-3 line-clamp-3 group-hover:text-brand-indigo transition-colors flex-1">
-                                        {item.title}
-                                    </h3>
-                                    {item.contentSnippet && (
-                                        <p className="text-sm text-gray-500 line-clamp-3 mt-auto">
-                                            {item.contentSnippet.replace(/<[^>]*>?/gm, '')}
-                                        </p>
-                                    )}
-                                </a>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="bg-white p-12 rounded-2xl border border-gray-100 text-center">
-                            <div className="inline-block p-4 rounded-full bg-gray-50 text-gray-300 mb-4">
-                                <FaNewspaper className="text-4xl" />
-                            </div>
-                            <h3 className="text-xl font-medium text-gray-900 mb-2">No news available yet</h3>
-                            <p className="text-gray-500 mb-6">Click refresh if you are an admin, or check back later.</p>
-                            {user && user.role === 'admin' && (
-                                <button onClick={handleRefreshNews} className="text-brand-blue font-medium hover:underline">Fetch News Now</button>
-                            )}
-                        </div>
-                    )}
                 </div>
 
             </div>

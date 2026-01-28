@@ -11,6 +11,9 @@ const TestPrepExamsSection = () => {
     ];
 
     const getLink = (exam) => {
+        if (exam === "JEE Main") {
+            return "/exams/jee-main";
+        }
         const slug = exam.toLowerCase().replace(/ /g, '-');
         // Default to engineering prep if generic
         return `/test-prep/engineering/${slug}/preparation`; 

@@ -146,26 +146,26 @@ export const testPrepData = [
     titles: { col1: 'Exam Prep', col2: 'Mock Tests', col3_1: 'Previous Papers', col3_2: 'Resources' },
     content: {
       exams: [
-        { title: 'JEE Main Preparation', href: '/test-prep/engineering/jee-main/preparation' },
+        { title: 'JEE Main Preparation', href: '/exams/jee-main' },
         { title: 'JEE Advanced Preparation', href: '/test-prep/engineering/jee-advanced/preparation' },
         { title: 'BITSAT Preparation', href: '/test-prep/engineering/bitsat/preparation' },
         { title: 'VITEEE Preparation', href: '/test-prep/engineering/viteee/preparation' }
       ],
       colleges: [
-        { title: 'JEE Main Mock Test', href: '/test-prep/engineering/jee-main/mock-test' },
+        { title: 'JEE Main Mock Test', href: '/exams/jee-main?tab=mock-test' },
         { title: 'JEE Advanced Mock Test', href: '/test-prep/engineering/jee-advanced/mock-test' },
         { title: 'BITSAT Mock Test', href: '/test-prep/engineering/bitsat/mock-test' },
         { title: 'VITEEE Mock Test', href: '/test-prep/engineering/viteee/mock-test' }
       ],
       predictors: [
-        { title: 'JEE Main 2025 Paper', href: '/test-prep/engineering/jee-main/previous-paper' },
+        { title: 'JEE Main 2025 Paper', href: '/exams/jee-main?tab=previous-papers' },
         { title: 'JEE Advanced 2024 Paper', href: '/test-prep/engineering/jee-advanced/previous-paper' },
         { title: 'BITSAT Previous Papers', href: '/test-prep/engineering/bitsat/previous-paper' }
       ],
       resources: [
-        { title: 'Engineering Study Material', href: '/test-prep/engineering/jee-main/resource' },
-        { title: 'Toppers Strategy', href: '/test-prep/engineering/jee-main/resource' },
-        { title: 'Important Topics', href: '/test-prep/engineering/jee-main/resource' }
+        { title: 'Engineering Study Material', href: '/exams/jee-main?tab=resources' },
+        { title: 'Toppers Strategy', href: '/exams/jee-main?tab=resources' },
+        { title: 'Important Topics', href: '/exams/jee-main?tab=resources' }
       ]
     }
   },
@@ -1341,7 +1341,6 @@ export const counsellingData = [
 
 export const navLinks = [
   { title: 'Browse by Stream', href: '#', hasDropdown: true },
-  { title: 'Test Prep', href: '#', hasDropdown: true },
   { title: 'Colleges', href: '/colleges', hasDropdown: true },
   { title: 'Exams', href: '#', hasDropdown: true },
   { title: 'Courses', href: '/courses', hasDropdown: true },

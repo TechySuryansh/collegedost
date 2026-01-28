@@ -48,7 +48,7 @@ const TestPrepViewPage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20 pb-12">
+        <div className="min-h-screen bg-gray-50 pt-28 pb-12">
             <Helmet>
                 <title>{`${data.title} | Collegedost`}</title>
                 <meta name="description" content={data.metaDescription} />
@@ -59,7 +59,7 @@ const TestPrepViewPage = () => {
                 <div className="container mx-auto px-4 py-4">
                     <Link 
                         to={`/test-prep/${data.stream.toLowerCase()}/${data.exam.toLowerCase().replace(/ /g, '-')}/${data.type.toLowerCase()}`}
-                        className="inline-flex items-center text-gray-500 hover:text-brand-blue transition text-sm font-medium"
+                        className="inline-flex items-center text-brand-blue font-bold hover:underline transition"
                     >
                         <FaArrowLeft className="mr-2" /> Back to {data.exam} {data.type}
                     </Link>
