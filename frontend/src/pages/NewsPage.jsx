@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { Link } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaTag, FaArrowRight } from 'react-icons/fa';
 
@@ -14,7 +14,7 @@ const NewsPage = () => {
 
     const fetchArticles = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`);
+            const res = await api.get('/articles');
             if (res.data.success && Array.isArray(res.data.data)) {
                 setArticles(res.data.data);
             } else {

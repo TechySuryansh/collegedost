@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaCalendarAlt, FaUser, FaTag, FaFacebook, FaTwitter, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import SEO from '../components/SEO';
 
@@ -14,13 +14,13 @@ const NewsDetailPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch Current Article
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles/${slug}`);
+                const res = await api.get(`/articles/${slug}`);
                 if (res.data.success) {
                     setArticle(res.data.data);
                 }
 
                 // Fetch Latest News for Sidebar
-                const newsRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`);
+                const newsRes = await api.get('/articles');
                 if (newsRes.data.success) {
                     // Filter out current article and take top 5
                     const otherNews = newsRes.data.data.filter(item => item.slug !== slug).slice(0, 5);
