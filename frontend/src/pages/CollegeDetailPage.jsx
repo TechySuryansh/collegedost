@@ -86,9 +86,9 @@ const CollegeDetailPage = () => {
                 </div>
 
                 <div className="container mx-auto px-4 relative pb-6">
-                    <div className="flex flex-col md:flex-row items-end -mt-16 gap-6">
-                         {/* Logo */}
-                         <div className="w-32 h-32 md:w-40 md:h-40 bg-white rounded-2xl shadow-xl border-4 border-white flex items-center justify-center overflow-hidden flex-shrink-0 z-10">
+                    <div className="flex flex-col md:flex-row items-end gap-6">
+                         {/* Logo - Pulled up to overlap banner */}
+                         <div className="-mt-16 md:-mt-20 w-32 h-32 md:w-40 md:h-40 bg-white rounded-2xl shadow-xl border-4 border-white flex items-center justify-center overflow-hidden flex-shrink-0 z-10 relative">
                              {college.logo ? (
                                  <img src={college.logo} alt="Logo" className="w-full h-full object-contain p-2" />
                              ) : (
@@ -96,19 +96,19 @@ const CollegeDetailPage = () => {
                              )}
                          </div>
 
-                         {/* Info */}
-                         <div className="flex-1 text-white md:text-gray-900 md:mb-2 z-0">
-                             <h1 className="text-2xl md:text-4xl font-bold leading-tight drop-shadow-md md:drop-shadow-none text-white md:text-gray-900">{college.name}</h1>
-                             <div className="flex flex-wrap gap-4 mt-2 text-sm md:text-base font-medium text-gray-100 md:text-gray-600">
-                                 <span className="flex items-center gap-1"><FaMapMarkerAlt /> {college.location?.city}, {college.location?.state}</span>
-                                 <span className="flex items-center gap-1"><FaBuilding /> {college.type}</span>
+                         {/* Info - Stays in white area */}
+                         <div className="flex-1 text-gray-900 md:mb-4 z-0">
+                             <h1 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900">{college.name}</h1>
+                             <div className="flex flex-wrap gap-4 mt-2 text-sm font-medium text-gray-600">
+                                 <span className="flex items-center gap-1"><FaMapMarkerAlt className="text-gray-400" /> {college.location?.city ? `${college.location.city}, ` : ''}{college.location?.state}</span>
+                                 <span className="flex items-center gap-1"><FaBuilding className="text-gray-400" /> {college.type}</span>
                                  {college.estYear && <span className="flex items-center gap-1">Est. {college.estYear}</span>}
                                  {college.accreditation && <span className="bg-yellow-100 text-yellow-800 px-2 rounded text-xs py-0.5 border border-yellow-200">NAAC {college.accreditation.grade}</span>}
                              </div>
                          </div>
 
                          {/* CTA Buttons */}
-                         <div className="flex gap-3 mt-4 md:mt-0 md:mb-3 w-full md:w-auto">
+                         <div className="flex gap-3 mt-4 md:mt-0 md:mb-4 w-full md:w-auto">
                              <button className="flex-1 md:flex-none px-6 py-2.5 bg-brand-orange text-white font-bold rounded-lg shadow-lg hover:bg-orange-600 transition active:scale-95 text-center">
                                  Apply Now
                              </button>
