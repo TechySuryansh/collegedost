@@ -77,9 +77,20 @@ const AdminDashboard = () => {
 
     return (
         <AdminLayout>
-            <div className="mb-8">
-                <h2 className="text-2xl font-bold text-gray-800">Dashboard Overview</h2>
-                <p className="text-gray-500">Welcome back, Admin.</p>
+            <div className="mb-8 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h2 className="text-2xl font-bold text-gray-800 tracking-tight">Dashboard Overview</h2>
+                    <p className="text-gray-500 text-sm mt-1">Welcome back, Admin. Here's what's happening today.</p>
+                </div>
+                <div className="flex gap-2">
+                     <button 
+                        onClick={handleSync} 
+                        disabled={isSyncing}
+                        className={`flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 text-sm font-medium transition-all ${isSyncing ? 'animate-pulse' : ''}`}
+                     >
+                        <FaSync className={isSyncing ? 'animate-spin' : ''} /> {isSyncing ? 'Syncing...' : 'Sync Data'}
+                     </button>
+                </div>
             </div>
 
             <motion.div 
@@ -92,46 +103,50 @@ const AdminDashboard = () => {
                     <motion.div 
                         key={i} 
                         variants={itemVariants}
-                        className="bg-white rounded-xl shadow-sm p-6 flex items-center gap-4 border border-gray-100 hover:shadow-md transition-shadow cursor-default"
+                        className="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 flex items-start justify-between border border-gray-100 group cursor-default"
                     >
-                        <div className={`w-12 h-12 rounded-lg ${card.color} text-white flex items-center justify-center text-xl shadow-lg shadow-gray-200`}>
-                            <card.icon />
-                        </div>
                         <div>
-                            <p className="text-sm font-medium text-gray-500">{card.title}</p>
-                            <h3 className="text-2xl font-bold text-gray-900">{loading ? '...' : card.value}</h3>
+                            <p className="text-sm font-medium text-gray-500 mb-1">{card.title}</p>
+                            <h3 className="text-3xl font-bold text-gray-900 tracking-tight">{loading ? '...' : card.value}</h3>
+                        </div>
+                        <div className={`w-12 h-12 rounded-xl ${card.color} text-white flex items-center justify-center text-xl shadow-lg shadow-gray-200 group-hover:scale-110 transition-transform`}>
+                            <card.icon />
                         </div>
                     </motion.div>
                 ))}
             </motion.div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <motion.div 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+                    className="lg:col-span-2 bg-white p-6 rounded-2xl shadow-sm border border-gray-100"
                 >
-                    <h3 className="font-bold text-lg mb-4 text-gray-800">Recent Users</h3>
-                    <div className="flex flex-col gap-4">
-                        {loading ? <p>Loading users...</p> : (
+                    <div className="flex items-center justify-between mb-6">
+                        <h3 className="font-bold text-lg text-gray-800">Recent Users</h3>
+                        <Link to="/admin/users" className="text-sm text-brand-blue hover:text-blue-700 font-medium hover:underline">View All</Link>
+                    </div>
+                    
+                    <div className="flex flex-col gap-3">
+                        {loading ? <p className="text-gray-500 text-sm text-center py-4">Loading users...</p> : (
                             recentUsers.length > 0 ? (
                                 recentUsers.map((user) => (
-                                    <div key={user._id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-500">
-                                            <FaUserGraduate />
+                                    <div key={user._id} className="flex items-center gap-4 p-4 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100 group">
+                                        <div className="w-10 h-10 rounded-full bg-brand-light text-brand-blue flex items-center justify-center text-sm font-bold shadow-sm group-hover:scale-110 transition-transform">
+                                            {user.name ? user.name[0].toUpperCase() : <FaUserGraduate />}
                                         </div>
-                                        <div className="overflow-hidden">
+                                        <div className="overflow-hidden flex-1">
                                             <p className="font-bold text-sm text-gray-900 truncate">{user.name}</p>
                                             <p className="text-xs text-gray-500 truncate">{user.email}</p>
                                         </div>
-                                        <span className={`ml-auto text-xs font-bold px-2 py-1 rounded ${user.role === 'admin' ? 'bg-purple-100 text-purple-700' : 'bg-green-50 text-green-600'}`}>
+                                        <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wide ${user.role === 'admin' ? 'bg-purple-50 text-purple-700 border border-purple-100' : 'bg-green-50 text-green-700 border border-green-100'}`}>
                                             {user.role || 'user'}
                                         </span>
                                     </div>
                                 ))
                             ) : (
-                                <p className="text-gray-500 text-sm">No recent users found.</p>
+                                <p className="text-gray-500 text-sm text-center py-8 bg-gray-50 rounded-lg border border-dashed border-gray-200">No recent users found.</p>
                             )
                         )}
                     </div>
@@ -141,23 +156,37 @@ const AdminDashboard = () => {
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
-                    className="bg-white p-6 rounded-xl shadow-sm border border-gray-100"
+                    className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-fit"
                  >
-                    <h3 className="font-bold text-lg mb-4 text-gray-800">Quick Actions</h3>
-                    <div className="grid grid-cols-2 gap-4">
-                        <Link to="/admin/colleges/new" className="p-4 bg-brand-light border border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-brand-blue hover:text-brand-blue transition-all group">
-                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                <FaUniversity className="text-xl text-brand-blue" />
+                    <h3 className="font-bold text-lg mb-6 text-gray-800">Quick Actions</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
+                        <Link to="/admin/colleges/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-brand-blue group-hover:scale-110 transition-transform">
+                                <FaUniversity className="text-lg" />
                              </div>
-                             <span className="text-sm font-bold">Add College</span>
-                        </Link>
-                         <Link to="/admin/articles/new" className="p-4 bg-brand-light border border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-brand-blue hover:text-brand-blue transition-all group">
-                             <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                <FaNewspaper className="text-xl text-brand-blue" />
+                             <div>
+                                 <h4 className="text-sm font-bold text-gray-800 group-hover:text-brand-blue transition-colors">Add College</h4>
+                                 <p className="text-xs text-gray-500">Create a new college listing</p>
                              </div>
-                             <span className="text-sm font-bold">Post Article</span>
                         </Link>
-
+                         <Link to="/admin/articles/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-orange-500 group-hover:scale-110 transition-transform">
+                                <FaNewspaper className="text-lg" />
+                             </div>
+                             <div>
+                                 <h4 className="text-sm font-bold text-gray-800 group-hover:text-brand-blue transition-colors">Post Article</h4>
+                                 <p className="text-xs text-gray-500">Publish news or updates</p>
+                             </div>
+                        </Link>
+                         <button onClick={handleSync} className="w-full p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group text-left">
+                             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-green-500 group-hover:scale-110 transition-transform">
+                                <FaSync className={`text-lg ${isSyncing ? 'animate-spin' : ''}`} />
+                             </div>
+                             <div>
+                                 <h4 className="text-sm font-bold text-gray-800 group-hover:text-brand-blue transition-colors">Sync Data</h4>
+                                 <p className="text-xs text-gray-500">Refresh content from ingestion</p>
+                             </div>
+                        </button>
                     </div>
                 </motion.div>
             </div>

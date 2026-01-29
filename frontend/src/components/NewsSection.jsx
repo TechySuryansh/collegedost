@@ -11,7 +11,7 @@ const NewsSection = ({ items = [] }) => {
           <FaBolt className="animate-pulse" /> LATEST UPDATES
         </div>
         <div className="flex-1 overflow-hidden relative">
-          <div className="flex gap-12 animate-scroll w-max hover:paused">
+          <div className="flex gap-4 animate-scroll w-max hover:paused">
             {[...newsList, ...newsList].map((news, idx) => (
               <Link to={news.slug ? `/news/${news.slug}` : '#'} key={idx} className="text-sm text-gray-400 font-medium flex items-center gap-3 hover:text-white transition-colors whitespace-nowrap">
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-cyan"></span>

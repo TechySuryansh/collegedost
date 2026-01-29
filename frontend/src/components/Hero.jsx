@@ -67,7 +67,7 @@ const Hero = ({
   };
 
   return (
-    <section className="relative min-h-[850px] flex items-center justify-center text-center text-white overflow-visible mb-20 pt-20 bg-brand-deep-bg">
+    <section className="relative min-h-[850px] flex items-center justify-center text-center text-white overflow-visible pt-20 bg-brand-deep-bg">
        
        {/* Premium Gradient Background */}
        <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0f172a] z-0 overflow-hidden"></div>

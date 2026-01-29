@@ -60,10 +60,19 @@ import AdminRoute from './components/AdminRoute';
 
 import { useAuth } from './context/AuthContext';
 
+import { motion, useScroll, useSpring } from 'framer-motion';
+
 function App() {
   const [isAskModalOpen, setIsAskModalOpen] = useState(false);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-  const { isAuthModalOpen, openAuthModal, closeAuthModal } = useAuth(); // Use Context
+  const { isAuthModalOpen, openAuthModal, closeAuthModal } = useAuth();
+  
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
 
   // Simple loading spinner
   const LoadingFallback = () => (
@@ -75,7 +84,13 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
-        <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans">
+        <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans relative">
+           {/* Global Scroll Progress Bar */}
+           <motion.div
+              className="fixed top-0 left-0 right-0 h-1 bg-brand-orange origin-left z-[100]"
+              style={{ scaleX }}
+            />
+
           <Navbar
             onOpenAskModal={() => setIsAskModalOpen(true)}
             onOpenShareModal={() => setIsShareModalOpen(true)}

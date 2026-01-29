@@ -73,8 +73,8 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isAdminMode ? 'bg-gray-900 border-b border-gray-800' : (scrolled ? 'glass' : 'bg-white/90 backdrop-blur-md')}`}>
-      <div className={`py-3 ${isAdminMode ? 'bg-gray-900 text-white' : 'bg-white'}`}>
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isAdminMode ? 'bg-slate-900 border-b border-slate-800 shadow-md' : (scrolled ? 'glass' : 'bg-white/90 backdrop-blur-md')}`}>
+      <div className={`py-3 transition-colors duration-300 ${isAdminMode ? 'bg-slate-900 text-white' : 'bg-white'}`}>
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             {/* Mobile Menu Toggle */}
@@ -87,13 +87,17 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
 
             <Link to={isAdminMode ? "/" : "/"} className="flex items-center gap-3">
               {isAdminMode ? (
-                  <div className="flex items-center gap-3 group">
-                      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-gray-800 text-gray-400 group-hover:bg-brand-orange group-hover:text-white transition-all">
-                          <FaArrowLeft />
+                  <div className="flex items-center gap-4 group">
+                      <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
+                           <FaUserShield className="text-lg" />
                       </div>
                       <div className="flex flex-col">
-                          <span className="font-heading font-bold text-xl text-white leading-tight tracking-tight">Admin Panel</span>
-                          <span className="text-[10px] text-gray-400 font-medium uppercase tracking-wider group-hover:text-brand-orange transition-colors">Back to Site</span>
+                          <span className="font-heading font-bold text-xl text-white leading-tight tracking-tight flex items-center gap-2">
+                            Admin <span className="px-1.5 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 border border-slate-700 font-mono">PANEL</span>
+                          </span>
+                          <span className="text-[10px] text-slate-400 font-medium tracking-wider group-hover:text-indigo-400 transition-colors flex items-center gap-1">
+                             <FaArrowLeft className="text-[8px]" /> Back to Main Site
+                          </span>
                       </div>
                   </div>
               ) : (
@@ -133,13 +137,23 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                 <div className="relative">
                     <button 
                         onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-                        className="flex items-center gap-2 bg-white border border-gray-200 px-3 py-1.5 rounded-full hover:bg-gray-50 transition-colors"
+                        className={`flex items-center gap-2 border px-3 py-1.5 rounded-full transition-all duration-200 ${
+                            isAdminMode 
+                            ? 'bg-slate-800 border-slate-700 text-slate-200 hover:bg-slate-700 hover:border-slate-600' 
+                            : 'bg-white border-gray-200 text-gray-700 hover:bg-gray-50'
+                        }`}
                     >
-                        <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shadow-sm ${
+                            isAdminMode 
+                            ? 'bg-indigo-600 text-white' 
+                            : 'bg-brand-blue text-white'
+                        }`}>
                             {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                         </div>
-                        <span className="text-sm font-medium text-gray-700 hidden md:block max-w-[100px] truncate">{user.name}</span>
-                        <FaChevronDown className="text-xs text-gray-400" />
+                        <span className={`text-sm font-medium hidden md:block max-w-[100px] truncate ${isAdminMode ? 'text-slate-200' : 'text-gray-700'}`}>
+                            {user.name}
+                        </span>
+                        <FaChevronDown className={`text-xs ${isAdminMode ? 'text-slate-400' : 'text-gray-400'}`} />
                     </button>
 
                     {/* Dropdown */}
@@ -151,23 +165,42 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: 10 }}
-                                className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-100 py-2 z-50 origin-top-right"
+                                className={`absolute right-0 mt-2 w-56 rounded-xl shadow-xl border py-2 z-50 origin-top-right overflow-hidden ${
+                                    isAdminMode 
+                                    ? 'bg-slate-800 border-slate-700 text-slate-200' 
+                                    : 'bg-white border-gray-100 text-gray-700'
+                                }`}
                             >
-                                <div className="px-4 py-3 border-b border-gray-100">
-                                    <p className="text-sm font-bold text-gray-900 truncate">{user.name}</p>
-                                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
+                                <div className={`px-4 py-3 border-b ${isAdminMode ? 'border-slate-700' : 'border-gray-100'}`}>
+                                    <p className={`text-sm font-bold truncate ${isAdminMode ? 'text-white' : 'text-gray-900'}`}>{user.name}</p>
+                                    <p className={`text-xs truncate ${isAdminMode ? 'text-slate-400' : 'text-gray-500'}`}>{user.email}</p>
                                 </div>
-                                <a href="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-orange transition-colors">
+                                
+                                <a href="/profile" className={`block px-4 py-2.5 text-sm transition-colors ${
+                                    isAdminMode 
+                                    ? 'hover:bg-slate-700 hover:text-white text-slate-300' 
+                                    : 'hover:bg-gray-50 hover:text-brand-orange text-gray-700'
+                                }`}>
                                     Profile Settings
                                 </a>
+                                
                                 {user.role === 'admin' && (
-                                    <Link to="/admin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-brand-orange transition-colors">
+                                    <Link to="/admin" className={`block px-4 py-2.5 text-sm transition-colors ${
+                                        isAdminMode 
+                                        ? 'hover:bg-slate-700 hover:text-white text-slate-300' 
+                                        : 'hover:bg-gray-50 hover:text-brand-orange text-gray-700'
+                                    }`}>
                                         Admin Panel
                                     </Link>
                                 )}
+                                
                                 <button 
                                     onClick={handleLogout}
-                                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                                    className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                                        isAdminMode 
+                                        ? 'text-red-400 hover:bg-slate-700 hover:text-red-300' 
+                                        : 'text-red-600 hover:bg-red-50'
+                                    }`}
                                 >
                                     Logout
                                 </button>
@@ -182,23 +215,37 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
         </div>
       </div>
 
-      <div className={`relative h-[52px] hidden lg:block ${isAdminMode ? 'bg-gray-800 border-t border-gray-700' : 'bg-white'}`}>
+      <div className={`relative h-[56px] hidden lg:block ${isAdminMode ? 'bg-slate-800/50 backdrop-blur-sm border-t border-slate-700/50' : 'bg-white'}`}>
         <div className="container mx-auto px-4 h-full flex items-center justify-center relative">
           <ul className="flex items-center gap-1 h-full">
             {isAdminMode ? (
                 // ADMIN LINKS
-                adminLinks.map((link, index) => (
-                    <li key={index} className="h-full">
-                        <Link to={link.href} className={`flex items-center gap-2 h-full px-4 text-sm font-medium border-b-2 border-transparent transition-all duration-200 ${
-                            (link.href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(link.href))
-                            ? 'text-brand-orange border-brand-orange bg-gray-900/30' 
-                            : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
-                        }`}>
-                            <link.icon className="text-lg" />
-                            {link.title}
-                        </Link>
-                    </li>
-                ))
+                adminLinks.map((link, index) => {
+                    const isActive = (link.href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(link.href));
+                    return (
+                        <li key={index} className="h-full relative">
+                            <Link to={link.href} className={`flex items-center gap-2 h-full px-5 text-sm font-medium transition-all duration-300 relative z-10 ${
+                                isActive
+                                ? 'text-white' 
+                                : 'text-slate-400 hover:text-white'
+                            }`}>
+                                <link.icon className={`text-lg transition-transform duration-300 ${isActive ? 'scale-110 text-indigo-400' : 'group-hover:text-indigo-300'}`} />
+                                {link.title}
+                            </Link>
+                            {isActive && (
+                                <motion.div 
+                                    layoutId="adminNavIndicator"
+                                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-500 shadow-[0_-2px_8px_rgba(99,102,241,0.5)]"
+                                    initial={false}
+                                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                />
+                            )}
+                            {isActive && (
+                                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-800/50 pointer-events-none" />
+                            )}
+                        </li>
+                    );
+                })
             ) : (
                 // PUBLIC LINKS
                 navLinks.map((link, index) => (
@@ -526,7 +573,9 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
                     <div className="w-8 h-8 flex items-center justify-center rounded-lg bg-brand-orange text-white font-bold text-xs shadow-md shadow-orange-500/20">
                         CD
                     </div>
-                    <span className="font-heading font-bold text-xl text-gray-800 tracking-tight">CollegeDost</span>
+                    <span className="font-heading font-bold text-xl text-gray-800 tracking-tight">
+                        {isAdminMode ? 'Admin Panel' : 'CollegeDost'}
+                    </span>
                  </div>
                  <button 
                    onClick={() => setIsMobileMenuOpen(false)}
@@ -543,13 +592,19 @@ const Navbar = ({ onOpenAskModal, onOpenShareModal, onOpenAuthModal }) => {
 
                 {/* 3. Categories List */}
                 <div>
-                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">Browse Categories</h4>
+                   <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 px-1">
+                       {isAdminMode ? 'Menu' : 'Browse Categories'}
+                   </h4>
                    <div className="flex flex-col pb-24">
-                      {[
+                      {(isAdminMode ? adminLinks.map(link => ({
+                          name: link.title,
+                          link: link.href,
+                          icon: link.icon
+                      })) : [
                         { name: 'Browse by Stream', data: browseByStreamData, icon: FaTh },
                         { name: 'Colleges', data: collegesData, icon: FaUniversity },
                         { name: 'News', link: '/news', icon: FaNewspaper },
-                      ].map((section, idx) => {
+                      ]).map((section, idx) => {
                          const isSectionExpanded = expandedSection === section.name;
                          
                          return (

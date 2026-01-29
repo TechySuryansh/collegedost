@@ -9,6 +9,48 @@ const iconMap = {
   FaUsers: FaUsers
 };
 
+const Counter = ({ value, label, duration = 2 }) => {
+    const [count, setCount] = React.useState(0);
+    const nodeRef = React.useRef(null);
+    const isInView = React.useInView(nodeRef, { once: true, margin: "-50px" });
+  
+    React.useEffect(() => {
+      if (isInView) {
+        let start = 0;
+        const end = parseInt(value.replace(/,/g, ''), 10); // Parse "23,000+" to 23000
+        if (isNaN(end)) return; // Handle non-numeric gracefully if needed
+  
+        const totalDuration = duration * 1000;
+        const incrementTime = totalDuration / end;
+        
+        let currentTimer;
+        // Optimize for large numbers: large steps for large numbers
+        const step = Math.max(1, Math.floor(end / (totalDuration / 16))); // 16ms frame
+        
+        const timer = setInterval(() => {
+          start += step;
+          if (start >= end) {
+            setCount(end);
+            clearInterval(timer);
+          } else {
+            setCount(start);
+          }
+        }, 16);
+  
+        return () => clearInterval(timer);
+      }
+    }, [isInView, value, duration]);
+  
+    return (
+      <div ref={nodeRef} className="flex flex-col items-center">
+         <h3 className="text-4xl md:text-5xl font-bold leading-none mb-2 text-white font-heading tracking-tight">
+             {isInView ? (isNaN(parseInt(value)) ? value : count.toLocaleString() + (value.includes('+') ? '+' : '')) : '0'}
+         </h3>
+         <p className="text-xs md:text-sm text-blue-200 uppercase tracking-widest font-semibold group-hover:text-white transition-colors">{label}</p>
+      </div>
+    );
+};
+
 const StatsSection = ({ items }) => {
   return (
     <section className="relative py-16 mb-20 overflow-hidden">
@@ -32,16 +74,13 @@ const StatsSection = ({ items }) => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="flex flex-col items-center justify-center text-center gap-4 group"
+                  whileHover={{ y: -5, scale: 1.05 }}
+                  className="flex flex-col items-center justify-center text-center gap-4 group cursor-default"
                 >
-                  <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl text-brand-orange shadow-lg shadow-black/10 group-hover:bg-white group-hover:text-brand-indigo transition-all duration-300 backdrop-blur-sm border border-white/10">
+                  <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl text-brand-orange shadow-lg shadow-black/10 group-hover:bg-white group-hover:text-brand-indigo transition-all duration-300 backdrop-blur-sm border border-white/10 group-hover:rotate-6">
                     <Icon />
                   </div>
-                  <div>
-                    <h3 className="text-4xl md:text-5xl font-bold leading-none mb-2 text-white font-heading tracking-tight">{item.count}</h3>
-                    <p className="text-xs md:text-sm text-blue-200 uppercase tracking-widest font-semibold group-hover:text-white transition-colors">{item.label}</p>
-                  </div>
+                  <Counter value={item.count} label={item.label} />
                 </motion.div>
               );
             })}

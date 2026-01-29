@@ -31,7 +31,7 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.05, duration: 0.5 }}
+              transition={{ delay: index * 0.05, duration: 0.5, type: "spring", stiffness: 50 }}
               className="h-full"
             >
               {type === 'category' ? (
@@ -39,8 +39,9 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                   const Component = item.link ? Link : 'div';
                   const props = item.link ? { to: item.link } : {};
                   return (
+                    <motion.div whileHover={{ y: -8, scale: 1.02 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="h-full">
                     <Component 
-                      className="glass-card rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer"
+                      className="glass-card rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer border border-white/40 shadow-sm hover:shadow-xl transition-shadow duration-300"
                       style={{ '--hover-color': item.color }}
                       {...props}
                     >
@@ -51,7 +52,7 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                       <div className="absolute inset-0 border-2 border-transparent group-hover:border-[var(--hover-color)]/30 rounded-2xl transition-colors duration-300 pointer-events-none z-10"></div>
                       
                       <div 
-                        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm relative z-10 bg-white" 
+                        className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 shadow-sm relative z-10 bg-white" 
                         style={{ color: item.color, boxShadow: `0 10px 30px -10px ${item.color}40` }}
                       >
                         <item.icon />
@@ -64,10 +65,12 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                          <FaArrowRight className="text-[var(--hover-color)]/50 text-sm" />
                       </div>
                     </Component>
+                    </motion.div>
                   );
                 })()
               ) : (
-                <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-lg hover:shadow-premium-hover transition-all duration-300 hover:-translate-y-2 group border border-gray-100">
+                <motion.div whileHover={{ y: -10 }} transition={{ type: "spring", stiffness: 300, damping: 20 }} className="h-full">
+                <div className="bg-white rounded-2xl overflow-hidden h-full flex flex-col shadow-md hover:shadow-2xl transition-shadow duration-300 group border border-gray-100 relative">
                   <div className="p-5 flex gap-4 items-start relative">
                     {/* Background Pattern */}
                     <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 to-transparent opacity-50"></div>
@@ -77,7 +80,7 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                     </div>
                     <div className="relative z-10 flex-1 min-w-0">
                       <h3 className="text-base font-bold mb-2 text-gray-900 line-clamp-2 leading-tight group-hover:text-brand-indigo transition-colors font-heading">
-                          <Link to={item.link || '#'}>{item.name}</Link>
+                          <Link to={item.link || '#'} className="before:absolute before:inset-0">{item.name}</Link>
                       </h3>
                       <div className="text-xs flex items-center gap-1.5 text-gray-500 font-medium">
                         <FaMapMarkerAlt className="text-brand-orange/80" /> <span className="truncate">{item.location}</span>
@@ -88,8 +91,8 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                     </span>
                   </div>
                   
-                  <div className="px-5 pb-5 flex-1 flex flex-col relative z-10">
-                    <div className="flex justify-between mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-100 group-hover:border-brand-indigo/10 transition-colors">
+                  <div className="px-5 pb-5 flex-1 flex flex-col relative z-20 pointer-events-none">
+                    <div className="flex justify-between mb-5 p-3.5 bg-slate-50 rounded-xl border border-slate-100 group-hover:border-brand-indigo/10 transition-colors pointer-events-auto">
                        <div className="flex flex-col">
                           <span className="text-[9px] uppercase text-gray-400 font-bold tracking-wider mb-1">Total Fees</span>
                           <span className="text-sm font-extrabold text-gray-800">{item.fees}</span>
@@ -100,14 +103,14 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                        </div>
                     </div>
                     
-                    <div className="flex flex-wrap gap-2 mb-auto">
+                    <div className="flex flex-wrap gap-2 mb-auto pointer-events-auto">
                       {item.tags.map(tag => (
                         <span key={tag} className="bg-white text-gray-600 text-[10px] px-2.5 py-1 rounded-full font-semibold border border-gray-200 group-hover:border-brand-indigo/20 transition-colors">{tag}</span>
                       ))}
                     </div>
                   </div>
                   
-                  <div className="p-4 bg-white border-t border-gray-100 flex gap-3 mt-auto relative z-10">
+                  <div className="p-4 bg-white border-t border-gray-100 flex gap-3 mt-auto relative z-20 pointer-events-auto">
                     <button className="flex-1 py-3 rounded-xl text-xs font-bold border border-gray-200 text-gray-600 hover:text-brand-indigo hover:border-brand-indigo hover:bg-indigo-50 transition-all flex items-center justify-center gap-2">
                        <FaDownload /> Brochure
                     </button>
@@ -116,6 +119,7 @@ const Section = ({ title, items, type = 'card', viewAllLink }) => {
                     </Link>
                   </div>
                 </div>
+                </motion.div>
               )}
             </motion.div>
           ))}
