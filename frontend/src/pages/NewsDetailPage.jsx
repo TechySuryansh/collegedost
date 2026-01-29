@@ -7,14 +7,24 @@ import SEO from '../components/SEO';
 const NewsDetailPage = () => {
     const { slug } = useParams();
     const [article, setArticle] = useState(null);
+    const [latestNews, setLatestNews] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchArticle = async () => {
+        const fetchData = async () => {
             try {
+                // Fetch Current Article
                 const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles/${slug}`);
                 if (res.data.success) {
                     setArticle(res.data.data);
+                }
+
+                // Fetch Latest News for Sidebar
+                const newsRes = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`);
+                if (newsRes.data.success) {
+                    // Filter out current article and take top 5
+                    const otherNews = newsRes.data.data.filter(item => item.slug !== slug).slice(0, 5);
+                    setLatestNews(otherNews);
                 }
             } catch (err) {
                 console.error(err);
@@ -22,7 +32,7 @@ const NewsDetailPage = () => {
                 setLoading(false);
             }
         };
-        fetchArticle();
+        fetchData();
     }, [slug]);
 
     if (loading) return <div className="min-h-screen pt-24 flex justify-center"><div className="animate-spin h-10 w-10 border-2 border-brand-blue rounded-full border-t-transparent"></div></div>;
@@ -94,16 +104,20 @@ const NewsDetailPage = () => {
                 <div className="md:w-80 mt-12 md:mt-0 space-y-8">
                     <div className="bg-gray-50 p-6 rounded-xl border border-gray-200">
                         <h3 className="font-bold text-lg mb-4">Latest Updates</h3>
-                        <ul className="space-y-4">
-                            {[1,2,3].map(i => (
-                                <li key={i} className="border-b border-gray-200 last:border-0 pb-4 last:pb-0">
-                                    <Link to="#" className="text-sm font-medium text-gray-800 hover:text-brand-blue hover:underline">
-                                        JEE Main 2026 Registration Date Announced by NTA
-                                    </Link>
-                                    <span className="block text-xs text-gray-500 mt-1">2 hours ago</span>
-                                </li>
-                            ))}
-                        </ul>
+                        {latestNews.length > 0 ? (
+                            <ul className="space-y-4">
+                                {latestNews.map((item) => (
+                                    <li key={item._id} className="border-b border-gray-200 last:border-0 pb-4 last:pb-0">
+                                        <Link to={`/news/${item.slug}`} className="text-sm font-medium text-gray-800 hover:text-brand-blue hover:underline line-clamp-2">
+                                            {item.title}
+                                        </Link>
+                                        <span className="block text-xs text-gray-500 mt-1">{new Date(item.createdAt).toLocaleDateString()}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        ) : (
+                            <p className="text-sm text-gray-500">No other updates found.</p>
+                        )}
                     </div>
                 </div>
 
