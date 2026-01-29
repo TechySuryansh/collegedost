@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { FaPlus, FaTrash, FaLink, FaSave, FaArrowLeft } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const PostArticle = () => {
     const { id } = useParams();
@@ -31,10 +31,7 @@ const PostArticle = () => {
     const fetchArticle = async () => {
         try {
             setLoading(true);
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles/id/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get(`/articles/id/${id}`);
             if (res.data.success) {
                 const article = res.data.data;
                 setFormData({
@@ -88,14 +85,10 @@ const PostArticle = () => {
             
             
             if (isEditMode) {
-                await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles/${id}`, dataToSubmit, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.put(`/articles/${id}`, dataToSubmit);
                 alert('Article updated successfully!');
             } else {
-                await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`, dataToSubmit, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.post('/articles', dataToSubmit);
                 alert('Article posted successfully!');
             }
 

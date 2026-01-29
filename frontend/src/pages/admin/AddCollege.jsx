@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { FaArrowLeft, FaSave, FaUniversity } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const AddCollege = () => {
     const { id } = useParams();
@@ -28,10 +28,7 @@ const AddCollege = () => {
     const fetchCollege = async () => {
         try {
             setLoading(true);
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges/id/${id}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get(`/colleges/id/${id}`);
             if (res.data.success) {
                 const college = res.data.data;
                 setFormData({
@@ -80,14 +77,10 @@ const AddCollege = () => {
             };
             
             if (isEditMode) {
-                 await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges/${id}`, payload, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                 await api.put(`/colleges/${id}`, payload);
                 alert('College updated successfully');
             } else {
-                await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges`, payload, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.post('/colleges', payload);
                 alert('College added successfully');
             }
             

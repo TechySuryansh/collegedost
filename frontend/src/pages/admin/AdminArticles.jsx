@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { Link } from 'react-router-dom';
 import { FaPlus, FaEdit, FaTrash, FaExternalLinkAlt } from 'react-icons/fa';
@@ -15,7 +15,7 @@ const AdminArticles = () => {
 
     const fetchArticles = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles`);
+            const res = await api.get('/articles');
             if (res.data.success) {
                 setArticles(res.data.data);
             }
@@ -30,9 +30,7 @@ const AdminArticles = () => {
         if (window.confirm('Are you sure you want to delete this article?')) {
             try {
                 const token = localStorage.getItem('token');
-                await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/articles/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                await api.delete(`/articles/${id}`);
                 setArticles(articles.filter(a => a._id !== id));
             } catch (error) {
                 console.error('Error deleting article:', error);

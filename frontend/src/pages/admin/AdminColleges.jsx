@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { FaUniversity, FaPlus, FaMapMarkerAlt, FaStar, FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
@@ -24,7 +24,7 @@ const AdminColleges = () => {
     const fetchColleges = async () => {
         setLoading(true);
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges`, {
+            const res = await api.get('/colleges', {
                 params: {
                     search: search,
                     page: page,
@@ -45,10 +45,7 @@ const AdminColleges = () => {
     const handleDelete = async (id) => {
         if(window.confirm('Are you sure you want to delete this college?')) {
              try {
-                 const token = localStorage.getItem('token');
-                 await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                 });
+                  await api.delete(`/colleges/${id}`);
                  setColleges(colleges.filter(c => c._id !== id));
              } catch (error) {
                  console.error('Error deleting college:', error);

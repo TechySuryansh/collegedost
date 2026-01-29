@@ -10,7 +10,6 @@ const Hero = ({
   trending = [
     { text: "JEE Mains College Predictor", link: "/jee-main-predictor" },
     { text: "NEET College Predictor", link: "/predict-colleges?exam=NEET" },
-    { text: "IIT Bombay", link: "/colleges/iit-bombay" },
     { text: "Computer Science", link: "/colleges?branch=Computer Science" }
   ],
   showBadge = true

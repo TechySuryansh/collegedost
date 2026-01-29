@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { FaSearch, FaMapMarkerAlt, FaChevronLeft, FaChevronRight, FaFilter, FaRedo } from 'react-icons/fa';
 
@@ -83,7 +83,7 @@ const CollegesPage = () => {
             params.append('page', page);
             params.append('limit', LIMIT);
 
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges?${params.toString()}`);
+            const res = await api.get(`/colleges?${params.toString()}`);
             if (res.data.success) {
                 setColleges(res.data.data);
                 if(res.data.pagination) {
