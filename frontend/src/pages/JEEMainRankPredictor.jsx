@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaCalculator, FaSortNumericDown, FaChartPie, FaMobileAlt, FaCalendarAlt, FaIdCard, FaShareAlt } from 'react-icons/fa';
 
 const JEEMainRankPredictor = ({ onOpenAuthModal }) => {
@@ -70,7 +70,7 @@ const JEEMainRankPredictor = ({ onOpenAuthModal }) => {
 
             console.log('Sending payload:', payload);
 
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/predictor/jee-main-rank`, payload);
+            const response = await api.post(`/predictor/jee-main-rank`, payload);
             console.log('Response:', response.data);
 
             if (response.data.success) {

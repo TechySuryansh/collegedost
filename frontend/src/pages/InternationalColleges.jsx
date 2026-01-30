@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { useSearchParams } from 'react-router-dom';
 import { FaSearch, FaGlobeAmericas, FaUniversity, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
@@ -28,8 +28,8 @@ const InternationalColleges = () => {
     try {
       setLoading(true);
       // Query specific Country (default USA) + Search Query
-      const url = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges?country=${country}&search=${searchTerm}&page=${page}&limit=${limit}`;
-      const res = await axios.get(url);
+      const url = `/colleges?country=${country}&search=${searchTerm}&page=${page}&limit=${limit}`;
+      const res = await api.get(url);
       
       if (res.data.success) {
         setColleges(res.data.data);

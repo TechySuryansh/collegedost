@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { FaUniversity, FaSearch, FaTrophy, FaMapMarkerAlt, FaFilter, FaCheckCircle, FaExclamationCircle } from 'react-icons/fa';
-import axios from 'axios';
+import api from '../api/axios';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const JEEMainPredictor = ({ onOpenAuthModal }) => {
@@ -57,7 +57,7 @@ const JEEMainPredictor = ({ onOpenAuthModal }) => {
         const rank = Math.floor(calculatedRank);
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/predictor/jee-main`, {
+            const response = await api.post(`/predictor/jee-main`, {
                 rank: rank, // Send calculated rank to backend
                 category,
                 homeState,

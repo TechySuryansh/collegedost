@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaSearch, FaFilter, FaBuilding, FaAward, FaUniversity } from 'react-icons/fa';
 import { Link, useSearchParams } from 'react-router-dom';
 
@@ -23,7 +23,7 @@ const CollegePredictor = () => {
         setSearched(true);
         try {
             const params = new URLSearchParams(formData);
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges/predict?${params.toString()}`);
+            const res = await api.get(`/colleges/predict?${params.toString()}`);
             if (res.data.success) {
                 setResults(res.data.data);
             }

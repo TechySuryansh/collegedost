@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 
 const ProfilePage = () => {
@@ -24,14 +24,11 @@ const ProfilePage = () => {
         setMessage({ type: '', text: '' });
         setLoading(true);
         try {
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-            const res = await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/users/updatedetails`, {
+            const res = await api.put(`/users/updatedetails`, {
                 name,
                 email,
                 currentPassword: currentPasswordForEmail
-            }, config);
+            });
 
             if (res.data.success) {
                 localStorage.setItem('user', JSON.stringify(res.data.user));
@@ -57,13 +54,10 @@ const ProfilePage = () => {
 
         setLoading(true);
         try {
-            const config = {
-                headers: { Authorization: `Bearer ${token}` }
-            };
-            const res = await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/users/updatepassword`, {
+            const res = await api.put(`/users/updatepassword`, {
                 currentPassword,
                 newPassword
-            }, config);
+            });
 
             if (res.data.success) {
                 setMessage({ type: 'success', text: 'Password changed successfully!' });

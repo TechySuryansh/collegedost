@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaLock, FaCheckCircle, FaTimes, FaArrowRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -31,7 +31,7 @@ const ResetPasswordPage = () => {
     setLoading(true);
 
     try {
-      const response = await axios.put(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/auth/reset-password/${token}`, {
+      const response = await api.put(`/auth/reset-password/${token}`, {
         password
       });
 

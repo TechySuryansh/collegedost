@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaSearch, FaChartLine, FaArrowRight, FaMapMarkerAlt, FaUniversity } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 
 const Hero = ({ 
   title = "Empowering Students. Building Futures.",
@@ -26,7 +26,7 @@ const Hero = ({
         if (search.length >= 2) {
             try {
                 // Use full URL or import configured axios instance. Using direct URL for safety in component.
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/colleges/search?q=${search}`);
+                const res = await api.get(`/colleges/search?q=${search}`);
                 if (res.data.success) {
                     setSuggestions(res.data.data);
                     setShowSuggestions(true);

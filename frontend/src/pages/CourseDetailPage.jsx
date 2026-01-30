@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from '../api/axios';
 import { FaGraduationCap, FaClock, FaCheckCircle, FaMoneyBillWave, FaBuilding, FaMapMarkerAlt, FaBriefcase } from 'react-icons/fa';
 
 const CourseDetailPage = () => {
@@ -13,7 +13,7 @@ const CourseDetailPage = () => {
     useEffect(() => {
         const fetchCourse = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/courses/${slug}`);
+                const res = await api.get(`/courses/${slug}`);
                 if (res.data.success) {
                     setCourse(res.data.data);
                     setColleges(res.data.colleges || []);

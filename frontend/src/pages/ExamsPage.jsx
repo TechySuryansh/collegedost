@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { Link, useSearchParams } from 'react-router-dom';
 import { FaSearch, FaUniversity, FaCalendarAlt, FaBookOpen } from 'react-icons/fa';
 
@@ -15,11 +15,11 @@ const ExamsPage = () => {
     useEffect(() => {
         const fetchExams = async () => {
             try {
-                let url = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/exams`;
+                let url = '/exams';
                 if (categoryParam) {
                     url += `?level=${encodeURIComponent(categoryParam)}`;
                 }
-                const res = await axios.get(url);
+                const res = await api.get(url);
                 if (res.data.success) {
                     const fetchedExams = res.data.data;
                     setExams(fetchedExams);

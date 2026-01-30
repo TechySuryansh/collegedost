@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 import AdminLayout from '../../components/admin/AdminLayout';
 import { FaUser, FaTrash, FaUserShield, FaCheckCircle, FaSearch } from 'react-icons/fa';
 import { motion } from 'framer-motion';
@@ -15,10 +15,7 @@ const AdminUsers = () => {
 
     const fetchUsers = async () => {
         try {
-            const token = localStorage.getItem('token');
-            const res = await axios.get(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/users`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get(`/users`);
             if (res.data.success) {
                 setUsers(res.data.data);
             }
@@ -32,10 +29,7 @@ const AdminUsers = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
             try {
-                 const token = localStorage.getItem('token');
-                 await axios.delete(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5001'}/api/users/${id}`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                 });
+                 await api.delete(`/users/${id}`);
                  setUsers(users.filter(u => u._id !== id));
             } catch (error) {
                 console.error('Error deleting user:', error);
