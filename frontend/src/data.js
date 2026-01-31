@@ -255,7 +255,7 @@ export const browseByStreamData = [
       ],
       predictors: [
         { title: 'JEE Main College Predictor', href: '/jee-main-predictor' },
-        { title: 'JEE Main Rank Predictor', href: '/jee-main-rank-predictor' },
+        { title: 'JEE Main Rank Predictor', href: '/jee-rank-predictor' },
         { title: 'MHT CET College Predictor', href: '#' },
         { title: 'AP EAMCET College Predictor', href: '#' },
         { title: 'GATE College Predictor', href: '#' },
@@ -1107,7 +1107,7 @@ export const predictorsData = [
     content: {
       exams: [
         { title: 'JEE Main College Predictor', href: '/jee-main-college-predictor' },
-        { title: 'JEE Main Rank Predictor', href: '/jee-main-rank-predictor' },
+        { title: 'JEE Main Rank Predictor', href: '/jee-rank-predictor' },
         { title: 'JEE Main B.Arch Predictor', href: '#' }
       ],
       colleges: [
@@ -1399,7 +1399,7 @@ export const homePredictorsData = [
   {
     title: "Rank Predictor",
     items: [
-      { name: "JEE Main Rank Predictor", link: "/jee-main-rank-predictor" },
+      { name: "JEE Main Rank Predictor", link: "/jee-rank-predictor" },
       { name: "NEET Rank Predictor", link: "/rank-predictor?exam=NEET" },
       { name: "KCET Rank Predictor", link: "/rank-predictor?exam=KCET" },
       { name: "AP EAMCET Rank Predictor", link: "/rank-predictor?exam=AP+EAMCET" },
