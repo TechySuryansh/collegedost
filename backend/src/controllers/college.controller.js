@@ -263,6 +263,35 @@ exports.getColleges = async (req, res) => {
                     { 'location.state': { $regex: strictRegex } }
                 ]
             });
+
+            // === IIT/NIT/IIIT ABBREVIATION HANDLING ===
+            // If user searches for abbreviations, also search for full names
+            const upperSearch = search.trim().toUpperCase();
+            if (upperSearch === 'IIT' || upperSearch === 'IITS') {
+                conditions[conditions.length - 1].$or.push(
+                    { name: { $regex: /Indian Institute of Technology/i } }
+                );
+            }
+            if (upperSearch === 'NIT' || upperSearch === 'NITS') {
+                conditions[conditions.length - 1].$or.push(
+                    { name: { $regex: /National Institute of Technology/i } }
+                );
+            }
+            if (upperSearch === 'IIIT' || upperSearch === 'IIITS') {
+                conditions[conditions.length - 1].$or.push(
+                    { name: { $regex: /Indian Institute of Information Technology/i } }
+                );
+            }
+            if (upperSearch === 'NLU' || upperSearch === 'NLUS') {
+                conditions[conditions.length - 1].$or.push(
+                    { name: { $regex: /National Law University/i } }
+                );
+            }
+            if (upperSearch === 'AIIMS') {
+                conditions[conditions.length - 1].$or.push(
+                    { name: { $regex: /All India Institute of Medical Sciences/i } }
+                );
+            }
         }
 
         // Combine all conditions
@@ -403,16 +432,37 @@ exports.searchColleges = async (req, res) => {
         const safeSearch = escapeRegex(q.trim());
         const strictRegex = new RegExp(`\\b${safeSearch}`, 'i');
 
+        // Build search conditions
+        let searchConditions = [
+            { name: { $regex: strictRegex } },
+            { type: { $regex: strictRegex } },
+            { aliases: { $in: [strictRegex] } },
+            { 'location.city': { $regex: strictRegex } }
+        ];
+
+        // === IIT/NIT/IIIT ABBREVIATION HANDLING ===
+        const upperQ = q.trim().toUpperCase();
+        if (upperQ === 'IIT' || upperQ === 'IITS') {
+            searchConditions.push({ name: { $regex: /Indian Institute of Technology/i } });
+        }
+        if (upperQ === 'NIT' || upperQ === 'NITS') {
+            searchConditions.push({ name: { $regex: /National Institute of Technology/i } });
+        }
+        if (upperQ === 'IIIT' || upperQ === 'IIITS') {
+            searchConditions.push({ name: { $regex: /Indian Institute of Information Technology/i } });
+        }
+        if (upperQ === 'NLU' || upperQ === 'NLUS') {
+            searchConditions.push({ name: { $regex: /National Law University/i } });
+        }
+        if (upperQ === 'AIIMS') {
+            searchConditions.push({ name: { $regex: /All India Institute of Medical Sciences/i } });
+        }
+
         const colleges = await College.find({
-            $or: [
-                { name: { $regex: strictRegex } },
-                { type: { $regex: strictRegex } },
-                { aliases: { $in: [strictRegex] } },
-                { 'location.city': { $regex: strictRegex } }
-            ]
+            $or: searchConditions
         })
             .select('name slug location.city type nirfRank')
-            .limit(8);
+            .limit(10);
 
         res.status(200).json({ success: true, count: colleges.length, data: colleges });
     } catch (error) {
