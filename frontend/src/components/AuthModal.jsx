@@ -564,11 +564,12 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                             )}
                         </button>
                         
+                        {/* Google Login hidden - can be re-enabled later */}
+                        {/* 
                         <div className="relative flex py-2 items-center justify-center">
                             <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">Or continue with</span>
                         </div>
-
-                         <div className="flex justify-center">
+                        <div className="flex justify-center">
                             <GoogleLogin 
                                 onSuccess={handleGoogleSuccess}
                                 onError={(error) => {
@@ -582,6 +583,7 @@ const AuthModal = ({ isOpen, onClose, initialTab = 'signup' }) => {
                                 text="continue_with"
                             />
                         </div>
+                        */}
                         </>
                         )}
                     </form>
