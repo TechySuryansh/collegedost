@@ -1,31 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { FaGraduationCap, FaSearch, FaBookOpen, FaUserTie } from 'react-icons/fa';
 
 const CoursesPage = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
+    
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-    const [selectedLevel, setSelectedLevel] = useState('All');
+    const [selectedLevel, setSelectedLevel] = useState(searchParams.get('level') || 'All');
 
+    // ===== KEY FIX: Sync URL → State when external navigation occurs =====
     useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const res = await api.get(`/courses`);
-                if (res.data.success) {
-                    setCourses(res.data.data);
-                }
-            } catch (err) {
-                console.error("Failed to fetch courses", err);
-            } finally {
-                setLoading(false);
-            }
-        };
+        const newSearchTerm = searchParams.get('search') || '';
+        const newLevel = searchParams.get('level') || 'All';
+        
+        setSearchTerm(newSearchTerm);
+        setSelectedLevel(newLevel);
+        fetchCourses(); // Refetch on navigation
+    }, [location.search, location.pathname]);
 
+    // Initial fetch
+    useEffect(() => {
         fetchCourses();
     }, []);
+
+    const fetchCourses = async () => {
+        setLoading(true);
+        try {
+            const res = await api.get(`/courses`);
+            if (res.data.success) {
+                setCourses(res.data.data);
+            }
+        } catch (err) {
+            console.error("Failed to fetch courses", err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const filteredCourses = courses.filter(course => {
         const matchesSearch = course.courseName.toLowerCase().includes(searchTerm.toLowerCase()) || 

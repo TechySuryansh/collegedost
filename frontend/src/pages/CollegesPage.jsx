@@ -1,13 +1,30 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import api from '../api/axios';
-import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate, useLocation } from 'react-router-dom';
 import { FaSearch, FaMapMarkerAlt, FaChevronLeft, FaChevronRight, FaFilter, FaRedo } from 'react-icons/fa';
+
+// Helper function to parse URL params into filter state
+const parseFiltersFromParams = (searchParams) => ({
+    search: searchParams.get('search') || '',
+    state: searchParams.get('state') ? searchParams.get('state').split(',') : [],
+    city: searchParams.get('city') || '',
+    type: searchParams.get('type') || '',
+    stream: searchParams.get('stream') ? searchParams.get('stream').split(',') : [],
+    degree: searchParams.get('degree') ? searchParams.get('degree').split(',') : [],
+    targetYear: searchParams.get('targetYear') ? searchParams.get('targetYear').split(',') : [],
+    goal: searchParams.get('goal') ? searchParams.get('goal').split(',') : [],
+    sort: searchParams.get('sort') || 'nirfRank'
+});
 
 const CollegesPage = () => {
     const [colleges, setColleges] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
+    const location = useLocation();
+    
+    // Track if the URL change is internal (from setFilters) or external (from navigation)
+    const isInternalUpdate = useRef(false);
     
     // Pagination State
     const [page, setPage] = useState(1);
@@ -18,17 +35,7 @@ const CollegesPage = () => {
 
     // Filter Logic: We use array based filters for checkboxes to support multiple selections
     // URL params will be comma separated strings
-    const [filters, setFilters] = useState({
-        search: searchParams.get('search') || '',
-        state: searchParams.get('state') ? searchParams.get('state').split(',') : [],
-        city: searchParams.get('city') || '',
-        type: searchParams.get('type') || '',
-        stream: searchParams.get('stream') ? searchParams.get('stream').split(',') : [],
-        degree: searchParams.get('degree') ? searchParams.get('degree').split(',') : [],
-        targetYear: searchParams.get('targetYear') ? searchParams.get('targetYear').split(',') : [],
-        goal: searchParams.get('goal') ? searchParams.get('goal').split(',') : [],
-        sort: 'nirfRank'
-    });
+    const [filters, setFilters] = useState(() => parseFiltersFromParams(searchParams));
 
     // Checkbox Options Data
     const streamsList = ["Engineering And Architecture", "Management And Business Administration", "Medicine And Allied Sciences", "Law", "Animation And Design", "Arts And Humanities", "Science", "Commerce"];
@@ -54,8 +61,36 @@ const CollegesPage = () => {
         }
     };
 
-    // Fetch on Filters or Page Change
+    // ===== KEY FIX: Sync URL → State when external navigation occurs =====
+    // This effect detects when URL params change from external navigation (navbar links)
+    // and reinitializes the filter state accordingly
     useEffect(() => {
+        // Skip if this was an internal update (from setFilters)
+        if (isInternalUpdate.current) {
+            isInternalUpdate.current = false;
+            return;
+        }
+
+        // Parse new filters from URL
+        const newFilters = parseFiltersFromParams(searchParams);
+        
+        // Update filter state from URL
+        setFilters(newFilters);
+        setQuery(newFilters.search);
+        setPage(1); // Reset to page 1 on navigation
+        
+        // Clear filter search terms
+        setSearchTermStream("");
+        setSearchTermDegree("");
+        setSearchTermState("");
+        
+    }, [location.search]); // Triggered when URL query string changes
+
+    // Fetch on Filters or Page Change (State → URL sync)
+    useEffect(() => {
+        // Mark that we're making an internal URL update
+        isInternalUpdate.current = true;
+        
         // Sync URL with state
         const params = {};
         if (filters.search) params.search = filters.search;
@@ -66,13 +101,9 @@ const CollegesPage = () => {
         if (filters.degree.length) params.degree = filters.degree.join(',');
         if (filters.targetYear.length) params.targetYear = filters.targetYear.join(',');
         if (filters.goal.length) params.goal = filters.goal.join(',');
-        if (filters.sort) params.sort = filters.sort;
+        if (filters.sort && filters.sort !== 'nirfRank') params.sort = filters.sort;
         
-        // Only trigger setSearchParams if the new params are different from current URL
-        // Simple check to avoid infinite loops if setParams triggers re-render 
-        // Although react-router handles this well usually.
         setSearchParams(params, { replace: true });
-
         fetchColleges();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [filters, page]); 

@@ -11,6 +11,7 @@ const ExamDetailPage = () => {
     const { slug } = useParams();
     const [exam, setExam] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
     const [activeTab, setActiveTab] = useState('Overview');
     const { user } = useAuth();
@@ -18,21 +19,20 @@ const ExamDetailPage = () => {
 
     const tabs = ['Overview', 'Important Dates', 'Syllabus', 'Exam Pattern', 'Application', 'News'];
 
+    // Handle tab from URL params
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const tabParam = params.get('tab');
         if (tabParam) {
             // Map url-friendly slug to Tab Name if needed, or exact match
-            // Simple mapping for now: 'mock-test' -> 'Preparation' (if exists) or fallback
-            // But let's support exact names first or mapped ones
             const tabMap = {
                 'dates': 'Important Dates',
                 'syllabus': 'Syllabus',
                 'pattern': 'Exam Pattern',
                 'application': 'Application',
                 'news': 'News',
-                'resources': 'Overview', // or specific resource tab if added
-                'mock-test': 'Overview', // or new tab
+                'resources': 'Overview',
+                'mock-test': 'Overview',
                 'previous-papers': 'Overview'
             };
             
@@ -43,21 +43,34 @@ const ExamDetailPage = () => {
         }
     }, [location.search]);
 
+    // ===== KEY FIX: Refetch exam data when slug changes =====
     useEffect(() => {
+        // Reset state for new exam
+        setExam(null);
+        setLoading(true);
+        setError(null);
+        setActiveTab('Overview'); // Reset to default tab
+        
         const fetchExam = async () => {
             try {
                  const res = await api.get(`/exams/${slug}`);
                  if (res.data.success) {
                      setExam(res.data.data);
+                 } else {
+                     setError('Exam not found');
                  }
-            } catch (error) {
-                console.error("Error fetching exam:", error);
+            } catch (err) {
+                console.error("Error fetching exam:", err);
+                setError('Exam not found or failed to load');
             } finally {
                 setLoading(false);
             }
         };
-        fetchExam();
-    }, [slug]);
+        
+        if (slug) {
+            fetchExam();
+        }
+    }, [slug]); // Refetch when slug changes
 
     const handleRefreshNews = async () => {
         if (!exam || !user) return;
@@ -77,7 +90,24 @@ const ExamDetailPage = () => {
     };
 
     if (loading) return <div className="min-h-screen pt-24 flex justify-center"><div className="animate-spin h-10 w-10 border-2 border-brand-orange rounded-full border-t-transparent"></div></div>;
-    if (!exam) return <div className="min-h-screen pt-24 text-center">Exam Not Found</div>;
+    
+    if (error || !exam) return (
+        <div className="min-h-screen pt-24 bg-gray-50">
+            <div className="container mx-auto px-4 text-center py-20">
+                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 max-w-lg mx-auto">
+                    <FaExclamationTriangle className="text-6xl text-amber-500 mx-auto mb-6" />
+                    <h1 className="text-2xl font-bold text-gray-900 mb-4">Exam Not Found</h1>
+                    <p className="text-gray-600 mb-8">
+                        The exam "{slug}" you're looking for doesn't exist in our database yet. 
+                        It may be added soon!
+                    </p>
+                    <Link to="/exams" className="inline-block px-6 py-3 bg-brand-orange text-white font-bold rounded-lg hover:bg-orange-600 transition">
+                        Browse All Exams
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div className="bg-gray-50 min-h-screen pt-24 pb-12">

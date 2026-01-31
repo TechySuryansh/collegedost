@@ -1,19 +1,44 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import api from '../api/axios';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { FaSearch, FaUniversity, FaCalendarAlt, FaBookOpen } from 'react-icons/fa';
 
 const ExamsPage = () => {
     const [exams, setExams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchParams] = useSearchParams();
+    const location = useLocation();
+    
+    // Track internal vs external URL changes
+    const isInternalUpdate = useRef(false);
+    
+    // Parse URL params into state
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-
-    const categoryParam = searchParams.get('category');
+    const [categoryParam, setCategoryParam] = useState(searchParams.get('category') || searchParams.get('level') || '');
     const [news, setNews] = useState([]);
 
+    // ===== KEY FIX: Sync URL → State when external navigation occurs =====
+    useEffect(() => {
+        if (isInternalUpdate.current) {
+            isInternalUpdate.current = false;
+            return;
+        }
+
+        // Parse new values from URL
+        const newSearchTerm = searchParams.get('search') || '';
+        const newCategory = searchParams.get('category') || searchParams.get('level') || '';
+        
+        // Update state from URL
+        setSearchTerm(newSearchTerm);
+        setCategoryParam(newCategory);
+        setLoading(true); // Trigger loading state for new data
+        
+    }, [location.search]); // Triggered when URL query string changes
+
+    // Fetch exams when category changes
     useEffect(() => {
         const fetchExams = async () => {
+            setLoading(true);
             try {
                 let url = '/exams';
                 if (categoryParam) {

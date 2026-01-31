@@ -384,12 +384,12 @@ export const browseByStreamData = [
     content: {
       exams: [
         { title: 'CLAT', href: '/exams/clat' },
-        { title: 'AILET', href: '#' },
-        { title: 'SLAT', href: '#' },
-        { title: 'AP LAWCET', href: '#' },
-        { title: 'MH CET Law', href: '#' },
-        { title: 'AIBE', href: '#' },
-        { title: 'ULSAT-LLB', href: '#' },
+        { title: 'AILET', href: '/exams/ailet' },
+        { title: 'SLAT', href: '/exams/slat' },
+        { title: 'AP LAWCET', href: '/exams/ap-lawcet' },
+        { title: 'MH CET Law', href: '/exams/mh-cet-law' },
+        { title: 'AIBE', href: '/exams/aibe' },
+        { title: 'ULSAT-LLB', href: '/exams/ulsat-llb' },
         { title: 'View All', href: '/exams?level=Law', isLink: true }
       ],
       colleges: [
@@ -432,12 +432,12 @@ export const browseByStreamData = [
     content: {
       exams: [
         { title: 'NIFT 2026', href: '/exams/nift' },
-        { title: 'UCEED Exam', href: '#' },
-        { title: 'NID DAT Exam', href: '#' },
-        { title: 'JNAFAU FADEE Exam', href: '#' },
-        { title: 'CEED Exam', href: '#' },
-        { title: 'FDDI AIST Exam', href: '#' },
-        { title: 'MITID DAT Exam', href: '#' },
+        { title: 'UCEED Exam', href: '/exams/uceed' },
+        { title: 'NID DAT Exam', href: '/exams/nid-dat' },
+        { title: 'JNAFAU FADEE Exam', href: '/exams/jnafau-fadee' },
+        { title: 'CEED Exam', href: '/exams/ceed' },
+        { title: 'FDDI AIST Exam', href: '/exams/fddi-aist' },
+        { title: 'MITID DAT Exam', href: '/exams/mitid-dat' },
         { title: 'View All', href: '/exams?level=Design', isLink: true }
       ],
       colleges: [
@@ -480,9 +480,9 @@ export const browseByStreamData = [
     },
     content: {
       exams: [
-        { title: 'IIMC Entrance Exam 2025', href: '#' },
-        { title: 'NPAT 2025', href: '#' },
-        { title: 'View All', href: '#', isLink: true }
+        { title: 'IIMC Entrance Exam 2025', href: '/exams/iimc' },
+        { title: 'NPAT 2025', href: '/exams/npat' },
+        { title: 'View All', href: '/exams?level=Media', isLink: true }
       ],
       colleges: [
         { title: 'Compare Colleges', href: '/compare-colleges' },
@@ -512,14 +512,14 @@ export const browseByStreamData = [
     },
     content: {
       exams: [
-        { title: 'CA Intermediate', href: '#' },
-        { title: 'CA Foundation', href: '#' },
-        { title: 'CA Final', href: '#' },
-        { title: 'CS Executive', href: '#' },
-        { title: 'CS Professional', href: '#' },
-        { title: 'CFA Exam', href: '#' },
-        { title: 'CSEET', href: '#' },
-        { title: 'ACET', href: '#' }
+        { title: 'CA Intermediate', href: '/exams/ca-intermediate' },
+        { title: 'CA Foundation', href: '/exams/ca-foundation' },
+        { title: 'CA Final', href: '/exams/ca-final' },
+        { title: 'CS Executive', href: '/exams/cs-executive' },
+        { title: 'CS Professional', href: '/exams/cs-professional' },
+        { title: 'CFA Exam', href: '/exams/cfa' },
+        { title: 'CSEET', href: '/exams/cseet' },
+        { title: 'ACET', href: '/exams/acet' }
       ],
       colleges: [
         { title: 'Difference between CA and CS', href: '#' },

@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/axios';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { FaCalendarAlt, FaUser, FaTag, FaArrowRight } from 'react-icons/fa';
 
 const NewsPage = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [filter, setFilter] = useState('All');
+    const [searchParams] = useSearchParams();
+    const location = useLocation();
+    
+    // Initialize filter from URL or default to 'All'
+    const [filter, setFilter] = useState(searchParams.get('category') || 'All');
 
+    // ===== KEY FIX: Sync URL → State when external navigation occurs =====
+    useEffect(() => {
+        const newCategory = searchParams.get('category') || 'All';
+        setFilter(newCategory);
+        // Refetch articles when navigating to this page
+        fetchArticles();
+    }, [location.search, location.pathname]); // Triggered when URL changes
+
+    // Also fetch on initial mount
     useEffect(() => {
         fetchArticles();
     }, []);
 
     const fetchArticles = async () => {
+        setLoading(true);
         try {
             const res = await api.get('/articles');
             if (res.data.success && Array.isArray(res.data.data)) {
