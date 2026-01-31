@@ -6,33 +6,32 @@ async function checkColleges() {
     await mongoose.connect(process.env.MONGO_URI);
     console.log('Connected to MongoDB');
 
-    // Search for IITs
-    const iits = await College.find({ 
-        name: { $regex: 'IIT', $options: 'i' } 
-    }).limit(15).select('name slug type');
-    
-    console.log('\n=== IITs Found:', iits.length, '===');
-    iits.forEach(c => console.log(`- ${c.name}`));
-
-    // Search for NITs
+    // Search for "National Institute of Technology" (actual NITs)
     const nits = await College.find({ 
-        name: { $regex: 'NIT', $options: 'i' } 
-    }).limit(15).select('name slug type');
+        name: { $regex: /National Institute of Technology/i } 
+    }).select('name slug');
     
-    console.log('\n=== NITs Found:', nits.length, '===');
+    console.log('\n=== ACTUAL NITs (National Institute of Technology) ===');
+    console.log('Found:', nits.length);
     nits.forEach(c => console.log(`- ${c.name}`));
 
-    // Search for "Indian Institute of Technology"
-    const fullIIT = await College.find({ 
-        name: { $regex: 'Indian Institute of Technology', $options: 'i' } 
-    }).limit(10).select('name');
+    // Search for colleges containing "NIT" in name (may include false positives)
+    const nitPattern = await College.find({ 
+        name: { $regex: /NIT/i } 
+    }).limit(20).select('name');
     
-    console.log('\n=== "Indian Institute of Technology" Found:', fullIIT.length, '===');
-    fullIIT.forEach(c => console.log(`- ${c.name}`));
+    console.log('\n=== Colleges containing "NIT" (including false positives) ===');
+    console.log('Found:', nitPattern.length);
+    nitPattern.forEach(c => console.log(`- ${c.name}`));
 
-    // Total count
-    const total = await College.countDocuments();
-    console.log('\n=== Total Colleges:', total, '===');
+    // Check IITs
+    const iits = await College.find({ 
+        name: { $regex: /Indian Institute of Technology/i } 
+    }).select('name');
+    
+    console.log('\n=== ACTUAL IITs (Indian Institute of Technology) ===');
+    console.log('Found:', iits.length);
+    iits.forEach(c => console.log(`- ${c.name}`));
 
     process.exit(0);
 }
