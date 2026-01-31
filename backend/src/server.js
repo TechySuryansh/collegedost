@@ -8,12 +8,16 @@ const connectDB = require('./config/db');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-connectDB()
-  .then(() => console.log('✅ MongoDB Connected Successfully'))
-  .catch(err => {
+// Connect to MongoDB with retry logic
+const startServer = async () => {
+  try {
+    await connectDB();
+    console.log('✅ MongoDB Connected Successfully');
+  } catch (err) {
     console.error('❌ MongoDB Connection Failed:', err.message);
-  });
+    console.error('Server will continue but DB operations will fail');
+  }
+};
 
 const app = express();
 
@@ -73,14 +77,34 @@ app.use('/api/verification', require('./routes/verification.routes'));
 app.use('/api/predictor', require('./routes/predictor.routes'));
 app.use('/api/test-prep', require('./routes/testPrep.routes'));
 
+// Global error handler - prevents unhandled errors from crashing the server
+app.use((err, req, res, next) => {
+  console.error('🔥 Global Error:', err.message);
+  res.status(500).json({ success: false, message: 'Internal Server Error' });
+});
 
-require('./cron/scheduler').init();
-require('./cron/examCron')();
-
-
+// Initialize cron jobs
+try {
+  require('./cron/scheduler').init();
+  require('./cron/examCron')();
+} catch (cronError) {
+  console.error('Cron initialization error:', cronError.message);
+}
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+// Handle uncaught exceptions to prevent crashes
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.error('❌ Unhandled Rejection:', err);
+});
+
+// Start the server
+startServer().then(() => {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+  });
 });
