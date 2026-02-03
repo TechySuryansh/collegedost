@@ -7,12 +7,14 @@ const {
     getAdminArticles,
     getArticleById,
     updateArticle,
-    deleteArticle
+    deleteArticle,
+    fetchNews
 } = require('../controllers/article.controller');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 router.get('/', getArticles);
 router.get('/admin/all', protect, admin, getAdminArticles);
+router.post('/admin/fetch-news', protect, admin, fetchNews);
 router.get('/id/:id', protect, admin, getArticleById);
 router.post('/', protect, admin, createArticle);
 router.put('/:id', protect, admin, updateArticle);
@@ -22,3 +24,4 @@ router.delete('/:id', protect, admin, deleteArticle);
 router.get('/:slug', getArticleBySlug);
 
 module.exports = router;
+

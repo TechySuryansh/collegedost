@@ -34,7 +34,7 @@ export default {
                 'neon': '0 0 10px rgba(6, 182, 212, 0.5), 0 0 20px rgba(124, 58, 237, 0.3)',
             },
             animation: {
-                'scroll': 'scroll 60s linear infinite',
+                'scroll': 'scroll 1300s linear infinite',
                 'float': 'float 6s ease-in-out infinite',
                 'fade-up': 'fadeUp 0.8s ease-out forwards',
                 'shine': 'shine 2s linear infinite',

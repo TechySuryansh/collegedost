@@ -1465,25 +1465,25 @@ export const homeStatsData = [
 ];
 
 export const homeRankingsData = [
-  { name: "Top Engineering Colleges in India", link: "/colleges?goal=Colleges&stream=Engineering And Architecture&nirfCategory=Engineering" },
-  { name: "Top MBA Colleges in India", link: "/colleges?goal=Colleges&stream=Management And Business Administration&nirfCategory=Management" },
-  { name: "Top Medical Colleges in India", link: "#" },
-  { name: "Top Law Colleges in India", link: "/law" },
-  { name: "Top Universities in India", link: "#" },
-  { name: "Top BBA Colleges in India", link: "#" },
-  { name: "Top Pharmacy Colleges in India", link: "/pharmacy" },
-  { name: "Top Architecture Colleges", link: "#" }
+  { name: "Top Engineering Colleges in India", link: "/colleges?stream=Engineering And Architecture" },
+  { name: "Top MBA Colleges in India", link: "/colleges?stream=Management And Business Administration" },
+  { name: "Top Medical Colleges in India", link: "/colleges?stream=Medicine And Allied Sciences" },
+  { name: "Top Law Colleges in India", link: "/colleges?stream=Law" },
+  { name: "Top Universities in India", link: "/colleges" },
+  { name: "Top BBA Colleges in India", link: "/colleges?degree=Other Bachelors&stream=Management And Business Administration" },
+  { name: "Top Pharmacy Colleges in India", link: "/colleges?stream=Pharmacy" },
+  { name: "Top Architecture Colleges", link: "/colleges?stream=Engineering And Architecture&degree=B.Arch" }
 ];
 
 export const homeExamsData = [
-  { name: "JEE Main 2025", link: "#" },
-  { name: "GATE 2025", link: "#" },
-  { name: "CAT 2024", link: "#" },
-  { name: "NEET 2025", link: "#" },
-  { name: "BITSAT 2025", link: "#" },
-  { name: "XAT 2025", link: "#" },
-  { name: "CLAT 2025", link: "#" },
-  { name: "MAT 2025", link: "#" }
+  { name: "JEE Main 2025", link: "/engineering" },
+  { name: "GATE 2025", link: "/engineering" },
+  { name: "CAT 2024", link: "/management" },
+  { name: "NEET 2025", link: "/medicine" },
+  { name: "BITSAT 2025", link: "/engineering" },
+  { name: "XAT 2025", link: "/management" },
+  { name: "CLAT 2025", link: "/law" },
+  { name: "MAT 2025", link: "/management" }
 ];
 
 export const careersData = [

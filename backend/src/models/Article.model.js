@@ -13,7 +13,7 @@ const articleSchema = new mongoose.Schema({
     category: {
         type: String,
         required: true,
-        enum: ['Exam News', 'College News', 'Admission Alert', 'General']
+        enum: ['Exam News', 'Results', 'College News', 'Admission Alert', 'Scholarship', 'Career', 'General']
     },
     summary: {
         type: String,

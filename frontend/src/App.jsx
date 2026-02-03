@@ -60,6 +60,7 @@ const TestPrepViewPage = lazy(() => import('./pages/TestPrepViewPage'));
 
 import { HelmetProvider } from 'react-helmet-async';
 import AdminRoute from './components/AdminRoute';
+import ScrollToTop from './components/ScrollToTop';
 
 import { useAuth } from './context/AuthContext';
 
@@ -82,6 +83,7 @@ function App() {
   return (
     <HelmetProvider>
       <Router>
+        <ScrollToTop />
         <div className="min-h-screen flex flex-col bg-gray-50 text-gray-900 font-sans relative">
 
 

@@ -133,13 +133,13 @@ const HomePage = ({ onOpenAskModal }) => {
         </motion.div>
 
         <motion.div variants={itemVariants}>
-          <PillSection title="Top Rankings" items={homeRankingsData} color="border-gray-200" />
+          <PillSection title="Top Rankings" items={homeRankingsData} viewAllLink="/colleges" color="border-gray-200" />
         </motion.div>
         
 
 
         <motion.div variants={itemVariants}>
-          <PillSection title="Popular Exams" items={homeExamsData} color="border-gray-200" />
+          <PillSection title="Popular Exams" items={homeExamsData} viewAllLink="/exams" color="border-gray-200" />
         </motion.div>
         
         <motion.div variants={itemVariants}>
