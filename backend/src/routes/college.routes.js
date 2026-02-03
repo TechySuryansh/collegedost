@@ -15,11 +15,13 @@ const {
     getCollegeSection,
     getCollegeById,
     updateCollege,
-    deleteCollege
+    deleteCollege,
+    compareColleges
 } = require('../controllers/college.controller');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 // Specific routes MUST come before /:slug
+router.post('/compare', compareColleges);
 router.post('/sync', protect, admin, syncColleges);
 router.get('/predict', predictColleges);
 router.get('/search', searchColleges); // Autocomplete Route

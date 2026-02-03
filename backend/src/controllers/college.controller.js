@@ -859,3 +859,44 @@ exports.deleteCollege = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
+// @desc    Compare multiple colleges
+// @route   POST /api/colleges/compare
+// @access  Public
+exports.compareColleges = async (req, res) => {
+    try {
+        const { ids, slugs } = req.body;
+
+        let query = {};
+        if (ids && ids.length > 0) {
+            query = { _id: { $in: ids } };
+        } else if (slugs && slugs.length > 0) {
+            query = { slug: { $in: slugs } };
+        } else {
+            return res.status(400).json({ success: false, message: 'Please provide college IDs or slugs to compare' });
+        }
+
+        const colleges = await College.find(query).lean();
+
+        // Fetch detailed fees for each college
+        const results = await Promise.all(colleges.map(async (college) => {
+            const fees = await Fee.find({ college: college._id })
+                .sort({ year: -1, type: 1 })
+                .lean();
+            
+            return {
+                ...college,
+                detailedFees: fees
+            };
+        }));
+
+        res.status(200).json({
+            success: true,
+            count: results.length,
+            data: results
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+};
