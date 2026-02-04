@@ -15,11 +15,12 @@ import {
 } from '../data';
 import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt, FaBookOpen, FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaArrowLeft, FaTimes, FaGraduationCap, FaTrophy, FaBriefcase, FaEllipsisH, FaComments, FaHome, FaCompass, FaChartLine, FaStethoscope, FaLaptopCode, FaBalanceScale, FaPalette, FaMicrophone, FaCoins, FaDesktop, FaFlask, FaPlane, FaSchool, FaGlobeAmericas, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/AuthContext';    
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { useUI } from '@/context/UIContext';
+
 
 interface NavbarProps { }
 
@@ -727,6 +728,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     </>
                 )}
             </AnimatePresence>
+
 
         </nav>
     );

@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ModalManager from "@/components/ModalManager";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -39,6 +40,7 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <ModalManager />
         </Providers>
       </body>
     </html>
