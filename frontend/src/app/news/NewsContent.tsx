@@ -13,7 +13,7 @@ const NewsContent = () => {
 
     // Initialize filter from URL or default to 'All'
     // In Next.js App Router, usage of useSearchParams is reactive.
-    const filter = searchParams.get('category') || 'All';
+    const filter = searchParams?.get('category') || 'All';
 
     // Fetch articles
     useEffect(() => {

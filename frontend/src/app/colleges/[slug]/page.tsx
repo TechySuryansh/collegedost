@@ -37,7 +37,7 @@ interface CollegeData {
 
 const CollegeDetailPage = () => {
     const params = useParams();
-    const slug = params.slug as string;
+    const slug = params?.slug as string;
 
     const [college, setCollege] = useState<CollegeData | null>(null);
     const [loading, setLoading] = useState(true);

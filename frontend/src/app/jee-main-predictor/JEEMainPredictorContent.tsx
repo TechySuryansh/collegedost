@@ -34,7 +34,7 @@ const JEEMainPredictorContent = () => {
 
     // Load prediction from URL if predictionId exists
     useEffect(() => {
-        const predictionId = searchParams.get('id');
+        const predictionId = searchParams?.get('id');
         if (predictionId) {
             loadPrediction(predictionId);
         }

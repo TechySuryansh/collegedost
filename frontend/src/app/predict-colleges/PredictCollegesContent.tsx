@@ -16,9 +16,9 @@ interface PredictionForm {
 const PredictCollegesContent = () => {
     const searchParams = useSearchParams();
     const [formData, setFormData] = useState<PredictionForm>({
-        rank: searchParams.get('rank') || '',
-        exam: searchParams.get('exam') || 'JEE Advanced',
-        category: searchParams.get('category') || 'General',
+        rank: searchParams?.get('rank') || '',
+        exam: searchParams?.get('exam') || 'JEE Advanced',
+        category: searchParams?.get('category') || 'General',
         state: ''
     });
     const [results, setResults] = useState<any[]>([]);

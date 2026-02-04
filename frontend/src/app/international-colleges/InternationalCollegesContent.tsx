@@ -21,9 +21,9 @@ const InternationalCollegesContent = () => {
     const [totalCount, setTotalCount] = useState(0);
 
     useEffect(() => {
-        setSearchTerm(searchParams.get('search') || '');
-        setCountry(searchParams.get('country') || 'USA');
-        setPage(Number(searchParams.get('page')) || 1);
+        setSearchTerm(searchParams?.get('search') || '');
+        setCountry(searchParams?.get('country') || 'USA');
+        setPage(Number(searchParams?.get('page')) || 1);
     }, [searchParams]);
 
     useEffect(() => {

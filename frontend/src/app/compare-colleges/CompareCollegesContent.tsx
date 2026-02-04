@@ -17,7 +17,7 @@ const CompareCollegesContent = () => {
     const MAX_COLLEGES = 4;
 
     useEffect(() => {
-        const collegeIds = searchParams.get('ids');
+        const collegeIds = searchParams?.get('ids');
         if (collegeIds) {
             fetchComparisonData(collegeIds.split(','));
         }

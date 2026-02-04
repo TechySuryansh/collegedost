@@ -17,8 +17,8 @@ const ExamsContent = () => {
     const [news, setNews] = useState<any[]>([]);
 
     useEffect(() => {
-        setSearchTerm(searchParams.get('search') || '');
-        setCategoryParam(searchParams.get('category') || searchParams.get('level') || '');
+        setSearchTerm(searchParams?.get('search') || '');
+        setCategoryParam(searchParams?.get('category') || searchParams?.get('level') || '');
     }, [searchParams]);
 
     // Fetch exams when category changes

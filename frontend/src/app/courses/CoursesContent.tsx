@@ -17,8 +17,8 @@ const CoursesContent = () => {
 
     // Sync URL → State
     useEffect(() => {
-        const newSearchTerm = searchParams.get('search') || '';
-        const newLevel = searchParams.get('level') || 'All';
+        const newSearchTerm = searchParams?.get('search') || '';
+        const newLevel = searchParams?.get('level') || 'All';
 
         setSearchTerm(newSearchTerm);
         setSelectedLevel(newLevel);

@@ -24,7 +24,7 @@ const ExamDetailContent = () => {
 
     // Handle tab from URL params
     useEffect(() => {
-        const tabParam = searchParams.get('tab');
+        const tabParam = searchParams?.get('tab');
         if (tabParam) {
             const tabMap: Record<string, string> = {
                 'dates': 'Important Dates',

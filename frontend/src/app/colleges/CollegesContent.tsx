@@ -37,7 +37,7 @@ const CollegesContent = () => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const [filters, setFilters] = useState<FilterState>(() => parseFiltersFromParams(searchParams));
+    const [filters, setFilters] = useState<FilterState>(() => parseFiltersFromParams(new URLSearchParams(searchParams?.toString())));
 
     const [colleges, setColleges] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
@@ -83,7 +83,7 @@ const CollegesContent = () => {
             return;
         }
 
-        const newFilters = parseFiltersFromParams(searchParams);
+        const newFilters = parseFiltersFromParams(new URLSearchParams(searchParams?.toString()));
 
         setFilters(newFilters);
         setQuery(newFilters.search);
