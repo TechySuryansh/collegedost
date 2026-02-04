@@ -6,10 +6,8 @@ import NewsSection from './NewsSection';
 import OtherProducts from './OtherProducts';
 import Section from './Section';
 import Counselling from './Counselling';
-import StatsSection from './StatsSection';
 import PillSection from './PillSection';
 import PredictorsSection from './PredictorsSection';
-import Testimonials from './Testimonials';
 import { motion } from 'framer-motion';
 import api from '../api/axios';
 import TestPrepExamsSection from './TestPrepExamsSection';
@@ -149,21 +147,6 @@ const HomePage = () => {
                         subText="Learn from the best. Trending courses and certifications."
                         illustration="https://img.freepik.com/free-vector/online-tutorials-concept_52683-37480.jpg"
                     />
-                </motion.div>
-
-                <motion.div variants={itemVariants}>
-                    {/* StatsSection - Check if data exists, was missing in imports? */}
-                    {/* Assuming homeStatsData exists in data file, if not I will comment it out or use defaults */}
-                    <StatsSection items={[
-                        { icon: "FaUniversity", count: "30,000+", label: "Colleges" },
-                        { icon: "FaBookOpen", count: "500+", label: "Exams" },
-                        { icon: "FaUsers", count: "100,000+", label: "Students" },
-                        { icon: "FaTabletAlt", count: "50+", label: "Counsellors" }
-                    ]} />
-                </motion.div>
-
-                <motion.div variants={itemVariants}>
-                    <Testimonials />
                 </motion.div>
 
             </div>
