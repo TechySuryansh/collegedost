@@ -14,8 +14,10 @@ import {
     pharmacyCoursesData,
     pharmacyCities
 } from '@/data/pharmacyData';
+import { useUI } from '@/context/UIContext';
 
 const PharmacyPage = () => {
+    const { openAskModal } = useUI();
     return (
         <>
             <Hero
@@ -44,7 +46,7 @@ const PharmacyPage = () => {
                     type="card"
                 />
 
-                <Counselling items={pharmacyCounsellingData} />
+                <Counselling items={pharmacyCounsellingData} onOpenAskModal={openAskModal} />
 
                 <PillSection title="Top Cities for Pharmacy" items={pharmacyCities} color="border-gray-200" />
 

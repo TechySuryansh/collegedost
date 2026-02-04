@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { FaChartLine, FaArrowRight, FaUniversity, FaTrophy, FaStar } from 'react-icons/fa';
+import { FaChartLine, FaArrowRight, FaUniversity, FaTrophy, FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 
@@ -95,7 +95,7 @@ const PredictorsSection: React.FC<PredictorsSectionProps> = ({
                                                     href={item.link}
                                                     className="flex items-center gap-3 text-[15px] font-medium text-gray-500 hover:text-brand-indigo transition-all group/link py-1.5 px-2 rounded-lg hover:bg-white/50"
                                                 >
-                                                    <FaStar className="text-[8px] text-gray-300 group-hover/link:text-brand-orange transition-colors" />
+                                                    <FaChevronRight className="text-[10px] text-gray-300 group-hover/link:text-brand-orange transition-colors" />
                                                     <span className="group-hover/link:translate-x-1 transition-transform">{item.name}</span>
                                                 </Link>
                                             ))}
