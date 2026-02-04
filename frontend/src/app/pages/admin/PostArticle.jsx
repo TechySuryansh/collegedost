@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { FaPlus, FaTrash, FaLink, FaSave, FaArrowLeft } from 'react-icons/fa';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/axios';
+import Link from 'next/link';
+import { useRouter, useParams } from 'next/navigation';
+import api from '@/api/axios';
 
 const PostArticle = () => {
     const { id } = useParams();
     const isEditMode = !!id;
-    const navigate = useNavigate();
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: '',
@@ -92,7 +93,7 @@ const PostArticle = () => {
                 alert('Article posted successfully!');
             }
 
-            navigate('/admin/articles');
+            router.push('/admin/articles');
         } catch (error) {
             console.error(error);
             alert(error.response?.data?.message || 'Failed to post article');
@@ -106,7 +107,7 @@ const PostArticle = () => {
             <div className="max-w-4xl mx-auto">
                 <div className="mb-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <Link to="/admin/articles" className="text-gray-500 hover:text-gray-900 transition-colors">
+                        <Link href="/admin/articles" className="text-gray-500 hover:text-gray-900 transition-colors">
                             <FaArrowLeft />
                         </Link>
                         <h1 className="text-2xl font-bold text-gray-900">{isEditMode ? 'Edit Article' : 'Post New Article'}</h1>

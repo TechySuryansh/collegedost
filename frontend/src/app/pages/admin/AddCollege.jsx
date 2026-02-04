@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { FaArrowLeft, FaSave, FaUniversity } from 'react-icons/fa';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import api from '../../api/axios';
+import Link from 'next/link';
+import { useRouter, useParams } from 'next/navigation';
+import api from '@/api/axios';
 
 const AddCollege = () => {
     const { id } = useParams();
     const isEditMode = !!id;
-    const navigate = useNavigate();
+    const router = useRouter();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -84,7 +85,7 @@ const AddCollege = () => {
                 alert('College added successfully');
             }
             
-            navigate('/admin/colleges');
+            router.push('/admin/colleges');
         } catch (error) {
             console.error(error);
             alert('Failed to add college');
@@ -98,7 +99,7 @@ const AddCollege = () => {
              <div className="max-w-4xl mx-auto">
                 <div className="mb-6 flex items-center justify-between">
                     <div className="flex items-center gap-4">
-                        <Link to="/admin/colleges" className="text-gray-500 hover:text-gray-900 transition-colors">
+                        <Link href="/admin/colleges" className="text-gray-500 hover:text-gray-900 transition-colors">
                             <FaArrowLeft />
                         </Link>
                         <h1 className="text-2xl font-bold text-gray-900">{isEditMode ? 'Edit College' : 'Add New College'}</h1>

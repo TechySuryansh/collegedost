@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../api/axios';
-import AdminLayout from '../../components/admin/AdminLayout';
+import api from '@/api/axios';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { FaUniversity, FaPlus, FaMapMarkerAlt, FaStar, FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 const AdminColleges = () => {
@@ -84,7 +84,7 @@ const AdminColleges = () => {
                             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-orange/20 focus:border-brand-orange transition-all"
                         />
                     </div>
-                    <Link to="/admin/colleges/new" className="bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2 whitespace-nowrap">
+                    <Link href="/admin/colleges/new" className="bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2 whitespace-nowrap">
                         <FaPlus /> Add College
                     </Link>
                 </div>
@@ -130,7 +130,7 @@ const AdminColleges = () => {
                                             {college.type}
                                         </span>
                                         <div className="flex gap-2">
-                                            <Link to={`/admin/colleges/edit/${college._id}`} className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 rounded-full transition-colors">
+                                            <Link href={`/admin/colleges/edit/${college._id}`} className="p-2 text-gray-400 hover:text-brand-blue hover:bg-blue-50 rounded-full transition-colors">
                                                 <FaEdit />
                                             </Link>
                                             <button onClick={() => handleDelete(college._id)} className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-full transition-colors">

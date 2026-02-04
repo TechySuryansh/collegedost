@@ -560,6 +560,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                                     )}
                                                 </button>
 
+{/* 
                                                 <div className="relative flex py-2 items-center justify-center">
                                                     <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">Or continue with</span>
                                                 </div>
@@ -576,7 +577,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                                         shape="pill"
                                                         text="continue_with"
                                                     />
-                                                </div>
+                                                </div> 
+                                                */}
                                             </>
                                         )}
                                     </form>

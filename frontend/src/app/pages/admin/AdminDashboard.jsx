@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { FaUserGraduate, FaUniversity, FaNewspaper, FaSync, FaRobot } from 'react-icons/fa';
-import api from '../../api/axios';
+import api from '@/api/axios';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -18,7 +18,7 @@ const AdminDashboard = () => {
     const handleSync = async () => {
         setIsSyncing(true);
         try {
-            const { data } = await api.post('/colleges/sync');
+            const { data } = await api.post('/colleges/sync');  
             if(data.success) {
                 alert(data.message);
             }
@@ -125,7 +125,7 @@ const AdminDashboard = () => {
                 >
                     <div className="flex items-center justify-between mb-6">
                         <h3 className="font-bold text-lg text-gray-800">Recent Users</h3>
-                        <Link to="/admin/users" className="text-sm text-brand-blue hover:text-blue-700 font-medium hover:underline">View All</Link>
+                        <Link href="/admin/users" className="text-sm text-brand-blue hover:text-blue-700 font-medium hover:underline">View All</Link>
                     </div>
                     
                     <div className="flex flex-col gap-3">
@@ -160,7 +160,7 @@ const AdminDashboard = () => {
                  >
                     <h3 className="font-bold text-lg mb-6 text-gray-800">Quick Actions</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-                        <Link to="/admin/colleges/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                        <Link href="/admin/colleges/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
                              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-brand-blue group-hover:scale-110 transition-transform">
                                 <FaUniversity className="text-lg" />
                              </div>
@@ -169,7 +169,7 @@ const AdminDashboard = () => {
                                  <p className="text-xs text-gray-500">Create a new college listing</p>
                              </div>
                         </Link>
-                         <Link to="/admin/articles/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                         <Link href="/admin/articles/new" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
                              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-orange-500 group-hover:scale-110 transition-transform">
                                 <FaNewspaper className="text-lg" />
                              </div>
@@ -187,7 +187,7 @@ const AdminDashboard = () => {
                                  <p className="text-xs text-gray-500">Refresh content from ingestion</p>
                              </div>
                         </button>
-                        <Link to="/admin/predictor-settings" className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">
+                        <Link href="/admin/predictor-settings" className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">
                              <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-purple-600 group-hover:scale-110 transition-transform">
                                 <FaRobot className="text-lg" />
                              </div>

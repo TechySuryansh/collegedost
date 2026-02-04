@@ -39,7 +39,7 @@ export default function RootLayout({
           <main className="min-h-screen pt-[70px]">
             {children}
           </main>
-          <Footer />
+          /
           <ModalManager />
         </Providers>
       </body>
