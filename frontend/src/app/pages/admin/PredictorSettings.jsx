@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { FaCog, FaKey, FaRobot, FaToggleOn, FaToggleOff, FaSave, FaPlay, FaTrash, FaCheckCircle, FaExclamationTriangle } from 'react-icons/fa';
-import api from '../../api/axios';
+import api from '@/api/axios';
 
 const PredictorSettings = () => {
     const [settings, setSettings] = useState({

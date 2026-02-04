@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import AdminLayout from '../../components/admin/AdminLayout';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { motion } from 'framer-motion';
 import { FaCloudUploadAlt, FaFileAlt, FaCheck, FaExclamationTriangle } from 'react-icons/fa';
-import api from '../../api/axios';
+import api from '@/api/axios';
 
 const AdminIngestion = () => {
   const [file, setFile] = useState(null);

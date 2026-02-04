@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../api/axios';
-import AdminLayout from '../../components/admin/AdminLayout';
-import { Link } from 'react-router-dom';
+import api from '@/api/axios';
+import AdminLayout from '@/components/admin/AdminLayout';
+import Link from 'next/link';
 import { FaPlus, FaEdit, FaTrash, FaExternalLinkAlt } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -56,7 +56,7 @@ const AdminArticles = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Articles Management</h1>
                     <p className="text-gray-500 text-sm">Create, edit, and manage news articles</p>
                 </div>
-                <Link to="/admin/articles/new" className="bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2 whitespace-nowrap">
+                <Link href="/admin/articles/new" className="bg-brand-orange text-white px-4 py-2 rounded-lg font-medium hover:bg-orange-600 transition-colors flex items-center gap-2 whitespace-nowrap">
                     <FaPlus /> Post Article
                 </Link>
             </div>
@@ -90,7 +90,7 @@ const AdminArticles = () => {
                                 <a href={`/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
                                     <FaExternalLinkAlt />
                                 </a>
-                                <Link to={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">
+                                <Link href={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">
                                     <FaEdit />
                                 </Link>
                                 <button onClick={() => handleDelete(article._id)} className="text-gray-400 hover:text-red-600" title="Delete">
@@ -145,7 +145,7 @@ const AdminArticles = () => {
                                         <a href={`/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
                                             <FaExternalLinkAlt />
                                         </a>
-                                        <Link to={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">
+                                        <Link href={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">
                                             <FaEdit />
                                         </Link>
                                         <button onClick={() => handleDelete(article._id)} className="text-gray-400 hover:text-red-600" title="Delete">

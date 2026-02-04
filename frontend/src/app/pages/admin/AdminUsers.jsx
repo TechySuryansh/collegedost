@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../api/axios';
-import AdminLayout from '../../components/admin/AdminLayout';
+import api from '@/api/axios';
+import AdminLayout from '@/components/admin/AdminLayout';
 import { FaUser, FaTrash, FaUserShield, FaCheckCircle, FaSearch } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
