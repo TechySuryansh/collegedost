@@ -4,15 +4,41 @@ import api from '../api/axios';
 import { 
     FaMapMarkerAlt, FaUniversity, FaAward, FaRupeeSign, FaBriefcase, 
     FaGraduationCap, FaCheckCircle, FaStar, FaBuilding, FaInfoCircle, 
-    FaDownload, FaGlobe, FaYoutube, FaImages, FaBed, FaBook, FaRunning, FaHospital, FaMicrochip 
+    FaDownload, FaGlobe, FaYoutube, FaImages, FaBed, FaBook, FaRunning, FaHospital, FaMicrochip,
+    FaCommentAlt, FaThumbsUp, FaUser, FaEdit, FaTrash 
 } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
+import { useAuth } from '../context/AuthContext';
 
 const CollegeDetailPage = () => {
     const { slug } = useParams();
+    const { user } = useAuth();
+    const isAuthenticated = !!user;
     const [college, setCollege] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState('overview');
+    
+    // Review state
+    const [reviews, setReviews] = useState([]);
+    const [reviewStats, setReviewStats] = useState(null);
+    const [reviewLoading, setReviewLoading] = useState(false);
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [reviewSubmitting, setReviewSubmitting] = useState(false);
+    const [editingReview, setEditingReview] = useState(null);
+    const [reviewForm, setReviewForm] = useState({
+        overallRating: 5,
+        academicsRating: 5,
+        facultyRating: 5,
+        infrastructureRating: 5,
+        placementsRating: 5,
+        campusLifeRating: 5,
+        title: '',
+        reviewText: '',
+        pros: '',
+        cons: '',
+        courseName: '',
+        graduationYear: new Date().getFullYear()
+    });
 
     useEffect(() => {
         const fetchCollege = async () => {
@@ -30,6 +56,30 @@ const CollegeDetailPage = () => {
         fetchCollege();
     }, [slug]);
 
+    // Fetch reviews when reviews tab is active
+    useEffect(() => {
+        if (activeTab === 'reviews' && college?._id) {
+            fetchReviews(college._id);
+        }
+    }, [activeTab, college?._id]);
+
+    const fetchReviews = async (collegeId) => {
+        if (!collegeId) return;
+        setReviewLoading(true);
+        try {
+            const res = await api.get(`/reviews/college/${collegeId}`);
+            if (res.data.success) {
+                setReviews(res.data.data);
+                setReviewStats(res.data.stats);
+            }
+        } catch (err) {
+            console.error('Failed to fetch reviews:', err);
+        } finally {
+            setReviewLoading(false);
+        }
+    };
+
+
     if (loading) return (
         <div className="min-h-screen pt-24 flex justify-center items-center">
             <div className="animate-spin h-10 w-10 border-2 border-brand-blue rounded-full border-t-transparent"></div>
@@ -44,12 +94,152 @@ const CollegeDetailPage = () => {
         </div>
     );
 
+    const handleReviewSubmit = async (e) => {
+        e.preventDefault();
+        if (!isAuthenticated) {
+            alert('Please login to submit a review');
+            return;
+        }
+        setReviewSubmitting(true);
+        try {
+            const res = await api.post('/reviews', {
+                collegeId: college._id,
+                ...reviewForm
+            });
+            if (res.data.success) {
+                setShowReviewForm(false);
+                setReviewForm({
+                    overallRating: 5,
+                    academicsRating: 5,
+                    facultyRating: 5,
+                    infrastructureRating: 5,
+                    placementsRating: 5,
+                    campusLifeRating: 5,
+                    title: '',
+                    reviewText: '',
+                    pros: '',
+                    cons: '',
+                    courseName: '',
+                    graduationYear: new Date().getFullYear()
+                });
+                fetchReviews(college._id);
+            }
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to submit review');
+        } finally {
+            setReviewSubmitting(false);
+        }
+    };
+
+    const handleHelpful = async (reviewId) => {
+        if (!isAuthenticated) {
+            alert('Please login to mark as helpful');
+            return;
+        }
+        try {
+            await api.post(`/reviews/${reviewId}/helpful`);
+            fetchReviews(college._id);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleEditReview = (review) => {
+        setEditingReview(review._id);
+        setReviewForm({
+            overallRating: review.overallRating,
+            academicsRating: review.academicsRating,
+            facultyRating: review.facultyRating,
+            infrastructureRating: review.infrastructureRating,
+            placementsRating: review.placementsRating,
+            campusLifeRating: review.campusLifeRating,
+            title: review.title,
+            reviewText: review.reviewText,
+            pros: review.pros || '',
+            cons: review.cons || '',
+            courseName: review.courseName || '',
+            graduationYear: review.graduationYear || new Date().getFullYear()
+        });
+        setShowReviewForm(true);
+    };
+
+    const handleUpdateReview = async (e) => {
+        e.preventDefault();
+        setReviewSubmitting(true);
+        try {
+            const res = await api.put(`/reviews/${editingReview}`, reviewForm);
+            if (res.data.success) {
+                setShowReviewForm(false);
+                setEditingReview(null);
+                setReviewForm({
+                    overallRating: 5,
+                    academicsRating: 5,
+                    facultyRating: 5,
+                    infrastructureRating: 5,
+                    placementsRating: 5,
+                    campusLifeRating: 5,
+                    title: '',
+                    reviewText: '',
+                    pros: '',
+                    cons: '',
+                    courseName: '',
+                    graduationYear: new Date().getFullYear()
+                });
+                fetchReviews(college._id);
+            }
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to update review');
+        } finally {
+            setReviewSubmitting(false);
+        }
+    };
+
+    const handleDeleteReview = async (reviewId) => {
+        if (!window.confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+            return;
+        }
+        try {
+            const res = await api.delete(`/reviews/${reviewId}`);
+            if (res.data.success) {
+                fetchReviews(college._id);
+            }
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to delete review');
+        }
+    };
+
+    const cancelEdit = () => {
+        setEditingReview(null);
+        setShowReviewForm(false);
+        setReviewForm({
+            overallRating: 5,   
+            academicsRating: 5,
+            facultyRating: 5,
+            infrastructureRating: 5,
+            placementsRating: 5,
+            campusLifeRating: 5,
+            title: '',
+            reviewText: '',
+            pros: '',
+            cons: '',
+            courseName: '',
+            graduationYear: new Date().getFullYear()
+        });
+    };
+
+    const renderStars = (rating, size = 'text-sm') => {
+        return [...Array(5)].map((_, i) => (
+            <FaStar key={i} className={`${size} ${i < rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+        ));
+    };
+
     const tabs = [
         { id: 'overview', label: 'Overview', icon: FaInfoCircle },
         { id: 'courses', label: 'Courses & Fees', icon: FaGraduationCap },
         { id: 'cutoffs', label: 'Cutoffs', icon: FaAward },
         { id: 'placements', label: 'Placements', icon: FaBriefcase },
         { id: 'infrastructure', label: 'Facilities', icon: FaBuilding },
+        { id: 'reviews', label: 'Reviews', icon: FaCommentAlt },
     ];
 
     return (
@@ -395,6 +585,327 @@ const CollegeDetailPage = () => {
                             <div className="text-gray-500 text-sm italic py-4">Cutoff data not available for this year.</div>
                         )}
                         </div>
+                     )}
+
+                     {/* REVIEWS SECTION */}
+                     {activeTab === 'reviews' && (
+                         <div className="space-y-6 animate-fade-in">
+                             {/* Review Stats */}
+                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                                 <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
+                                     <div>
+                                         <h2 className="text-2xl font-bold text-gray-900 mb-2">Student Reviews</h2>
+                                         <p className="text-gray-500">See what students say about {college.name}</p>
+                                     </div>
+                                     <button
+                                         onClick={() => setShowReviewForm(!showReviewForm)}
+                                         className="px-6 py-3 bg-brand-orange text-white font-bold rounded-lg shadow-lg hover:bg-orange-600 transition flex items-center gap-2"
+                                     >
+                                         <FaEdit /> Write a Review
+                                     </button>
+                                 </div>
+
+                                 {/* Rating Summary */}
+                                 {reviewStats && reviewStats.totalReviews > 0 && (
+                                     <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                                         <div className="flex items-center gap-6">
+                                             <div className="text-center">
+                                                 <div className="text-5xl font-bold text-gray-900">{reviewStats.avgOverall?.toFixed(1) || '0'}</div>
+                                                 <div className="flex justify-center mt-1">{renderStars(Math.round(reviewStats.avgOverall || 0), 'text-lg')}</div>
+                                                 <div className="text-sm text-gray-500 mt-1">{reviewStats.totalReviews} reviews</div>
+                                             </div>
+                                             <div className="flex-1 space-y-2">
+                                                 {[5,4,3,2,1].map(star => (
+                                                     <div key={star} className="flex items-center gap-2">
+                                                         <span className="text-sm w-3">{star}</span>
+                                                         <FaStar className="text-yellow-400 text-xs" />
+                                                         <div className="flex-1 bg-gray-100 rounded-full h-2">
+                                                             <div 
+                                                                 className="bg-yellow-400 h-2 rounded-full" 
+                                                                 style={{ width: `${reviewStats.totalReviews > 0 ? ((reviews.filter(r => Math.round(r.overallRating) === star).length / reviewStats.totalReviews) * 100) : 0}%` }}
+                                                             ></div>
+                                                         </div>
+                                                     </div>
+                                                 ))}
+                                             </div>
+                                         </div>
+                                         <div className="grid grid-cols-2 gap-4">
+                                             <div className="bg-gray-50 p-3 rounded-lg">
+                                                 <div className="text-xs text-gray-500 uppercase font-bold">Academics</div>
+                                                 <div className="flex items-center gap-2 mt-1">
+                                                     <span className="font-bold text-gray-900">{reviewStats.avgAcademics?.toFixed(1) || '-'}</span>
+                                                     {renderStars(Math.round(reviewStats.avgAcademics || 0))}
+                                                 </div>
+                                             </div>
+                                             <div className="bg-gray-50 p-3 rounded-lg">
+                                                 <div className="text-xs text-gray-500 uppercase font-bold">Faculty</div>
+                                                 <div className="flex items-center gap-2 mt-1">
+                                                     <span className="font-bold text-gray-900">{reviewStats.avgFaculty?.toFixed(1) || '-'}</span>
+                                                     {renderStars(Math.round(reviewStats.avgFaculty || 0))}
+                                                 </div>
+                                             </div>
+                                             <div className="bg-gray-50 p-3 rounded-lg">
+                                                 <div className="text-xs text-gray-500 uppercase font-bold">Infrastructure</div>
+                                                 <div className="flex items-center gap-2 mt-1">
+                                                     <span className="font-bold text-gray-900">{reviewStats.avgInfrastructure?.toFixed(1) || '-'}</span>
+                                                     {renderStars(Math.round(reviewStats.avgInfrastructure || 0))}
+                                                 </div>
+                                             </div>
+                                             <div className="bg-gray-50 p-3 rounded-lg">
+                                                 <div className="text-xs text-gray-500 uppercase font-bold">Placements</div>
+                                                 <div className="flex items-center gap-2 mt-1">
+                                                     <span className="font-bold text-gray-900">{reviewStats.avgPlacements?.toFixed(1) || '-'}</span>
+                                                     {renderStars(Math.round(reviewStats.avgPlacements || 0))}
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 )}
+                             </div>
+
+                             {/* Review Form */}
+                             {showReviewForm && (
+                                 <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
+                                     <div className="flex justify-between items-center mb-6">
+                                         <h3 className="text-xl font-bold text-gray-900">
+                                             {editingReview ? 'Edit Your Review' : 'Write Your Review'}
+                                         </h3>
+                                         {editingReview && (
+                                             <button
+                                                 type="button"
+                                                 onClick={cancelEdit}
+                                                 className="text-gray-500 hover:text-gray-700"
+                                             >
+                                                 Cancel
+                                             </button>
+                                         )}
+                                     </div>
+                                     {!isAuthenticated ? (
+                                         <div className="text-center py-8">
+                                             <FaUser className="text-4xl text-gray-300 mx-auto mb-4" />
+                                             <p className="text-gray-500 mb-4">Please login to write a review</p>
+                                             <Link to="/login" className="px-6 py-2 bg-brand-blue text-white rounded-lg">Login</Link>
+                                         </div>
+                                     ) : (
+                                         <form onSubmit={editingReview ? handleUpdateReview : handleReviewSubmit} className="space-y-6">
+                                             {/* Ratings */}
+                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                                 {[
+                                                     { key: 'overallRating', label: 'Overall' },
+                                                     { key: 'academicsRating', label: 'Academics' },
+                                                     { key: 'facultyRating', label: 'Faculty' },
+                                                     { key: 'infrastructureRating', label: 'Infrastructure' },
+                                                     { key: 'placementsRating', label: 'Placements' },
+                                                     { key: 'campusLifeRating', label: 'Campus Life' }
+                                                 ].map(rating => (
+                                                     <div key={rating.key} className="bg-gray-50 p-4 rounded-lg">
+                                                         <label className="block text-sm font-bold text-gray-700 mb-2">{rating.label}</label>
+                                                         <div className="flex gap-1">
+                                                             {[1,2,3,4,5].map(star => (
+                                                                 <button
+                                                                     type="button"
+                                                                     key={star}
+                                                                     onClick={() => setReviewForm({...reviewForm, [rating.key]: star})}
+                                                                     className={`text-2xl transition ${star <= reviewForm[rating.key] ? 'text-yellow-400' : 'text-gray-300 hover:text-yellow-200'}`}
+                                                                 >
+                                                                     <FaStar />
+                                                                 </button>
+                                                             ))}
+                                                         </div>
+                                                     </div>
+                                                 ))}
+                                             </div>
+
+                                             {/* Title */}
+                                             <div>
+                                                 <label className="block text-sm font-bold text-gray-700 mb-2">Review Title *</label>
+                                                 <input
+                                                     type="text"
+                                                     required
+                                                     maxLength={100}
+                                                     value={reviewForm.title}
+                                                     onChange={(e) => setReviewForm({...reviewForm, title: e.target.value})}
+                                                     placeholder="Summarize your experience"
+                                                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                                                 />
+                                             </div>
+
+                                             {/* Review Text */}
+                                             <div>
+                                                 <label className="block text-sm font-bold text-gray-700 mb-2">Your Review *</label>
+                                                 <textarea
+                                                     required
+                                                     maxLength={2000}
+                                                     rows={5}
+                                                     value={reviewForm.reviewText}
+                                                     onChange={(e) => setReviewForm({...reviewForm, reviewText: e.target.value})}
+                                                     placeholder="Share your experience at this college..."
+                                                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                                                 ></textarea>
+                                             </div>
+
+                                             {/* Pros & Cons */}
+                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                 <div>
+                                                     <label className="block text-sm font-bold text-green-600 mb-2">Pros</label>
+                                                     <textarea
+                                                         maxLength={500}
+                                                         rows={3}
+                                                         value={reviewForm.pros}
+                                                         onChange={(e) => setReviewForm({...reviewForm, pros: e.target.value})}
+                                                         placeholder="What did you like?"
+                                                         className="w-full px-4 py-3 border border-green-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent bg-green-50/50"
+                                                     ></textarea>
+                                                 </div>
+                                                 <div>
+                                                     <label className="block text-sm font-bold text-red-600 mb-2">Cons</label>
+                                                     <textarea
+                                                         maxLength={500}
+                                                         rows={3}
+                                                         value={reviewForm.cons}
+                                                         onChange={(e) => setReviewForm({...reviewForm, cons: e.target.value})}
+                                                         placeholder="What could be improved?"
+                                                         className="w-full px-4 py-3 border border-red-200 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-red-50/50"
+                                                     ></textarea>
+                                                 </div>
+                                             </div>
+
+                                             {/* User Info */}
+                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                 <div>
+                                                     <label className="block text-sm font-bold text-gray-700 mb-2">Course Studied</label>
+                                                     <input
+                                                         type="text"
+                                                         value={reviewForm.courseName}
+                                                         onChange={(e) => setReviewForm({...reviewForm, courseName: e.target.value})}
+                                                         placeholder="e.g. B.Tech CSE"
+                                                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                                                     />
+                                                 </div>
+                                                 <div>
+                                                     <label className="block text-sm font-bold text-gray-700 mb-2">Graduation Year</label>
+                                                     <select
+                                                         value={reviewForm.graduationYear}
+                                                         onChange={(e) => setReviewForm({...reviewForm, graduationYear: parseInt(e.target.value)})}
+                                                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+                                                     >
+                                                         {Array.from({length: 10}, (_, i) => new Date().getFullYear() + 4 - i).map(year => (
+                                                             <option key={year} value={year}>{year}</option>
+                                                         ))}
+                                                     </select>
+                                                 </div>
+                                             </div>
+
+                                             <button
+                                                 type="submit"
+                                                 disabled={reviewSubmitting}
+                                                 className="w-full py-3 bg-brand-orange text-white font-bold rounded-lg hover:bg-orange-600 transition disabled:opacity-50"
+                                             >
+                                                 {reviewSubmitting ? 'Submitting...' : (editingReview ? 'Update Review' : 'Submit Review')}
+                                             </button>
+                                         </form>
+                                     )}
+                                 </div>
+                             )}
+
+                             {/* Reviews List */}
+                             <div className="space-y-4">
+                                 {reviewLoading ? (
+                                     <div className="text-center py-12">
+                                         <div className="animate-spin h-8 w-8 border-2 border-brand-blue rounded-full border-t-transparent mx-auto"></div>
+                                     </div>
+                                 ) : reviews.length === 0 ? (
+                                     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
+                                         <FaCommentAlt className="text-5xl text-gray-200 mx-auto mb-4" />
+                                         <h3 className="text-xl font-bold text-gray-800 mb-2">No reviews yet</h3>
+                                         <p className="text-gray-500">Be the first to share your experience!</p>
+                                     </div>
+                                 ) : (
+                                     reviews.map((review) => (
+                                         <div key={review._id} className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                                             <div className="flex justify-between items-start mb-4">
+                                                 <div>
+                                                     <div className="flex items-center gap-2 mb-1">
+                                                         <div className="w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold">
+                                                             {review.authorName?.charAt(0) || 'U'}
+                                                         </div>
+                                                         <div>
+                                                             <div className="font-bold text-gray-900">{review.authorName}</div>
+                                                             <div className="text-xs text-gray-500">
+                                                                 {review.courseName && `${review.courseName} • `}
+                                                                 {review.graduationYear && `Class of ${review.graduationYear}`}
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                                 <div className="flex items-center gap-1">
+                                                     {renderStars(review.overallRating)}
+                                                 </div>
+                                             </div>
+                                             
+                                             <h4 className="font-bold text-gray-900 mb-2">{review.title}</h4>
+                                             <p className="text-gray-600 mb-4 leading-relaxed">{review.reviewText}</p>
+                                             
+                                             {(review.pros || review.cons) && (
+                                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                                     {review.pros && (
+                                                         <div className="bg-green-50 p-3 rounded-lg border border-green-100">
+                                                             <div className="text-xs font-bold text-green-700 uppercase mb-1">Pros</div>
+                                                             <p className="text-sm text-green-800">{review.pros}</p>
+                                                         </div>
+                                                     )}
+                                                     {review.cons && (
+                                                         <div className="bg-red-50 p-3 rounded-lg border border-red-100">
+                                                             <div className="text-xs font-bold text-red-700 uppercase mb-1">Cons</div>
+                                                             <p className="text-sm text-red-800">{review.cons}</p>
+                                                         </div>
+                                                     )}
+                                                 </div>
+                                             )}
+
+                                             <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                                                 <div className="flex items-center gap-4">
+                                                     <button
+                                                         onClick={() => handleHelpful(review._id)}
+                                                         className="flex items-center gap-2 text-sm text-gray-500 hover:text-brand-blue transition"
+                                                     >
+                                                         <FaThumbsUp /> Helpful ({review.helpfulCount})
+                                                     </button>
+                                                     {/* Edit/Delete buttons for owner or admin */}
+                                                     {user && (
+                                                         <div className="flex items-center gap-3 ml-2">
+                                                             {/* Only owner can edit */}
+                                                             {(String(review.user?._id || review.user) === String(user._id)) && (
+                                                                 <button
+                                                                     onClick={() => handleEditReview(review)}
+                                                                     className="flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-blue-600 transition"
+                                                                 >
+                                                                     <FaEdit /> Edit
+                                                                 </button>
+                                                             )}
+                                                             
+                                                             {/* Owner OR Admin can delete */}
+                                                             {(user.role === 'admin' || String(review.user?._id || review.user) === String(user._id)) && (
+                                                                 <button
+                                                                     onClick={() => handleDeleteReview(review._id)}
+                                                                     className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-700 transition bg-red-50 px-2 py-1 rounded"
+                                                                     title="Delete Review"
+                                                                 >
+                                                                     <FaTrash /> Delete
+                                                                 </button>
+                                                             )}
+                                                         </div>
+                                                     )}
+                                                 </div>
+                                                 <span className="text-xs text-gray-400">
+                                                     {new Date(review.createdAt).toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                                 </span>
+                                             </div>
+                                         </div>
+                                     ))
+                                 )}
+                             </div>
+                         </div>
                      )}
 
                 </div>
