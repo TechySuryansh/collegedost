@@ -199,7 +199,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="relative z-[200]">
+                <div className="relative z-200">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -230,7 +230,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                 </button>
 
                                 {/* Left Side: Premium Theme Marketing (Hidden on Mobile) */}
-                                <div className="hidden md:flex md:w-5/12 bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0f172a] text-white p-8 flex-col relative overflow-hidden">
+                                <div className="hidden md:flex md:w-5/12 bg-linear-to-br from-brand-dark via-[#1e3a8a] to-brand-dark text-white p-8 flex-col relative overflow-hidden">
                                     {/* Decorative Elements */}
                                     <div className="absolute top-0 left-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2"></div>
                                     <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-[80px] translate-x-1/2 -translate-y-1/2"></div>
@@ -242,7 +242,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                             <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center text-brand-cyan font-bold text-xl mb-6 shadow-2xl border border-white/10">CD</div>
                                             <h2 className="text-3xl font-bold font-heading leading-tight mb-4">
                                                 Unlock Your <br />
-                                                <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-cyan to-brand-mint">Dream College</span>
+                                                <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-cyan to-brand-mint">Dream College</span>
                                             </h2>
                                             <p className="text-blue-200/80 text-sm leading-relaxed">
                                                 Join 50,000+ students leveraging AI tools, premium counselling, and 100+ ebooks to get ahead.

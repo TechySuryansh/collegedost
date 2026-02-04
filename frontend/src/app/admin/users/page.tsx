@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
-// @ts-ignore
-import AdminUsers from '@/app/pages/admin/AdminUsers';
+import AdminUsers from '@/components/admin/AdminUsers';
 
 export default function Page() {
     return <AdminUsers />;

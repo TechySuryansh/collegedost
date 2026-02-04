@@ -38,7 +38,7 @@ const PillSection: React.FC<PillSectionProps> = ({ title, items, color = "border
                             href={displayLink}
                             className="group relative flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 shadow-sm hover:shadow-premium hover:border-brand-indigo/20 transition-all duration-300 hover:-translate-y-1 overflow-hidden"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-r from-brand-indigo/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                            <div className="absolute inset-0 bg-linear-to-r from-brand-indigo/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                             <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-indigo opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                             <span className="relative z-10 font-bold text-gray-700 group-hover:text-brand-indigo transition-colors text-sm md:text-[15px] pr-4">

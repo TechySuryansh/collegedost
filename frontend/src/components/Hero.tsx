@@ -88,7 +88,7 @@ const Hero: React.FC<HeroProps> = ({
                         <img src={bgImage} alt="Background" className="w-full h-full object-cover" />
                     </>
                 ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#0f172a]"></div>
+                    <div className="absolute inset-0 bg-linear-to-br from-brand-dark via-[#1e3a8a] to-brand-dark"></div>
                 )}
             </div>
 
@@ -101,7 +101,7 @@ const Hero: React.FC<HeroProps> = ({
                         rotate: [0, 45, 0]
                     }}
                     transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-[10%] -left-[10%] w-[500px] h-[500px] bg-brand-violet/20 rounded-full blur-[100px]"
+                    className="absolute -top-[10%] -left-[10%] w-125 h-125 bg-brand-violet/20 rounded-full blur-[100px]"
                 />
                 <motion.div
                     animate={{
@@ -110,9 +110,9 @@ const Hero: React.FC<HeroProps> = ({
                         opacity: [0.2, 0.4, 0.2]
                     }}
                     transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[20%] right-[-5%] w-[400px] h-[400px] bg-brand-cyan/20 rounded-full blur-[80px]"
+                    className="absolute top-[20%] right-[-5%] w-100 h-100 bg-brand-cyan/20 rounded-full blur-[80px]"
                 />
-                <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[300px] bg-brand-blue-dark/30 rounded-full blur-[100px]"></div>
+                <div className="absolute bottom-[-10%] left-[20%] w-150 h-75 bg-brand-blue-dark/30 rounded-full blur-[100px]"></div>
             </div>
 
             {/* Grid Pattern Overlay */}
@@ -145,7 +145,7 @@ const Hero: React.FC<HeroProps> = ({
 
                     {/* Premium Glass Search Bar with Autocomplete */}
                     <div className="relative w-full max-w-3xl mx-auto group z-50 text-left" ref={searchRef}>
-                        <div className="absolute -inset-1 bg-gradient-to-r from-brand-cyan via-brand-blue to-brand-violet rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 pointer-events-none"></div>
+                        <div className="absolute -inset-1 bg-linear-to-r from-brand-cyan via-brand-blue to-brand-violet rounded-full blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 pointer-events-none"></div>
 
                         <div className="relative flex items-center bg-white/10 backdrop-blur-xl border border-white/20 rounded-full p-2 shadow-2xl transition-all focus-within:bg-white/15 focus-within:border-white/30 focus-within:ring-1 focus-within:ring-white/20">
 
@@ -190,7 +190,7 @@ const Hero: React.FC<HeroProps> = ({
                                             onClick={() => router.push(`/colleges/${item.slug}`)}
                                             className="px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-blue-50 cursor-pointer flex items-center gap-4 transition-colors"
                                         >
-                                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-blue-dark flex-shrink-0">
+                                            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-blue-dark shrink-0">
                                                 <FaUniversity />
                                             </div>
                                             <div className="text-left">

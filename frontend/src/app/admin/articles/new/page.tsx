@@ -1,8 +1,7 @@
 "use client";
 import React from 'react';
-// @ts-ignore
-import PostArticle from '@/app/pages/admin/PostArticle';
+import ArticleForm from '@/components/admin/ArticleForm';
 
 export default function Page() {
-    return <PostArticle />;
+    return <ArticleForm />;
 }

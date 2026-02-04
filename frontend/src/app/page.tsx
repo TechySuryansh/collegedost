@@ -1,5 +1,5 @@
 
-import HomePage from '@/components/HomePage';
+import HomePageClient from '@/components/HomePageClient';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      <HomePage />
+      <HomePageClient />
     </main>
   );
 }

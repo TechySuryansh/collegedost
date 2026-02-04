@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
-// @ts-ignore
-import PredictorSettings from '@/app/pages/admin/PredictorSettings';
+import PredictorSettings from '@/components/admin/PredictorSettings';
 
 export default function Page() {
     return <PredictorSettings />;

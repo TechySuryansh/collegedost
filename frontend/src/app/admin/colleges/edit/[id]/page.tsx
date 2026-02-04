@@ -1,8 +1,7 @@
 "use client";
 import React from 'react';
-// @ts-ignore
-import AddCollege from '@/app/pages/admin/AddCollege';
+import CollegeForm from '@/components/admin/CollegeForm';
 
 export default function Page() {
-    return <AddCollege />;
+    return <CollegeForm />;
 }

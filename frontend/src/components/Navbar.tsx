@@ -4,15 +4,21 @@ import React, { useState, useEffect } from 'react';
 import {
     navLinks,
     browseByStreamData,
-    testPrepData,
-    collegesData,
-    examsData,
-    coursesData,
-    rankingsData,
-    counsellingData,
-    careersData,
-    moreData
-} from '../data';
+    // ============================================
+    // PLANNED FEATURES: The following data imports
+    // are reserved for upcoming dropdown menus in
+    // the navigation. DO NOT REMOVE.
+    // ============================================
+    testPrepData,      // Future: Test Prep mega menu
+    collegesData,      // Future: Colleges dropdown
+    examsData,         // Future: Exams dropdown
+    coursesData,       // Future: Courses mega menu
+    rankingsData,      // Future: Rankings section
+    counsellingData,   // Future: Counselling section
+    careersData,       // Future: Career guidance section
+    moreData           // Future: Additional resources
+    // ============================================
+} from '../data/navigation';
 import { FaSearch, FaUser, FaBars, FaTh, FaChevronDown, FaAngleRight, FaQuestion, FaShareAlt, FaBookOpen, FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaArrowLeft, FaTimes, FaGraduationCap, FaTrophy, FaBriefcase, FaEllipsisH, FaComments, FaHome, FaCompass, FaChartLine, FaStethoscope, FaLaptopCode, FaBalanceScale, FaPalette, FaMicrophone, FaCoins, FaDesktop, FaFlask, FaPlane, FaSchool, FaGlobeAmericas, FaChevronRight } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';    
@@ -103,7 +109,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                         <Link href={isAdminMode ? "/" : "/"} className="flex items-center gap-3">
                             {isAdminMode ? (
                                 <div className="flex items-center gap-4 group">
-                                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
+                                    <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-linear-to-br from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
                                         <FaUserShield className="text-lg" />
                                     </div>
                                     <div className="flex flex-col">

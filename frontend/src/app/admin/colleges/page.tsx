@@ -1,7 +1,6 @@
 "use client";
 import React from 'react';
-// @ts-ignore
-import AdminColleges from '@/app/pages/admin/AdminColleges';
+import AdminColleges from '@/components/admin/AdminColleges';
 
 export default function Page() {
     return <AdminColleges />;
