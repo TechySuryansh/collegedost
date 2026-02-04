@@ -78,6 +78,23 @@ app.use('/api/verification', require('./routes/verification.routes'));
 app.use('/api/predictor', require('./routes/predictor.routes'));
 app.use('/api/test-prep', require('./routes/testPrep.routes'));
 
+// Global request logger
+app.use((req, res, next) => {
+  console.log(`🌐 [${new Date().toISOString()}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+// Debug middleware for reviews - log all incoming requests
+app.use('/api/reviews', (req, res, next) => {
+  console.log(`📥 REVIEWS REQUEST: ${req.method} ${req.originalUrl}`);
+  console.log('   Headers:', JSON.stringify(req.headers));
+  console.log('   Body:', JSON.stringify(req.body));
+  next();
+});
+
+app.use('/api/reviews', require('./routes/review.routes'));
+
+
 // Global error handler - prevents unhandled errors from crashing the server
 app.use((err, req, res, next) => {
   console.error('🔥 Global Error:', err.message);

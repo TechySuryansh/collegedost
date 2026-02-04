@@ -144,3 +144,24 @@ exports.deleteArticle = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server Error' });
     }
 };
+
+// @desc    Fetch news from RSS feeds
+// @route   POST /api/articles/admin/fetch-news
+// @access  Private (Admin)
+exports.fetchNews = async (req, res) => {
+    try {
+        const fetchAndStoreNews = require('../utils/newsFetcher');
+        
+        // Run the news fetch
+        const result = await fetchAndStoreNews();
+        
+        res.status(200).json({ 
+            success: true, 
+            message: `News fetch complete. Added ${result.newArticlesCount || result} new articles.`,
+            data: result
+        });
+    } catch (error) {
+        console.error('News fetch error:', error);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

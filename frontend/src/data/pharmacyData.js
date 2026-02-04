@@ -105,3 +105,14 @@ export const pharmacyCoursesData = [
         ]
     }
 ];
+
+export const pharmacyCities = [
+    { name: "Delhi", link: "/colleges?stream=Pharmacy&city=Delhi" },
+    { name: "Mumbai", link: "/colleges?stream=Pharmacy&city=Mumbai" },
+    { name: "Bangalore", link: "/colleges?stream=Pharmacy&city=Bangalore" },
+    { name: "Pune", link: "/colleges?stream=Pharmacy&city=Pune" },
+    { name: "Hyderabad", link: "/colleges?stream=Pharmacy&city=Hyderabad" },
+    { name: "Chennai", link: "/colleges?stream=Pharmacy&city=Chennai" },
+    { name: "Kolkata", link: "/colleges?stream=Pharmacy&city=Kolkata" },
+    { name: "Ahmedabad", link: "/colleges?stream=Pharmacy&city=Ahmedabad" }
+];

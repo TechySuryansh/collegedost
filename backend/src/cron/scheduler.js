@@ -24,13 +24,28 @@ const init = () => {
         // Similar predictable URL check logic
     });
 
-    // 3. News Ingestion (Every 6 hours)
-    cron.schedule('0 */6 * * *', async () => {
+    // 3. News Ingestion (Every 2 hours for fresh content)
+    cron.schedule('0 */2 * * *', async () => {
         console.log('[CRON] Starting News Ingestion...');
-        await fetchAndStoreNews();
+        try {
+            await fetchAndStoreNews();
+        } catch (error) {
+            console.error('[CRON] News fetch error:', error.message);
+        }
     });
 
-    console.log('✅ Ingestion Scheduler Initialized (NIRF, JoSAA, News)');
+    // 4. Initial news fetch on startup (delayed by 30 seconds to allow DB connection)
+    setTimeout(async () => {
+        console.log('[STARTUP] Initial News Fetch...');
+        try {
+            await fetchAndStoreNews();
+        } catch (error) {
+            console.error('[STARTUP] Initial news fetch error:', error.message);
+        }
+    }, 30000);
+
+    console.log('✅ Ingestion Scheduler Initialized (NIRF, JoSAA, News every 2hrs)');
 };
 
 module.exports = { init };
+

@@ -105,3 +105,14 @@ export const lawCoursesData = [
         ]
     }
 ];
+
+export const lawCities = [
+    { name: "Delhi", link: "/colleges?stream=Law&city=Delhi" },
+    { name: "Bangalore", link: "/colleges?stream=Law&city=Bangalore" },
+    { name: "Pune", link: "/colleges?stream=Law&city=Pune" },
+    { name: "Hyderabad", link: "/colleges?stream=Law&city=Hyderabad" },
+    { name: "Lucknow", link: "/colleges?stream=Law&city=Lucknow" },
+    { name: "Chandigarh", link: "/colleges?stream=Law&city=Chandigarh" },
+    { name: "Kolkata", link: "/colleges?stream=Law&city=Kolkata" },
+    { name: "Jaipur", link: "/colleges?stream=Law&city=Jaipur" }
+];
