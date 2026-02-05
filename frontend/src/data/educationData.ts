@@ -1,24 +1,24 @@
 
 export const educationRankings = [
-    { name: "Top Education Colleges in India", link: "/colleges?goal=Colleges&search=Education" },
-    { name: "Best B.Ed Colleges in India", link: "/colleges?goal=Colleges&degree=B.Ed" },
-    { name: "Education Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Education" },
-    { name: "Top M.Ed Colleges", link: "/colleges?goal=Colleges&degree=M.Ed" },
-    { name: "Government B.Ed Colleges", link: "/colleges?goal=Colleges&type=Government&search=B.Ed" },
-    { name: "D.El.Ed Colleges", link: "/colleges?goal=Colleges&search=D.El.Ed" },
-    { name: "Top Teacher Training Institutes", link: "/colleges?goal=Colleges&search=Teacher Training" },
-    { name: "NCTE Approved Colleges", link: "/colleges?goal=Colleges&search=NCTE" }
+    { name: "Top Education Colleges in India", link: "/tools/colleges?goal=Colleges&search=Education" },
+    { name: "Best B.Ed Colleges in India", link: "/tools/colleges?goal=Colleges&degree=B.Ed" },
+    { name: "Education Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Education" },
+    { name: "Top M.Ed Colleges", link: "/tools/colleges?goal=Colleges&degree=M.Ed" },
+    { name: "Government B.Ed Colleges", link: "/tools/colleges?goal=Colleges&type=Government&search=B.Ed" },
+    { name: "D.El.Ed Colleges", link: "/tools/colleges?goal=Colleges&search=D.El.Ed" },
+    { name: "Top Teacher Training Institutes", link: "/tools/colleges?goal=Colleges&search=Teacher Training" },
+    { name: "NCTE Approved Colleges", link: "/tools/colleges?goal=Colleges&search=NCTE" }
 ];
 
 export const educationExams = [
-    { name: "CTET 2025", link: "/exams/ctet" },
-    { name: "TET State Exams", link: "/exams/tet" },
-    { name: "UGC NET Education", link: "/exams/ugc-net" },
-    { name: "B.Ed Entrance Exams", link: "/exams/bed-entrance" },
-    { name: "DSSSB TGT/PGT", link: "/exams/dsssb" },
-    { name: "KVS Teacher Exam", link: "/exams/kvs" },
-    { name: "NVS Teacher Exam", link: "/exams/nvs" },
-    { name: "UP TET 2025", link: "/exams/up-tet" }
+    { name: "CTET 2025", link: "/tools/exams/ctet" },
+    { name: "TET State Exams", link: "/tools/exams/tet" },
+    { name: "UGC NET Education", link: "/tools/exams/ugc-net" },
+    { name: "B.Ed Entrance Exams", link: "/tools/exams/bed-entrance" },
+    { name: "DSSSB TGT/PGT", link: "/tools/exams/dsssb" },
+    { name: "KVS Teacher Exam", link: "/tools/exams/kvs" },
+    { name: "NVS Teacher Exam", link: "/tools/exams/nvs" },
+    { name: "UP TET 2025", link: "/tools/exams/up-tet" }
 ];
 
 export const featuredEducationColleges = [
@@ -30,7 +30,7 @@ export const featuredEducationColleges = [
         tags: ["Government", "Premier"],
         fees: "₹ 30K Total Fees",
         placement: "₹ 5L Avg Package",
-        link: "/colleges?goal=Colleges&search=NCERT"
+        link: "/tools/colleges?goal=Colleges&search=NCERT"
     },
     {
         name: "Central Institute of Education (CIE), DU",
@@ -40,7 +40,7 @@ export const featuredEducationColleges = [
         tags: ["DU", "Prestigious"],
         fees: "₹ 40K Total Fees",
         placement: "₹ 6L Avg Package",
-        link: "/colleges?goal=Colleges&search=CIE Delhi"
+        link: "/tools/colleges?goal=Colleges&search=CIE Delhi"
     },
     {
         name: "Jamia Millia Islamia - Education",
@@ -50,7 +50,7 @@ export const featuredEducationColleges = [
         tags: ["Central University", "Historic"],
         fees: "₹ 25K Total Fees",
         placement: "₹ 5L Avg Package",
-        link: "/colleges?goal=Colleges&search=Jamia Education"
+        link: "/tools/colleges?goal=Colleges&search=Jamia Education"
     },
     {
         name: "Lady Irwin College",
@@ -60,7 +60,7 @@ export const featuredEducationColleges = [
         tags: ["DU", "Women's College"],
         fees: "₹ 35K Total Fees",
         placement: "₹ 4.5L Avg Package",
-        link: "/colleges?goal=Colleges&search=Lady Irwin College"
+        link: "/tools/colleges?goal=Colleges&search=Lady Irwin College"
     }
 ];
 
@@ -107,12 +107,12 @@ export const educationCoursesData = [
 ];
 
 export const educationCities = [
-    { name: "Education Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Education" },
-    { name: "Education Colleges in Mumbai", link: "/colleges?goal=Colleges&search=Education Mumbai" },
-    { name: "Education Colleges in Bangalore", link: "/colleges?goal=Colleges&search=Education Bangalore" },
-    { name: "Education Colleges in Chennai", link: "/colleges?goal=Colleges&search=Education Chennai" },
-    { name: "Education Colleges in Kolkata", link: "/colleges?goal=Colleges&search=Education Kolkata" },
-    { name: "Education Colleges in Pune", link: "/colleges?goal=Colleges&search=Education Pune" },
-    { name: "Education Colleges in Hyderabad", link: "/colleges?goal=Colleges&search=Education Hyderabad" },
-    { name: "Education Colleges in Lucknow", link: "/colleges?goal=Colleges&search=Education Lucknow" }
+    { name: "Education Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Education" },
+    { name: "Education Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&search=Education Mumbai" },
+    { name: "Education Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&search=Education Bangalore" },
+    { name: "Education Colleges in Chennai", link: "/tools/colleges?goal=Colleges&search=Education Chennai" },
+    { name: "Education Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&search=Education Kolkata" },
+    { name: "Education Colleges in Pune", link: "/tools/colleges?goal=Colleges&search=Education Pune" },
+    { name: "Education Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&search=Education Hyderabad" },
+    { name: "Education Colleges in Lucknow", link: "/tools/colleges?goal=Colleges&search=Education Lucknow" }
 ];

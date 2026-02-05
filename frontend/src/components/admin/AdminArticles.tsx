@@ -104,7 +104,7 @@ const AdminArticles: React.FC = () => {
                                 {new Date(article.createdAt).toLocaleDateString()}
                             </span>
                             <div className="flex gap-4">
-                                <a href={`/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
+                                <a href={`/tools/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
                                     <FaExternalLinkAlt />
                                 </a>
                                 <Link href={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">
@@ -159,7 +159,7 @@ const AdminArticles: React.FC = () => {
                                 </td>
                                 <td className="px-6 py-4 text-right">
                                     <div className="flex items-center justify-end gap-3">
-                                        <a href={`/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
+                                        <a href={`/tools/news/${article.slug}`} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-brand-blue" title="View">
                                             <FaExternalLinkAlt />
                                         </a>
                                         <Link href={`/admin/articles/edit/${article._id}`} className="text-gray-400 hover:text-green-600" title="Edit">

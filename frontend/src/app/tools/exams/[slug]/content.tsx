@@ -101,7 +101,7 @@ const PageContent: React.FC = () => {
                         The exam "{slug}" you're looking for doesn't exist in our database yet.
                         It may be added soon!
                     </p>
-                    <Link href="/exams" className="inline-block px-6 py-3 bg-brand-orange text-white font-bold rounded-lg hover:bg-orange-600 transition">
+                    <Link href="/tools/exams" className="inline-block px-6 py-3 bg-brand-orange text-white font-bold rounded-lg hover:bg-orange-600 transition">
                         Browse All Exams
                     </Link>
                 </div>

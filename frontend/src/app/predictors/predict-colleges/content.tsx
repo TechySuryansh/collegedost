@@ -133,7 +133,7 @@ const PageContent: React.FC = () => {
                                                 </div>
                                                 <div>
                                                     <h3 className="font-bold text-lg text-gray-900 leading-tight">
-                                                        <Link href={`/colleges/${college.slug}`} className="hover:text-brand-blue">{college.name}</Link>
+                                                        <Link href={`/tools/colleges/${college.slug}`} className="hover:text-brand-blue">{college.name}</Link>
                                                     </h3>
                                                     <p className="text-sm text-gray-500">{college.location.city}, {college.location.state}</p>
                                                 </div>
@@ -153,7 +153,7 @@ const PageContent: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <Link href={`/colleges/${college.slug}`} className="block text-center w-full py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
+                                        <Link href={`/tools/colleges/${college.slug}`} className="block text-center w-full py-2 border border-gray-200 rounded-lg text-sm font-bold text-gray-600 hover:bg-gray-50 transition-colors">
                                             View Full Details
                                         </Link>
                                     </div>

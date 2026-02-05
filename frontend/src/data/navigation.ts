@@ -1538,14 +1538,14 @@ export const homeStatsData = [
 ];
 
 export const homeRankingsData = [
-  { name: "Top Engineering Colleges in India", link: "/colleges?stream=Engineering And Architecture" },
-  { name: "Top MBA Colleges in India", link: "/colleges?stream=Management And Business Administration" },
-  { name: "Top Medical Colleges in India", link: "/colleges?stream=Medicine And Allied Sciences" },
-  { name: "Top Law Colleges in India", link: "/colleges?stream=Law" },
-  { name: "Top Universities in India", link: "/colleges" },
-  { name: "Top BBA Colleges in India", link: "/colleges?degree=Other Bachelors&stream=Management And Business Administration" },
-  { name: "Top Pharmacy Colleges in India", link: "/colleges?stream=Pharmacy" },
-  { name: "Top Architecture Colleges", link: "/colleges?stream=Engineering And Architecture&degree=B.Arch" }
+  { name: "Top Engineering Colleges in India", link: "/tools/colleges?stream=Engineering And Architecture" },
+  { name: "Top MBA Colleges in India", link: "/tools/colleges?stream=Management And Business Administration" },
+  { name: "Top Medical Colleges in India", link: "/tools/colleges?stream=Medicine And Allied Sciences" },
+  { name: "Top Law Colleges in India", link: "/tools/colleges?stream=Law" },
+  { name: "Top Universities in India", link: "/tools/colleges" },
+  { name: "Top BBA Colleges in India", link: "/tools/colleges?degree=Other Bachelors&stream=Management And Business Administration" },
+  { name: "Top Pharmacy Colleges in India", link: "/tools/colleges?stream=Pharmacy" },
+  { name: "Top Architecture Colleges", link: "/tools/colleges?stream=Engineering And Architecture&degree=B.Arch" }
 ];
 
 export const homeExamsData = [

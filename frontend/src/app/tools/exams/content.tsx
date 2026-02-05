@@ -103,7 +103,7 @@ const PageContent: React.FC = () => {
                             {filteredExams.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
                                     {filteredExams.map((exam) => (
-                                        <Link key={exam._id} href={`/exams/${exam.examSlug}`} className="group">
+                                        <Link key={exam._id} href={`/tools/exams/${exam.examSlug}`} className="group">
                                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-brand-blue/30 transition-all duration-300 h-full flex flex-col">
                                                 <div className="h-2 bg-linear-to-r from-brand-cyan to-brand-blue"></div>
                                                 <div className="p-6 flex-1 flex flex-col">

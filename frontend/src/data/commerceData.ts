@@ -1,24 +1,24 @@
 
 export const commerceRankings = [
-    { name: "Top Commerce Colleges in India", link: "/colleges?goal=Colleges&stream=Commerce" },
-    { name: "Best B.Com Colleges in India", link: "/colleges?goal=Colleges&degree=B.Com" },
-    { name: "Commerce Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Commerce&state=Delhi" },
-    { name: "Commerce Colleges in Mumbai", link: "/colleges?goal=Colleges&stream=Commerce&search=Mumbai" },
-    { name: "Top M.Com Colleges", link: "/colleges?goal=Colleges&degree=M.Com" },
-    { name: "Government Commerce Colleges", link: "/colleges?goal=Colleges&stream=Commerce&type=Government" },
-    { name: "Top CA Coaching Institutes", link: "/colleges?goal=Colleges&search=CA Coaching" },
-    { name: "Best BBA Colleges", link: "/colleges?goal=Colleges&search=BBA" }
+    { name: "Top Commerce Colleges in India", link: "/tools/colleges?goal=Colleges&stream=Commerce" },
+    { name: "Best B.Com Colleges in India", link: "/tools/colleges?goal=Colleges&degree=B.Com" },
+    { name: "Commerce Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Commerce&state=Delhi" },
+    { name: "Commerce Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Mumbai" },
+    { name: "Top M.Com Colleges", link: "/tools/colleges?goal=Colleges&degree=M.Com" },
+    { name: "Government Commerce Colleges", link: "/tools/colleges?goal=Colleges&stream=Commerce&type=Government" },
+    { name: "Top CA Coaching Institutes", link: "/tools/colleges?goal=Colleges&search=CA Coaching" },
+    { name: "Best BBA Colleges", link: "/tools/colleges?goal=Colleges&search=BBA" }
 ];
 
 export const commerceExams = [
-    { name: "CA Foundation 2025", link: "/exams/ca-foundation" },
-    { name: "CA Intermediate 2025", link: "/exams/ca-intermediate" },
-    { name: "CA Final 2025", link: "/exams/ca-final" },
-    { name: "CS Executive", link: "/exams/cs-executive" },
-    { name: "CS Professional", link: "/exams/cs-professional" },
-    { name: "CMA Foundation", link: "/exams/cma-foundation" },
-    { name: "CSEET 2025", link: "/exams/cseet" },
-    { name: "CUET Commerce", link: "/exams/cuet" }
+    { name: "CA Foundation 2025", link: "/tools/exams/ca-foundation" },
+    { name: "CA Intermediate 2025", link: "/tools/exams/ca-intermediate" },
+    { name: "CA Final 2025", link: "/tools/exams/ca-final" },
+    { name: "CS Executive", link: "/tools/exams/cs-executive" },
+    { name: "CS Professional", link: "/tools/exams/cs-professional" },
+    { name: "CMA Foundation", link: "/tools/exams/cma-foundation" },
+    { name: "CSEET 2025", link: "/tools/exams/cseet" },
+    { name: "CUET Commerce", link: "/tools/exams/cuet" }
 ];
 
 export const featuredCommerceColleges = [
@@ -30,7 +30,7 @@ export const featuredCommerceColleges = [
         tags: ["DU", "Top Ranked"],
         fees: "₹ 50K Total Fees",
         placement: "₹ 12L Avg Package",
-        link: "/colleges?goal=Colleges&search=SRCC"
+        link: "/tools/colleges?goal=Colleges&search=SRCC"
     },
     {
         name: "LSR College",
@@ -40,7 +40,7 @@ export const featuredCommerceColleges = [
         tags: ["DU", "Women's College"],
         fees: "₹ 40K Total Fees",
         placement: "₹ 10L Avg Package",
-        link: "/colleges?goal=Colleges&search=LSR College"
+        link: "/tools/colleges?goal=Colleges&search=LSR College"
     },
     {
         name: "Christ University - Commerce",
@@ -50,7 +50,7 @@ export const featuredCommerceColleges = [
         tags: ["Deemed", "South India"],
         fees: "₹ 3L Total Fees",
         placement: "₹ 8L Avg Package",
-        link: "/colleges?goal=Colleges&search=Christ University Commerce"
+        link: "/tools/colleges?goal=Colleges&search=Christ University Commerce"
     },
     {
         name: "Loyola College",
@@ -60,7 +60,7 @@ export const featuredCommerceColleges = [
         tags: ["Autonomous", "Chennai"],
         fees: "₹ 1L Total Fees",
         placement: "₹ 6L Avg Package",
-        link: "/colleges?goal=Colleges&search=Loyola College Chennai"
+        link: "/tools/colleges?goal=Colleges&search=Loyola College Chennai"
     }
 ];
 
@@ -107,12 +107,12 @@ export const commerceCoursesData = [
 ];
 
 export const commerceCities = [
-    { name: "Commerce Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Commerce&state=Delhi" },
-    { name: "Commerce Colleges in Mumbai", link: "/colleges?goal=Colleges&stream=Commerce&search=Mumbai" },
-    { name: "Commerce Colleges in Bangalore", link: "/colleges?goal=Colleges&stream=Commerce&search=Bangalore" },
-    { name: "Commerce Colleges in Chennai", link: "/colleges?goal=Colleges&stream=Commerce&search=Chennai" },
-    { name: "Commerce Colleges in Kolkata", link: "/colleges?goal=Colleges&stream=Commerce&search=Kolkata" },
-    { name: "Commerce Colleges in Pune", link: "/colleges?goal=Colleges&stream=Commerce&search=Pune" },
-    { name: "Commerce Colleges in Hyderabad", link: "/colleges?goal=Colleges&stream=Commerce&search=Hyderabad" },
-    { name: "Commerce Colleges in Ahmedabad", link: "/colleges?goal=Colleges&stream=Commerce&search=Ahmedabad" }
+    { name: "Commerce Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Commerce&state=Delhi" },
+    { name: "Commerce Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Mumbai" },
+    { name: "Commerce Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Bangalore" },
+    { name: "Commerce Colleges in Chennai", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Chennai" },
+    { name: "Commerce Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Kolkata" },
+    { name: "Commerce Colleges in Pune", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Pune" },
+    { name: "Commerce Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Hyderabad" },
+    { name: "Commerce Colleges in Ahmedabad", link: "/tools/colleges?goal=Colleges&stream=Commerce&search=Ahmedabad" }
 ];

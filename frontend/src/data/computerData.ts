@@ -1,24 +1,24 @@
 
 export const computerRankings = [
-    { name: "Top MCA Colleges in India", link: "/colleges?goal=Colleges&search=MCA" },
-    { name: "Best BCA Colleges in India", link: "/colleges?goal=Colleges&search=BCA" },
-    { name: "IT Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=IT" },
-    { name: "Top Computer Science Colleges", link: "/colleges?goal=Colleges&search=Computer Science" },
-    { name: "NIT MCA Programs", link: "/colleges?goal=Colleges&search=NIT MCA" },
-    { name: "Government IT Colleges", link: "/colleges?goal=Colleges&type=Government&search=IT" },
-    { name: "Top Data Science Colleges", link: "/colleges?goal=Colleges&search=Data Science" },
-    { name: "Best AI/ML Colleges", link: "/colleges?goal=Colleges&search=Artificial Intelligence" }
+    { name: "Top MCA Colleges in India", link: "/tools/colleges?goal=Colleges&search=MCA" },
+    { name: "Best BCA Colleges in India", link: "/tools/colleges?goal=Colleges&search=BCA" },
+    { name: "IT Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=IT" },
+    { name: "Top Computer Science Colleges", link: "/tools/colleges?goal=Colleges&search=Computer Science" },
+    { name: "NIT MCA Programs", link: "/tools/colleges?goal=Colleges&search=NIT MCA" },
+    { name: "Government IT Colleges", link: "/tools/colleges?goal=Colleges&type=Government&search=IT" },
+    { name: "Top Data Science Colleges", link: "/tools/colleges?goal=Colleges&search=Data Science" },
+    { name: "Best AI/ML Colleges", link: "/tools/colleges?goal=Colleges&search=Artificial Intelligence" }
 ];
 
 export const computerExams = [
-    { name: "NIMCET 2025", link: "/exams/nimcet" },
-    { name: "CUET-PG MCA 2025", link: "/exams/cuet-pg-mca" },
-    { name: "MAH MCA CET 2025", link: "/exams/mah-mca-cet" },
-    { name: "IPU CET MCA 2025", link: "/exams/ipu-cet-mca" },
-    { name: "VITMEE 2025", link: "/exams/vitmee" },
-    { name: "WB JECA 2025", link: "/exams/wb-jeca" },
-    { name: "TANCET MCA 2025", link: "/exams/tancet-mca" },
-    { name: "BIT MCA 2025", link: "/exams/bit-mca" }
+    { name: "NIMCET 2025", link: "/tools/exams/nimcet" },
+    { name: "CUET-PG MCA 2025", link: "/tools/exams/cuet-pg-mca" },
+    { name: "MAH MCA CET 2025", link: "/tools/exams/mah-mca-cet" },
+    { name: "IPU CET MCA 2025", link: "/tools/exams/ipu-cet-mca" },
+    { name: "VITMEE 2025", link: "/tools/exams/vitmee" },
+    { name: "WB JECA 2025", link: "/tools/exams/wb-jeca" },
+    { name: "TANCET MCA 2025", link: "/tools/exams/tancet-mca" },
+    { name: "BIT MCA 2025", link: "/tools/exams/bit-mca" }
 ];
 
 export const featuredComputerColleges = [
@@ -30,7 +30,7 @@ export const featuredComputerColleges = [
         tags: ["NIT", "Premier"],
         fees: "₹ 3L Total Fees",
         placement: "₹ 12L Avg Package",
-        link: "/colleges?goal=Colleges&search=NIT Trichy MCA"
+        link: "/tools/colleges?goal=Colleges&search=NIT Trichy MCA"
     },
     {
         name: "JNU - School of Computer & Systems Sciences",
@@ -40,7 +40,7 @@ export const featuredComputerColleges = [
         tags: ["Central University", "Research"],
         fees: "₹ 50K Total Fees",
         placement: "₹ 10L Avg Package",
-        link: "/colleges?goal=Colleges&search=JNU Computer Science"
+        link: "/tools/colleges?goal=Colleges&search=JNU Computer Science"
     },
     {
         name: "VIT Vellore - MCA",
@@ -50,7 +50,7 @@ export const featuredComputerColleges = [
         tags: ["Deemed", "VITMEE"],
         fees: "₹ 4L Total Fees",
         placement: "₹ 8L Avg Package",
-        link: "/colleges?goal=Colleges&search=VIT MCA"
+        link: "/tools/colleges?goal=Colleges&search=VIT MCA"
     },
     {
         name: "Christ University - MCA",
@@ -60,7 +60,7 @@ export const featuredComputerColleges = [
         tags: ["Deemed", "Bangalore"],
         fees: "₹ 5L Total Fees",
         placement: "₹ 7L Avg Package",
-        link: "/colleges?goal=Colleges&search=Christ University MCA"
+        link: "/tools/colleges?goal=Colleges&search=Christ University MCA"
     }
 ];
 
@@ -107,12 +107,12 @@ export const computerCoursesData = [
 ];
 
 export const computerCities = [
-    { name: "IT Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=IT" },
-    { name: "IT Colleges in Bangalore", link: "/colleges?goal=Colleges&search=IT Bangalore" },
-    { name: "IT Colleges in Mumbai", link: "/colleges?goal=Colleges&search=IT Mumbai" },
-    { name: "IT Colleges in Chennai", link: "/colleges?goal=Colleges&search=IT Chennai" },
-    { name: "IT Colleges in Hyderabad", link: "/colleges?goal=Colleges&search=IT Hyderabad" },
-    { name: "IT Colleges in Pune", link: "/colleges?goal=Colleges&search=IT Pune" },
-    { name: "IT Colleges in Kolkata", link: "/colleges?goal=Colleges&search=IT Kolkata" },
-    { name: "IT Colleges in Noida", link: "/colleges?goal=Colleges&search=IT Noida" }
+    { name: "IT Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=IT" },
+    { name: "IT Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&search=IT Bangalore" },
+    { name: "IT Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&search=IT Mumbai" },
+    { name: "IT Colleges in Chennai", link: "/tools/colleges?goal=Colleges&search=IT Chennai" },
+    { name: "IT Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&search=IT Hyderabad" },
+    { name: "IT Colleges in Pune", link: "/tools/colleges?goal=Colleges&search=IT Pune" },
+    { name: "IT Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&search=IT Kolkata" },
+    { name: "IT Colleges in Noida", link: "/tools/colleges?goal=Colleges&search=IT Noida" }
 ];

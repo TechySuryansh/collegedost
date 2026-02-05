@@ -69,7 +69,7 @@ const CollegeDetailPage = () => {
         <div className="min-h-screen text-center bg-gray-50 flex flex-col items-center justify-center">
             <h2 className="text-3xl font-bold text-gray-800 mb-2">College Not Found</h2>
             <p className="text-gray-500 mb-6">The college you are looking for does not exist or has been moved.</p>
-            <Link href="/colleges" className="px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition">Browse Colleges</Link>
+            <Link href="/tools/colleges" className="px-6 py-2 bg-brand-orange text-white rounded-lg hover:bg-orange-600 transition">Browse Colleges</Link>
         </div>
     );
 

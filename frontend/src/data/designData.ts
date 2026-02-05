@@ -9,7 +9,7 @@ export const featuredDesignColleges = [
         tags: ["Public", "Fashion Design", "Top Ranked"],
         fees: "₹ 11.5L Total Fees",
         placement: "₹ 6.5L Avg Package",
-        link: "/colleges/nift-delhi"
+        link: "/tools/colleges/nift-delhi"
     },
     {
         id: 'des2',
@@ -20,7 +20,7 @@ export const featuredDesignColleges = [
         tags: ["Public", "Product Design", "Institute of National Importance"],
         fees: "₹ 14L Total Fees",
         placement: "₹ 18L Avg Package",
-        link: "/colleges/nid-ahmedabad"
+        link: "/tools/colleges/nid-ahmedabad"
     },
     {
         id: 'des3',
@@ -31,7 +31,7 @@ export const featuredDesignColleges = [
         tags: ["Public", "Industrial Design", "IIT"],
         fees: "₹ 10L Total Fees",
         placement: "₹ 20L Avg Package",
-        link: "/colleges/iit-bombay"
+        link: "/tools/colleges/iit-bombay"
     },
     {
         id: 'des4',
@@ -42,6 +42,6 @@ export const featuredDesignColleges = [
         tags: ["Private", "Creative Arts", "Innovative"],
         fees: "₹ 22L Total Fees",
         placement: "₹ 8L Avg Package",
-        link: "/colleges/srishti-manipal"
+        link: "/tools/colleges/srishti-manipal"
     }
 ];

@@ -1,24 +1,24 @@
 
 export const scienceRankings = [
-    { name: "Top Science Colleges in India", link: "/colleges?goal=Colleges&stream=Science" },
-    { name: "Best B.Sc Colleges in India", link: "/colleges?goal=Colleges&degree=B.Sc" },
-    { name: "Top IISERs in India", link: "/colleges?goal=Colleges&search=IISER" },
-    { name: "Science Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Science&state=Delhi" },
-    { name: "Top M.Sc Colleges", link: "/colleges?goal=Colleges&degree=M.Sc" },
-    { name: "IISc Bangalore", link: "/colleges?goal=Colleges&search=IISc" },
-    { name: "Government Science Colleges", link: "/colleges?goal=Colleges&stream=Science&type=Government" },
-    { name: "Research Institutes", link: "/colleges?goal=Colleges&search=Research Institute" }
+    { name: "Top Science Colleges in India", link: "/tools/colleges?goal=Colleges&stream=Science" },
+    { name: "Best B.Sc Colleges in India", link: "/tools/colleges?goal=Colleges&degree=B.Sc" },
+    { name: "Top IISERs in India", link: "/tools/colleges?goal=Colleges&search=IISER" },
+    { name: "Science Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Science&state=Delhi" },
+    { name: "Top M.Sc Colleges", link: "/tools/colleges?goal=Colleges&degree=M.Sc" },
+    { name: "IISc Bangalore", link: "/tools/colleges?goal=Colleges&search=IISc" },
+    { name: "Government Science Colleges", link: "/tools/colleges?goal=Colleges&stream=Science&type=Government" },
+    { name: "Research Institutes", link: "/tools/colleges?goal=Colleges&search=Research Institute" }
 ];
 
 export const scienceExams = [
-    { name: "CUET 2025", link: "/exams/cuet" },
-    { name: "NEST 2025", link: "/exams/nest" },
-    { name: "KVPY 2025", link: "/exams/kvpy" },
-    { name: "IIT JAM 2025", link: "/exams/iit-jam" },
-    { name: "IISER Aptitude Test", link: "/exams/iiser-aptitude" },
-    { name: "TIFR GS 2025", link: "/exams/tifr-gs" },
-    { name: "JGEEBILS", link: "/exams/jgeebils" },
-    { name: "JEST 2025", link: "/exams/jest" }
+    { name: "CUET 2025", link: "/tools/exams/cuet" },
+    { name: "NEST 2025", link: "/tools/exams/nest" },
+    { name: "KVPY 2025", link: "/tools/exams/kvpy" },
+    { name: "IIT JAM 2025", link: "/tools/exams/iit-jam" },
+    { name: "IISER Aptitude Test", link: "/tools/exams/iiser-aptitude" },
+    { name: "TIFR GS 2025", link: "/tools/exams/tifr-gs" },
+    { name: "JGEEBILS", link: "/tools/exams/jgeebils" },
+    { name: "JEST 2025", link: "/tools/exams/jest" }
 ];
 
 export const featuredScienceColleges = [
@@ -30,7 +30,7 @@ export const featuredScienceColleges = [
         tags: ["Premier", "Research"],
         fees: "₹ 35K Total Fees",
         placement: "₹ 15L Avg Package",
-        link: "/colleges?goal=Colleges&search=IISc Bangalore"
+        link: "/tools/colleges?goal=Colleges&search=IISc Bangalore"
     },
     {
         name: "IISER Pune",
@@ -40,7 +40,7 @@ export const featuredScienceColleges = [
         tags: ["Research", "BS-MS"],
         fees: "₹ 1L Total Fees",
         placement: "₹ 10L Avg Package",
-        link: "/colleges?goal=Colleges&search=IISER Pune"
+        link: "/tools/colleges?goal=Colleges&search=IISER Pune"
     },
     {
         name: "St. Stephen's College",
@@ -50,7 +50,7 @@ export const featuredScienceColleges = [
         tags: ["DU", "Historic"],
         fees: "₹ 50K Total Fees",
         placement: "₹ 8L Avg Package",
-        link: "/colleges?goal=Colleges&search=St Stephens"
+        link: "/tools/colleges?goal=Colleges&search=St Stephens"
     },
     {
         name: "Hindu College",
@@ -60,7 +60,7 @@ export const featuredScienceColleges = [
         tags: ["DU", "Top Ranked"],
         fees: "₹ 30K Total Fees",
         placement: "₹ 7L Avg Package",
-        link: "/colleges?goal=Colleges&search=Hindu College"
+        link: "/tools/colleges?goal=Colleges&search=Hindu College"
     }
 ];
 
@@ -107,12 +107,12 @@ export const scienceCoursesData = [
 ];
 
 export const scienceCities = [
-    { name: "Science Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Science&state=Delhi" },
-    { name: "Science Colleges in Bangalore", link: "/colleges?goal=Colleges&stream=Science&search=Bangalore" },
-    { name: "Science Colleges in Mumbai", link: "/colleges?goal=Colleges&stream=Science&search=Mumbai" },
-    { name: "Science Colleges in Chennai", link: "/colleges?goal=Colleges&stream=Science&search=Chennai" },
-    { name: "Science Colleges in Kolkata", link: "/colleges?goal=Colleges&stream=Science&search=Kolkata" },
-    { name: "Science Colleges in Pune", link: "/colleges?goal=Colleges&stream=Science&search=Pune" },
-    { name: "Science Colleges in Hyderabad", link: "/colleges?goal=Colleges&stream=Science&search=Hyderabad" },
-    { name: "Science Colleges in Chandigarh", link: "/colleges?goal=Colleges&stream=Science&search=Chandigarh" }
+    { name: "Science Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Science&state=Delhi" },
+    { name: "Science Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&stream=Science&search=Bangalore" },
+    { name: "Science Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&stream=Science&search=Mumbai" },
+    { name: "Science Colleges in Chennai", link: "/tools/colleges?goal=Colleges&stream=Science&search=Chennai" },
+    { name: "Science Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&stream=Science&search=Kolkata" },
+    { name: "Science Colleges in Pune", link: "/tools/colleges?goal=Colleges&stream=Science&search=Pune" },
+    { name: "Science Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&stream=Science&search=Hyderabad" },
+    { name: "Science Colleges in Chandigarh", link: "/tools/colleges?goal=Colleges&stream=Science&search=Chandigarh" }
 ];

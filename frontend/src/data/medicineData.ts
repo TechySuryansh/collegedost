@@ -31,7 +31,7 @@ export const featuredMedicineColleges = [
         tags: ["Public", "MBBS", "Research"],
         fees: "₹ 5.8K Total Fees",
         placement: "Top Residency",
-        link: "/colleges/aiims-delhi"
+        link: "/tools/colleges/aiims-delhi"
     },
     {
         id: 'med2',
@@ -42,7 +42,7 @@ export const featuredMedicineColleges = [
         tags: ["Public", "MD/MS", "Research"],
         fees: "₹ 7K Total Fees",
         placement: "Best Clinical Exposure",
-        link: "/colleges/pgimer-chandigarh"
+        link: "/tools/colleges/pgimer-chandigarh"
     },
     {
         id: 'med3',
@@ -53,7 +53,7 @@ export const featuredMedicineColleges = [
         tags: ["Private", "MBBS", "Service Bond"],
         fees: "₹ 1.5L Total Fees",
         placement: "100% Placement",
-        link: "/colleges/cmc-vellore"
+        link: "/tools/colleges/cmc-vellore"
     },
     {
         id: 'med4',
@@ -64,7 +64,7 @@ export const featuredMedicineColleges = [
         tags: ["Public", "MBBS", "INI"],
         fees: "₹ 12K Total Fees",
         placement: "Central Govt Jobs",
-        link: "/colleges/jipmer-puducherry"
+        link: "/tools/colleges/jipmer-puducherry"
     }
 ];
 

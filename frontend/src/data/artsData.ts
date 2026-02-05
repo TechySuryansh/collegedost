@@ -1,24 +1,24 @@
 
 export const artsRankings = [
-    { name: "Top Arts Colleges in India", link: "/colleges?goal=Colleges&stream=Arts And Humanities" },
-    { name: "Best B.A. Colleges in India", link: "/colleges?goal=Colleges&degree=B.A." },
-    { name: "Arts Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Arts And Humanities&state=Delhi" },
-    { name: "Top Psychology Colleges", link: "/colleges?goal=Colleges&search=Psychology" },
-    { name: "Top M.A. Colleges", link: "/colleges?goal=Colleges&degree=M.A." },
-    { name: "History Colleges in India", link: "/colleges?goal=Colleges&search=History" },
-    { name: "Government Arts Colleges", link: "/colleges?goal=Colleges&stream=Arts And Humanities&type=Government" },
-    { name: "Top Sociology Colleges", link: "/colleges?goal=Colleges&search=Sociology" }
+    { name: "Top Arts Colleges in India", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities" },
+    { name: "Best B.A. Colleges in India", link: "/tools/colleges?goal=Colleges&degree=B.A." },
+    { name: "Arts Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&state=Delhi" },
+    { name: "Top Psychology Colleges", link: "/tools/colleges?goal=Colleges&search=Psychology" },
+    { name: "Top M.A. Colleges", link: "/tools/colleges?goal=Colleges&degree=M.A." },
+    { name: "History Colleges in India", link: "/tools/colleges?goal=Colleges&search=History" },
+    { name: "Government Arts Colleges", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&type=Government" },
+    { name: "Top Sociology Colleges", link: "/tools/colleges?goal=Colleges&search=Sociology" }
 ];
 
 export const artsExams = [
-    { name: "CUET 2025", link: "/exams/cuet" },
-    { name: "DUET 2025", link: "/exams/duet" },
-    { name: "BHU UET 2025", link: "/exams/bhu-uet" },
-    { name: "JMI Entrance Exam", link: "/exams/jmi" },
-    { name: "TISSNET 2025", link: "/exams/tissnet" },
-    { name: "IPU CET 2025", link: "/exams/ipu-cet" },
-    { name: "AMU Entrance Exam", link: "/exams/amu" },
-    { name: "NCHMCT JEE", link: "/exams/nchmct-jee" }
+    { name: "CUET 2025", link: "/tools/exams/cuet" },
+    { name: "DUET 2025", link: "/tools/exams/duet" },
+    { name: "BHU UET 2025", link: "/tools/exams/bhu-uet" },
+    { name: "JMI Entrance Exam", link: "/tools/exams/jmi" },
+    { name: "TISSNET 2025", link: "/tools/exams/tissnet" },
+    { name: "IPU CET 2025", link: "/tools/exams/ipu-cet" },
+    { name: "AMU Entrance Exam", link: "/tools/exams/amu" },
+    { name: "NCHMCT JEE", link: "/tools/exams/nchmct-jee" }
 ];
 
 export const featuredArtsColleges = [
@@ -30,7 +30,7 @@ export const featuredArtsColleges = [
         tags: ["DU", "Historic"],
         fees: "₹ 50K Total Fees",
         placement: "₹ 7L Avg Package",
-        link: "/colleges?goal=Colleges&search=St Stephens"
+        link: "/tools/colleges?goal=Colleges&search=St Stephens"
     },
     {
         name: "LSR College",
@@ -40,7 +40,7 @@ export const featuredArtsColleges = [
         tags: ["DU", "Women's College"],
         fees: "₹ 40K Total Fees",
         placement: "₹ 8L Avg Package",
-        link: "/colleges?goal=Colleges&search=LSR College"
+        link: "/tools/colleges?goal=Colleges&search=LSR College"
     },
     {
         name: "Miranda House",
@@ -50,7 +50,7 @@ export const featuredArtsColleges = [
         tags: ["DU", "NIRF #1"],
         fees: "₹ 35K Total Fees",
         placement: "₹ 6L Avg Package",
-        link: "/colleges?goal=Colleges&search=Miranda House"
+        link: "/tools/colleges?goal=Colleges&search=Miranda House"
     },
     {
         name: "Presidency College",
@@ -60,7 +60,7 @@ export const featuredArtsColleges = [
         tags: ["State University", "Historic"],
         fees: "₹ 25K Total Fees",
         placement: "₹ 5L Avg Package",
-        link: "/colleges?goal=Colleges&search=Presidency College Kolkata"
+        link: "/tools/colleges?goal=Colleges&search=Presidency College Kolkata"
     }
 ];
 
@@ -107,12 +107,12 @@ export const artsCoursesData = [
 ];
 
 export const artsCities = [
-    { name: "Arts Colleges in Delhi", link: "/colleges?goal=Colleges&stream=Arts And Humanities&state=Delhi" },
-    { name: "Arts Colleges in Mumbai", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Mumbai" },
-    { name: "Arts Colleges in Kolkata", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Kolkata" },
-    { name: "Arts Colleges in Chennai", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Chennai" },
-    { name: "Arts Colleges in Bangalore", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Bangalore" },
-    { name: "Arts Colleges in Pune", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Pune" },
-    { name: "Arts Colleges in Hyderabad", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Hyderabad" },
-    { name: "Arts Colleges in Lucknow", link: "/colleges?goal=Colleges&stream=Arts And Humanities&search=Lucknow" }
+    { name: "Arts Colleges in Delhi", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&state=Delhi" },
+    { name: "Arts Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Mumbai" },
+    { name: "Arts Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Kolkata" },
+    { name: "Arts Colleges in Chennai", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Chennai" },
+    { name: "Arts Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Bangalore" },
+    { name: "Arts Colleges in Pune", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Pune" },
+    { name: "Arts Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Hyderabad" },
+    { name: "Arts Colleges in Lucknow", link: "/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Lucknow" }
 ];

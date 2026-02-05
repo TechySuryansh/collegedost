@@ -1,24 +1,24 @@
 
 export const mediaRankings = [
-    { name: "Top Mass Communication Colleges in India", link: "/colleges?goal=Colleges&search=Mass Communication" },
-    { name: "Best Journalism Colleges in India", link: "/colleges?goal=Colleges&search=Journalism" },
-    { name: "Media Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Media" },
-    { name: "Media Colleges in Mumbai", link: "/colleges?goal=Colleges&search=Media Mumbai" },
-    { name: "Top BJMC Colleges", link: "/colleges?goal=Colleges&search=BJMC" },
-    { name: "Government Media Colleges", link: "/colleges?goal=Colleges&type=Government&search=Media" },
-    { name: "Top Film & Television Institutes", link: "/colleges?goal=Colleges&search=Film Television" },
-    { name: "Best PR & Advertising Colleges", link: "/colleges?goal=Colleges&search=PR Advertising" }
+    { name: "Top Mass Communication Colleges in India", link: "/tools/colleges?goal=Colleges&search=Mass Communication" },
+    { name: "Best Journalism Colleges in India", link: "/tools/colleges?goal=Colleges&search=Journalism" },
+    { name: "Media Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Media" },
+    { name: "Media Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&search=Media Mumbai" },
+    { name: "Top BJMC Colleges", link: "/tools/colleges?goal=Colleges&search=BJMC" },
+    { name: "Government Media Colleges", link: "/tools/colleges?goal=Colleges&type=Government&search=Media" },
+    { name: "Top Film & Television Institutes", link: "/tools/colleges?goal=Colleges&search=Film Television" },
+    { name: "Best PR & Advertising Colleges", link: "/tools/colleges?goal=Colleges&search=PR Advertising" }
 ];
 
 export const mediaExams = [
-    { name: "IIMC Entrance Exam 2025", link: "/exams/iimc" },
-    { name: "DUET Mass Communication", link: "/exams/duet" },
-    { name: "JMI Mass Communication", link: "/exams/jmi" },
-    { name: "XIC OET 2025", link: "/exams/xic-oet" },
-    { name: "TISS BAT 2025", link: "/exams/tiss-bat" },
-    { name: "ACJ Entrance Exam", link: "/exams/acj" },
-    { name: "IP University CET", link: "/exams/ipu-cet" },
-    { name: "CUCET Mass Communication", link: "/exams/cucet" }
+    { name: "IIMC Entrance Exam 2025", link: "/tools/exams/iimc" },
+    { name: "DUET Mass Communication", link: "/tools/exams/duet" },
+    { name: "JMI Mass Communication", link: "/tools/exams/jmi" },
+    { name: "XIC OET 2025", link: "/tools/exams/xic-oet" },
+    { name: "TISS BAT 2025", link: "/tools/exams/tiss-bat" },
+    { name: "ACJ Entrance Exam", link: "/tools/exams/acj" },
+    { name: "IP University CET", link: "/tools/exams/ipu-cet" },
+    { name: "CUCET Mass Communication", link: "/tools/exams/cucet" }
 ];
 
 export const featuredMediaColleges = [
@@ -30,7 +30,7 @@ export const featuredMediaColleges = [
         tags: ["Government", "Premier"],
         fees: "₹ 1.5L Total Fees",
         placement: "₹ 8.0L Avg Package",
-        link: "/colleges?goal=Colleges&search=IIMC Delhi"
+        link: "/tools/colleges?goal=Colleges&search=IIMC Delhi"
     },
     {
         name: "AJK Mass Communication, JMI",
@@ -40,7 +40,7 @@ export const featuredMediaColleges = [
         tags: ["Central University", "Prestigious"],
         fees: "₹ 30K Total Fees",
         placement: "₹ 6.5L Avg Package",
-        link: "/colleges?goal=Colleges&search=AJK Mass Communication JMI"
+        link: "/tools/colleges?goal=Colleges&search=AJK Mass Communication JMI"
     },
     {
         name: "XIC Mumbai",
@@ -50,7 +50,7 @@ export const featuredMediaColleges = [
         tags: ["Private", "Renowned"],
         fees: "₹ 5L Total Fees",
         placement: "₹ 5.5L Avg Package",
-        link: "/colleges?goal=Colleges&search=XIC Mumbai"
+        link: "/tools/colleges?goal=Colleges&search=XIC Mumbai"
     },
     {
         name: "Symbiosis Institute of Media",
@@ -60,7 +60,7 @@ export const featuredMediaColleges = [
         tags: ["Deemed", "SET"],
         fees: "₹ 10L Total Fees",
         placement: "₹ 6.0L Avg Package",
-        link: "/colleges?goal=Colleges&search=Symbiosis Media"
+        link: "/tools/colleges?goal=Colleges&search=Symbiosis Media"
     }
 ];
 
@@ -107,12 +107,12 @@ export const mediaCoursesData = [
 ];
 
 export const mediaCities = [
-    { name: "Media Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Media" },
-    { name: "Media Colleges in Mumbai", link: "/colleges?goal=Colleges&search=Media Mumbai" },
-    { name: "Media Colleges in Bangalore", link: "/colleges?goal=Colleges&search=Media Bangalore" },
-    { name: "Media Colleges in Chennai", link: "/colleges?goal=Colleges&search=Media Chennai" },
-    { name: "Media Colleges in Kolkata", link: "/colleges?goal=Colleges&search=Media Kolkata" },
-    { name: "Media Colleges in Pune", link: "/colleges?goal=Colleges&search=Media Pune" },
-    { name: "Media Colleges in Hyderabad", link: "/colleges?goal=Colleges&search=Media Hyderabad" },
-    { name: "Media Colleges in Lucknow", link: "/colleges?goal=Colleges&search=Media Lucknow" }
+    { name: "Media Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Media" },
+    { name: "Media Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&search=Media Mumbai" },
+    { name: "Media Colleges in Bangalore", link: "/tools/colleges?goal=Colleges&search=Media Bangalore" },
+    { name: "Media Colleges in Chennai", link: "/tools/colleges?goal=Colleges&search=Media Chennai" },
+    { name: "Media Colleges in Kolkata", link: "/tools/colleges?goal=Colleges&search=Media Kolkata" },
+    { name: "Media Colleges in Pune", link: "/tools/colleges?goal=Colleges&search=Media Pune" },
+    { name: "Media Colleges in Hyderabad", link: "/tools/colleges?goal=Colleges&search=Media Hyderabad" },
+    { name: "Media Colleges in Lucknow", link: "/tools/colleges?goal=Colleges&search=Media Lucknow" }
 ];

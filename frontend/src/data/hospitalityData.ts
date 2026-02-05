@@ -1,24 +1,24 @@
 
 export const hospitalityRankings = [
-    { name: "Top Hotel Management Colleges in India", link: "/colleges?goal=Colleges&search=Hotel Management" },
-    { name: "Best IHM Colleges in India", link: "/colleges?goal=Colleges&search=IHM" },
-    { name: "Hotel Management Colleges in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Hotel Management" },
-    { name: "Hotel Management Colleges in Mumbai", link: "/colleges?goal=Colleges&search=Hotel Management Mumbai" },
-    { name: "Government Hotel Management Colleges", link: "/colleges?goal=Colleges&type=Government&search=Hotel Management" },
-    { name: "Private Hotel Management Colleges", link: "/colleges?goal=Colleges&type=Private&search=Hotel Management" },
-    { name: "Top BHM Colleges", link: "/colleges?goal=Colleges&degree=BHM" },
-    { name: "Best Hospitality Colleges", link: "/colleges?goal=Colleges&search=Hospitality" }
+    { name: "Top Hotel Management Colleges in India", link: "/tools/colleges?goal=Colleges&search=Hotel Management" },
+    { name: "Best IHM Colleges in India", link: "/tools/colleges?goal=Colleges&search=IHM" },
+    { name: "Hotel Management Colleges in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Hotel Management" },
+    { name: "Hotel Management Colleges in Mumbai", link: "/tools/colleges?goal=Colleges&search=Hotel Management Mumbai" },
+    { name: "Government Hotel Management Colleges", link: "/tools/colleges?goal=Colleges&type=Government&search=Hotel Management" },
+    { name: "Private Hotel Management Colleges", link: "/tools/colleges?goal=Colleges&type=Private&search=Hotel Management" },
+    { name: "Top BHM Colleges", link: "/tools/colleges?goal=Colleges&degree=BHM" },
+    { name: "Best Hospitality Colleges", link: "/tools/colleges?goal=Colleges&search=Hospitality" }
 ];
 
 export const hospitalityExams = [
-    { name: "NCHMCT JEE 2025", link: "/exams/nchmct-jee" },
-    { name: "MAH BHMCT CET 2025", link: "/exams/mah-bhmct-cet" },
-    { name: "MAH HM CET 2025", link: "/exams/mah-hm-cet" },
-    { name: "PUTHAT 2025", link: "/exams/puthat" },
-    { name: "IHM-A Entrance Exam", link: "/exams/ihm-a" },
-    { name: "AIHMCT WAT", link: "/exams/aihmct-wat" },
-    { name: "UPSEE Hotel Management", link: "/exams/upsee" },
-    { name: "WBJEE JEHOM", link: "/exams/wbjee-jehom" }
+    { name: "NCHMCT JEE 2025", link: "/tools/exams/nchmct-jee" },
+    { name: "MAH BHMCT CET 2025", link: "/tools/exams/mah-bhmct-cet" },
+    { name: "MAH HM CET 2025", link: "/tools/exams/mah-hm-cet" },
+    { name: "PUTHAT 2025", link: "/tools/exams/puthat" },
+    { name: "IHM-A Entrance Exam", link: "/tools/exams/ihm-a" },
+    { name: "AIHMCT WAT", link: "/tools/exams/aihmct-wat" },
+    { name: "UPSEE Hotel Management", link: "/tools/exams/upsee" },
+    { name: "WBJEE JEHOM", link: "/tools/exams/wbjee-jehom" }
 ];
 
 export const featuredHospitalityColleges = [
@@ -30,7 +30,7 @@ export const featuredHospitalityColleges = [
         tags: ["Government", "Premier"],
         fees: "₹ 2.5L Total Fees",
         placement: "₹ 6.5L Avg Package",
-        link: "/colleges?goal=Colleges&search=IHM Mumbai"
+        link: "/tools/colleges?goal=Colleges&search=IHM Mumbai"
     },
     {
         name: "IHM Delhi",
@@ -40,7 +40,7 @@ export const featuredHospitalityColleges = [
         tags: ["Government", "NCHMCT"],
         fees: "₹ 2.0L Total Fees",
         placement: "₹ 5.5L Avg Package",
-        link: "/colleges?goal=Colleges&search=IHM Delhi"
+        link: "/tools/colleges?goal=Colleges&search=IHM Delhi"
     },
     {
         name: "WelcomGroup Graduate School",
@@ -50,7 +50,7 @@ export const featuredHospitalityColleges = [
         tags: ["Private", "Renowned"],
         fees: "₹ 12L Total Fees",
         placement: "₹ 7.0L Avg Package",
-        link: "/colleges?goal=Colleges&search=WelcomGroup Graduate School"
+        link: "/tools/colleges?goal=Colleges&search=WelcomGroup Graduate School"
     },
     {
         name: "Christ University - Hotel Management",
@@ -60,7 +60,7 @@ export const featuredHospitalityColleges = [
         tags: ["Deemed", "Bangalore"],
         fees: "₹ 8L Total Fees",
         placement: "₹ 5.0L Avg Package",
-        link: "/colleges?goal=Colleges&search=Christ University Hotel Management"
+        link: "/tools/colleges?goal=Colleges&search=Christ University Hotel Management"
     }
 ];
 
@@ -107,12 +107,12 @@ export const hospitalityCoursesData = [
 ];
 
 export const hospitalityCities = [
-    { name: "Hotel Management in Delhi", link: "/colleges?goal=Colleges&state=Delhi&search=Hotel Management" },
-    { name: "Hotel Management in Mumbai", link: "/colleges?goal=Colleges&search=Hotel Management Mumbai" },
-    { name: "Hotel Management in Bangalore", link: "/colleges?goal=Colleges&search=Hotel Management Bangalore" },
-    { name: "Hotel Management in Chennai", link: "/colleges?goal=Colleges&search=Hotel Management Chennai" },
-    { name: "Hotel Management in Hyderabad", link: "/colleges?goal=Colleges&search=Hotel Management Hyderabad" },
-    { name: "Hotel Management in Pune", link: "/colleges?goal=Colleges&search=Hotel Management Pune" },
-    { name: "Hotel Management in Kolkata", link: "/colleges?goal=Colleges&search=Hotel Management Kolkata" },
-    { name: "Hotel Management in Jaipur", link: "/colleges?goal=Colleges&search=Hotel Management Jaipur" }
+    { name: "Hotel Management in Delhi", link: "/tools/colleges?goal=Colleges&state=Delhi&search=Hotel Management" },
+    { name: "Hotel Management in Mumbai", link: "/tools/colleges?goal=Colleges&search=Hotel Management Mumbai" },
+    { name: "Hotel Management in Bangalore", link: "/tools/colleges?goal=Colleges&search=Hotel Management Bangalore" },
+    { name: "Hotel Management in Chennai", link: "/tools/colleges?goal=Colleges&search=Hotel Management Chennai" },
+    { name: "Hotel Management in Hyderabad", link: "/tools/colleges?goal=Colleges&search=Hotel Management Hyderabad" },
+    { name: "Hotel Management in Pune", link: "/tools/colleges?goal=Colleges&search=Hotel Management Pune" },
+    { name: "Hotel Management in Kolkata", link: "/tools/colleges?goal=Colleges&search=Hotel Management Kolkata" },
+    { name: "Hotel Management in Jaipur", link: "/tools/colleges?goal=Colleges&search=Hotel Management Jaipur" }
 ];

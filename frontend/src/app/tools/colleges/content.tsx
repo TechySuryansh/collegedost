@@ -469,7 +469,7 @@ const PageContent: React.FC = () => {
                                             <div className="flex justify-between items-start">
                                                 <div>
                                                     <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-brand-blue transition-colors">
-                                                        <Link href={`/colleges/${college.slug}`}>{college.name}</Link>
+                                                        <Link href={`/tools/colleges/${college.slug}`}>{college.name}</Link>
                                                     </h3>
                                                     <p className="text-sm text-gray-500 flex items-center gap-1 mb-3">
                                                         <FaMapMarkerAlt />
@@ -527,7 +527,7 @@ const PageContent: React.FC = () => {
                                                 >
                                                     Visit Website
                                                 </a>
-                                                <Link href={`/colleges/${college.slug}`} className="flex-1 bg-white text-gray-800 border border-gray-300 text-center py-2.5 rounded-lg font-bold text-sm hover:bg-gray-50 transition">
+                                                <Link href={`/tools/colleges/${college.slug}`} className="flex-1 bg-white text-gray-800 border border-gray-300 text-center py-2.5 rounded-lg font-bold text-sm hover:bg-gray-50 transition">
                                                     View Details
                                                 </Link>
                                             </div>
