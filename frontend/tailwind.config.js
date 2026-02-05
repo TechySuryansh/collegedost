@@ -7,25 +7,42 @@ export default {
     theme: {
         extend: {
             colors: {
+                primary: "#4F46E5",
+                secondary: "#7C3AED",
+                "background-light": "#F8FAFC",
+                "background-dark": "#0F172A",
+                "surface-light": "#FFFFFF",
+                "surface-dark": "#1E293B",
+                "text-main-light": "#1E293B",
+                "text-main-dark": "#F1F5F9",
+                "text-muted-light": "#64748B",
+                "text-muted-dark": "#94A3B8",
                 brand: {
-                    indigo: '#4338ca', // Deep Indigo
-                    violet: '#7c3aed', // Deep Violet
+                    indigo: '#4F46E5',
+                    violet: '#7c3aed',
                     'violet-dark': '#5b21b6',
-                    cyan: '#06b6d4', // Accent Cyan
-                    mint: '#10b981', // Success/Growth Mint
-                    orange: '#f97316', // Vibrant Orange
-                    dark: '#0f172a', // Slate 900
-                    'dark-light': '#1e293b', // Slate 800
-                    light: '#f8fafc', // Slate 50
+                    cyan: '#06b6d4',
+                    mint: '#10b981',
+                    orange: '#f97316',
+                    dark: '#0f172a',
+                    'dark-light': '#1e293b',
+                    light: '#f8fafc',
                     surface: '#ffffff',
-                    blue: '#2563eb', // Royal Blue
-                    'blue-dark': '#1e40af', // Darker Royal Blue
-                    'deep-bg': '#0B1120', // Very dark blue/slate for backgrounds
+                    blue: '#2563eb',
+                    'blue-dark': '#1e40af',
+                    'deep-bg': '#0B1120',
                 }
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],
                 heading: ['Poppins', 'sans-serif'],
+                display: ['Poppins', 'sans-serif'],
+            },
+            borderRadius: {
+                DEFAULT: "0.5rem",
+                'xl': '1rem',
+                '2xl': '1.5rem',
+                '3xl': '2rem',
             },
             boxShadow: {
                 'premium': '0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 10px 20px -5px rgba(0, 0, 0, 0.04)',
@@ -39,6 +56,7 @@ export default {
                 'fade-up': 'fadeUp 0.8s ease-out forwards',
                 'shine': 'shine 2s linear infinite',
                 'blob': 'blob 7s infinite',
+                'marquee': 'marquee 40s linear infinite',
             },
             keyframes: {
                 scroll: {
@@ -62,6 +80,10 @@ export default {
                     '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
                     '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
                     '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                },
+                marquee: {
+                    '0%': { transform: 'translateX(0)' },
+                    '100%': { transform: 'translateX(-50%)' },
                 }
             }
         },

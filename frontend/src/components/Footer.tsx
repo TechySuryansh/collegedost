@@ -1,9 +1,13 @@
 "use client";
 
+import React, { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
-import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube, FaHeart } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
+import Link from 'next/link';
 
 const Footer = () => {
+  const [email, setEmail] = useState('');
+
   const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -24,76 +28,105 @@ const Footer = () => {
     }
   };
 
-  return (
-    <footer className="bg-brand-dark text-white pt-20 mt-20 relative overflow-hidden">
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-brand-indigo via-brand-violet to-brand-cyan"></div>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-brand-indigo/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle newsletter subscription
+    console.log('Subscribe:', email);
+    setEmail('');
+  };
 
-      <div className="container mx-auto px-4 relative z-10">
+  return (
+    <footer className="bg-black text-gray-400 pt-20 pb-10 border-t border-gray-800">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 pb-12 border-b border-white/10"
+          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16"
         >
-          <motion.div variants={itemVariants} className="flex flex-col">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-brand-orange text-white font-bold text-sm shadow-lg shadow-orange-500/30">
-                <span className="text-lg">CD</span>
-              </div>
-              <span className="font-heading font-bold text-2xl text-white leading-tight tracking-tight">Collegedost</span>
-            </div>
-            <p className="text-sm text-blue-100/70 mb-8 leading-relaxed max-w-xs font-light">
-              The Education Hub. Helping students make informed career decisions with data-driven insights and premium tools.
+          {/* Brand Column */}
+          <motion.div variants={itemVariants} className="col-span-2 lg:col-span-1 space-y-4">
+            <Link href="/" className="font-display font-bold text-2xl text-white tracking-tight">
+              COLLEGEDOST
+            </Link>
+            <p className="text-sm leading-relaxed">
+              A data-enabled and technology-driven Educational Products and Services Company.
             </p>
-            <div className="flex gap-4 text-xl text-blue-200/80">
-              <a href="#" className="hover:text-brand-orange hover:-translate-y-1 transition-all"><FaFacebook /></a>
-              <a href="#" className="hover:text-brand-orange hover:-translate-y-1 transition-all"><FaTwitter /></a>
-              <a href="#" className="hover:text-brand-orange hover:-translate-y-1 transition-all"><FaInstagram /></a>
-              <a href="#" className="hover:text-brand-orange hover:-translate-y-1 transition-all"><FaLinkedin /></a>
-              <a href="#" className="hover:text-brand-orange hover:-translate-y-1 transition-all"><FaYoutube /></a>
+            <div className="flex gap-4 pt-2">
+              <a href="#" aria-label="Visit our Facebook page" className="text-gray-400 hover:text-white transition-colors"><FaFacebook className="text-2xl" /></a>
+              <a href="#" aria-label="Visit our Twitter page" className="text-gray-400 hover:text-white transition-colors"><FaTwitter className="text-2xl" /></a>
+              <a href="#" aria-label="Visit our Instagram page" className="text-gray-400 hover:text-white transition-colors"><FaInstagram className="text-2xl" /></a>
+              <a href="#" aria-label="Visit our LinkedIn page" className="text-gray-400 hover:text-white transition-colors"><FaLinkedin className="text-2xl" /></a>
+              <a href="#" aria-label="Visit our YouTube channel" className="text-gray-400 hover:text-white transition-colors"><FaYoutube className="text-2xl" /></a>
             </div>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-col">
-            <h5 className="text-base font-bold mb-6 text-white font-heading">Top Colleges</h5>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">MBA Colleges</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">Engineering Colleges</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">Medical Colleges</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">Law Colleges</a></li>
+          {/* Top Exams */}
+          <motion.div variants={itemVariants}>
+            <h4 className="text-white font-bold mb-6">Top Exams</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/exams/jee-main" className="hover:text-primary transition-colors">JEE Main 2026</Link></li>
+              <li><Link href="/exams/cat" className="hover:text-primary transition-colors">CAT 2025</Link></li>
+              <li><Link href="/exams/neet" className="hover:text-primary transition-colors">NEET 2026</Link></li>
+              <li><Link href="/exams/gate" className="hover:text-primary transition-colors">GATE 2026</Link></li>
+              <li><Link href="/exams/clat" className="hover:text-primary transition-colors">CLAT 2026</Link></li>
             </ul>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-col">
-            <h5 className="text-base font-bold mb-6 text-white font-heading">Top Exams</h5>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">CAT 2025</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">JEE Main 2026</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">NEET 2026</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">GATE 2026</a></li>
+          {/* Colleges */}
+          <motion.div variants={itemVariants}>
+            <h4 className="text-white font-bold mb-6">Colleges</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/tools/colleges?stream=Engineering" className="hover:text-primary transition-colors">Top Engineering in India</Link></li>
+              <li><Link href="/tools/colleges?stream=Management" className="hover:text-primary transition-colors">Top MBA in India</Link></li>
+              <li><Link href="/tools/colleges?stream=Medicine" className="hover:text-primary transition-colors">Top Medical in India</Link></li>
+              <li><Link href="/tools/colleges?stream=Law" className="hover:text-primary transition-colors">Top Law in India</Link></li>
+              <li><Link href="/tools/colleges?type=IIM" className="hover:text-primary transition-colors">IIMs in India</Link></li>
             </ul>
           </motion.div>
 
-          <motion.div variants={itemVariants} className="flex flex-col">
-            <h5 className="text-base font-bold mb-6 text-white font-heading">Resources</h5>
-            <ul className="space-y-3">
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">College Predictors</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">Rank Predictors</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">QnA</a></li>
-              <li><a href="#" className="text-sm text-blue-100/60 hover:text-brand-orange hover:pl-1 transition-all">E-Books</a></li>
+          {/* Resources */}
+          <motion.div variants={itemVariants}>
+            <h4 className="text-white font-bold mb-6">Resources</h4>
+            <ul className="space-y-3 text-sm">
+              <li><Link href="/predictors" className="hover:text-primary transition-colors">College Predictors</Link></li>
+              <li><Link href="/predictors/rank" className="hover:text-primary transition-colors">Rank Predictors</Link></li>
+              <li><Link href="/qna" className="hover:text-primary transition-colors">CollegeDost Q&A</Link></li>
+              <li><Link href="/reviews" className="hover:text-primary transition-colors">College Reviews</Link></li>
             </ul>
+          </motion.div>
+
+          {/* Newsletter */}
+          <motion.div variants={itemVariants} className="col-span-2 lg:col-span-1">
+            <h4 className="text-white font-bold mb-6">Stay Updated</h4>
+            <form onSubmit={handleSubscribe} className="space-y-3">
+              <label htmlFor="footer-email" className="sr-only">Email address</label>
+              <input
+                id="footer-email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-primary text-sm"
+                placeholder="Your email address"
+              />
+              <button 
+                type="submit"
+                className="w-full bg-primary hover:bg-secondary text-white font-bold py-2.5 rounded-lg text-sm transition-colors"
+              >
+                Subscribe
+              </button>
+            </form>
           </motion.div>
         </motion.div>
 
-        <div className="py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-blue-200/40">
-          <p className="flex items-center gap-1">&copy; 2026 Collegedost. Made with <FaHeart className="text-red-500 animate-pulse" /> for Students.</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms of Use</a>
-            <a href="#" className="hover:text-white transition-colors">Sitemap</a>
+        {/* Bottom Bar */}
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-gray-500">© 2026 CollegeDost Pvt Ltd. All rights reserved.</p>
+          <div className="flex gap-6 text-xs text-gray-500">
+            <Link href="/privacy" className="hover:text-white">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white">Terms of Use</Link>
+            <Link href="/sitemap" className="hover:text-white">Sitemap</Link>
           </div>
         </div>
       </div>

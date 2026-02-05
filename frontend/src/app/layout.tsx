@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/NavbarNew";
 import Footer from "@/components/Footer";
 import ModalManager from "@/components/ModalManager";
 
@@ -32,12 +32,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${poppins.variable} antialiased`}
+        className={`${inter.variable} ${poppins.variable} antialiased bg-background-light`}
         suppressHydrationWarning
       >
         <Providers>
           <Navbar />
-          <main className="min-h-screen pt-20">
+          <main className="min-h-screen">
             {children}
           </main>
           <Footer />
