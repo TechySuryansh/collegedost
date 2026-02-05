@@ -103,7 +103,7 @@ const StreamPageContent: React.FC<StreamPageContentProps> = ({ config }) => {
                 showBadge={config.showHeroBadge ?? true}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
                 <PillSection 
                     title={config.rankingsTitle || "Top Rankings"} 
                     items={config.rankings} 
@@ -131,7 +131,7 @@ const StreamPageContent: React.FC<StreamPageContentProps> = ({ config }) => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PillSection 
                         title={config.examsTitle || "Entrance Exams"} 
                         items={config.exams} 

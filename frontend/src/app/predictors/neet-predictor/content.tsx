@@ -164,7 +164,7 @@ const PageContent: React.FC = () => {
                         )}
                     </div>
                 </div>
-                <div className="text-right flex-shrink-0">
+                <div className="text-right shrink-0">
                     <div className="text-[10px] text-gray-400 uppercase">Cutoff Rank</div>
                     <div className="font-bold text-green-600 text-lg">{college.last_year_cutoff?.toLocaleString()}</div>
                     <div className="text-[10px] text-gray-500">{college.fees}</div>
@@ -244,8 +244,8 @@ const PageContent: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 pt-20 pb-12 overflow-x-hidden">
             {/* Header Section */}
-            <div className="bg-gradient-to-br from-green-900 via-emerald-800 to-green-900 relative overflow-hidden text-white pt-24 pb-20 mb-10">
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)] z-0 pointer-events-none"></div>
+            <div className="bg-linear-to-br from-green-900 via-emerald-800 to-green-900 relative overflow-hidden text-white pt-24 pb-20 mb-10">
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)] z-0 pointer-events-none"></div>
 
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <motion.div
@@ -285,7 +285,7 @@ const PageContent: React.FC = () => {
                 >
                     {/* Input Form Card */}
                     <div className="bg-white rounded-2xl shadow-premium overflow-hidden mb-12 border border-white/40 relative z-20">
-                        <div className="h-2 bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500"></div>
+                        <div className="h-2 bg-linear-to-r from-green-500 via-emerald-400 to-teal-500"></div>
                         <div className="p-8 md:p-10">
                             <form onSubmit={handlePredict} className="grid grid-cols-1 gap-6">
                                 <div className="mb-2">
@@ -371,7 +371,7 @@ const PageContent: React.FC = () => {
                                         whileTap={{ scale: 0.99 }}
                                         type="submit"
                                         disabled={loading}
-                                        className="w-full py-4 px-6 bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-green-500/30 transition-all disabled:opacity-70 disabled:shadow-none min-h-[56px] flex items-center justify-center gap-3 text-lg"
+                                        className="w-full py-4 px-6 bg-linear-to-r from-green-600 to-emerald-600 text-white font-bold rounded-xl shadow-lg shadow-green-500/30 transition-all disabled:opacity-70 disabled:shadow-none min-h-14 flex items-center justify-center gap-3 text-lg"
                                     >
                                         {loading ? (
                                             <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -390,7 +390,7 @@ const PageContent: React.FC = () => {
                                         exit={{ opacity: 0, height: 0 }}
                                         className="mt-6 bg-red-50 border border-red-100 rounded-lg p-4 flex items-center gap-3 text-red-700"
                                     >
-                                        <FaExclamationCircle className="flex-shrink-0" />
+                                        <FaExclamationCircle className="shrink-0" />
                                         <p className="text-sm font-medium">{error}</p>
                                     </motion.div>
                                 )}

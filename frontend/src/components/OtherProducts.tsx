@@ -20,7 +20,7 @@ const OtherProducts = () => {
     return (
         <section className="py-20 bg-slate-50 relative overflow-hidden">
             {/* Background decoration */}
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+            <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gray-200 to-transparent"></div>
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center mb-16">
@@ -41,7 +41,7 @@ const OtherProducts = () => {
                             <Link href={product.link} className="block h-full">
                                 <div className="glass-card bg-white p-8 rounded-2xl flex items-start gap-6 border border-gray-100 shadow-sm hover:shadow-premium transition-all duration-300 cursor-pointer h-full group">
                                     <div
-                                        className="w-16 h-16 rounded-2xl flex-shrink-0 flex items-center justify-center text-3xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 bg-gray-50"
+                                        className="w-16 h-16 rounded-2xl shrink-0 flex items-center justify-center text-3xl shadow-sm transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3 bg-gray-50"
                                         style={{ color: product.color }}
                                     >
                                         {product.icon}

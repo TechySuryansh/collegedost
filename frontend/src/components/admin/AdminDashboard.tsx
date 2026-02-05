@@ -225,7 +225,7 @@ const AdminDashboard: React.FC = () => {
                                 <p className="text-xs text-gray-500">Refresh content from ingestion</p>
                             </div>
                         </button>
-                        <Link href="/admin/predictor-settings" className="p-4 bg-gradient-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">
+                        <Link href="/admin/predictor-settings" className="p-4 bg-linear-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">
                             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-purple-600 group-hover:scale-110 transition-transform">
                                 <FaRobot className="text-lg" />
                             </div>

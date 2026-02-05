@@ -56,7 +56,7 @@ const PageContent: React.FC = () => {
         <div className="min-h-screen bg-gray-50 pt-24 pb-12">
 
             {/* Header */}
-            <div className="bg-gradient-to-r from-brand-violet to-brand-indigo text-white py-16 mb-12 relative overflow-hidden">
+            <div className="bg-linear-to-r from-brand-violet to-brand-indigo text-white py-16 mb-12 relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10"></div>
                 <div className="container mx-auto px-4 relative z-10 text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 font-heading">Explore Courses</h1>

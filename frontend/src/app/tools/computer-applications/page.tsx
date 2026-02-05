@@ -16,14 +16,14 @@ const ComputerApplicationsPage = () => {
     return (
         <>
             <Hero
-                title={<>Coding the Future. <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Innovating with Tech.</span></>}
+                title={<>Coding the Future. <br /> <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-400 to-blue-600">Innovating with Tech.</span></>}
                 subtitle="Explore top BCA/MCA Colleges, IT Certifications, and Tech Careers."
                 bgImage="https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=85"
                 trending={[]}
                 showBadge={false}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
 
                 <PillSection title="IT Entrance Exams" items={data.content.exams} color="border-gray-200" />
 
@@ -40,7 +40,7 @@ const ComputerApplicationsPage = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PredictorsSection
                         title="Computer Applications"
                         mainTitle="Software & Development"

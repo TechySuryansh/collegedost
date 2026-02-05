@@ -105,7 +105,7 @@ const PageContent: React.FC = () => {
                                     {filteredExams.map((exam) => (
                                         <Link key={exam._id} href={`/exams/${exam.examSlug}`} className="group">
                                             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:border-brand-blue/30 transition-all duration-300 h-full flex flex-col">
-                                                <div className="h-2 bg-gradient-to-r from-brand-cyan to-brand-blue"></div>
+                                                <div className="h-2 bg-linear-to-r from-brand-cyan to-brand-blue"></div>
                                                 <div className="p-6 flex-1 flex flex-col">
                                                     <div className="flex items-start justify-between mb-4">
                                                         <div className="bg-blue-50 text-brand-blue text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">

@@ -17,7 +17,7 @@ const UniversitiesPage = () => {
     return (
         <>
             <Hero
-                title={<>Higher Learning. <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-pink-600">Centers of Excellence.</span></>}
+                title={<>Higher Learning. <br /> <span className="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-pink-600">Centers of Excellence.</span></>}
                 subtitle="Discover India's top Universities, Admission Process (CUET), and Courses."
                 bgImage="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=85"
                 trending={[
@@ -29,7 +29,7 @@ const UniversitiesPage = () => {
                 showBadge={true}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
 
                 <PillSection title="Entrance Exams" items={data.content.exams} color="border-gray-200" />
 
@@ -65,7 +65,7 @@ const UniversitiesPage = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PredictorsSection
                         title="University Courses"
                         mainTitle="Undergraduate & Postgraduate"

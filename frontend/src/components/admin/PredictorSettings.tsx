@@ -197,7 +197,7 @@ const PredictorSettings: React.FC = () => {
     if (loading) {
         return (
             <AdminLayout>
-                <div className="flex items-center justify-center p-8 min-h-[400px]">
+                <div className="flex items-center justify-center p-8 min-h-100">
                     <div className="w-8 h-8 border-4 border-brand-blue border-t-transparent rounded-full animate-spin"></div>
                 </div>
             </AdminLayout>
@@ -209,7 +209,7 @@ const PredictorSettings: React.FC = () => {
             <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center gap-3 mb-6">
-                <div className="p-3 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-xl text-white">
+                <div className="p-3 bg-linear-to-br from-purple-500 to-indigo-600 rounded-xl text-white">
                     <FaRobot className="text-2xl" />
                 </div>
                 <div>
@@ -274,7 +274,7 @@ const PredictorSettings: React.FC = () => {
                 </div>
 
                 {/* OpenAI API Key */}
-                <div className="p-4 bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200">
+                <div className="p-4 bg-linear-to-br from-slate-50 to-slate-100 rounded-xl border border-slate-200">
                     <div className="flex items-center gap-2 mb-3">
                         <FaKey className="text-amber-500" />
                         <h3 className="font-semibold text-gray-900">OpenAI API Key</h3>
@@ -339,7 +339,7 @@ const PredictorSettings: React.FC = () => {
                 <button
                     onClick={saveSettings}
                     disabled={saving}
-                    className="w-full py-4 bg-gradient-to-r from-brand-blue to-indigo-600 hover:from-brand-blue-dark hover:to-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                    className="w-full py-4 bg-linear-to-r from-brand-blue to-indigo-600 hover:from-brand-blue-dark hover:to-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                 >
                     {saving ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

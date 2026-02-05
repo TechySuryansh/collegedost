@@ -20,7 +20,7 @@ const PageContent: React.FC = () => {
                 title={
                     <>
                         Exploring the Unknown. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-400 to-cyan-500">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-400 to-cyan-500">
                             Discovering Truth.
                         </span>
                     </>
@@ -31,7 +31,7 @@ const PageContent: React.FC = () => {
                 showBadge={false}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
                 <PillSection 
                     title="Entrance Exams" 
                     items={[

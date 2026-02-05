@@ -54,9 +54,9 @@ const PredictorsSection: React.FC<PredictorsSectionProps> = ({
                     transition={{ duration: 0.8 }}
                     className="glass-card rounded-3xl p-1 shadow-2xl border border-white/40 overflow-hidden"
                 >
-                    <div className="flex flex-col lg:flex-row bg-white/50 backdrop-blur-sm rounded-[20px] overflow-hidden">
+                    <div className="flex flex-col lg:flex-row bg-white/50 backdrop-blur-sm rounded-5 overflow-hidden">
                         {/* Illustration Side */}
-                        <div className="lg:w-[32%] bg-gradient-to-br from-brand-indigo/5 via-brand-violet/5 to-brand-cyan/5 p-10 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                        <div className="lg:w-[32%] bg-linear-to-br from-brand-indigo/5 via-brand-violet/5 to-brand-cyan/5 p-10 flex flex-col items-center justify-center text-center relative overflow-hidden group">
                             <div className="absolute top-0 right-0 w-64 h-64 bg-white/20 rounded-full blur-2xl translate-x-1/2 -translate-y-1/2"></div>
 
                             <div className="w-48 h-48 bg-white rounded-full flex items-center justify-center mb-8 shadow-premium shadow-brand-indigo/5 relative z-10 p-6 group-hover:scale-105 transition-transform duration-500">
@@ -67,7 +67,7 @@ const PredictorsSection: React.FC<PredictorsSectionProps> = ({
                                 />
                             </div>
                             <h3 className="text-2xl font-bold text-gray-900 mb-3 relative z-10 font-heading">{mainTitle}</h3>
-                            <p className="text-gray-600 max-w-[220px] leading-relaxed relative z-10">{subText}</p>
+                            <p className="text-gray-600 max-w-55 leading-relaxed relative z-10">{subText}</p>
 
                             <button className="mt-8 px-8 py-3 bg-brand-orange text-white rounded-xl font-bold text-sm shadow-lg shadow-brand-orange/20 hover:shadow-brand-orange/40 hover:-translate-y-1 transition-all">
                                 Try Now

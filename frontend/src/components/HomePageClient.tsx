@@ -92,7 +92,7 @@ const HomePage = () => {
             <Hero />
             <NewsSection items={news} />
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 grow flex flex-col gap-10 md:gap-20">
                 <motion.div variants={itemVariants}>
                     <GenericCardGrid
                         title="Explore by Category"
@@ -122,7 +122,7 @@ const HomePage = () => {
                 </motion.div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 flex-grow flex flex-col gap-10 md:gap-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-16 grow flex flex-col gap-10 md:gap-20">
                 <motion.div variants={itemVariants}>
                     <Counselling items={homeCounsellingData} onOpenAskModal={openAskModal} />
                 </motion.div>

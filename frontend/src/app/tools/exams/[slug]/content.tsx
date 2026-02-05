@@ -159,7 +159,7 @@ const PageContent: React.FC = () => {
                         </div>
                     </div>
 
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-[400px]">
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8 min-h-100">
 
                         {activeTab === 'Overview' && (
                             <div className="space-y-6 animate-fade-in">
@@ -266,7 +266,7 @@ const PageContent: React.FC = () => {
                                         <a key={idx} href={item.link} target="_blank" rel="noreferrer" className="block p-4 border border-gray-100 rounded-lg hover:bg-gray-50 group">
                                             <div className="flex justify-between items-start">
                                                 <h3 className="font-bold text-gray-800 group-hover:text-brand-orange transition line-clamp-2">{item.title}</h3>
-                                                <FaExternalLinkAlt className="text-gray-300 text-xs flex-shrink-0 ml-2" />
+                                                <FaExternalLinkAlt className="text-gray-300 text-xs shrink-0 ml-2" />
                                             </div>
                                             <span className="text-xs text-gray-400 mt-2 block">{new Date(item.pubDate).toLocaleDateString()}</span>
                                         </a>

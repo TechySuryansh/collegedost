@@ -71,12 +71,12 @@ const StatsSection: React.FC<StatsSectionProps> = ({ items }) => {
     return (
         <section className="relative py-16 mb-20 overflow-hidden">
             {/* Dynamic Background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-brand-indigo via-brand-violet to-brand-indigo z-0"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-brand-indigo via-brand-violet to-brand-indigo z-0"></div>
             <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5 z-0 mix-blend-overlay animate-pulse"></div>
 
             {/* Floating Orbs */}
-            <div className="absolute top-0 left-0 w-64 h-64 bg-brand-orange/20 rounded-full blur-[100px] animate-blob"></div>
-            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+            <div className="absolute top-0 left-0 w-64 h-64 bg-brand-orange/20 rounded-full blur-25 animate-blob"></div>
+            <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-25 animate-blob animation-delay-2000"></div>
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="glass p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl">

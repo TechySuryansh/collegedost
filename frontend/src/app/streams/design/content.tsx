@@ -6,7 +6,7 @@ import GenericCardGrid from '@/components/GenericCardGrid';
 import Counselling from '@/components/Counselling';
 import PillSection from '@/components/PillSection';
 import PredictorsSection from '@/components/PredictorsSection';
-import { browseByStreamData } from '@/data';
+import { browseByStreamData } from '@/data/navigation';
 import { featuredDesignColleges } from '@/data/designData';
 import { useUI } from '@/context/UIContext';
 
@@ -26,7 +26,7 @@ const PageContent: React.FC = () => {
                 title={
                     <>
                         Creative Design. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-rose-500">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-pink-500 to-rose-500">
                             Shape the Future.
                         </span>
                     </>
@@ -42,7 +42,7 @@ const PageContent: React.FC = () => {
                 showBadge={true}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex-col gap-16">
                 <PillSection 
                     title="Design Entrance Exams" 
                     items={data.content.exams} 
@@ -82,7 +82,7 @@ const PageContent: React.FC = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PredictorsSection
                         title="Design Courses"
                         mainTitle="Fashion & Industrial Design"

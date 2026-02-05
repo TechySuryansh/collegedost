@@ -64,7 +64,7 @@ const AskModal: React.FC<AskModalProps> = ({ isOpen, onClose }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] transition-opacity"
+                        className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-100 transition-opacity"
                     />
 
                     {/* Modal */}
@@ -73,12 +73,12 @@ const AskModal: React.FC<AskModalProps> = ({ isOpen, onClose }) => {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="fixed inset-0 z-[101] flex items-center justify-center p-4 pointer-events-none"
+                        className="fixed inset-0 z-101 flex items-center justify-center p-4 pointer-events-none"
                     >
                         <div className="bg-white rounded-3xl shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] w-full max-w-lg pointer-events-auto overflow-hidden flex flex-col relative border border-white/20">
 
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-brand-indigo via-blue-600 to-brand-cyan p-6 flex items-center justify-between text-white relative overflow-hidden">
+                            <div className="bg-linear-to-r from-brand-indigo via-blue-600 to-brand-cyan p-6 flex items-center justify-between text-white relative overflow-hidden">
                                 <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
 
                                 <div className="flex items-center gap-4 relative z-10">
@@ -133,7 +133,7 @@ const AskModal: React.FC<AskModalProps> = ({ isOpen, onClose }) => {
                                         <button
                                             type="submit"
                                             disabled={loading}
-                                            className="px-8 py-3 bg-gradient-to-r from-brand-orange to-red-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-orange/30 hover:shadow-brand-orange/50 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 transition-all transform disabled:opacity-70 disabled:cursor-not-allowed"
+                                            className="px-8 py-3 bg-linear-to-r from-brand-orange to-red-500 text-white text-sm font-bold rounded-xl shadow-lg shadow-brand-orange/30 hover:shadow-brand-orange/50 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2 transition-all transform disabled:opacity-70 disabled:cursor-not-allowed"
                                         >
                                             {loading ? <FaSpinner className="animate-spin text-base" /> : <FaPaperPlane className="text-xs" />}
                                             {loading ? 'Sending...' : 'Post Question'}

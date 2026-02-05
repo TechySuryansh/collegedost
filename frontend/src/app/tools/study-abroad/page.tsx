@@ -19,7 +19,7 @@ const StudyAbroadPage = () => {
     return (
         <>
             <Hero
-                title={<><span className="block whitespace-nowrap">Global Education.</span> <span className="block mt-3 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-600 whitespace-nowrap">Limitless Opportunities.</span></>}
+                title={<><span className="block whitespace-nowrap">Global Education.</span> <span className="block mt-3 text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-600 whitespace-nowrap">Limitless Opportunities.</span></>}
                 subtitle="Discover top Universities worldwide, Scholarship opportunities, and Exam Prep."
                 bgImage="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=85"
                 trending={[
@@ -31,7 +31,7 @@ const StudyAbroadPage = () => {
                 showBadge={true}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
 
                 <PillSection title="International Exams" items={data.content.exams} color="border-gray-200" />
 
@@ -72,7 +72,7 @@ const StudyAbroadPage = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PredictorsSection
                         title="Global Careers"
                         mainTitle="International Degrees"

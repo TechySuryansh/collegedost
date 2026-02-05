@@ -158,7 +158,7 @@ const PageContent: React.FC = () => {
                                     <FaUniversity className="text-4xl text-gray-300" />
                                 )}
                             </div>
-                            <h3 className="font-bold text-gray-900 text-sm line-clamp-2 min-h-[40px] text-center mb-1">
+                            <h3 className="font-bold text-gray-900 text-sm line-clamp-2 min-h-10 text-center mb-1">
                                 {college.name}
                             </h3>
                             <div className="text-center">
@@ -206,7 +206,7 @@ const PageContent: React.FC = () => {
                             ) : (
                                 <button
                                     onClick={() => setActiveSearchIndex(idx)}
-                                    className="w-full h-full min-h-[220px] bg-white rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-brand-blue hover:border-brand-blue hover:bg-blue-50/50 transition-all group"
+                                    className="w-full h-full min-h-55 bg-white rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center gap-3 text-gray-400 hover:text-brand-blue hover:border-brand-blue hover:bg-blue-50/50 transition-all group"
                                 >
                                     <div className="w-12 h-12 rounded-full bg-gray-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors">
                                         <FaPlus className="text-xl" />
@@ -222,7 +222,7 @@ const PageContent: React.FC = () => {
                 {selectedColleges.length > 0 ? (
                     <div className="bg-white rounded-2xl shadow-premium border border-gray-100 overflow-hidden">
                         <div className="overflow-x-auto">
-                            <table className="w-full min-w-[800px]">
+                            <table className="w-full min-w-200">
                                 <thead>
                                     <tr className="bg-gray-50 border-b border-gray-100">
                                         <th className="p-4 w-48 text-left font-bold text-gray-500 uppercase tracking-wider text-xs sticky left-0 bg-gray-50 z-20">Comparison Criteria</th>
@@ -339,7 +339,7 @@ const PageContent: React.FC = () => {
                                     <tr>
                                         <td className="p-4 text-sm font-semibold text-gray-700 sticky left-0 bg-white z-10 border-r border-gray-50">Website</td>
                                         {selectedColleges.map(c => (
-                                            <td key={c._id} className="p-4 text-sm text-blue-500 truncate max-w-[150px]">
+                                            <td key={c._id} className="p-4 text-sm text-blue-500 truncate max-w-37.5">
                                                 {c.website ? <a href={c.website} target="_blank" rel="noopener noreferrer" className="hover:underline">Visit Site</a> : '-'}
                                             </td>
                                         ))}

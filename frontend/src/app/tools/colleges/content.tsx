@@ -60,10 +60,10 @@ const FilterCheckboxSection = ({
             <div className="space-y-1 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
                 {filteredOptions.map((item) => (
                     <label key={item} className="flex items-center gap-3 cursor-pointer group hover:bg-slate-50 p-2 rounded-lg transition-colors -mx-2">
-                        <div className="relative flex items-center justify-center flex-shrink-0">
+                        <div className="relative flex items-center justify-center shrink-0">
                             <input 
                                 type="checkbox" 
-                                className="peer appearance-none w-5 h-5 border-[1.5px] border-slate-300 rounded-[6px] bg-white checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer" 
+                                className="peer appearance-none w-5 h-5 border-[1.5px] border-slate-300 rounded-md bg-white checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer" 
                                 checked={selectedValues.includes(item)} 
                                 onChange={() => onToggle(item)} 
                             />
@@ -285,7 +285,7 @@ const PageContent: React.FC = () => {
             <div className="container mx-auto px-4 pt-12 pb-8 flex flex-col lg:flex-row gap-8">
 
                 {/* --- LEFT SIDEBAR FILTERS --- */}
-                <div className="w-full lg:w-1/4 flex-shrink-0">
+                <div className="w-full lg:w-1/4 shrink-0">
                     <div className="bg-white rounded-2xl shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-slate-100 sticky top-32 max-h-[calc(100vh-120px)] overflow-hidden flex flex-col">
 
                         <div className="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-white z-10">
@@ -313,10 +313,10 @@ const PageContent: React.FC = () => {
                                 <div className="space-y-1">
                                     {['Colleges', 'Exams', 'Coachings', 'Study Abroad'].map((goal) => (
                                         <label key={goal} className="flex items-center gap-3 cursor-pointer group hover:bg-slate-50 p-2 rounded-lg transition-colors -mx-2">
-                                            <div className="relative flex items-center justify-center flex-shrink-0">
+                                            <div className="relative flex items-center justify-center shrink-0">
                                                 <input
                                                     type="checkbox"
-                                                    className="peer appearance-none w-5 h-5 border-[1.5px] border-slate-300 rounded-[6px] bg-white checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
+                                                    className="peer appearance-none w-5 h-5 border-[1.5px] border-slate-300 rounded-md bg-white checked:bg-blue-600 checked:border-blue-600 transition-all cursor-pointer"
                                                     checked={filters.goal.includes(goal)}
                                                     onChange={() => handleCheckboxChange('goal', goal)}
                                                 />
@@ -453,7 +453,7 @@ const PageContent: React.FC = () => {
                             {colleges.length > 0 ? (
                                 colleges.map(college => (
                                     <div key={college._id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-5 flex flex-col md:flex-row gap-6 hover:shadow-md transition-all group">
-                                        <div className="w-full md:w-48 h-32 md:h-auto bg-gray-100 rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden relative">
+                                        <div className="w-full md:w-48 h-32 md:h-auto bg-gray-100 rounded-lg shrink-0 flex items-center justify-center overflow-hidden relative">
                                             {college.logo ? (
                                                 <img src={college.logo} alt={college.name} className="w-full h-full object-contain p-2" />
                                             ) : (
@@ -609,7 +609,7 @@ const PageContent: React.FC = () => {
 
                     {!loading && hasMoreResults && (
                         <div className="flex justify-center mt-4 mb-2">
-                            <div className="inline-flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl text-sm">
+                            <div className="inline-flex items-center gap-2 px-5 py-3 bg-linear-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-xl text-sm">
                                 <span className="text-amber-600 text-lg">💡</span>
                                 <span className="text-amber-800 font-medium">
                                     Showing top results only

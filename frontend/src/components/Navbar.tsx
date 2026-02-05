@@ -237,7 +237,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                             }`}>
                                             {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
                                         </div>
-                                        <span className={`text-sm font-medium hidden md:block max-w-[100px] truncate ${isAdminMode ? 'text-slate-200' : 'text-gray-700'}`}>
+                                        <span className={`text-sm font-medium hidden md:block max-w-25 truncate ${isAdminMode ? 'text-slate-200' : 'text-gray-700'}`}>
                                             {user.name}
                                         </span>
                                         <FaChevronDown className={`text-xs ${isAdminMode ? 'text-slate-400' : 'text-gray-400'}`} />
@@ -298,7 +298,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                 </div>
             </div>
 
-            <div className={`relative h-[56px] hidden lg:block ${isAdminMode ? 'bg-slate-800/50 backdrop-blur-sm border-t border-slate-700/50' : 'bg-white'}`}>
+            <div className={`relative h-14 hidden lg:block ${isAdminMode ? 'bg-slate-800/50 backdrop-blur-sm border-t border-slate-700/50' : 'bg-white'}`}>
                 <div className="container mx-auto px-4 h-full flex items-center justify-center relative">
                     <ul className="flex items-center gap-1 h-full">
                         {isAdminMode ? (
@@ -323,7 +323,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                             />
                                         )}
                                         {isActive && (
-                                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-800/50 pointer-events-none" />
+                                            <div className="absolute inset-0 bg-linear-to-b from-transparent to-slate-800/50 pointer-events-none" />
                                         )}
                                     </li>
                                 );
@@ -350,9 +350,9 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: 10 }}
                                                 transition={{ duration: 0.2 }}
-                                                className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[100] overflow-hidden flex max-h-[600px]"
+                                                className="absolute top-full left-0 right-0 mx-auto w-225 bg-white shadow-2xl rounded-xl border border-gray-100 z-100 overflow-hidden flex max-h-150"
                                             >
-                                                <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
+                                                <div className="w-72 bg-white shrink-0 py-4 overflow-y-auto">
                                                     {browseByStreamData.map((stream: any) => (
                                                         <div
                                                             key={stream.id}
@@ -366,7 +366,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                             }}
                                                         >
                                                             <span className="flex-1 text-left pr-2">{stream.label}</span>
-                                                            <FaAngleRight className="text-xs opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
+                                                            <FaAngleRight className="text-xs opacity-0 group-hover:opacity-100 transition-opacity shrink-0" />
                                                         </div>
                                                     ))}
                                                 </div>
@@ -391,9 +391,9 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: 10 }}
                                                 transition={{ duration: 0.2 }}
-                                                className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[100] overflow-hidden flex max-h-[600px]"
+                                                className="absolute top-full left-0 right-0 mx-auto w-225 bg-white shadow-2xl rounded-xl border border-gray-100 z-100 overflow-hidden flex max-h-150"
                                             >
-                                                <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
+                                                <div className="w-72 bg-white shrink-0 py-4 overflow-y-auto">
                                                     {collegesData.map((stream: any) => (
                                                         <div
                                                             key={stream.id}
@@ -423,9 +423,9 @@ const Navbar: React.FC<NavbarProps> = () => {
                                                 animate={{ opacity: 1, y: 0 }}
                                                 exit={{ opacity: 0, y: 10 }}
                                                 transition={{ duration: 0.2 }}
-                                                className="absolute top-full left-0 right-0 mx-auto w-[900px] bg-white shadow-2xl rounded-xl border border-gray-100 z-[100] overflow-hidden flex max-h-[600px]"
+                                                className="absolute top-full left-0 right-0 mx-auto w-225 bg-white shadow-2xl rounded-xl border border-gray-100 z-100 overflow-hidden flex max-h-150"
                                             >
-                                                <div className="w-72 bg-white flex-shrink-0 py-4 overflow-y-auto">
+                                                <div className="w-72 bg-white shrink-0 py-4 overflow-y-auto">
                                                     {examsData.map((stream: any) => (
                                                         <div
                                                             key={stream.id}
@@ -470,7 +470,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
-                            className="fixed inset-0 bg-black/60 z-[999] lg:hidden"
+                            className="fixed inset-0 bg-black/60 z-999 lg:hidden"
                             onClick={() => setIsMobileMenuOpen(false)}
                         />
 
@@ -480,7 +480,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             animate={{ x: 0 }}
                             exit={{ x: '-100%' }}
                             transition={{ type: 'tween', duration: 0.3 }}
-                            className="fixed top-0 left-0 h-screen w-[85%] max-w-[400px] bg-white z-[1000] lg:hidden shadow-2xl flex flex-col"
+                            className="fixed top-0 left-0 h-screen w-[85%] max-w-100 bg-white z-1000 lg:hidden shadow-2xl flex flex-col"
                         >
 
                             {/* 1. Header */}

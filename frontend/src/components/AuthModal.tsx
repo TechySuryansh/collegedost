@@ -254,8 +254,8 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                 {/* Left Side: Premium Theme Marketing (Hidden on Mobile) */}
                                 <div className="hidden md:flex md:w-5/12 bg-linear-to-br from-brand-dark via-[#1e3a8a] to-brand-dark text-white p-8 flex-col relative overflow-hidden">
                                     {/* Decorative Elements */}
-                                    <div className="absolute top-0 left-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2"></div>
-                                    <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-[80px] translate-x-1/2 -translate-y-1/2"></div>
+                                    <div className="absolute top-0 left-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-20 -translate-x-1/2 -translate-y-1/2"></div>
+                                    <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-20 translate-x-1/2 -translate-y-1/2"></div>
                                     {/* Mesh */}
                                     <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20"></div>
 
@@ -441,7 +441,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
 
 {/* 
                                                 <div className="relative flex py-2 items-center justify-center">
-                                                    <span className="flex-shrink-0 mx-4 text-gray-400 text-xs">Or continue with</span>
+                                                    <span className="shrink-0 mx-4 text-gray-400 text-xs">Or continue with</span>
                                                 </div>
                                                 <div className="flex justify-center">
                                                     <GoogleLogin

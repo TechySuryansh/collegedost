@@ -24,7 +24,7 @@ const TestPrepExamsSection = () => {
     return (
         <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:p-8">
             <div className="flex items-start gap-4 mb-6">
-                <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-brand-blue text-2xl flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-blue-50 flex items-center justify-center text-brand-blue text-2xl shrink-0">
                     <FaEdit />
                 </div>
                 <div>

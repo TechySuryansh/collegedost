@@ -27,7 +27,7 @@ const Footer = () => {
   return (
     <footer className="bg-brand-dark text-white pt-20 mt-20 relative overflow-hidden">
       {/* Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-brand-indigo via-brand-violet to-brand-cyan"></div>
+      <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-brand-indigo via-brand-violet to-brand-cyan"></div>
       <div className="absolute top-0 right-0 w-96 h-96 bg-brand-indigo/10 rounded-full blur-3xl translate-x-1/2 -translate-y-1/2 pointer-events-none"></div>
 
       <div className="container mx-auto px-4 relative z-10">

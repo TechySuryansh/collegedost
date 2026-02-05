@@ -77,7 +77,7 @@ const Hero: React.FC<HeroProps> = ({
     };
 
     return (
-        <section className="relative min-h-[850px] flex items-center justify-center text-center text-white overflow-visible pt-20 bg-brand-deep-bg">
+        <section className="relative min-h-212.5 flex items-center justify-center text-center text-white overflow-visible pt-20 bg-brand-deep-bg">
 
             {/* Premium Gradient Background */}
             {/* Premium Gradient or Image Background */}
@@ -101,7 +101,7 @@ const Hero: React.FC<HeroProps> = ({
                         rotate: [0, 45, 0]
                     }}
                     transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-[10%] -left-[10%] w-125 h-125 bg-brand-violet/20 rounded-full blur-[100px]"
+                    className="absolute -top-[10%] -left-[10%] w-125 h-125 bg-brand-violet/20 rounded-full blur-25"
                 />
                 <motion.div
                     animate={{
@@ -110,14 +110,14 @@ const Hero: React.FC<HeroProps> = ({
                         opacity: [0.2, 0.4, 0.2]
                     }}
                     transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[20%] right-[-5%] w-100 h-100 bg-brand-cyan/20 rounded-full blur-[80px]"
+                    className="absolute top-[20%] right-[-5%] w-100 h-100 bg-brand-cyan/20 rounded-full blur-20"
                 />
-                <div className="absolute bottom-[-10%] left-[20%] w-150 h-75 bg-brand-blue-dark/30 rounded-full blur-[100px]"></div>
+                <div className="absolute bottom-[-10%] left-[20%] w-150 h-75 bg-brand-blue-dark/30 rounded-full blur-25"></div>
             </div>
 
             {/* Grid Pattern Overlay */}
             <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0 pointer-events-none"></div>
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)] z-0 pointer-events-none"></div>
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[40px_40px] mask-[radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)] z-0 pointer-events-none"></div>
 
 
             <div className="relative z-20 container mx-auto px-4 flex flex-col items-center">

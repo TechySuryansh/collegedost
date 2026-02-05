@@ -104,7 +104,7 @@ const PageContent: React.FC = () => {
 
                         <button
                             type="submit"
-                            className="bg-brand-orange text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors shadow-md h-[50px]"
+                            className="bg-brand-orange text-white font-bold py-3 px-6 rounded-lg hover:bg-orange-600 transition-colors shadow-md h-12.5"
                         >
                             Predict Colleges
                         </button>

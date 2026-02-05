@@ -59,8 +59,8 @@ const Testimonials = () => {
     return (
         <section className="py-24 relative overflow-hidden bg-brand-light">
             {/* Dynamic Background Elements */}
-            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-brand-indigo/10 rounded-full blur-[100px] -z-10 animate-pulse-slow"></div>
-            <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-brand-orange/10 rounded-full blur-[120px] -z-10 animate-float"></div>
+            <div className="absolute top-1/4 left-0 w-125 h-125 bg-brand-indigo/10 rounded-full blur-25 -z-10 animate-pulse-slow"></div>
+            <div className="absolute bottom-0 right-0 w-150 h-150 bg-brand-orange/10 rounded-full blur-30 -z-10 animate-float"></div>
 
             <div className="container mx-auto px-4 relative z-10">
                 <div className="text-center mb-20">
@@ -72,7 +72,7 @@ const Testimonials = () => {
                     >
                         <span className="text-brand-indigo font-bold tracking-wider uppercase text-sm mb-3 block">Student Success</span>
                         <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-6">
-                            Hear from our <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-orange to-red-500">Achievers</span>
+                            Hear from our <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-orange to-red-500">Achievers</span>
                         </h2>
                         <p className="text-gray-600 max-w-2xl mx-auto text-lg">
                             Join thousands of students who have found their dream college and career path with Collegedost.
@@ -84,19 +84,19 @@ const Testimonials = () => {
                     {/* Navigation Buttons - Absolute positioned outside the card */}
                     <button
                         onClick={prevSlide}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass border border-white/40 flex items-center justify-center text-gray-700 hover:text-brand-orange hover:bg-white transition-all shadow-lg hover:shadow-xl z-20 group hidden md:flex"
+                        className="absolute left-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass border border-white/40 flex items-center justify-center text-gray-700 hover:text-brand-orange hover:bg-white transition-all shadow-lg hover:shadow-xl z-20 group md:flex"
                     >
                         <FaChevronLeft className="text-xl group-hover:-translate-x-1 transition-transform" />
                     </button>
 
                     <button
                         onClick={nextSlide}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass border border-white/40 flex items-center justify-center text-gray-700 hover:text-brand-orange hover:bg-white transition-all shadow-lg hover:shadow-xl z-20 group hidden md:flex"
+                        className="absolute right-0 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass border border-white/40 flex items-center justify-center text-gray-700 hover:text-brand-orange hover:bg-white transition-all shadow-lg hover:shadow-xl z-20 group md:flex"
                     >
                         <FaChevronRight className="text-xl group-hover:translate-x-1 transition-transform" />
                     </button>
 
-                    <div className="relative min-h-[450px] md:min-h-[400px]">
+                    <div className="relative min-h-112.5 md:min-h-100">
                         <AnimatePresence mode='wait'>
                             <motion.div
                                 key={currentIndex}
@@ -107,13 +107,13 @@ const Testimonials = () => {
                                 className="w-full absolute inset-0"
                             >
                                 {/* Main Card */}
-                                <div className="glass-card p-8 md:p-14 rounded-[2.5rem] relative mx-auto backdrop-blur-2xl bg-white/40 border-t border-white/60 shadow-2xl h-full flex flex-col md:flex-row items-center gap-10">
+                                <div className="glass-card p-8 md:p-14 rounded-10 relative mx-auto backdrop-blur-2xl bg-white/40 border-t border-white/60 shadow-2xl h-full flex flex-col md:flex-row items-center gap-10">
 
                                     {/* Decorative Quote Icon behind */}
                                     <div className="absolute top-10 right-10 text-9xl text-brand-indigo/5 font-serif pointer-events-none leading-none select-none">"</div>
 
                                     {/* Left Side: Image & Profile */}
-                                    <div className="flex-shrink-0 flex flex-col items-center md:items-start text-center md:text-left z-10 w-full md:w-auto">
+                                    <div className="shrink-0 flex flex-col items-center md:items-start text-center md:text-left z-10 w-full md:w-auto">
                                         <div className="relative mb-6">
                                             <div className="w-32 h-32 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-white shadow-xl relative z-10">
                                                 <img src={testimonials[currentIndex].image} alt={testimonials[currentIndex].name} className="w-full h-full object-cover" />
@@ -152,7 +152,7 @@ const Testimonials = () => {
                                 key={index}
                                 onClick={() => setCurrentIndex(index)}
                                 className={`transition-all duration-500 ease-out rounded-full ${index === currentIndex
-                                        ? 'w-10 h-3 bg-gradient-to-r from-brand-orange to-red-500 shadow-md scale-110'
+                                        ? 'w-10 h-3 bg-linear-to-r from-brand-orange to-red-500 shadow-md scale-110'
                                         : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'
                                     }`}
                                 aria-label={`Go to slide ${index + 1}`}

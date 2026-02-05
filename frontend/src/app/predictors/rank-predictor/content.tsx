@@ -42,7 +42,7 @@ const PageContent: React.FC = () => {
 
             <div className="container mx-auto px-4 max-w-2xl">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div className="h-2 bg-gradient-to-r from-brand-orange to-brand-blue"></div>
+                    <div className="h-2 bg-linear-to-r from-brand-orange to-brand-blue"></div>
                     <div className="p-8">
                         <form onSubmit={handlePredict} className="space-y-6">
                             <div>

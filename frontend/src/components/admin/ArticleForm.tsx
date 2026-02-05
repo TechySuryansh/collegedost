@@ -273,7 +273,7 @@ const ArticleForm: React.FC = () => {
                                 <button 
                                     type="button" 
                                     onClick={handleAddLink}
-                                    className="bg-gray-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-700 transition-colors h-[38px]"
+                                    className="bg-gray-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-700 transition-colors h-9.5"
                                 >
                                     Add Link
                                 </button>

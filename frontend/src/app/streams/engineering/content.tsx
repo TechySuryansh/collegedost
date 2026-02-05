@@ -30,7 +30,7 @@ const PageContent: React.FC = () => {
                 title={
                     <>
                         <span className="block whitespace-nowrap">Engineering the Impossible.</span>
-                        <span className="block mt-3 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-500 whitespace-nowrap">
+                        <span className="block mt-3 text-transparent bg-clip-text bg-linear-to-r from-cyan-300 to-blue-500 whitespace-nowrap">
                             Designing the Extraordinary.
                         </span>
                     </>
@@ -46,7 +46,7 @@ const PageContent: React.FC = () => {
                 ]}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
                 <PillSection 
                     title="Top Engineering Rankings" 
                     items={engineeringRankings} 
@@ -72,7 +72,7 @@ const PageContent: React.FC = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PillSection 
                         title="Engineering Entrance Exams" 
                         items={engineeringExams} 

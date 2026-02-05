@@ -161,7 +161,7 @@ const TestPrepViewPage = () => {
                             </div>
 
                             {/* Promo Card */}
-                            <div className="bg-gradient-to-br from-brand-blue to-purple-600 rounded-xl shadow-lg p-6 text-white">
+                            <div className="bg-linear-to-br from-brand-blue to-purple-600 rounded-xl shadow-lg p-6 text-white">
                                 <h3 className="font-bold text-xl mb-2">Need Counselling?</h3>
                                 <p className="text-blue-100 text-sm mb-4">Get expert guidance for your engineering admission journey.</p>
                                 <button className="w-full py-2 bg-white text-brand-blue font-bold rounded-lg text-sm hover:bg-gray-50 transition">

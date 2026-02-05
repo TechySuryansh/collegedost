@@ -152,7 +152,7 @@ const AdminColleges: React.FC = () => {
                                 </div>
                                 <div className="p-5">
                                     <div className="flex items-start justify-between mb-2">
-                                        <h3 className="font-bold text-gray-900 line-clamp-2 min-h-[3rem]">{college.name}</h3>
+                                        <h3 className="font-bold text-gray-900 line-clamp-2 min-h-12">{college.name}</h3>
                                     </div>
                                     
                                     <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">

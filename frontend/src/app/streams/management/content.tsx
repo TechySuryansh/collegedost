@@ -29,7 +29,7 @@ const PageContent: React.FC = () => {
                 title={
                     <>
                         Lead the Future. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-600">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 to-red-600">
                             Master Management.
                         </span>
                     </>
@@ -43,7 +43,7 @@ const PageContent: React.FC = () => {
                 ]}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
                 <PillSection 
                     title="Top Management Rankings" 
                     items={managementRankings} 
@@ -69,7 +69,7 @@ const PageContent: React.FC = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PillSection 
                         title="Management Entrance Exams" 
                         items={managementExams} 

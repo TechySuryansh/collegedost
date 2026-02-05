@@ -6,7 +6,7 @@ import GenericCardGrid from '@/components/GenericCardGrid';
 import Counselling from '@/components/Counselling';
 import PillSection from '@/components/PillSection';
 import PredictorsSection from '@/components/PredictorsSection';
-import { browseByStreamData } from '@/data';
+import { browseByStreamData } from '@/data/navigation';
 import { useUI } from '@/context/UIContext';
 
 /**
@@ -25,7 +25,7 @@ const PageContent: React.FC = () => {
                 title={
                     <>
                         Service with a Smile. <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-yellow-500">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-400 to-yellow-500">
                             Leading in Hospitality.
                         </span>
                     </>
@@ -36,7 +36,7 @@ const PageContent: React.FC = () => {
                 showBadge={false}
             />
 
-            <div className="container mx-auto px-4 py-12 flex-grow flex flex-col gap-16">
+            <div className="container mx-auto px-4 py-12 grow flex-col gap-16">
                 <PillSection 
                     title="Hospitality Entrance Exams" 
                     items={data.content.exams} 
@@ -62,7 +62,7 @@ const PageContent: React.FC = () => {
             </div>
 
             <div className="bg-gray-50 py-12">
-                <div className="container mx-auto px-4 flex-grow flex flex-col gap-16">
+                <div className="container mx-auto px-4 grow flex flex-col gap-16">
                     <PredictorsSection
                         title="Hospitality Courses"
                         mainTitle="Hotel & Travel Management"

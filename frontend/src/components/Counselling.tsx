@@ -25,9 +25,9 @@ const Counselling: React.FC<CounsellingProps> = ({ items, onOpenAskModal }) => {
                     {items.map((item, index) => (
                         <div
                             key={index}
-                            className="glass-card rounded-[32px] p-0 flex flex-col items-center relative overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:shadow-premium border border-white/60"
+                            className="glass-card rounded-8 p-0 flex flex-col items-center relative overflow-hidden group transition-all duration-300 hover:-translate-y-2 hover:shadow-premium border border-white/60"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/50 to-brand-indigo/5 z-0"></div>
+                            <div className="absolute inset-0 bg-linear-to-br from-white/80 via-white/50 to-brand-indigo/5 z-0"></div>
 
                             <div className="flex w-full h-full relative z-10">
                                 <div className="flex-1 p-10 flex flex-col justify-center">
@@ -54,7 +54,7 @@ const Counselling: React.FC<CounsellingProps> = ({ items, onOpenAskModal }) => {
                                 </div>
 
                                 <div className="w-2/5 relative overflow-hidden hidden md:block">
-                                    <div className="absolute inset-0 bg-gradient-to-l from-transparent to-white/90 z-20"></div>
+                                    <div className="absolute inset-0 bg-linear-to-l from-transparent to-white/90 z-20"></div>
                                     <img
                                         src={item.image}
                                         alt={item.title}

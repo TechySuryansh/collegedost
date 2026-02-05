@@ -109,7 +109,7 @@ const ProfilePage = () => {
     return (
         <div className="min-h-screen bg-slate-50 relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-br from-brand-blue to-brand-indigo rounded-b-[3rem] shadow-none z-0"></div>
+            <div className="absolute top-0 inset-x-0 h-96 bg-linear-to-br from-brand-blue to-brand-indigo rounded-b-[3rem] shadow-none z-0"></div>
             <div className="absolute top-0 inset-x-0 h-96 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 z-0 pointer-events-none rounded-b-[3rem]"></div>
 
             {/* Main Content */}
@@ -123,7 +123,7 @@ const ProfilePage = () => {
                         className="relative mx-auto w-32 h-32 mb-4"
                     >
                         <div className="w-full h-full rounded-full bg-white p-1 shadow-2xl">
-                            <div className="w-full h-full rounded-full bg-gradient-to-tr from-brand-orange to-yellow-400 flex items-center justify-center text-4xl font-bold text-white shadow-inner">
+                            <div className="w-full h-full rounded-full bg-linear-to-tr from-brand-orange to-yellow-400 flex items-center justify-center text-4xl font-bold text-white shadow-inner">
                                 {getInitials(user.name)}
                             </div>
                         </div>
