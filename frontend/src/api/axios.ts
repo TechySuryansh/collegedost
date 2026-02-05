@@ -4,28 +4,15 @@ import axios from 'axios';
 // BACKEND URL RESOLVER
 // =======================
 const getCurrentBackendUrl = () => {
-  // SSR Guard
-  if (typeof window === 'undefined') {
-      return process.env.NEXT_PUBLIC_API_BASE_URL || 'https://collegedost-929n.onrender.com/api';
-  }
-
-  const hostname = window.location.hostname;
-
-  // 1. Strict Localhost Check
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return process.env.NEXT_PUBLIC_API_BASE_URL 
-          ? `${process.env.NEXT_PUBLIC_API_BASE_URL}/api`
-          : 'http://localhost:5001/api';
-  }
-
-  // 2. Production Fallback
-  const envUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-  if (envUrl && !envUrl.includes('localhost') && envUrl.startsWith('http')) {
-       return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  // Get the API URL from environment variable
+  const apiUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  
+  if (!apiUrl) {
+    throw new Error('NEXT_PUBLIC_API_BASE_URL environment variable is not set');
   }
   
-  // 3. Absolute Fallback
-  return 'https://collegedost-929n.onrender.com/api';
+  // Ensure the URL ends with /api
+  return apiUrl.endsWith('/api') ? apiUrl : `${apiUrl}/api`;
 };
 
 // =======================
