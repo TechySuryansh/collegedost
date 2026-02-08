@@ -2,7 +2,7 @@
 
 import React from 'react';
 import HeroNew from './HeroNew';
-import NewsTicker from './NewsTicker';
+import FeaturedColleges from './FeaturedColleges';
 import CounsellingNew from './CounsellingNew';
 import DataRankings from './DataRankings';
 import OnlineCourses from './OnlineCourses';
@@ -17,8 +17,8 @@ const HomePage = () => {
             {/* Hero Section */}
             <HeroNew />
 
-            {/* News Ticker */}
-            <NewsTicker />
+            {/* Featured Colleges */}
+            <FeaturedColleges />
 
             {/* Main Content Section */}
             <main className="py-20 lg:py-32 relative z-10">

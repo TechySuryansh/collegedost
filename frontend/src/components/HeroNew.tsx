@@ -5,6 +5,7 @@ import { FaSearch, FaChartLine, FaArrowRight, FaMapMarkerAlt, FaUniversity, FaBe
 import { useRouter } from 'next/navigation';
 import api from '../api/axios';
 import Link from 'next/link';
+import CollegeCarousel from './CollegeCarousel';
 
 interface HeroProps {
     title?: React.ReactNode;
@@ -70,34 +71,37 @@ const HeroNew: React.FC<HeroProps> = ({
     };
 
     return (
-        <section className="relative pt-12 pb-20 lg:pt-24 lg:pb-32 overflow-hidden bg-background-light">
-            {/* Background Blobs */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div className="blob bg-primary/20 w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
-                <div className="blob bg-secondary/20 w-125 h-125 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3"></div>
+        <section className="relative pt-12 pb-20 lg:pt-24 lg:pb-32 overflow-hidden bg-background-light min-h-[90vh] flex items-center">
+            {/* College Images Carousel Background */}
+            <CollegeCarousel />
+
+            {/* Additional overlay for readability */}
+            <div className="absolute inset-0 z-10 pointer-events-none">
+                <div className="blob bg-primary/10 w-96 h-96 rounded-full top-0 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+                <div className="blob bg-secondary/10 w-125 h-125 rounded-full bottom-0 right-0 translate-x-1/3 translate-y-1/3"></div>
             </div>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                     {/* Left Content */}
                     <div className="text-center lg:text-left space-y-8">
                         {showBadge && (
-                            <div className="inline-flex items-center px-3 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-semibold tracking-wide uppercase mb-2 border border-secondary/20">
+                            <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm text-white text-xs font-semibold tracking-wide uppercase mb-2 border border-white/30">
                                 <span className="mr-2 h-2 w-2 rounded-full bg-secondary animate-pulse"></span>
                                 Trusted by 10M+ Students
                             </div>
                         )}
 
-                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-text-main-light leading-[1.1]">
+                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1] drop-shadow-lg">
                             {title || (
                                 <>
                                     Empowering Your <br/>
-                                    <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-secondary">Academic Journey</span>
+                                    <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-300 to-purple-300">Academic Journey</span>
                                 </>
                             )}
                         </h1>
 
-                        <p className="text-lg text-text-muted-light max-w-2xl mx-auto lg:mx-0">
+                        <p className="text-lg text-white/80 max-w-2xl mx-auto lg:mx-0 drop-shadow">
                             {subtitle}
                         </p>
 
@@ -157,12 +161,12 @@ const HeroNew: React.FC<HeroProps> = ({
 
                         {/* Trending Tags */}
                         <div className="flex flex-wrap gap-3 justify-center lg:justify-start pt-2">
-                            <span className="text-sm font-medium text-text-muted-light self-center">Trending:</span>
+                            <span className="text-sm font-medium text-white/70 self-center">Trending:</span>
                             {trending.map((item, index) => (
                                 <Link
                                     key={index}
                                     href={item.link}
-                                    className="px-4 py-1.5 rounded-full bg-white border border-gray-200 text-sm font-medium text-text-main-light hover:border-primary hover:text-primary transition-colors shadow-sm"
+                                    className="px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-sm font-medium text-white hover:bg-white/30 hover:border-white/50 transition-colors shadow-sm"
                                 >
                                     {item.text}
                                 </Link>
