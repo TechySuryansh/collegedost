@@ -1,32 +1,11 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 import Link from 'next/link';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
-
-  const containerVariants: Variants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6, ease: "easeOut" }
-    }
-  };
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,15 +17,9 @@ const Footer = () => {
   return (
     <footer className="bg-black text-gray-400 pt-20 pb-10 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16"
-        >
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 lg:gap-12 mb-16">
           {/* Brand Column */}
-          <motion.div variants={itemVariants} className="col-span-2 lg:col-span-1 space-y-4">
+          <div className="col-span-2 lg:col-span-1 space-y-4">
             <Link href="/" className="font-display font-bold text-2xl text-white tracking-tight">
               COLLEGEDOST
             </Link>
@@ -60,10 +33,10 @@ const Footer = () => {
               <a href="#" aria-label="Visit our LinkedIn page" className="text-gray-400 hover:text-white transition-colors"><FaLinkedin className="text-2xl" /></a>
               <a href="#" aria-label="Visit our YouTube channel" className="text-gray-400 hover:text-white transition-colors"><FaYoutube className="text-2xl" /></a>
             </div>
-          </motion.div>
+          </div>
 
           {/* Top Exams */}
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className="text-white font-bold mb-6">Top Exams</h4>
             <ul className="space-y-3 text-sm">
               <li><Link href="/exams/jee-main" className="hover:text-primary transition-colors">JEE Main 2026</Link></li>
@@ -72,10 +45,10 @@ const Footer = () => {
               <li><Link href="/exams/gate" className="hover:text-primary transition-colors">GATE 2026</Link></li>
               <li><Link href="/exams/clat" className="hover:text-primary transition-colors">CLAT 2026</Link></li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* Colleges */}
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className="text-white font-bold mb-6">Colleges</h4>
             <ul className="space-y-3 text-sm">
               <li><Link href="/tools/colleges?stream=Engineering" className="hover:text-primary transition-colors">Top Engineering in India</Link></li>
@@ -84,10 +57,10 @@ const Footer = () => {
               <li><Link href="/tools/colleges?stream=Law" className="hover:text-primary transition-colors">Top Law in India</Link></li>
               <li><Link href="/tools/colleges?type=IIM" className="hover:text-primary transition-colors">IIMs in India</Link></li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* Resources */}
-          <motion.div variants={itemVariants}>
+          <div>
             <h4 className="text-white font-bold mb-6">Resources</h4>
             <ul className="space-y-3 text-sm">
               <li><Link href="/predictors" className="hover:text-primary transition-colors">College Predictors</Link></li>
@@ -95,10 +68,10 @@ const Footer = () => {
               <li><Link href="/qna" className="hover:text-primary transition-colors">CollegeDost Q&A</Link></li>
               <li><Link href="/reviews" className="hover:text-primary transition-colors">College Reviews</Link></li>
             </ul>
-          </motion.div>
+          </div>
 
           {/* Newsletter */}
-          <motion.div variants={itemVariants} className="col-span-2 lg:col-span-1">
+          <div className="col-span-2 lg:col-span-1">
             <h4 className="text-white font-bold mb-6">Stay Updated</h4>
             <form onSubmit={handleSubscribe} className="space-y-3">
               <label htmlFor="footer-email" className="sr-only">Email address</label>
@@ -117,8 +90,8 @@ const Footer = () => {
                 Subscribe
               </button>
             </form>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">

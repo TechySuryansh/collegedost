@@ -32,16 +32,21 @@ const HeroNew: React.FC<HeroProps> = ({
 
     // Search Suggestions Logic
     useEffect(() => {
+        const abortController = new AbortController();
         const timer = setTimeout(async () => {
             if (search.length >= 2) {
                 try {
-                    const res = await api.get(`/colleges/search?q=${encodeURIComponent(search)}`);
+                    const res = await api.get(`/colleges/search?q=${encodeURIComponent(search)}`, {
+                        signal: abortController.signal
+                    });
                     if (res.data.success) {
                         setSuggestions(res.data.data);
                         setShowSuggestions(true);
                     }
-                } catch (err) {
-                    console.error("Search Error", err);
+                } catch (err: any) {
+                    if (err.name !== 'CanceledError') {
+                        console.error("Search Error", err);
+                    }
                 }
             } else {
                 setSuggestions([]);
@@ -49,7 +54,10 @@ const HeroNew: React.FC<HeroProps> = ({
             }
         }, 300);
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(timer);
+            abortController.abort();
+        };
     }, [search]);
 
     // Click Outside to Close
@@ -118,6 +126,11 @@ const HeroNew: React.FC<HeroProps> = ({
                                     onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                                     className="w-full bg-transparent border-0 focus:ring-0 text-text-main-light placeholder-gray-400 h-12 px-4 outline-none"
                                     placeholder="Search Colleges, Exams, Courses & more..."
+                                    role="combobox"
+                                    aria-expanded={showSuggestions && suggestions.length > 0}
+                                    aria-autocomplete="list"
+                                    aria-controls="search-suggestions"
+                                    aria-label="Search for colleges, exams, and courses"
                                 />
                                 <button 
                                     onClick={handleSearch}
@@ -129,11 +142,17 @@ const HeroNew: React.FC<HeroProps> = ({
 
                             {/* Autocomplete Dropdown */}
                             {showSuggestions && suggestions.length > 0 && (
-                                <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+                                <div 
+                                    id="search-suggestions"
+                                    role="listbox"
+                                    className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 max-h-96 overflow-y-auto z-100 hide-scrollbar"
+                                >
                                         {suggestions.map((item) => (
                                             <div
                                                 key={item._id}
                                                 onClick={() => router.push(`/colleges/${item.slug}`)}
+                                                role="option"
+                                                aria-selected="false"
                                                 className="px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-primary/5 cursor-pointer flex items-center gap-4 transition-colors"
                                             >
                                                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
@@ -183,14 +202,18 @@ const HeroNew: React.FC<HeroProps> = ({
                                 <img 
                                     alt="Students collaborating" 
                                     className="w-full h-full object-cover transform hover:scale-110 transition duration-700" 
-                                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80"
+                                    src="https://images.unsplash.com/photo-1590161311659-852a5207c5b0?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
                                 <div className="absolute bottom-4 left-4 right-4 text-white">
                                     <span className="bg-primary text-xs font-bold px-2 py-1 rounded mb-2 inline-block">FEATURED STORY</span>
-                                    <h3 className="font-display font-bold text-xl leading-tight">Every Student Matters: Driving the Future of Education</h3>
+                                    <h3 className="font-display font-bold text-xl leading-tight">The Future of Education: Welcome to Cambridge!</h3>
                                 </div>
-                                <button className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-md rounded-full p-4 hover:bg-white/50 transition-colors group">
+                                <button 
+                                    onClick={() => window.open('https://www.youtube.com/watch?v=LlCwHnp3kL4', '_blank')}
+                                    aria-label="Play featured video"
+                                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-md rounded-full p-4 hover:bg-white/50 transition-colors group"
+                                >
                                     <FaPlay className="text-2xl text-white" />
                                 </button>
                             </div>

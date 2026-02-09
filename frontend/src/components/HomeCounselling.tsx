@@ -3,6 +3,7 @@
 import React from 'react';
 import { FaUsers, FaComments, FaVideo, FaArrowRight } from 'react-icons/fa';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface CounsellingNewProps {
     onOpenAskModal?: () => void;
@@ -66,10 +67,12 @@ const CounsellingNew: React.FC<CounsellingNewProps> = ({ onOpenAskModal }) => {
                 
                 {/* Image Side */}
                 <div className="relative min-h-75 md:min-h-full bg-slate-100 flex items-center justify-center p-8">
-                    <img
+                    <Image
                         alt="Counselling Illustration"
                         className="w-full max-w-md object-contain drop-shadow-xl relative z-10"
                         src="https://img.freepik.com/free-vector/online-consulting-concept-illustration_114360-1730.jpg"
+                        width={400}
+                        height={400}
                     />
                     <div className="absolute top-10 right-10 w-20 h-20 bg-yellow-400/20 rounded-full blur-xl"></div>
                     <div className="absolute bottom-10 left-10 w-32 h-32 bg-primary/20 rounded-full blur-xl"></div>

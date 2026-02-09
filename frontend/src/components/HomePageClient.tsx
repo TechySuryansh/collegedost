@@ -1,9 +1,9 @@
 "use client";
 
 import React from 'react';
-import HeroNew from './HeroNew';
+import HomeHero from './HomeHero';
 import FeaturedColleges from './FeaturedColleges';
-import CounsellingNew from './CounsellingNew';
+import HomeCounselling from './HomeCounselling';
 import DataRankings from './DataRankings';
 import OnlineCourses from './OnlineCourses';
 import AppDownload from './AppDownload';
@@ -15,7 +15,7 @@ const HomePage = () => {
     return (
         <div className="overflow-x-hidden bg-background-light">
             {/* Hero Section */}
-            <HeroNew />
+            <HomeHero />
 
             {/* Featured Colleges */}
             <FeaturedColleges />
@@ -34,7 +34,7 @@ const HomePage = () => {
                     </div>
 
                     {/* Personalized Counselling */}
-                    <CounsellingNew onOpenAskModal={openAskModal} />
+                    <HomeCounselling onOpenAskModal={openAskModal} />
 
                     {/* Data & Rankings + Smart Predictors */}
                     <DataRankings />

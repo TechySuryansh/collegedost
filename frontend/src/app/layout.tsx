@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
-import Navbar from "@/components/NavbarNew";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ModalManager from "@/components/ModalManager";
 
