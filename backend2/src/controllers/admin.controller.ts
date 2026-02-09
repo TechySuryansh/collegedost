@@ -1,4 +1,7 @@
-const User = require('../models/User');
+import { Response } from 'express';
+import User from '../models/User';
+import { AuthRequest } from '../middleware/auth.middleware';
+
 // Import other models as they're created
 // const College = require('../models/College');
 // const Article = require('../models/Article');
@@ -6,7 +9,7 @@ const User = require('../models/User');
 // @desc    Get admin dashboard statistics
 // @route   GET /api/admin/stats
 // @access  Private/Admin
-exports.getStats = async (req, res) => {
+export const getStats = async (req: AuthRequest, res: Response) => {
     try {
         // Count documents from each collection
         const totalUsers = await User.countDocuments();
@@ -44,7 +47,7 @@ exports.getStats = async (req, res) => {
 // @desc    Get predictor settings (placeholder)
 // @route   GET /api/admin/predictor-settings
 // @access  Private/Admin
-exports.getPredictorSettings = async (req, res) => {
+export const getPredictorSettings = async (req: AuthRequest, res: Response) => {
     try {
         // Placeholder - will implement later when predictor system is built
         res.status(200).json({
@@ -65,7 +68,7 @@ exports.getPredictorSettings = async (req, res) => {
 // @desc    Update predictor settings (placeholder)
 // @route   PUT /api/admin/predictor-settings
 // @access  Private/Admin
-exports.updatePredictorSettings = async (req, res) => {
+export const updatePredictorSettings = async (req: AuthRequest, res: Response) => {
     try {
         res.status(200).json({
             success: true,

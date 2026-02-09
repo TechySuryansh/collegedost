@@ -1,7 +1,7 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
-const connectDB = require('./src/config/db');
+import express, { Application, Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import connectDB from './src/config/db';
 
 // Load environment variables
 dotenv.config();
@@ -9,7 +9,7 @@ dotenv.config();
 // Connect to Database
 connectDB();
 
-const app = express();
+const app: Application = express();
 
 // Body parser
 app.use(express.json());
@@ -21,9 +21,9 @@ app.use(cors({
 }));
 
 // Mount routers
-const auth = require('./src/routes/auth.routes');
-const users = require('./src/routes/user.routes');
-const admin = require('./src/routes/admin.routes');
+import auth from './src/routes/auth.routes';
+import users from './src/routes/user.routes';
+import admin from './src/routes/admin.routes';
 // const colleges = require('./src/routes/college.routes'); // To be added later
 
 app.use('/api/auth', auth);
@@ -31,12 +31,12 @@ app.use('/api/users', users);
 app.use('/api/admin', admin);
 
 // Base route
-app.get('/', (req, res) => {
+app.get('/', (req: Request, res: Response) => {
     res.send('CollegeDost API v2 is running...');
 });
 
 // Error Handler Middleware
-app.use((err, req, res, next) => {
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     console.error(err.stack);
     res.status(500).json({
         success: false,
@@ -51,7 +51,7 @@ const server = app.listen(PORT, () => {
 });
 
 // Handle unhandled promise rejections
-process.on('unhandledRejection', (err, promise) => {
+process.on('unhandledRejection', (err: Error, promise) => {
     console.log(`Error: ${err.message}`);
     // Close server & exit process
     // server.close(() => process.exit(1));

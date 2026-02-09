@@ -1,9 +1,12 @@
-const authService = require('../services/auth.service');
+import { Request, Response } from 'express';
+import * as authService from '../services/auth.service';
+import { IUser } from '../models/User';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 // @desc    Register user
 // @route   POST /api/auth/signup-new || /api/auth/register
 // @access  Public
-exports.register = async (req, res) => {
+export const register = async (req: Request, res: Response) => {
     try {
         const { user, token } = await authService.registerUser(req.body);
 
@@ -19,7 +22,7 @@ exports.register = async (req, res) => {
                 role: user.role
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Registration Error:", error.message);
         res.status(400).json({ success: false, message: error.message || 'Registration failed' });
     }
@@ -28,7 +31,7 @@ exports.register = async (req, res) => {
 // @desc    Login user
 // @route   POST /api/auth/login
 // @access  Public
-exports.login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
     try {
         const { email, password } = req.body;
         const { user, token } = await authService.loginUser(email, password);
@@ -45,7 +48,7 @@ exports.login = async (req, res) => {
                 role: user.role
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Login Error:", error.message);
         const statusCode = error.message === 'Invalid credentials' ? 401 : 500;
         res.status(statusCode).json({ success: false, message: error.message || 'Login failed' });
@@ -55,7 +58,7 @@ exports.login = async (req, res) => {
 // @desc    Google Login
 // @route   POST /api/auth/google
 // @access  Public
-exports.googleLogin = async (req, res) => {
+export const googleLogin = async (req: Request, res: Response) => {
     try {
         const { user, token } = await authService.googleLoginUser(req.body.token);
 
@@ -70,7 +73,7 @@ exports.googleLogin = async (req, res) => {
                 role: user.role
             }
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error("Google Login Error:", error.message);
         res.status(400).json({ success: false, message: error.message || 'Google Login Failed' });
     }
@@ -79,9 +82,14 @@ exports.googleLogin = async (req, res) => {
 // @desc    Get Current User
 // @route   GET /api/auth/me
 // @access  Private
-exports.getMe = async (req, res) => {
+// Using AuthRequest to access req.user
+export const getMe = async (req: AuthRequest, res: Response) => {
     try {
-        // req.user is already set by middleware, but we can refetch if needed or just return it
+        // req.user is already set by middleware
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
+
         const user = await authService.getUserById(req.user.id);
         res.status(200).json({ success: true, user });
     } catch (error) {

@@ -1,12 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const {
+import express from 'express';
+import {
     getStats,
     getPredictorSettings,
     updatePredictorSettings
-} = require('../controllers/admin.controller');
+} from '../controllers/admin.controller';
+import { protect, authorize } from '../middleware/auth.middleware';
 
-const { protect, authorize } = require('../middleware/auth.middleware');
+const router = express.Router();
 
 // All routes are admin-only
 router.use(protect, authorize('admin'));
@@ -15,4 +15,4 @@ router.get('/stats', getStats);
 router.get('/predictor-settings', getPredictorSettings);
 router.put('/predictor-settings', updatePredictorSettings);
 
-module.exports = router;
+export default router;

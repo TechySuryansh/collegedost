@@ -1,11 +1,15 @@
-const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+import { Response } from 'express';
+import User, { IUser } from '../models/User';
+import { AuthRequest } from '../middleware/auth.middleware';
 
 // @desc    Get current user profile
 // @route   GET /api/users/me
 // @access  Private
-exports.getMe = async (req, res) => {
+export const getMe = async (req: AuthRequest, res: Response) => {
     try {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
         const user = await User.findById(req.user.id).select('-password');
 
         res.status(200).json({
@@ -24,9 +28,13 @@ exports.getMe = async (req, res) => {
 // @desc    Update user details (name, mobile, city, etc.)
 // @route   PUT /api/users/updatedetails
 // @access  Private
-exports.updateDetails = async (req, res) => {
+export const updateDetails = async (req: AuthRequest, res: Response) => {
     try {
-        const fieldsToUpdate = {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
+
+        const fieldsToUpdate: any = {
             name: req.body.name,
             mobile: req.body.mobile,
             city: req.body.city,
@@ -55,7 +63,7 @@ exports.updateDetails = async (req, res) => {
             message: 'Profile updated successfully',
             data: user
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Update Details Error:', error);
         res.status(400).json({
             success: false,
@@ -67,9 +75,12 @@ exports.updateDetails = async (req, res) => {
 // @desc    Update password
 // @route   PUT /api/users/updatepassword
 // @access  Private
-exports.updatePassword = async (req, res) => {
+export const updatePassword = async (req: AuthRequest, res: Response) => {
     try {
         const { currentPassword, newPassword } = req.body;
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
 
         if (!currentPassword || !newPassword) {
             return res.status(400).json({
@@ -79,6 +90,9 @@ exports.updatePassword = async (req, res) => {
         }
 
         const user = await User.findById(req.user.id).select('+password');
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
 
         // Check current password
         const isMatch = await user.matchPassword(currentPassword);
@@ -108,7 +122,7 @@ exports.updatePassword = async (req, res) => {
 // @desc    Get all users (Admin only)
 // @route   GET /api/users
 // @access  Private/Admin
-exports.getUsers = async (req, res) => {
+export const getUsers = async (req: AuthRequest, res: Response) => {
     try {
         const users = await User.find().select('-password').sort('-createdAt');
 
@@ -129,7 +143,7 @@ exports.getUsers = async (req, res) => {
 // @desc    Get single user by ID (Admin only)
 // @route   GET /api/users/:id
 // @access  Private/Admin
-exports.getUser = async (req, res) => {
+export const getUser = async (req: AuthRequest, res: Response) => {
     try {
         const user = await User.findById(req.params.id).select('-password');
 
@@ -156,7 +170,7 @@ exports.getUser = async (req, res) => {
 // @desc    Delete user (Admin only)
 // @route   DELETE /api/users/:id
 // @access  Private/Admin
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req: AuthRequest, res: Response) => {
     try {
         const user = await User.findById(req.params.id);
 
