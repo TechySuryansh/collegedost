@@ -1,14 +1,28 @@
-const User = require('../models/User');
-const { OAuth2Client } = require('google-auth-library');
-const crypto = require('crypto');
+import User, { IUser } from '../models/User';
+import { OAuth2Client } from 'google-auth-library';
+import crypto from 'crypto';
+
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+interface RegisterUserData {
+    name: string;
+    email: string;
+    mobile: string;
+    password: string;
+    currentClass?: string;
+    interest?: string;
+    city?: string;
+}
+
+interface AuthResponse {
+    user: IUser;
+    token: string;
+}
 
 /**
  * Register a new user
- * @param {Object} userData
- * @returns {Object} { user, token }
  */
-exports.registerUser = async (userData) => {
+export const registerUser = async (userData: RegisterUserData): Promise<AuthResponse> => {
     const { name, email, mobile, password, currentClass, interest, city } = userData;
 
     // Check if user exists
@@ -36,11 +50,8 @@ exports.registerUser = async (userData) => {
 
 /**
  * Login user
- * @param {String} email
- * @param {String} password
- * @returns {Object} { user, token }
  */
-exports.loginUser = async (email, password) => {
+export const loginUser = async (email?: string, password?: string): Promise<AuthResponse> => {
     if (!email || !password) {
         throw new Error('Please provide email and password');
     }
@@ -64,10 +75,8 @@ exports.loginUser = async (email, password) => {
 
 /**
  * Google Login
- * @param {String} token
- * @returns {Object} { user, token }
  */
-exports.googleLoginUser = async (token) => {
+export const googleLoginUser = async (token: string): Promise<AuthResponse> => {
     if (!token) throw new Error('Google token is required');
 
     const ticket = await client.verifyIdToken({
@@ -75,7 +84,12 @@ exports.googleLoginUser = async (token) => {
         audience: process.env.GOOGLE_CLIENT_ID
     });
 
-    const { name, email, sub: googleId } = ticket.getPayload();
+    const payload = ticket.getPayload();
+    if (!payload) throw new Error('Invalid Google Token');
+
+    const { name, email, sub: googleId } = payload;
+
+    if (!email) throw new Error('Email not found in Google Token');
 
     let user = await User.findOne({ $or: [{ googleId }, { email }] });
 
@@ -86,11 +100,11 @@ exports.googleLoginUser = async (token) => {
         }
     } else {
         user = await User.create({
-            name,
+            name: name || 'Google User',
             email,
             googleId,
             password: crypto.randomBytes(20).toString('hex'), // Random password for google users
-            mobile: '' // Optional or handle later
+            mobile: '' // Mobile not provided by Google usually
         });
     }
 
@@ -101,10 +115,8 @@ exports.googleLoginUser = async (token) => {
 
 /**
  * Get user by ID
- * @param {String} id
- * @returns {Object} user
  */
-exports.getUserById = async (id) => {
+export const getUserById = async (id: string): Promise<IUser> => {
     const user = await User.findById(id);
     if (!user) {
         throw new Error('User not found');

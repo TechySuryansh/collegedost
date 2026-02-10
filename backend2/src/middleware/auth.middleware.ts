@@ -1,7 +1,16 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+import User, { IUser } from '../models/User';
 
-exports.protect = async (req, res, next) => {
+export interface AuthRequest extends Request {
+    user?: IUser;
+}
+
+interface DecodedToken extends jwt.JwtPayload {
+    id: string;
+}
+
+export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         let token;
 
@@ -19,8 +28,8 @@ exports.protect = async (req, res, next) => {
 
         try {
             // Verify token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id);
+            const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
+            req.user = await User.findById(decoded.id) as IUser;
             next();
         } catch (err) {
             return res.status(401).json({ success: false, message: 'Not authorized to access this route' });
@@ -31,12 +40,12 @@ exports.protect = async (req, res, next) => {
 };
 
 // Grant access to specific roles
-exports.authorize = (...roles) => {
-    return (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
+export const authorize = (...roles: string[]) => {
+    return (req: AuthRequest, res: Response, next: NextFunction) => {
+        if (!req.user || !roles.includes(req.user.role)) {
             return res.status(403).json({
                 success: false,
-                message: `User role '${req.user.role}' is not authorized to access this route`
+                message: `User role '${req.user?.role}' is not authorized to access this route`
             });
         }
         next();

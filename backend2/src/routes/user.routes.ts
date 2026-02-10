@@ -1,15 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const {
+import express from 'express';
+import {
     getMe,
     updateDetails,
     updatePassword,
     getUsers,
     getUser,
     deleteUser
-} = require('../controllers/user.controller');
+} from '../controllers/user.controller';
+import { protect, authorize } from '../middleware/auth.middleware';
 
-const { protect, authorize } = require('../middleware/auth.middleware');
+const router = express.Router();
 
 // User profile routes (protected)
 router.get('/me', protect, getMe);
@@ -21,4 +21,4 @@ router.get('/', protect, authorize('admin'), getUsers);
 router.get('/:id', protect, authorize('admin'), getUser);
 router.delete('/:id', protect, authorize('admin'), deleteUser);
 
-module.exports = router;
+export default router;
