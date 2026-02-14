@@ -21,13 +21,15 @@ export interface CollegeData {
     placements?: any;
     infrastructure?: any;
     cutoffs?: any[];
-    admissionProcess?: any;
     website?: string;
     brochureUrl?: string;
     phone?: string;
     email?: string;
     streams?: string[];
     facilities?: string[];
+    importantDates?: Array<{ event: string; date: string; status: 'upcoming' | 'ongoing' | 'completed' }>;
+    admissionProcess?: Array<{ step: number; title: string; description: string }>;
+    requiredDocuments?: string[];
     faqs?: any[];
     facultyCount?: number;
     totalFaculty?: number;

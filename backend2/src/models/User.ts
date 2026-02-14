@@ -16,6 +16,8 @@ export interface IUser extends Document {
     isVerified: boolean;
     resetPasswordToken?: string;
     resetPasswordExpire?: Date;
+    savedColleges: mongoose.Schema.Types.ObjectId[];
+    savedArticles: mongoose.Schema.Types.ObjectId[];
     createdAt: Date;
     matchPassword(enteredPassword: string): Promise<boolean>;
     getSignedJwtToken(): string;
@@ -65,6 +67,14 @@ const userSchema = new mongoose.Schema<IUser>({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    savedColleges: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'College'
+    }],
+    savedArticles: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Article'
+    }],
     createdAt: {
         type: Date,
         default: Date.now

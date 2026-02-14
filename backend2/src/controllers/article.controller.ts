@@ -65,6 +65,13 @@ export const getArticleBySlug = async (req: Request, res: Response): Promise<voi
 // @access  Private/Admin
 export const createArticle = async (req: Request, res: Response): Promise<void> => {
     try {
+        const { title } = req.body;
+
+        // Generate slug if not provided
+        if (!req.body.slug && title) {
+            req.body.slug = title.toLowerCase().split(' ').join('-').replace(/[^\w-]+/g, '');
+        }
+
         const article = await Article.create(req.body);
 
         res.status(201).json({
@@ -86,6 +93,11 @@ export const updateArticle = async (req: Request, res: Response): Promise<void> 
         if (!article) {
             res.status(404).json({ success: false, message: 'Article not found' });
             return;
+        }
+
+        // Generate slug if title is updated and slug is not provided
+        if (req.body.title && !req.body.slug) {
+            req.body.slug = req.body.title.toLowerCase().split(' ').join('-').replace(/[^\w-]+/g, '');
         }
 
         article = await Article.findByIdAndUpdate(req.params.id, req.body, {
@@ -119,6 +131,26 @@ export const deleteArticle = async (req: Request, res: Response): Promise<void> 
         res.status(200).json({
             success: true,
             data: {}
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+// @desc    Get article by ID
+// @route   GET /api/articles/id/:id
+// @access  Public
+export const getArticleById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const article = await Article.findById(req.params.id);
+
+        if (!article) {
+            res.status(404).json({ success: false, message: 'Article not found' });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: article
         });
     } catch (error: any) {
         res.status(500).json({ success: false, message: error.message });

@@ -5,7 +5,8 @@ import {
     updatePassword,
     getUsers,
     getUser,
-    deleteUser
+    deleteUser,
+    toggleBookmark
 } from '../controllers/user.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get('/me', protect, getMe);
 router.put('/updatedetails', protect, updateDetails);
 router.put('/updatepassword', protect, updatePassword);
+router.post('/bookmark', protect, toggleBookmark);
 
 // Admin routes (protected + admin role required)
 router.get('/', protect, authorize('admin'), getUsers);

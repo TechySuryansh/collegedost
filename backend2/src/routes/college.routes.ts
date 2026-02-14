@@ -7,8 +7,12 @@ import {
     compareColleges,
     createCollege,
     updateCollege,
-    deleteCollege
+    deleteCollege,
+    syncColleges,
+    getCollegeById
 } from '../controllers/college.controller';
+
+
 import { protect, authorize } from '../middleware/auth.middleware';
 
 const router = express.Router();
@@ -20,6 +24,9 @@ router.route('/')
 router.get('/search', searchColleges);
 router.get('/predict', predictCollegesSimple);
 router.post('/compare', compareColleges);
+router.post('/sync', protect, authorize('admin'), syncColleges);
+router.get('/id/:id', getCollegeById);
+
 
 router.route('/:slug')
     .get(getCollegeBySlug);

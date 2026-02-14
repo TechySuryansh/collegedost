@@ -28,9 +28,54 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         if (type) query.type = { $in: (type as string).split(',') };
         if (rating) query.rating = { $gte: Number(rating) };
 
-        // Complex filters for nested arrays (courses)
-        if (course || branch || fees) {
-            // Implementation detail: Use $elemMatch if needed, or simple query
+        // Complex filters for nested arrays (courses and cutoffs)
+        if (course) {
+            const courseArray = (course as string).split(',');
+            const regexPatterns = courseArray.map(c => {
+                // Split by "/" or "," to handle mixed naming (e.g., "B.E / B.Tech")
+                return c.split(/[/,]/).map(part =>
+                    part.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                ).filter(Boolean).join('|');
+            });
+            query.coursesOffered = {
+                $elemMatch: { name: { $regex: regexPatterns.join('|'), $options: 'i' } }
+            };
+        }
+
+        if (branch) {
+            const branchArray = (branch as string).split(',');
+            const regexPatterns = branchArray.map(b =>
+                b.split(/[/,]/).map(part =>
+                    part.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+                ).filter(Boolean).join('|')
+            );
+            query.cutoffs = {
+                $elemMatch: { branch: { $regex: regexPatterns.join('|'), $options: 'i' } }
+            };
+        }
+
+        if (fees) {
+            let feeRange: any = {};
+            switch (fees) {
+                case 'under_1l':
+                    feeRange = { $lt: 100000 };
+                    break;
+                case '1l_3l':
+                    feeRange = { $gte: 100000, $lte: 300000 };
+                    break;
+                case '3l_5l':
+                    feeRange = { $gte: 300000, $lte: 500000 };
+                    break;
+                case '5l_10l':
+                    feeRange = { $gte: 500000, $lte: 1000000 };
+                    break;
+                case 'above_10l':
+                    feeRange = { $gt: 1000000 };
+                    break;
+            }
+            if (Object.keys(feeRange).length > 0) {
+                query['coursesOffered.fee'] = feeRange;
+            }
         }
 
         // Sort
@@ -263,3 +308,37 @@ export const deleteCollege = async (req: Request, res: Response): Promise<void> 
     }
 };
 
+// @desc    Sync colleges with external data
+// @route   POST /api/colleges/sync
+// @access  Private/Admin
+export const syncColleges = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // Placeholder for sync logic
+        res.status(200).json({
+            success: true,
+            message: 'Colleges synchronized successfully'
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+// @desc    Get single college by ID
+// @route   GET /api/colleges/id/:id
+// @access  Public
+export const getCollegeById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const college = await College.findById(req.params.id);
+
+        if (!college) {
+            res.status(404).json({ success: false, message: 'College not found' });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: college
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

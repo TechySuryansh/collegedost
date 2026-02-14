@@ -8,6 +8,8 @@ export interface IArticle extends Document {
     category: 'Exam News' | 'College News' | 'Admission Alert' | 'General';
     author: string;
     image?: string;
+    tags?: string[];
+    links?: { title: string; url: string }[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -45,7 +47,12 @@ const articleSchema = new Schema<IArticle>({
         required: [true, 'Please add an author'],
         default: 'Admin'
     },
-    image: String
+    image: String,
+    tags: [String],
+    links: [{
+        title: { type: String, required: true },
+        url: { type: String, required: true }
+    }]
 }, {
     timestamps: true
 });

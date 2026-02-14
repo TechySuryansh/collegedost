@@ -5,6 +5,7 @@ import api from '@/api/axios';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { FaUniversity } from 'react-icons/fa';
+import { useAuth } from '@/context/AuthContext';
 
 import { CollegeData } from './types';
 import CollegeHero from './CollegeHero';
@@ -35,6 +36,40 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
     const [activeTab, setActiveTab] = useState('overview');
     const [isShortlisted, setIsShortlisted] = useState(false);
     const [isGalleryOpen, setIsGalleryOpen] = useState(false);
+
+    // Use AuthContext for user state and protection
+    const { user, protectAction } = useAuth();
+
+    // Check if college is in user's shortlist on load/user change
+    useEffect(() => {
+        if (user && college?._id) {
+            const savedColleges = user.savedColleges || [];
+            const isSaved = savedColleges.some((c: any) =>
+                (typeof c === 'string' ? c : c._id) === college._id
+            );
+            setIsShortlisted(isSaved);
+        } else {
+            setIsShortlisted(false);
+        }
+    }, [user, college?._id]);
+
+    const handleToggleShortlist = async () => {
+        if (!college?._id) return;
+
+        protectAction(async () => {
+            try {
+                const res = await api.post('/users/bookmark', {
+                    type: 'college',
+                    id: college._id
+                });
+                if (res.data.success) {
+                    setIsShortlisted(res.data.isBookmarked);
+                }
+            } catch (err: any) {
+                console.error('Bookmark toggle failed:', err);
+            }
+        });
+    };
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [reviews, setReviews] = useState<any[]>([]);
     const [reviewsPage, setReviewsPage] = useState(1);
@@ -360,8 +395,8 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
                                 key={tab.id}
                                 onClick={() => scrollToSection(tab.id)}
                                 className={`h-full flex items-center px-4 text-sm whitespace-nowrap font-medium transition-all ${activeTab === tab.id
-                                        ? 'text-primary border-b-[3px] border-primary font-bold bg-primary/5'
-                                        : 'text-text-muted-light hover:text-primary hover:bg-gray-50'
+                                    ? 'text-primary border-b-[3px] border-primary font-bold bg-primary/5'
+                                    : 'text-text-muted-light hover:text-primary hover:bg-gray-50'
                                     }`}
                             >
                                 {tab.label}
@@ -406,7 +441,7 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
                         <CollegeSidebar
                             college={college}
                             isShortlisted={isShortlisted}
-                            onToggleShortlist={() => setIsShortlisted(!isShortlisted)}
+                            onToggleShortlist={handleToggleShortlist}
                             scrollToSection={scrollToSection}
                         />
                     </div>

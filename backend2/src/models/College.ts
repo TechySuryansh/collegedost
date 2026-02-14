@@ -27,6 +27,18 @@ export interface IScholarship {
     eligibility: string;
 }
 
+export interface IImportantDate {
+    event: string;
+    date: string;
+    status: 'upcoming' | 'ongoing' | 'completed';
+}
+
+export interface IAdmissionProcess {
+    step: number;
+    title: string;
+    description: string;
+}
+
 export interface ICollege extends Document {
     name: string;
     slug: string;
@@ -45,10 +57,14 @@ export interface ICollege extends Document {
     gallery: string[];
     brochureUrl?: string;
     website?: string;
+    images?: string[];
     description?: string;
     cutoffs: ICutoff[];
     facilities: string[];
     scholarships: IScholarship[];
+    importantDates: IImportantDate[];
+    admissionProcess: IAdmissionProcess[];
+    requiredDocuments: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -96,6 +112,7 @@ const collegeSchema = new Schema<ICollege>({
         placementPercentage: Number
     },
     gallery: [String],
+    images: [String],
     brochureUrl: String,
     website: String,
     description: String,
@@ -111,7 +128,22 @@ const collegeSchema = new Schema<ICollege>({
         name: String,
         amount: Number,
         eligibility: String
-    }]
+    }],
+    importantDates: [{
+        event: String,
+        date: String,
+        status: {
+            type: String,
+            enum: ['upcoming', 'ongoing', 'completed'],
+            default: 'upcoming'
+        }
+    }],
+    admissionProcess: [{
+        step: Number,
+        title: String,
+        description: String
+    }],
+    requiredDocuments: [String]
 }, {
     timestamps: true
 });

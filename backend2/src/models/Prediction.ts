@@ -2,6 +2,7 @@ import mongoose, { Document, Schema, Model } from 'mongoose';
 
 export interface IPredictionInput {
     percentile?: number;
+    score?: number;
     rank?: number;
     category: string;
     homeState: string;
@@ -23,6 +24,7 @@ const predictionSchema = new Schema<IPrediction>({
     },
     input: {
         percentile: Number,
+        score: Number,
         rank: Number,
         category: String,
         homeState: String,

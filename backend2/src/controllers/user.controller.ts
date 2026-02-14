@@ -10,7 +10,10 @@ export const getMe = async (req: AuthRequest, res: Response) => {
         if (!req.user) {
             return res.status(401).json({ success: false, message: 'Not authorized' });
         }
-        const user = await User.findById(req.user.id).select('-password');
+        const user = await User.findById(req.user.id)
+            .select('-password')
+            .populate('savedColleges', 'name slug location type logo')
+            .populate('savedArticles', 'title slug category date');
 
         res.status(200).json({
             success: true,
@@ -198,6 +201,66 @@ export const deleteUser = async (req: AuthRequest, res: Response) => {
         });
     } catch (error) {
         console.error('Delete User Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server Error'
+        });
+    }
+};
+
+/**
+ * @desc    Toggle Bookmark for College or Article
+ * @route   POST /api/users/bookmark
+ * @access  Private
+ */
+export const toggleBookmark = async (req: AuthRequest, res: Response) => {
+    try {
+        const { type, id } = req.body;
+
+        if (!type || !id) {
+            return res.status(400).json({ success: false, message: 'Please provide type and id' });
+        }
+
+        if (!['college', 'article'].includes(type)) {
+            return res.status(400).json({ success: false, message: 'Invalid bookmark type' });
+        }
+
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'Not authorized' });
+        }
+
+        const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        const field = type === 'college' ? 'savedColleges' : 'savedArticles';
+        // @ts-ignore
+        const itemIds: any[] = user[field];
+
+        const index = itemIds.indexOf(id);
+
+        if (index > -1) {
+            // Remove bookmark
+            itemIds.splice(index, 1);
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: `${type.charAt(0).toUpperCase() + type.slice(1)} removed from bookmarks`,
+                isBookmarked: false
+            });
+        } else {
+            // Add bookmark
+            itemIds.push(id);
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: `${type.charAt(0).toUpperCase() + type.slice(1)} added to bookmarks`,
+                isBookmarked: true
+            });
+        }
+    } catch (error) {
+        console.error('Toggle Bookmark Error:', error);
         res.status(500).json({
             success: false,
             message: 'Server Error'
