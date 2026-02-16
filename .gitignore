@@ -5,3 +5,5 @@ dist/
 _deprecated/
 backend/
 .vscode/
+# Excel data files
+*.xlsx
