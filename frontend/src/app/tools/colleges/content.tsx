@@ -21,6 +21,10 @@ interface FilterState {
     fees: string;
     rating: string;
     sort: string;
+    management: string[];
+    institutionCategory: string[];
+    collegeType: string[];
+    locationType: string[];
 }
 
 /* ─── Filter Options Data ───────────────────────────────────────────────── */
@@ -55,7 +59,24 @@ const streamsList = [
     "Computer Application", "Architecture"
 ];
 
-const ownershipList = ["Government", "Private", "Public-Private", "Deemed", "Autonomous"];
+const ownershipList = ["Government", "Private", "Private Aided", "University"];
+
+const managementList = [
+    "Private Un-Aided", "Private Aided (Government Aided)", "State Government",
+    "Central Government", "Local Body", "University"
+];
+
+const institutionCategoryList = ["College", "Standalone", "University"];
+
+const collegeTypeList = [
+    "Affiliated College", "Autonomous College", "Constituent / University College",
+    "PG Center / Off-Campus Center", "Recognized Center",
+    "Technical/Polytechnic", "Teacher Training", "Nursing",
+    "Pharmacy Institutions", "PGDM Institutes", "Paramedical",
+    "Hotel Management and Catering"
+];
+
+const locationTypeList = ["Urban", "Rural"];
 
 const specializationList = [
     "Computer Science", "Mechanical", "Electrical", "Civil", "Electronics",
@@ -141,11 +162,10 @@ const CheckboxFilterList = ({
                 {filtered.map((item) => (
                     <label
                         key={item}
-                        className={`flex items-center justify-between group cursor-pointer p-2 rounded-xl transition-colors -mx-2 ${
-                            selected.includes(item)
+                        className={`flex items-center justify-between group cursor-pointer p-2 rounded-xl transition-colors -mx-2 ${selected.includes(item)
                                 ? 'bg-primary/5 ring-1 ring-primary/10'
                                 : 'hover:bg-gray-50'
-                        }`}
+                            }`}
                     >
                         <div className="flex items-center gap-2.5">
                             <div className="relative flex items-center justify-center shrink-0">
@@ -185,6 +205,10 @@ const parseFiltersFromParams = (sp: URLSearchParams): FilterState => ({
     fees: sp.get('fees') || '',
     rating: sp.get('rating') || '',
     sort: sp.get('sort') || 'popularity',
+    management: sp.get('management') ? sp.get('management')!.split(',') : [],
+    institutionCategory: sp.get('institutionCategory') ? sp.get('institutionCategory')!.split(',') : [],
+    collegeType: sp.get('collegeType') ? sp.get('collegeType')!.split(',') : [],
+    locationType: sp.get('locationType') ? sp.get('locationType')!.split(',') : [],
 });
 
 /* ━━━━━━━━━━━━━━━━  MAIN COMPONENT  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -214,12 +238,14 @@ const PageContent: React.FC = () => {
     const activeFilterCount = [
         filters.state.length, filters.city.length, filters.degree.length,
         filters.stream.length, filters.ownership.length, filters.specialization.length,
+        filters.management.length, filters.institutionCategory.length,
+        filters.collegeType.length, filters.locationType.length,
         filters.fees ? 1 : 0, filters.rating ? 1 : 0,
     ].reduce((a, b) => a + b, 0);
 
     /* ── Handlers ────────────────────────────────────────────── */
-    type MultiSelectKey = 'state' | 'city' | 'degree' | 'stream' | 'ownership' | 'specialization';
-    
+    type MultiSelectKey = 'state' | 'city' | 'degree' | 'stream' | 'ownership' | 'specialization' | 'management' | 'institutionCategory' | 'collegeType' | 'locationType';
+
     const handleCheckboxToggle = (category: MultiSelectKey, value: string) => {
         setFilters(prev => {
             const current = prev[category] as string[];
@@ -235,6 +261,7 @@ const PageContent: React.FC = () => {
         setFilters({
             search: '', state: [], city: [], degree: [], stream: [],
             ownership: [], specialization: [], fees: '', rating: '', sort: 'popularity',
+            management: [], institutionCategory: [], collegeType: [], locationType: [],
         });
         setQuery('');
         setPage(1);
@@ -254,6 +281,10 @@ const PageContent: React.FC = () => {
             if (filters.fees) params.append('fees', filters.fees);
             if (filters.rating) params.append('rating', filters.rating);
             if (filters.sort) params.append('sort', filters.sort);
+            if (filters.management.length) params.append('management', filters.management.join(','));
+            if (filters.institutionCategory.length) params.append('institutionCategory', filters.institutionCategory.join(','));
+            if (filters.collegeType.length) params.append('collegeType', filters.collegeType.join(','));
+            if (filters.locationType.length) params.append('locationType', filters.locationType.join(','));
             params.append('page', page.toString());
             params.append('limit', LIMIT.toString());
             const res = await api.get(`/colleges?${params.toString()}`);
@@ -300,6 +331,10 @@ const PageContent: React.FC = () => {
         if (filters.stream.length) params.set('stream', filters.stream.join(','));
         if (filters.ownership.length) params.set('ownership', filters.ownership.join(','));
         if (filters.specialization.length) params.set('specialization', filters.specialization.join(','));
+        if (filters.management.length) params.set('management', filters.management.join(','));
+        if (filters.institutionCategory.length) params.set('institutionCategory', filters.institutionCategory.join(','));
+        if (filters.collegeType.length) params.set('collegeType', filters.collegeType.join(','));
+        if (filters.locationType.length) params.set('locationType', filters.locationType.join(','));
         if (filters.fees) params.set('fees', filters.fees);
         if (filters.rating) params.set('rating', filters.rating);
         if (filters.sort && filters.sort !== 'popularity') params.set('sort', filters.sort);
@@ -333,6 +368,10 @@ const PageContent: React.FC = () => {
     filters.stream.forEach(s => activeChips.push({ label: s, onRemove: () => handleCheckboxToggle('stream', s) }));
     filters.ownership.forEach(o => activeChips.push({ label: o, onRemove: () => handleCheckboxToggle('ownership', o) }));
     filters.specialization.forEach(s => activeChips.push({ label: s, onRemove: () => handleCheckboxToggle('specialization', s) }));
+    filters.management.forEach(m => activeChips.push({ label: m, onRemove: () => handleCheckboxToggle('management', m) }));
+    filters.institutionCategory.forEach(ic => activeChips.push({ label: ic, onRemove: () => handleCheckboxToggle('institutionCategory', ic) }));
+    filters.collegeType.forEach(ct => activeChips.push({ label: ct, onRemove: () => handleCheckboxToggle('collegeType', ct) }));
+    filters.locationType.forEach(lt => activeChips.push({ label: lt, onRemove: () => handleCheckboxToggle('locationType', lt) }));
     if (filters.fees) {
         const feeLabel = feesOptions.find(f => f.value === filters.fees)?.label || filters.fees;
         activeChips.push({ label: `Fees: ${feeLabel}`, onRemove: () => setFilters(prev => ({ ...prev, fees: '' })) });
@@ -344,20 +383,32 @@ const PageContent: React.FC = () => {
     /* ── Shared Sidebar Filter Panels ────────────────────────── */
     const renderFilters = () => (
         <div className="space-y-5">
+            <FilterPanel title="Institution Category" defaultOpen={true}>
+                <CheckboxFilterList options={institutionCategoryList} selected={filters.institutionCategory} onToggle={(v) => handleCheckboxToggle('institutionCategory', v)} />
+            </FilterPanel>
             <FilterPanel title="State" defaultOpen={true}>
                 <CheckboxFilterList options={statesList} selected={filters.state} onToggle={(v) => handleCheckboxToggle('state', v)} searchable />
             </FilterPanel>
+            <FilterPanel title="Management" defaultOpen={false}>
+                <CheckboxFilterList options={managementList} selected={filters.management} onToggle={(v) => handleCheckboxToggle('management', v)} />
+            </FilterPanel>
+            <FilterPanel title="College Type" defaultOpen={false}>
+                <CheckboxFilterList options={collegeTypeList} selected={filters.collegeType} onToggle={(v) => handleCheckboxToggle('collegeType', v)} searchable />
+            </FilterPanel>
+            <FilterPanel title="Location Type" defaultOpen={false}>
+                <CheckboxFilterList options={locationTypeList} selected={filters.locationType} onToggle={(v) => handleCheckboxToggle('locationType', v)} />
+            </FilterPanel>
             <FilterPanel title="City" defaultOpen={false}>
                 <CheckboxFilterList options={citiesList} selected={filters.city} onToggle={(v) => handleCheckboxToggle('city', v)} searchable />
+            </FilterPanel>
+            <FilterPanel title="Ownership" defaultOpen={false}>
+                <CheckboxFilterList options={ownershipList} selected={filters.ownership} onToggle={(v) => handleCheckboxToggle('ownership', v)} />
             </FilterPanel>
             <FilterPanel title="Degree" defaultOpen={false}>
                 <CheckboxFilterList options={degreesList} selected={filters.degree} onToggle={(v) => handleCheckboxToggle('degree', v)} searchable />
             </FilterPanel>
             <FilterPanel title="Branch / Stream" defaultOpen={false}>
                 <CheckboxFilterList options={streamsList} selected={filters.stream} onToggle={(v) => handleCheckboxToggle('stream', v)} />
-            </FilterPanel>
-            <FilterPanel title="Ownership" defaultOpen={false}>
-                <CheckboxFilterList options={ownershipList} selected={filters.ownership} onToggle={(v) => handleCheckboxToggle('ownership', v)} />
             </FilterPanel>
             <FilterPanel title="Specialization" defaultOpen={false}>
                 <CheckboxFilterList options={specializationList} selected={filters.specialization} onToggle={(v) => handleCheckboxToggle('specialization', v)} searchable />
@@ -367,9 +418,8 @@ const PageContent: React.FC = () => {
                     {feesOptions.map(opt => (
                         <label
                             key={opt.value}
-                            className={`flex items-center gap-3 group cursor-pointer p-2 rounded-xl transition-colors ${
-                                filters.fees === opt.value ? 'bg-primary/5 ring-1 ring-primary/10' : 'hover:bg-gray-50'
-                            }`}
+                            className={`flex items-center gap-3 group cursor-pointer p-2 rounded-xl transition-colors ${filters.fees === opt.value ? 'bg-primary/5 ring-1 ring-primary/10' : 'hover:bg-gray-50'
+                                }`}
                         >
                             <input
                                 type="radio"
@@ -390,9 +440,8 @@ const PageContent: React.FC = () => {
                     {ratingOptions.map(opt => (
                         <label
                             key={opt.value}
-                            className={`flex items-center gap-3 group cursor-pointer p-2 rounded-xl transition-colors ${
-                                filters.rating === opt.value ? 'bg-primary/5 ring-1 ring-primary/10' : 'hover:bg-gray-50'
-                            }`}
+                            className={`flex items-center gap-3 group cursor-pointer p-2 rounded-xl transition-colors ${filters.rating === opt.value ? 'bg-primary/5 ring-1 ring-primary/10' : 'hover:bg-gray-50'
+                                }`}
                         >
                             <input
                                 type="radio"
@@ -498,7 +547,7 @@ const PageContent: React.FC = () => {
                                 Showing <span className="text-gray-900 font-bold">{totalCount.toLocaleString('en-IN')}</span> Colleges
                             </div>
                         </div>
-                        
+
                         {/* Search Bar */}
                         <div className="relative group mb-6" ref={searchRef}>
                             <div className="absolute -inset-1 bg-linear-to-r from-primary/10 to-secondary/10 rounded-2xl blur opacity-30"></div>
@@ -614,88 +663,83 @@ const PageContent: React.FC = () => {
 
                                             {/* Middle - Info */}
                                             <div className="flex-1 min-w-0">
-                                                {/* College Name */}
-                                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                                                    <Link href={`/tools/colleges/${college.slug}`}>{college.name}</Link>
-                                                </h3>
+                                                {/* College Name + Category Badge */}
+                                                <div className="flex items-start gap-2 mb-2">
+                                                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
+                                                        <Link href={`/tools/colleges/${college.slug}`}>{college.name}</Link>
+                                                    </h3>
+                                                    {college.institutionCategory && (
+                                                        <span className={`shrink-0 mt-1 px-2.5 py-0.5 text-[11px] font-bold rounded-full ${college.institutionCategory === 'University' ? 'bg-purple-100 text-purple-700' :
+                                                                college.institutionCategory === 'Standalone' ? 'bg-amber-100 text-amber-700' :
+                                                                    'bg-blue-100 text-blue-700'
+                                                            }`}>
+                                                            {college.institutionCategory}
+                                                        </span>
+                                                    )}
+                                                </div>
 
                                                 {/* Info Grid - 3 columns */}
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5 text-sm mb-3">
-                                                    {/* Ownership */}
-                                                    <div className="flex items-center gap-2 text-gray-700">
-                                                        <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                                        </svg>
-                                                        <span className="font-medium">Ownership:</span>
-                                                        <span>{college.type || 'Private'}</span>
-                                                    </div>
-
                                                     {/* Location */}
                                                     <div className="flex items-center gap-2 text-gray-700">
                                                         <FaMapMarkerAlt className="text-secondary shrink-0" />
                                                         <span>{college.location?.city ? `${college.location.city}, ` : ''}{college.location?.state || 'India'}</span>
                                                     </div>
 
-                                                    {/* NIRF Ranking */}
+                                                    {/* Management */}
+                                                    {college.management && college.management !== '-' && (
+                                                        <div className="flex items-center gap-2 text-gray-700">
+                                                            <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                                                            </svg>
+                                                            <span className="truncate">{college.management}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Year of Establishment */}
+                                                    {college.yearOfEstablishment && college.yearOfEstablishment !== '-' && (
+                                                        <div className="flex items-center gap-2 text-gray-700">
+                                                            <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                                                            </svg>
+                                                            <span className="font-medium">Est:</span>
+                                                            <span>{college.yearOfEstablishment}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {/* College Type */}
+                                                    {college.collegeType && college.collegeType !== '-' && (
+                                                        <div className="flex items-center gap-2 text-gray-700">
+                                                            <FaUniversity className="text-secondary shrink-0 text-sm" />
+                                                            <span className="truncate">{college.collegeType}</span>
+                                                        </div>
+                                                    )}
+
+                                                    {/* Ownership */}
                                                     <div className="flex items-center gap-2 text-gray-700">
                                                         <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                         </svg>
-                                                        <span className="font-medium">NIRF:</span>
-                                                        <span className="font-bold text-primary">#{college.nirfRank || 'N/A'}</span>
+                                                        <span className="font-medium">Type:</span>
+                                                        <span>{college.type || 'Private'}</span>
                                                     </div>
 
-                                                    {/* Rating */}
-                                                    <div className="flex items-center gap-2 text-gray-700">
-                                                        <FaStar className="text-secondary shrink-0" />
-                                                        <span className="font-medium">Rating:</span>
-                                                        <span>{college.rating ? `${college.rating}/5` : 'N/A'}</span>
-                                                    </div>
-
-                                                    {/* Fees */}
-                                                    <div className="flex items-center gap-2 text-gray-700">
-                                                        <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
-                                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clipRule="evenodd" />
-                                                        </svg>
-                                                        <span className="font-medium">Fees:</span>
-                                                        <span className="font-bold">
-                                                            {college.coursesOffered && college.coursesOffered.length > 0 && college.coursesOffered[0].fee > 0
-                                                                ? `₹${(college.coursesOffered[0].fee / 100000).toFixed(2)} L`
-                                                                : 'N/A'}
-                                                        </span>
-                                                    </div>
-
-                                                    {/* Average Placement */}
-                                                    <div className="flex items-center gap-2 text-gray-700">
-                                                        <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
-                                                            <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                                                        </svg>
-                                                        <span className="font-medium">Avg Package:</span>
-                                                        <span className="font-bold">
-                                                            {college.placements?.averagePackage 
-                                                                ? `₹${(college.placements.averagePackage / 100000).toFixed(2)} LPA`
-                                                                : 'N/A'}
-                                                        </span>
-                                                    </div>
+                                                    {/* University Name */}
+                                                    {college.universityName && (
+                                                        <div className="flex items-center gap-2 text-gray-700 lg:col-span-2">
+                                                            <svg className="w-4 h-4 text-secondary shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fillRule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
+                                                                <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
+                                                            </svg>
+                                                            <span className="font-medium">University:</span>
+                                                            <span className="truncate">{college.universityName}</span>
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Action Buttons - Below Info */}
                                                 <div className="flex gap-3 mt-2">
-                                                    {college.brochureUrl ? (
-                                                        <a
-                                                            href={college.brochureUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="px-5 py-2 bg-secondary text-white font-semibold rounded-lg text-sm flex items-center gap-2"
-                                                        >
-                                                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                                <path fillRule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clipRule="evenodd" />
-                                                            </svg>
-                                                            Download Brochure
-                                                        </a>
-                                                    ) : college.website ? (
+                                                    {college.website ? (
                                                         <a
                                                             href={college.website}
                                                             target="_blank"
@@ -708,13 +752,13 @@ const PageContent: React.FC = () => {
                                                             Visit Website
                                                         </a>
                                                     ) : null}
-                                                    <button className="px-5 py-2 bg-white border-2 border-primary text-primary font-semibold rounded-lg text-sm hover:bg-primary hover:text-white transition-all duration-200 flex items-center gap-2">
-                                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                                                            <path fillRule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clipRule="evenodd" />
-                                                        </svg>
-                                                        Compare
-                                                    </button>
+                                                    <Link
+                                                        href={`/tools/colleges/${college.slug}`}
+                                                        className="px-5 py-2 bg-white border-2 border-primary text-primary font-semibold rounded-lg text-sm hover:bg-primary hover:text-white transition-all duration-200 flex items-center gap-2"
+                                                    >
+                                                        <FaArrowRight className="text-xs" />
+                                                        View Details
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>
@@ -751,11 +795,10 @@ const PageContent: React.FC = () => {
                                                     <button
                                                         key={pageNum}
                                                         onClick={() => { setPage(pageNum); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                                                        className={`w-10 h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-all ${
-                                                            page === pageNum
+                                                        className={`w-10 h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-all ${page === pageNum
                                                                 ? 'bg-primary text-white shadow-md'
                                                                 : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
-                                                        }`}
+                                                            }`}
                                                     >
                                                         {pageNum}
                                                     </button>
