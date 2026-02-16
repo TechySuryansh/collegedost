@@ -5,6 +5,7 @@ import path from 'path';
 import College from './models/College';
 import connectDB from './config/db';
 
+
 dotenv.config();
 
 // ─── Types ──────────────────────────────────────────────────────────────────────
