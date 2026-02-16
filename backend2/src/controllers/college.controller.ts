@@ -8,7 +8,8 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
     try {
         const {
             search, state, city, course, branch, type,
-            fees, rating, sort, page = 1, limit = 20
+            fees, rating, sort, page = 1, limit = 20,
+            management, collegeType, institutionCategory, locationType
         } = req.query;
 
         const query: any = {};
@@ -18,7 +19,8 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
             query.$or = [
                 { name: { $regex: search, $options: 'i' } },
                 { 'location.city': { $regex: search, $options: 'i' } },
-                { 'location.state': { $regex: search, $options: 'i' } }
+                { 'location.state': { $regex: search, $options: 'i' } },
+                { aisheCode: { $regex: search, $options: 'i' } }
             ];
         }
 
@@ -27,6 +29,12 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         if (city) query['location.city'] = { $in: (city as string).split(',') };
         if (type) query.type = { $in: (type as string).split(',') };
         if (rating) query.rating = { $gte: Number(rating) };
+
+        // New AISHE filters
+        if (management) query.management = { $in: (management as string).split(',') };
+        if (collegeType) query.collegeType = { $in: (collegeType as string).split(',') };
+        if (institutionCategory) query.institutionCategory = { $in: (institutionCategory as string).split(',') };
+        if (locationType) query.locationType = { $in: (locationType as string).split(',') };
 
         // Complex filters for nested arrays (courses and cutoffs)
         if (course) {
@@ -83,6 +91,8 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         if (sort === 'rating') sortOption = { rating: -1 };
         if (sort === 'fees_low') sortOption = { 'coursesOffered.0.fee': 1 };
         if (sort === 'fees_high') sortOption = { 'coursesOffered.0.fee': -1 };
+        if (sort === 'name') sortOption = { name: 1 };
+        if (sort === 'newest') sortOption = { yearOfEstablishment: -1 };
 
         const pageNum = Number(page);
         const limitNum = Number(limit);
@@ -144,9 +154,12 @@ export const searchColleges = async (req: Request, res: Response): Promise<void>
         }
 
         const colleges = await College.find({
-            name: { $regex: q, $options: 'i' }
+            $or: [
+                { name: { $regex: q, $options: 'i' } },
+                { aisheCode: { $regex: q, $options: 'i' } }
+            ]
         })
-            .select('name slug location type logo')
+            .select('name slug location type logo institutionCategory management')
             .limit(10);
 
         res.status(200).json({

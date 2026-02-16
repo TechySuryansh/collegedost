@@ -65,6 +65,15 @@ export interface ICollege extends Document {
     importantDates: IImportantDate[];
     admissionProcess: IAdmissionProcess[];
     requiredDocuments: string[];
+    // New fields from AISHE Excel data
+    aisheCode?: string;
+    yearOfEstablishment?: string;
+    collegeType?: string;
+    management?: string;
+    universityName?: string;
+    universityType?: string;
+    institutionCategory?: string; // 'College' | 'Standalone' | 'University'
+    locationType?: string; // 'Rural' | 'Urban'
     createdAt: Date;
     updatedAt: Date;
 }
@@ -143,13 +152,25 @@ const collegeSchema = new Schema<ICollege>({
         title: String,
         description: String
     }],
-    requiredDocuments: [String]
+    requiredDocuments: [String],
+    // New fields from AISHE Excel data
+    aisheCode: { type: String, index: true, sparse: true },
+    yearOfEstablishment: String,
+    collegeType: { type: String, index: true },
+    management: { type: String, index: true },
+    universityName: String,
+    universityType: String,
+    institutionCategory: { type: String, index: true }, // 'College', 'Standalone', 'University'
+    locationType: String // 'Rural', 'Urban'
 }, {
     timestamps: true
 });
 
 // Index for search
 collegeSchema.index({ name: 'text', 'location.city': 'text', 'location.state': 'text' });
+// Indexes for filtering
+collegeSchema.index({ 'location.state': 1 });
+collegeSchema.index({ institutionCategory: 1, 'location.state': 1 });
 
 const College: Model<ICollege> = mongoose.model<ICollege>('College', collegeSchema);
 export default College;

@@ -42,4 +42,17 @@ export interface CollegeData {
         averagePackage: string;
         placedPercentage: string;
     }>;
+    // New AISHE fields
+    aisheCode?: string;
+    yearOfEstablishment?: string;
+    collegeType?: string;
+    management?: string;
+    universityName?: string;
+    universityType?: string;
+    institutionCategory?: string;
+    locationType?: string;
+    description?: string;
+    city?: string;
+    state?: string;
 }
+
