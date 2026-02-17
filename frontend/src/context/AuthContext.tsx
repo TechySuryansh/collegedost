@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, useEffect, useRef, useCallback, ReactNode } from 'react';
 
 interface User {
     _id?: string;
@@ -71,7 +71,62 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     const openAuthModal = () => setIsAuthModalOpen(true);
-    const closeAuthModal = () => setIsAuthModalOpen(false);
+
+    // --- Periodic login popup for unauthenticated users ---
+    const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const getRandomInterval = useCallback(() => {
+        // Fixed interval of 1 minute (in ms)
+        return 1 * 60 * 1000;
+    }, []);
+
+    const clearPopupTimer = useCallback(() => {
+        if (popupTimerRef.current !== null) {
+            clearTimeout(popupTimerRef.current);
+            popupTimerRef.current = null;
+        }
+    }, []);
+
+    const schedulePopup = useCallback(() => {
+        clearPopupTimer();
+        const delay = getRandomInterval();
+        console.log(`[AuthPopup] Scheduling login popup in ${Math.round(delay / 1000)}s`);
+        popupTimerRef.current = setTimeout(() => {
+            console.log('[AuthPopup] Showing login popup');
+            setIsAuthModalOpen(true);
+            popupTimerRef.current = null;
+            // Next popup will be scheduled when the user closes this one
+        }, delay);
+    }, [clearPopupTimer, getRandomInterval]);
+
+    const closeAuthModal = useCallback(() => {
+        setIsAuthModalOpen(false);
+        // Schedule the next popup after dismiss (only if not logged in)
+        // We read user from a ref to avoid stale closure issues
+        const storedUser = typeof window !== 'undefined' ? localStorage.getItem('user') : null;
+        const storedToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+        if (!storedUser || !storedToken) {
+            schedulePopup();
+        }
+    }, [schedulePopup]);
+
+    // Start/stop the periodic popup based on auth state
+    useEffect(() => {
+        if (loading) return; // wait until auth state is resolved
+
+        if (user) {
+            // Logged in — clear any pending popup timer
+            clearPopupTimer();
+            return;
+        }
+
+        // Not logged in — schedule first popup
+        schedulePopup();
+
+        return () => {
+            clearPopupTimer();
+        };
+    }, [user, loading, schedulePopup, clearPopupTimer]);
 
     const protectAction = (action: () => void) => {
         if (user) {
