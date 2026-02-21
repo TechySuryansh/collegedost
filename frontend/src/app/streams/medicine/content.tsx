@@ -22,7 +22,7 @@ import { useUI } from '@/context/UIContext';
  */
 const PageContent: React.FC = () => {
     const { openAskModal } = useUI();
-    
+
     return (
         <>
             <Hero
@@ -45,36 +45,37 @@ const PageContent: React.FC = () => {
             />
 
             <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
-                <PillSection 
-                    title="Top Medical Rankings" 
-                    items={medicineRankings} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Medical Rankings"
+                    items={medicineRankings}
+                    color="border-gray-200"
                 />
 
                 <GenericCardGrid
                     title="Featured Medical Colleges"
                     items={featuredMedicineColleges}
                     type="card"
+                    viewAllLink="/tools/colleges?stream=Medicine"
                 />
 
-                <Counselling 
-                    items={medicineCounsellingData} 
+                <Counselling
+                    items={medicineCounsellingData}
                     onOpenAskModal={openAskModal}
                 />
 
-                <PillSection 
-                    title="Top Cities for Medical Studies" 
-                    items={medicineCities} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Cities for Medical Studies"
+                    items={medicineCities}
+                    color="border-gray-200"
                 />
             </div>
 
             <div className="bg-gray-50 py-12">
                 <div className="container mx-auto px-4 grow flex flex-col gap-16">
-                    <PillSection 
-                        title="Medical Entrance Exams" 
-                        items={medicineExams} 
-                        color="border-gray-200" 
+                    <PillSection
+                        title="Medical Entrance Exams"
+                        items={medicineExams}
+                        color="border-gray-200"
                     />
 
                     <PredictorsSection
