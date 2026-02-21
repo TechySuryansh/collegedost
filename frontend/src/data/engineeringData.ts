@@ -1,13 +1,13 @@
 
 export const engineeringRankings = [
-    { name: "Top Engineering Colleges in India", link: "/tools/colleges?goal=Colleges&search=Engineering" },
-    { name: "Top IITs in India", link: "/tools/colleges?goal=Colleges&search=IIT" },
-    { name: "Top NITs in India", link: "/tools/colleges?goal=Colleges&search=NIT" },
-    { name: "Top IIITs in India", link: "/tools/colleges?goal=Colleges&search=IIIT" },
-    { name: "Top Private Engineering Colleges", link: "/tools/colleges?goal=Colleges&search=Engineering&ownership=Private" },
-    { name: "Top Govt Engineering Colleges", link: "/tools/colleges?goal=Colleges&search=Engineering&ownership=Government" },
-    { name: "Colleges Accepting JEE Main", link: "/tools/colleges?goal=Colleges&search=JEE Main" },
-    { name: "NIRF Engineering Rankings 2025", link: "/tools/colleges?goal=Colleges&search=Engineering" }
+    { name: "Top Engineering Colleges in India", link: "/tools/colleges?stream=Engineering" },
+    { name: "Top IITs in India", link: "/tools/colleges?stream=Engineering&search=IIT" },
+    { name: "Top NITs in India", link: "/tools/colleges?stream=Engineering&search=NIT" },
+    { name: "Top IIITs in India", link: "/tools/colleges?stream=Engineering&search=IIIT" },
+    { name: "Top Private Engineering Colleges", link: "/tools/colleges?stream=Engineering&ownership=Private" },
+    { name: "Top Govt Engineering Colleges", link: "/tools/colleges?stream=Engineering&ownership=Government" },
+    { name: "Colleges Accepting JEE Main", link: "/tools/colleges?stream=Engineering&search=JEE" },
+    { name: "NIRF Engineering Rankings 2025", link: "/tools/colleges?stream=Engineering" }
 ];
 
 export const engineeringExams = [

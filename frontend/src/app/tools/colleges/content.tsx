@@ -8,6 +8,7 @@ import {
     FaSearch, FaMapMarkerAlt, FaStar, FaChevronDown, FaChevronUp,
     FaTimes, FaFilter, FaUniversity, FaArrowRight
 } from 'react-icons/fa';
+import { CollegesPageSkeleton } from '@/components/ui';
 
 /* ─── Types ─────────────────────────────────────────────────────────────── */
 interface FilterState {
@@ -163,8 +164,8 @@ const CheckboxFilterList = ({
                     <label
                         key={item}
                         className={`flex items-center justify-between group cursor-pointer p-2 rounded-xl transition-colors -mx-2 ${selected.includes(item)
-                                ? 'bg-primary/5 ring-1 ring-primary/10'
-                                : 'hover:bg-gray-50'
+                            ? 'bg-primary/5 ring-1 ring-primary/10'
+                            : 'hover:bg-gray-50'
                             }`}
                     >
                         <div className="flex items-center gap-2.5">
@@ -233,6 +234,11 @@ const PageContent: React.FC = () => {
     const searchRef = useRef<HTMLDivElement>(null);
     const isInternalUpdate = useRef(false);
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     /* ── Active Filter Count ─────────────────────────────────── */
     const activeFilterCount = [
@@ -275,7 +281,8 @@ const PageContent: React.FC = () => {
             if (filters.search) params.append('search', filters.search);
             if (filters.state.length) params.append('state', filters.state.join(','));
             if (filters.city.length) params.append('city', filters.city.join(','));
-            if (filters.stream.length) params.append('branch', filters.stream.join(','));
+            if (filters.stream.length) params.append('stream', filters.stream.join(','));
+            if (filters.specialization.length) params.append('branch', filters.specialization.join(','));
             if (filters.degree.length) params.append('course', filters.degree.join(','));
             if (filters.ownership.length) params.append('type', filters.ownership.join(','));
             if (filters.fees) params.append('fees', filters.fees);
@@ -461,6 +468,10 @@ const PageContent: React.FC = () => {
     );
 
     /* ━━━━━━━━━━━━━━━━  RENDER  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    if (!mounted) {
+        return <CollegesPageSkeleton />;
+    }
+
     return (
         <div className="min-h-screen bg-background-light antialiased">
 
@@ -541,10 +552,32 @@ const PageContent: React.FC = () => {
                     {/* ── Results Column ──────────────────────────── */}
                     <div className="flex-1">
 
-                        {/* Result Count */}
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 gap-4">
+                        {/* Result Count & Search Header */}
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 gap-4 border-b border-gray-100 mb-6">
                             <div className="text-sm font-medium text-gray-500">
                                 Showing <span className="text-gray-900 font-bold">{totalCount.toLocaleString('en-IN')}</span> Colleges
+                            </div>
+
+                            {/* Sort Dropdown */}
+                            <div className="flex items-center gap-3">
+                                <span className="text-sm text-gray-500 font-medium">Sort by:</span>
+                                <div className="relative">
+                                    <select
+                                        value={filters.sort}
+                                        onChange={(e) => {
+                                            setFilters(prev => ({ ...prev, sort: e.target.value }));
+                                            setPage(1);
+                                        }}
+                                        className="appearance-none bg-white border border-gray-200 rounded-xl px-4 py-2 pr-10 text-sm font-semibold text-gray-700 hover:border-primary focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer shadow-sm"
+                                    >
+                                        <option value="popularity">NIRF Rank (Default)</option>
+                                        <option value="rating">User Rating</option>
+                                        <option value="fees_low">Fees: Low to High</option>
+                                        <option value="fees_high">Fees: High to Low</option>
+                                        <option value="name">Name: A to Z</option>
+                                    </select>
+                                    <FaChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-[10px] pointer-events-none" />
+                                </div>
                             </div>
                         </div>
 
@@ -664,18 +697,26 @@ const PageContent: React.FC = () => {
                                             {/* Middle - Info */}
                                             <div className="flex-1 min-w-0">
                                                 {/* College Name + Category Badge */}
-                                                <div className="flex items-start gap-2 mb-2">
+                                                <div className="flex flex-wrap items-center gap-2 mb-2">
                                                     <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors">
                                                         <Link href={`/tools/colleges/${college.slug}`}>{college.name}</Link>
                                                     </h3>
-                                                    {college.institutionCategory && (
-                                                        <span className={`shrink-0 mt-1 px-2.5 py-0.5 text-[11px] font-bold rounded-full ${college.institutionCategory === 'University' ? 'bg-purple-100 text-purple-700' :
+                                                    <div className="flex items-center gap-1.5">
+                                                        {college.nirfRank && (
+                                                            <div className="bg-amber-50 text-amber-700 px-2.5 py-0.5 text-[11px] font-bold rounded-full border border-amber-200/50 flex items-center gap-1">
+                                                                <FaStar className="text-[10px]" />
+                                                                NIRF #{college.nirfRank}
+                                                            </div>
+                                                        )}
+                                                        {college.institutionCategory && (
+                                                            <span className={`px-2.5 py-0.5 text-[11px] font-bold rounded-full ${college.institutionCategory === 'University' ? 'bg-purple-100 text-purple-700' :
                                                                 college.institutionCategory === 'Standalone' ? 'bg-amber-100 text-amber-700' :
                                                                     'bg-blue-100 text-blue-700'
-                                                            }`}>
-                                                            {college.institutionCategory}
-                                                        </span>
-                                                    )}
+                                                                }`}>
+                                                                {college.institutionCategory}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                 </div>
 
                                                 {/* Info Grid - 3 columns */}
@@ -796,8 +837,8 @@ const PageContent: React.FC = () => {
                                                         key={pageNum}
                                                         onClick={() => { setPage(pageNum); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                                                         className={`w-10 h-10 flex items-center justify-center text-sm font-medium rounded-lg transition-all ${page === pageNum
-                                                                ? 'bg-primary text-white shadow-md'
-                                                                : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                                            ? 'bg-primary text-white shadow-md'
+                                                            : 'text-gray-600 hover:bg-gray-100 border border-gray-200'
                                                             }`}
                                                     >
                                                         {pageNum}

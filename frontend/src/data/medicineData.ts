@@ -1,13 +1,13 @@
 
 export const medicineRankings = [
-    { name: "Top Medical Colleges in India", link: "/tools/colleges?goal=Colleges&search=Medical" },
-    { name: "Top Government Medical Colleges", link: "/tools/colleges?goal=Colleges&search=Medical&ownership=Government" },
-    { name: "Top Private Medical Colleges", link: "/tools/colleges?goal=Colleges&search=Medical&ownership=Private" },
-    { name: "Top AIIMS Colleges", link: "/tools/colleges?goal=Colleges&search=AIIMS" },
-    { name: "Top Dental (BDS) Colleges", link: "/tools/colleges?goal=Colleges&search=BDS" },
-    { name: "Top Pharmacy Colleges", link: "/tools/colleges?goal=Colleges&search=Pharmacy" },
-    { name: "Best Medical Colleges State Wise", link: "/tools/colleges?goal=Colleges&search=Medical" },
-    { name: "NIRF Medical Rankings 2025", link: "/tools/colleges?goal=Colleges&search=Medical" }
+    { name: "Top Medical Colleges in India", link: "/tools/colleges?stream=Medicine" },
+    { name: "Top Government Medical Colleges", link: "/tools/colleges?stream=Medicine&ownership=Government" },
+    { name: "Top Private Medical Colleges", link: "/tools/colleges?stream=Medicine&ownership=Private" },
+    { name: "Top AIIMS Colleges", link: "/tools/colleges?stream=Medicine&search=AIIMS" },
+    { name: "Top Dental (BDS) Colleges", link: "/tools/colleges?stream=Medicine&search=BDS" },
+    { name: "Top Pharmacy Colleges", link: "/tools/colleges?stream=Pharmacy" },
+    { name: "Best Medical Colleges State Wise", link: "/tools/colleges?stream=Medicine" },
+    { name: "NIRF Medical Rankings 2025", link: "/tools/colleges?stream=Medicine" }
 ];
 
 export const medicineExams = [

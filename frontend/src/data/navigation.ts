@@ -36,11 +36,11 @@ export const collegesData = [
     titles: { col1: 'Top Ranked', col2: 'By Placement', col3_1: 'By City', col3_2: 'By State' },
     content: {
       exams: [
-        { title: 'Top Engineering Colleges', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&nirfCategory=Engineering' },
-        { title: 'Top MBA Colleges', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&nirfCategory=Management' },
-        { title: 'Top Medical Colleges', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' },
-        { title: 'Top Law Colleges', href: '/tools/colleges?goal=Colleges&stream=Law' },
-        { title: 'Top Pharmacy Colleges', href: '/tools/colleges?goal=Colleges&stream=Pharmacy' }
+        { title: 'Top Engineering Colleges', href: '/tools/colleges?stream=Engineering&nirfCategory=Engineering' },
+        { title: 'Top MBA Colleges', href: '/tools/colleges?stream=Management&nirfCategory=Management' },
+        { title: 'Top Medical Colleges', href: '/tools/colleges?stream=Medicine' },
+        { title: 'Top Law Colleges', href: '/tools/colleges?stream=Law' },
+        { title: 'Top Pharmacy Colleges', href: '/tools/colleges?stream=Pharmacy' }
       ],
       colleges: [
         { title: 'Colleges with Best ROI', href: '#' },
@@ -247,11 +247,11 @@ export const browseByStreamData = [
         { title: 'View All Engineering Exams', href: '/tools/exams?level=Engineering', isLink: true }
       ],
       colleges: [
-        { title: 'Colleges Accepting B.Tech Applications', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&course=B.Tech' },
-        { title: 'Top Engineering Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&nirfCategory=Engineering' },
-        { title: 'Engineering Colleges Accepting JEE Main', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&branch=Engineering&exam=JEE Main' },
-        { title: 'Top IITs in India', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&search=IIT' },
-        { title: 'Top NITs in India', href: '/tools/colleges?goal=Colleges&stream=Engineering And Architecture&search=NIT' }
+        { title: 'Colleges Accepting B.Tech Applications', href: '/tools/colleges?stream=Engineering&course=B.Tech' },
+        { title: 'Top Engineering Colleges in India', href: '/tools/colleges?stream=Engineering&nirfCategory=Engineering' },
+        { title: 'Engineering Colleges Accepting JEE Main', href: '/tools/colleges?stream=Engineering&branch=Engineering&exam=JEE Main' },
+        { title: 'Top IITs in India', href: '/tools/colleges?stream=Engineering&search=IIT' },
+        { title: 'Top NITs in India', href: '/tools/colleges?stream=Engineering&search=NIT' }
       ],
       predictors: [
         { title: 'JEE Main College Predictor', href: '/predictors/jee-main-predictor' },
@@ -299,14 +299,14 @@ export const browseByStreamData = [
         { title: 'View All Management Exams', href: '/tools/exams?level=National', isLink: true }
       ],
       colleges: [
-        { title: 'Top MBA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&nirfCategory=Management' },
-        { title: 'MBA College Admissions', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&degree=MBA' },
-        { title: 'MBA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&degree=MBA' },
-        { title: 'Top IIMs Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&search=IIM' },
-        { title: 'Top Online MBA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&degree=MBA&type=Online' },
-        { title: 'Online MBA', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&degree=MBA&type=Online' },
-        { title: 'MBA Colleges Accepting XAT Score', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&exam=XAT' },
-        { title: 'BBA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&search=BBA' }
+        { title: 'Top MBA Colleges in India', href: '/tools/colleges?stream=Management&nirfCategory=Management' },
+        { title: 'MBA College Admissions', href: '/tools/colleges?stream=Management&degree=MBA' },
+        { title: 'MBA Colleges in India', href: '/tools/colleges?stream=Management&degree=MBA' },
+        { title: 'Top IIMs Colleges in India', href: '/tools/colleges?stream=Management&search=IIM' },
+        { title: 'Top Online MBA Colleges in India', href: '/tools/colleges?stream=Management&degree=MBA&type=Online' },
+        { title: 'Online MBA', href: '/tools/colleges?stream=Management&degree=MBA&type=Online' },
+        { title: 'MBA Colleges Accepting XAT Score', href: '/tools/colleges?stream=Management&exam=XAT' },
+        { title: 'BBA Colleges in India', href: '/tools/colleges?stream=Management&search=BBA' }
       ],
       predictors: [
         { title: 'XAT College Predictor 2026', href: '#' },
@@ -345,13 +345,13 @@ export const browseByStreamData = [
         { title: 'View All Medicine Exams', href: '/tools/exams?level=Medical', isLink: true }
       ],
       colleges: [
-        { title: 'Top Medical Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' },
-        { title: 'Top Medical Colleges in India accepting NEET Score', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' },
-        { title: 'Medical Colleges accepting NEET', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' },
-        { title: 'List of Medical Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' },
-        { title: 'List of AIIMS Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences&search=AIIMS' },
-        { title: 'Medical Colleges in Maharashtra', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences&state=Maharashtra' },
-        { title: 'Medical Colleges in India Accepting NEET PG', href: '/tools/colleges?goal=Colleges&stream=Medicine And Allied Sciences' }
+        { title: 'Top Medical Colleges in India', href: '/tools/colleges?stream=Medicine' },
+        { title: 'Top Medical Colleges in India accepting NEET Score', href: '/tools/colleges?stream=Medicine' },
+        { title: 'Medical Colleges accepting NEET', href: '/tools/colleges?stream=Medicine' },
+        { title: 'List of Medical Colleges in India', href: '/tools/colleges?stream=Medicine' },
+        { title: 'List of AIIMS Colleges in India', href: '/tools/colleges?stream=Medicine&search=AIIMS' },
+        { title: 'Medical Colleges in Maharashtra', href: '/tools/colleges?stream=Medicine&state=Maharashtra' },
+        { title: 'Medical Colleges in India Accepting NEET PG', href: '/tools/colleges?stream=Medicine' }
       ],
       predictors: [
         { title: 'NEET College Predictor', href: '/predictors/neet-predictor' },
@@ -441,14 +441,14 @@ export const browseByStreamData = [
         { title: 'View All', href: '/tools/exams?level=Design', isLink: true }
       ],
       colleges: [
-        { title: 'Design Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design' },
-        { title: 'Top Design Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design' },
-        { title: 'Top NIFT Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&search=NIFT' },
-        { title: 'Fashion Design Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&search=Fashion' },
-        { title: 'Top Interior Design Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&search=Interior' },
-        { title: 'Top Graphic Designing Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&search=Graphic' },
-        { title: 'Fashion Design Colleges in Delhi', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&state=Delhi' },
-        { title: 'Fashion Design Colleges in Mumbai', href: '/tools/colleges?goal=Colleges&stream=Animation And Design&search=Mumbai' }
+        { title: 'Design Colleges in India', href: '/tools/colleges?stream=Design' },
+        { title: 'Top Design Colleges in India', href: '/tools/colleges?stream=Design' },
+        { title: 'Top NIFT Colleges in India', href: '/tools/colleges?stream=Design&search=NIFT' },
+        { title: 'Fashion Design Colleges in India', href: '/tools/colleges?stream=Design&search=Fashion' },
+        { title: 'Top Interior Design Colleges in India', href: '/tools/colleges?stream=Design&search=Interior' },
+        { title: 'Top Graphic Designing Colleges in India', href: '/tools/colleges?stream=Design&search=Graphic' },
+        { title: 'Fashion Design Colleges in Delhi', href: '/tools/colleges?stream=Design&state=Delhi' },
+        { title: 'Fashion Design Colleges in Mumbai', href: '/tools/colleges?stream=Design&search=Mumbai' }
       ],
       predictors: [
         { title: 'NIFT College Predictor', href: '#' },
@@ -486,12 +486,12 @@ export const browseByStreamData = [
       ],
       colleges: [
         { title: 'Compare Colleges', href: '/tools/compare-colleges' },
-        { title: 'Media & Journalism colleges in Delhi', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities&state=Delhi&search=Media' },
-        { title: 'Media & Journalism colleges in Bangalore', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Bangalore Media' },
-        { title: 'Media & Journalism colleges in Mumbai', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Mumbai Media' },
-        { title: 'Colleges Accepting Admissions', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities' },
-        { title: 'List of Media & Journalism Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities&search=Media Journalism' },
-        { title: 'View All', href: '/tools/colleges?goal=Colleges&stream=Arts And Humanities', isLink: true }
+        { title: 'Media & Journalism colleges in Delhi', href: '/tools/colleges?stream=Media&state=Delhi' },
+        { title: 'Media & Journalism colleges in Bangalore', href: '/tools/colleges?stream=Media&search=Bangalore' },
+        { title: 'Media & Journalism colleges in Mumbai', href: '/tools/colleges?stream=Media&search=Mumbai' },
+        { title: 'Colleges Accepting Admissions', href: '/tools/colleges?stream=Media' },
+        { title: 'List of Media & Journalism Colleges in India', href: '/tools/colleges?stream=Media' },
+        { title: 'View All', href: '/tools/colleges?stream=Media', isLink: true }
       ],
       predictors: [ /* Content placed here to appear under the top header of col 3 */
         { title: 'Compare Colleges', href: '/tools/compare-colleges' },
@@ -537,12 +537,12 @@ export const browseByStreamData = [
         { title: 'Financial Advisor', href: '#' }
       ],
       resources: [
-        { title: 'Top Commerce Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Commerce' },
-        { title: 'Top Government Commerce Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Commerce&type=Government' },
-        { title: 'Top Private Commerce Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Commerce&type=Private' },
-        { title: 'Top M.Com Colleges in Mumbai', href: '/tools/colleges?goal=Colleges&stream=Commerce&degree=M.Com&search=Mumbai' },
-        { title: 'Top B.Com Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Commerce&degree=B.Com' },
-        { title: 'View All', href: '/tools/colleges?goal=Colleges&stream=Commerce', isLink: true }
+        { title: 'Top Commerce Colleges in India', href: '/tools/colleges?stream=Commerce' },
+        { title: 'Top Government Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&type=Government' },
+        { title: 'Top Private Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&type=Private' },
+        { title: 'Top M.Com Colleges in Mumbai', href: '/tools/colleges?stream=Commerce&degree=M.Com&search=Mumbai' },
+        { title: 'Top B.Com Colleges in India', href: '/tools/colleges?stream=Commerce&degree=B.Com' },
+        { title: 'View All', href: '/tools/colleges?stream=Commerce', isLink: true }
       ]
     }
   },
@@ -568,12 +568,12 @@ export const browseByStreamData = [
       ],
       colleges: [
         { title: 'Compare Colleges', href: '/tools/compare-colleges' },
-        { title: 'IT Colleges in Tamil Nadu', href: '/tools/colleges?goal=Colleges&stream=Science&state=Tamil Nadu&search=IT' },
-        { title: 'IT Colleges in Uttar Pradesh', href: '/tools/colleges?goal=Colleges&stream=Science&state=Uttar Pradesh&search=IT' },
-        { title: 'Colleges Accepting Admissions', href: '/tools/colleges?goal=Colleges&stream=Science' },
-        { title: 'MCA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Science&search=MCA' },
-        { title: 'BCA Colleges in India', href: '/tools/colleges?goal=Colleges&stream=Science&search=BCA' },
-        { title: 'View All', href: '/tools/colleges?goal=Colleges&stream=Science', isLink: true }
+        { title: 'IT Colleges in Tamil Nadu', href: '/tools/colleges?stream=Computer Application&state=Tamil Nadu' },
+        { title: 'IT Colleges in Uttar Pradesh', href: '/tools/colleges?stream=Computer Application&state=Uttar Pradesh' },
+        { title: 'Colleges Accepting Admissions', href: '/tools/colleges?stream=Computer Application' },
+        { title: 'MCA Colleges in India', href: '/tools/colleges?stream=Computer Application&search=MCA' },
+        { title: 'BCA Colleges in India', href: '/tools/colleges?stream=Computer Application&search=BCA' },
+        { title: 'View All', href: '/tools/colleges?stream=Computer Application', isLink: true }
       ],
       predictors: [
         { title: 'NIMCET 2025 Notification', href: '/tools/news/nimcet-notification-2025', isNew: true },
@@ -651,12 +651,12 @@ export const browseByStreamData = [
         { title: 'View All', href: '/tools/exams?category=Hospitality%20and%20Tourism', isLink: true }
       ],
       colleges: [
-        { title: 'Top Hotel Management Colleges in Delhi', href: '/tools/colleges?goal=Colleges&state=Delhi&search=Hotel Management' },
-        { title: 'Top Hotel Management Colleges in Hyderabad', href: '/tools/colleges?goal=Colleges&search=Hotel Management Hyderabad' },
-        { title: 'Top Hotel Management Colleges in Mumbai', href: '/tools/colleges?goal=Colleges&search=Hotel Management Mumbai' },
-        { title: 'Top Hotel Management Colleges in Tamil Nadu', href: '/tools/colleges?goal=Colleges&state=Tamil Nadu&search=Hotel Management' },
-        { title: 'Top Hotel Management Colleges in Maharashtra', href: '/tools/colleges?goal=Colleges&state=Maharashtra&search=Hotel Management' },
-        { title: 'View All', href: '/tools/colleges?goal=Colleges&search=Hotel Management', isLink: true }
+        { title: 'Top Hotel Management Colleges in Delhi', href: '/tools/colleges?stream=Hospitality&state=Delhi' },
+        { title: 'Top Hotel Management Colleges in Hyderabad', href: '/tools/colleges?stream=Hospitality&search=Hyderabad' },
+        { title: 'Top Hotel Management Colleges in Mumbai', href: '/tools/colleges?stream=Hospitality&search=Mumbai' },
+        { title: 'Top Hotel Management Colleges in Tamil Nadu', href: '/tools/colleges?stream=Hospitality&state=Tamil Nadu' },
+        { title: 'Top Hotel Management Colleges in Maharashtra', href: '/tools/colleges?stream=Hospitality&state=Maharashtra' },
+        { title: 'View All', href: '/tools/colleges?stream=Hospitality', isLink: true }
       ],
       predictors: [
         { title: 'NCHMCT JEE 2025 Date', href: '/tools/news/nchmct-jee-date-2025', isNew: true },

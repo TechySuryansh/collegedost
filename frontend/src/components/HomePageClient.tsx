@@ -7,6 +7,9 @@ import HomeCounselling from './HomeCounselling';
 import DataRankings from './DataRankings';
 import OnlineCourses from './OnlineCourses';
 import AppDownload from './AppDownload';
+import ManagementRankings from './ManagementRankings';
+import EngineeringRankings from './EngineeringRankings';
+import MedicalRankings from './MedicalRankings';
 import { useUI } from '@/context/UIContext';
 
 const HomePage = () => {
@@ -19,6 +22,15 @@ const HomePage = () => {
 
             {/* Featured Colleges */}
             <FeaturedColleges />
+
+            {/* Management Rankings */}
+            <ManagementRankings />
+
+            {/* Engineering Rankings */}
+            <EngineeringRankings />
+
+            {/* Medical Rankings */}
+            <MedicalRankings />
 
             {/* Main Content Section */}
             <main className="py-20 lg:py-32 relative z-10">

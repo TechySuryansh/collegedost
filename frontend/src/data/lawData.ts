@@ -1,13 +1,13 @@
 
 export const lawRankings = [
-    { name: "Top Law Colleges in India", link: "/tools/colleges?goal=Colleges&search=Law" },
-    { name: "Top NLUs in India", link: "/tools/colleges?goal=Colleges&search=NLU" },
-    { name: "Best Private Law Colleges", link: "/tools/colleges?goal=Colleges&search=Law&ownership=Private" },
-    { name: "Top Government Law Colleges", link: "/tools/colleges?goal=Colleges&search=Law&ownership=Government" },
-    { name: "LLB Colleges in India", link: "/tools/colleges?goal=Colleges&search=LLB" },
-    { name: "LLM Colleges in India", link: "/tools/colleges?goal=Colleges&search=LLM" },
-    { name: "Law Colleges in Delhi NCR", link: "/tools/colleges?goal=Colleges&search=Law&city=Delhi" },
-    { name: "NIRF Ranked Law Colleges", link: "/tools/colleges?goal=Colleges&search=Law" }
+    { name: "Top Law Colleges in India", link: "/tools/colleges?stream=Law" },
+    { name: "Top NLUs in India", link: "/tools/colleges?stream=Law&search=NLU" },
+    { name: "Best Private Law Colleges", link: "/tools/colleges?stream=Law&ownership=Private" },
+    { name: "Top Government Law Colleges", link: "/tools/colleges?stream=Law&ownership=Government" },
+    { name: "LLB Colleges in India", link: "/tools/colleges?stream=Law&search=LLB" },
+    { name: "LLM Colleges in India", link: "/tools/colleges?stream=Law&search=LLM" },
+    { name: "Law Colleges in Delhi NCR", link: "/tools/colleges?stream=Law&city=Delhi" },
+    { name: "NIRF Ranked Law Colleges", link: "/tools/colleges?stream=Law" }
 ];
 
 export const lawExams = [

@@ -9,32 +9,71 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         const {
             search, state, city, course, branch, type,
             fees, rating, sort, page = 1, limit = 20,
-            management, collegeType, institutionCategory, locationType
+            management, collegeType, institutionCategory, locationType,
+            stream
         } = req.query;
 
-        const query: any = {};
+        const conditions: any[] = [];
 
         // Search
         if (search) {
-            query.$or = [
-                { name: { $regex: search, $options: 'i' } },
-                { 'location.city': { $regex: search, $options: 'i' } },
-                { 'location.state': { $regex: search, $options: 'i' } },
-                { aisheCode: { $regex: search, $options: 'i' } }
-            ];
+            const searchTerm = search as string;
+            // For short acronyms (2-4 chars), use word boundaries to avoid partial matches (e.g., MBA matching Mumbai)
+            const isAcronym = /^[A-Z]{2,4}$/.test(searchTerm);
+            const regex = isAcronym ? `\\b${searchTerm}\\b` : searchTerm;
+
+            conditions.push({
+                $or: [
+                    { name: { $regex: regex, $options: 'i' } },
+                    { 'location.city': { $regex: regex, $options: 'i' } },
+                    { 'location.state': { $regex: regex, $options: 'i' } },
+                    { aisheCode: { $regex: searchTerm, $options: 'i' } }
+                ]
+            });
         }
 
         // Filters
-        if (state) query['location.state'] = { $in: (state as string).split(',') };
-        if (city) query['location.city'] = { $in: (city as string).split(',') };
-        if (type) query.type = { $in: (type as string).split(',') };
-        if (rating) query.rating = { $gte: Number(rating) };
+        if (state) conditions.push({ 'location.state': { $in: (state as string).split(',') } });
+        if (city) conditions.push({ 'location.city': { $in: (city as string).split(',') } });
+        if (type) conditions.push({ type: { $in: (type as string).split(',') } });
+        if (rating) conditions.push({ rating: { $gte: Number(rating) } });
 
         // New AISHE filters
-        if (management) query.management = { $in: (management as string).split(',') };
-        if (collegeType) query.collegeType = { $in: (collegeType as string).split(',') };
-        if (institutionCategory) query.institutionCategory = { $in: (institutionCategory as string).split(',') };
-        if (locationType) query.locationType = { $in: (locationType as string).split(',') };
+        if (management) conditions.push({ management: { $in: (management as string).split(',') } });
+        if (collegeType) conditions.push({ collegeType: { $in: (collegeType as string).split(',') } });
+        if (institutionCategory) conditions.push({ institutionCategory: { $in: (institutionCategory as string).split(',') } });
+        if (locationType) conditions.push({ locationType: { $in: (locationType as string).split(',') } });
+
+        // Stream fallback filtering (for data without explicit course details)
+        if (stream) {
+            const streamArray = (stream as string).split(',');
+            const streamKeywords: Record<string, string[]> = {
+                'Management': ['Management', 'Business', 'MBA', 'IIM', 'PGDM', 'BBA', 'FMS', 'XLRI', 'Entrepreneurship'],
+                'Engineering': ['Engineering', 'Technology', 'B.Tech', 'IIT', 'NIT', 'IIIT', 'Polytechnic', 'B.E.', 'Industrial'],
+                'Medicine': ['Medical', 'Medicine', 'AIIMS', 'MBBS', 'Dental', 'Nursing', 'Health', 'Pharmacology'],
+                'Law': ['Law', 'Legal', 'NLU', 'LLB', 'LLM', 'Juridical', 'Justice'],
+                'Pharmacy': ['Pharmacy', 'Pharma', 'Pharmaceutical'],
+                'Science': ['Science', 'Theoretical', 'Research'],
+                'Commerce': ['Commerce', 'Accountancy', 'Economics', 'Finance'],
+                'Arts': ['Arts', 'Social Sciences', 'Humanities', 'Fine Arts'],
+                'Design': ['Design', 'NID', 'NIFT', 'Fashion', 'Apparel'],
+                'Education': ['Education', 'Teacher', 'Training', 'B.Ed', 'M.Ed'],
+                'Hospitality': ['Hospitality', 'Hotel', 'Catering', 'Tourism'],
+                'Media': ['Media', 'Journalism', 'Mass Communication', 'Broadcasting'],
+                'Architecture': ['Architecture', 'Planning', 'B.Arch', 'M.Arch'],
+                'Computer Application': ['Computer', 'Applications', 'MCA', 'BCA', 'Information Technology']
+            };
+
+            const allKeywords = streamArray.flatMap(s => streamKeywords[s] || [s]);
+            const streamRegex = new RegExp(allKeywords.join('|'), 'i');
+
+            conditions.push({
+                $or: [
+                    { name: { $regex: streamRegex.source, $options: 'i' } },
+                    { collegeType: { $regex: streamRegex.source, $options: 'i' } }
+                ]
+            });
+        }
 
         // Complex filters for nested arrays (courses and cutoffs)
         if (course) {
@@ -45,9 +84,11 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
                     part.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
                 ).filter(Boolean).join('|');
             });
-            query.coursesOffered = {
-                $elemMatch: { name: { $regex: regexPatterns.join('|'), $options: 'i' } }
-            };
+            conditions.push({
+                coursesOffered: {
+                    $elemMatch: { name: { $regex: regexPatterns.join('|'), $options: 'i' } }
+                }
+            });
         }
 
         if (branch) {
@@ -57,9 +98,11 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
                     part.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
                 ).filter(Boolean).join('|')
             );
-            query.cutoffs = {
-                $elemMatch: { branch: { $regex: regexPatterns.join('|'), $options: 'i' } }
-            };
+            conditions.push({
+                cutoffs: {
+                    $elemMatch: { branch: { $regex: regexPatterns.join('|'), $options: 'i' } }
+                }
+            });
         }
 
         if (fees) {
@@ -82,26 +125,47 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
                     break;
             }
             if (Object.keys(feeRange).length > 0) {
-                query['coursesOffered.fee'] = feeRange;
+                conditions.push({ 'coursesOffered.fee': feeRange });
             }
         }
 
-        // Sort
-        let sortOption: any = { nirfRank: 1 }; // Default sort by ranking
+        const query = conditions.length > 0 ? { $and: conditions } : {};
+
+        // Sort — use computed field so colleges without nirfRank go to bottom
+        let sortOption: any = { _sortRank: 1 }; // Default sort by ranking
         if (sort === 'rating') sortOption = { rating: -1 };
         if (sort === 'fees_low') sortOption = { 'coursesOffered.0.fee': 1 };
         if (sort === 'fees_high') sortOption = { 'coursesOffered.0.fee': -1 };
         if (sort === 'name') sortOption = { name: 1 };
         if (sort === 'newest') sortOption = { yearOfEstablishment: -1 };
+        if (sort === 'nirfRank') sortOption = { _sortRank: 1 };
 
         const pageNum = Number(page);
         const limitNum = Number(limit);
         const skip = (pageNum - 1) * limitNum;
 
-        const colleges = await College.find(query)
-            .sort(sortOption)
-            .skip(skip)
-            .limit(limitNum);
+        // Use aggregation to add computed sort field for NIRF ranking
+        // This ensures colleges without nirfRank appear at the bottom
+        const pipeline: any[] = [
+            { $match: query },
+            {
+                $addFields: {
+                    _sortRank: {
+                        $cond: {
+                            if: { $and: [{ $ne: ['$nirfRank', null] }, { $gt: ['$nirfRank', 0] }] },
+                            then: '$nirfRank',
+                            else: 999999
+                        }
+                    }
+                }
+            },
+            { $sort: sortOption },
+            { $skip: skip },
+            { $limit: limitNum },
+            { $project: { _sortRank: 0 } } // Remove the computed field from output
+        ];
+
+        const colleges = await College.aggregate(pipeline);
 
         const total = await College.countDocuments(query);
 
@@ -355,3 +419,4 @@ export const getCollegeById = async (req: Request, res: Response): Promise<void>
         res.status(500).json({ success: false, message: error.message });
     }
 };
+

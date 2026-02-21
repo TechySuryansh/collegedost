@@ -1,13 +1,13 @@
 
 export const pharmacyRankings = [
-    { name: "Top Pharmacy Colleges in India", link: "/tools/colleges?goal=Colleges&search=Pharmacy" },
-    { name: "Best Pharmacy Colleges in Delhi", link: "/tools/colleges?goal=Colleges&search=Pharmacy&state=Delhi" },
-    { name: "Top Government Pharmacy Colleges", link: "/tools/colleges?goal=Colleges&search=Pharmacy&ownership=Government" },
-    { name: "Private Pharmacy Colleges with Low Fees", link: "/tools/colleges?goal=Colleges&search=Pharmacy&ownership=Private" },
-    { name: "Top B.Pharma Colleges", link: "/tools/colleges?goal=Colleges&search=B.Pharma" },
-    { name: "D.Pharma Colleges in India", link: "/tools/colleges?goal=Colleges&search=D.Pharma" },
-    { name: "M.Pharma Colleges in India", link: "/tools/colleges?goal=Colleges&search=M.Pharma" },
-    { name: "NIRF Ranked Pharmacy Colleges", link: "/tools/colleges?goal=Colleges&search=Pharmacy" }
+    { name: "Top Pharmacy Colleges in India", link: "/tools/colleges?stream=Pharmacy" },
+    { name: "Best Pharmacy Colleges in Delhi", link: "/tools/colleges?stream=Pharmacy&state=Delhi" },
+    { name: "Top Government Pharmacy Colleges", link: "/tools/colleges?stream=Pharmacy&ownership=Government" },
+    { name: "Private Pharmacy Colleges with Low Fees", link: "/tools/colleges?stream=Pharmacy&ownership=Private" },
+    { name: "Top B.Pharma Colleges", link: "/tools/colleges?stream=Pharmacy&search=B.Pharma" },
+    { name: "D.Pharma Colleges in India", link: "/tools/colleges?stream=Pharmacy&search=D.Pharma" },
+    { name: "M.Pharma Colleges in India", link: "/tools/colleges?stream=Pharmacy&search=M.Pharma" },
+    { name: "NIRF Ranked Pharmacy Colleges", link: "/tools/colleges?stream=Pharmacy" }
 ];
 
 export const pharmacyExams = [

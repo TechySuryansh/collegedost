@@ -1,13 +1,13 @@
 
 export const managementRankings = [
-    { name: "Top MBA Colleges in India", link: "/tools/colleges?goal=Colleges&search=MBA" },
-    { name: "Top IIMs in India", link: "/tools/colleges?goal=Colleges&search=IIM" },
-    { name: "Top BBA Colleges", link: "/tools/colleges?goal=Colleges&search=BBA" },
-    { name: "Top Government MBA Colleges", link: "/tools/colleges?goal=Colleges&search=MBA&ownership=Government" },
-    { name: "Top Private MBA Colleges", link: "/tools/colleges?goal=Colleges&search=MBA&ownership=Private" },
-    { name: "MBA Colleges with Best ROI", link: "/tools/colleges?goal=Colleges&search=MBA" },
-    { name: "Top Executive MBA Colleges", link: "/tools/colleges?goal=Colleges&search=Executive MBA" },
-    { name: "Distance MBA Rankings", link: "/tools/colleges?goal=Colleges&search=Distance MBA" }
+    { name: "Top MBA Colleges in India", link: "/tools/colleges?stream=Management" },
+    { name: "Top IIMs in India", link: "/tools/colleges?stream=Management&search=IIM" },
+    { name: "Top BBA Colleges", link: "/tools/colleges?stream=Management&search=BBA" },
+    { name: "Top Government MBA Colleges", link: "/tools/colleges?stream=Management&ownership=Government" },
+    { name: "Top Private MBA Colleges", link: "/tools/colleges?stream=Management&ownership=Private" },
+    { name: "MBA Colleges with Best ROI", link: "/tools/colleges?stream=Management" },
+    { name: "Top Executive MBA Colleges", link: "/tools/colleges?stream=Management&search=Executive" },
+    { name: "Distance MBA Rankings", link: "/tools/colleges?stream=Management&search=Distance" }
 ];
 
 export const managementExams = [
