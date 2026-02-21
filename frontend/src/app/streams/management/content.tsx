@@ -22,7 +22,7 @@ import { useUI } from '@/context/UIContext';
  */
 const PageContent: React.FC = () => {
     const { openAskModal } = useUI();
-    
+
     return (
         <>
             <Hero
@@ -44,36 +44,37 @@ const PageContent: React.FC = () => {
             />
 
             <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
-                <PillSection 
-                    title="Top Management Rankings" 
-                    items={managementRankings} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Management Rankings"
+                    items={managementRankings}
+                    color="border-gray-200"
                 />
 
                 <GenericCardGrid
                     title="Featured MBA Colleges"
                     items={featuredManagementColleges}
                     type="card"
+                    viewAllLink="/tools/colleges?stream=Management"
                 />
 
-                <Counselling 
+                <Counselling
                     items={managementCounsellingData}
                     onOpenAskModal={openAskModal}
                 />
 
-                <PillSection 
-                    title="Top Management Hubs" 
-                    items={managementCities} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Management Hubs"
+                    items={managementCities}
+                    color="border-gray-200"
                 />
             </div>
 
             <div className="bg-gray-50 py-12">
                 <div className="container mx-auto px-4 grow flex flex-col gap-16">
-                    <PillSection 
-                        title="Management Entrance Exams" 
-                        items={managementExams} 
-                        color="border-gray-200" 
+                    <PillSection
+                        title="Management Entrance Exams"
+                        items={managementExams}
+                        color="border-gray-200"
                     />
 
                     <PredictorsSection

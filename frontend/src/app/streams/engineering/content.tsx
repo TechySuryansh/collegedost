@@ -23,7 +23,7 @@ import { useUI } from '@/context/UIContext';
  */
 const PageContent: React.FC = () => {
     const { openAskModal } = useUI();
-    
+
     return (
         <>
             <Hero
@@ -47,36 +47,37 @@ const PageContent: React.FC = () => {
             />
 
             <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
-                <PillSection 
-                    title="Top Engineering Rankings" 
-                    items={engineeringRankings} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Engineering Rankings"
+                    items={engineeringRankings}
+                    color="border-gray-200"
                 />
 
                 <GenericCardGrid
                     title="Featured Engineering Colleges"
                     items={featuredEngineeringColleges}
                     type="card"
+                    viewAllLink="/tools/colleges?stream=Engineering"
                 />
 
-                <Counselling 
-                    items={engineeringCounsellingData} 
-                    onOpenAskModal={openAskModal} 
+                <Counselling
+                    items={engineeringCounsellingData}
+                    onOpenAskModal={openAskModal}
                 />
 
-                <PillSection 
-                    title="Top Engineering Hubs" 
-                    items={engineeringCities} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Engineering Hubs"
+                    items={engineeringCities}
+                    color="border-gray-200"
                 />
             </div>
 
             <div className="bg-gray-50 py-12">
                 <div className="container mx-auto px-4 grow flex flex-col gap-16">
-                    <PillSection 
-                        title="Engineering Entrance Exams" 
-                        items={engineeringExams} 
-                        color="border-gray-200" 
+                    <PillSection
+                        title="Engineering Entrance Exams"
+                        items={engineeringExams}
+                        color="border-gray-200"
                     />
 
                     <PredictorsSection

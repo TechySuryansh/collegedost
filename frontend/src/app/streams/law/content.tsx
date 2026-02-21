@@ -22,7 +22,7 @@ import { useUI } from '@/context/UIContext';
  */
 const PageContent: React.FC = () => {
     const { openAskModal } = useUI();
-    
+
     return (
         <>
             <Hero
@@ -44,36 +44,37 @@ const PageContent: React.FC = () => {
             />
 
             <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
-                <PillSection 
-                    title="Top Law Rankings" 
-                    items={lawRankings} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Law Rankings"
+                    items={lawRankings}
+                    color="border-gray-200"
                 />
 
                 <GenericCardGrid
                     title="Featured Law Colleges"
                     items={featuredLawColleges}
                     type="card"
+                    viewAllLink="/tools/colleges?stream=Law"
                 />
 
-                <Counselling 
+                <Counselling
                     items={lawCounsellingData}
                     onOpenAskModal={openAskModal}
                 />
 
-                <PillSection 
-                    title="Top Cities for Legal Studies" 
-                    items={lawCities} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Cities for Legal Studies"
+                    items={lawCities}
+                    color="border-gray-200"
                 />
             </div>
 
             <div className="bg-gray-50 py-12">
                 <div className="container mx-auto px-4 grow flex flex-col gap-16">
-                    <PillSection 
-                        title="Law Entrance Exams" 
-                        items={lawExams} 
-                        color="border-gray-200" 
+                    <PillSection
+                        title="Law Entrance Exams"
+                        items={lawExams}
+                        color="border-gray-200"
                     />
 
                     <PredictorsSection

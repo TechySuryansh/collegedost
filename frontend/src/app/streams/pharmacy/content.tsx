@@ -22,7 +22,7 @@ import { useUI } from '@/context/UIContext';
  */
 const PageContent: React.FC = () => {
     const { openAskModal } = useUI();
-    
+
     return (
         <>
             <Hero
@@ -44,36 +44,37 @@ const PageContent: React.FC = () => {
             />
 
             <div className="container mx-auto px-4 py-12 grow flex flex-col gap-16">
-                <PillSection 
-                    title="Top Pharmacy Rankings" 
-                    items={pharmacyRankings} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Pharmacy Rankings"
+                    items={pharmacyRankings}
+                    color="border-gray-200"
                 />
 
                 <GenericCardGrid
                     title="Featured Pharmacy Colleges"
                     items={featuredPharmacyColleges}
                     type="card"
+                    viewAllLink="/tools/colleges?stream=Pharmacy"
                 />
 
-                <Counselling 
-                    items={pharmacyCounsellingData} 
-                    onOpenAskModal={openAskModal} 
+                <Counselling
+                    items={pharmacyCounsellingData}
+                    onOpenAskModal={openAskModal}
                 />
 
-                <PillSection 
-                    title="Top Cities for Pharmacy" 
-                    items={pharmacyCities} 
-                    color="border-gray-200" 
+                <PillSection
+                    title="Top Cities for Pharmacy"
+                    items={pharmacyCities}
+                    color="border-gray-200"
                 />
             </div>
 
             <div className="bg-gray-50 py-12">
                 <div className="container mx-auto px-4 grow flex flex-col gap-16">
-                    <PillSection 
-                        title="Pharmacy Entrance Exams" 
-                        items={pharmacyExams} 
-                        color="border-gray-200" 
+                    <PillSection
+                        title="Pharmacy Entrance Exams"
+                        items={pharmacyExams}
+                        color="border-gray-200"
                     />
 
                     <PredictorsSection
