@@ -129,6 +129,12 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
             }
         }
 
+        // When sorting by NIRF rank (default or explicit), only show colleges that have a NIRF rank
+        const isNirfSort = !sort || sort === 'popularity' || sort === 'nirfRank';
+        if (isNirfSort) {
+            conditions.push({ nirfRank: { $ne: null, $gt: 0 } });
+        }
+
         const query = conditions.length > 0 ? { $and: conditions } : {};
 
         // Sort — use computed field so colleges without nirfRank go to bottom
