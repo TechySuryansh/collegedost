@@ -15,8 +15,22 @@ const app: Application = express();
 app.use(express.json());
 
 // Enable CORS
+const allowedOrigins = [
+    'https://collegedost.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:3001',
+    process.env.client_uri
+].filter(Boolean) as string[];
+
 app.use(cors({
-    origin: '*', // Allow all origins for dev, can restrict in prod
+    origin: (origin, callback) => {
+        // allow requests with no origin (like mobile apps or curl)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'), false);
+    },
     credentials: true
 }));
 
