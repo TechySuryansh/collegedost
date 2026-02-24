@@ -10,14 +10,14 @@ interface RankingCard {
 }
 
 const managementRankings: RankingCard[] = [
-    { title: 'Top MBA Colleges in India', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top IIMs in India', href: '/tools/colleges?search=IIM&sort=nirfRank' },
-    { title: 'Top BBA Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Government MBA Colleges', href: '/tools/colleges?type=Government&sort=nirfRank' },
-    { title: 'Top Private MBA Colleges', href: '/tools/colleges?type=Private&sort=nirfRank' },
-    { title: 'MBA Colleges with Best ROI', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Executive MBA Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Distance MBA Rankings', href: '/tools/colleges?sort=nirfRank' },
+    { title: 'Top MBA Colleges in India', href: '/tools/colleges?stream=Management&sort=nirfRank' },
+    { title: 'Top IIMs in India', href: '/tools/colleges?stream=Management&search=IIM&sort=nirfRank' },
+    { title: 'Top BBA Colleges', href: '/tools/colleges?stream=Management&search=BBA&sort=nirfRank' },
+    { title: 'Top Government MBA Colleges', href: '/tools/colleges?stream=Management&ownership=Government&sort=nirfRank' },
+    { title: 'Top Private MBA Colleges', href: '/tools/colleges?stream=Management&ownership=Private&sort=nirfRank' },
+    { title: 'MBA Colleges with Best ROI', href: '/tools/colleges?stream=Management&sort=nirfRank' },
+    { title: 'Top Executive MBA Colleges', href: '/tools/colleges?stream=Management&search=Executive&sort=nirfRank' },
+    { title: 'Distance MBA Rankings', href: '/tools/colleges?stream=Management&search=Distance&sort=nirfRank' },
 ];
 
 const ManagementRankings: React.FC = () => {
@@ -29,8 +29,8 @@ const ManagementRankings: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                         Top Management Rankings
                     </h2>
-                    <Link 
-                        href="/tools/colleges?search=MBA&sort=nirfRank" 
+                    <Link
+                        href="/tools/colleges?search=MBA&sort=nirfRank"
                         className="flex items-center gap-2 text-primary hover:text-secondary font-semibold text-sm transition-colors"
                     >
                         View All

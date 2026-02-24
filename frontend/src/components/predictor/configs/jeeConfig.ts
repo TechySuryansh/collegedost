@@ -11,89 +11,114 @@ const INDIAN_STATES = [
   'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep',
 ];
 
-function getAbbrev(type: string): string {
-  const t = (type || '').toLowerCase();
-  if (t.includes('iit') && !t.includes('iiit')) return 'IIT';
-  if (t.includes('iiit')) return 'IIIT';
-  if (t.includes('nit')) return 'NIT';
-  if (t.includes('gfti')) return 'GFTI';
-  if (t.includes('private') || t.includes('deemed')) return 'PVT';
-  return type?.slice(0, 3).toUpperCase() || 'COL';
-}
+// ─── Shared parsing helpers ───────────────────────────────────────────
 
-interface JEEBranch {
-  branch: string;
-  closingRank: number;
-  openingRank?: number;
-  category: string;
-  year?: number;
-  chance: string;
-  quota: string;
-}
-
-interface JEECollege {
-  name: string;
+interface CollegeRaw {
+  _id?: string;
+  name?: string;
   location?: { city?: string; state?: string };
   type?: string;
   nirfRank?: number;
-  matchedBranches: JEEBranch[];
+  matchingCutoffs?: Array<{
+    branch?: string;
+    closing?: number;
+    category?: string;
+    quota?: string;
+  }>;
 }
 
-interface JEERawResponse {
+interface RawResponse {
   success: boolean;
-  count: number;
-  colleges: JEECollege[];
+  data?: CollegeRaw[];
+  count?: number;
 }
 
-function parseJEEResponse(data: Record<string, unknown>): NormalizedPrediction {
-  const raw = data as unknown as JEERawResponse;
+function getInstType(name: string, type: string): { instType: string; abbrev: string } {
+  const n = (name || '').toLowerCase();
+  const t = (type || '').toLowerCase();
+  if (n.includes('indian institute of technology') || (n.includes('iit') && !n.includes('iiit'))) return { instType: 'IIT', abbrev: 'IIT' };
+  if (n.includes('indian institute of information technology') || n.includes('iiit')) return { instType: 'IIIT', abbrev: 'IIIT' };
+  if (n.includes('national institute of technology') || n.startsWith('nit ')) return { instType: 'NIT', abbrev: 'NIT' };
+  if (n.includes('aiims') || n.includes('all india institute of medical')) return { instType: 'AIIMS', abbrev: 'AIIMS' };
+  if (n.includes('jipmer')) return { instType: 'JIPMER', abbrev: 'JIPMER' };
+  if (t.includes('private') || t.includes('deemed')) return { instType: 'Private', abbrev: 'PVT' };
+  if (t.includes('government')) return { instType: 'GFTI', abbrev: 'GFTI' };
+  return { instType: type || 'Other', abbrev: type?.slice(0, 3).toUpperCase() || 'COL' };
+}
+
+function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+  if (!closingRank || closingRank === 0) return 'medium';
+  if (closingRank > userRank * 1.2) return 'high';
+  if (closingRank >= userRank * 0.85) return 'medium';
+  return 'low';
+}
+
+const QUOTA_MAP: Record<string, string> = {
+  AI: 'All India',
+  HS: 'Home State',
+  OS: 'Other State',
+};
+
+let _lastUserRank = 0;
+let _lastUserState = '';
+
+function parseResponse(data: Record<string, unknown>): NormalizedPrediction {
+  const raw = data as unknown as RawResponse;
   const colleges: FlatCollege[] = [];
-  let high = 0;
-  let medium = 0;
-  let low = 0;
 
-  for (const college of raw.colleges || []) {
-    for (const branch of college.matchedBranches || []) {
-      const chanceLower = (branch.chance || 'low').toLowerCase();
-      const chance = (chanceLower === 'high' ? 'high' : chanceLower === 'medium' ? 'medium' : 'low') as FlatCollege['chance'];
+  for (const college of raw.data || []) {
+    const loc = college.location;
+    const locationStr = loc ? [loc.city, loc.state].filter(Boolean).join(', ') : '';
+    const collegeState = (loc?.state || '').toLowerCase();
+    const userState = _lastUserState.toLowerCase();
 
-      if (chance === 'high') high++;
-      else if (chance === 'medium') medium++;
-      else low++;
+    for (const cut of college.matchingCutoffs || []) {
+      const cutQuota = cut.quota || 'AI';
 
-      const loc = college.location;
-      const locationStr = loc ? [loc.city, loc.state].filter(Boolean).join(', ') : '';
+      // Filter HS/OS by college state vs user state
+      if (cutQuota === 'HS' && userState && collegeState !== userState) continue;
+      if (cutQuota === 'OS' && userState && collegeState === userState) continue;
+
+      const closingRank = cut.closing || 0;
+      const chance = _lastUserRank > 0 ? calculateChance(_lastUserRank, closingRank) : 'medium';
+      const { instType, abbrev } = getInstType(college.name || '', college.type || '');
+      const quotaLabel = QUOTA_MAP[cutQuota] || 'All India';
 
       colleges.push({
-        id: `${college.name}-${branch.branch}-${branch.quota}-${branch.closingRank}`,
+        id: `${college._id}-${cut.branch}-${closingRank}-${cut.category}-${cutQuota}`,
         collegeName: college.name || 'Unknown College',
         location: locationStr,
         nirfRank: college.nirfRank,
-        course: branch.branch || 'General',
-        quota: branch.quota || 'All India',
-        closingRank: branch.closingRank || 0,
+        course: cut.branch || 'General',
+        quota: quotaLabel,
+        closingRank,
         chance,
-        institutionType: college.type || 'Other',
-        institutionAbbrev: getAbbrev(college.type || ''),
+        institutionType: instType,
+        institutionAbbrev: abbrev,
       });
     }
   }
 
-  // Sort by chance (High first) then by closing rank
+  // Sort by chance (high first) then closing rank
   colleges.sort((a, b) => {
-    const chanceOrder = { high: 1, medium: 2, low: 3 };
-    const chanceDiff = chanceOrder[a.chance] - chanceOrder[b.chance];
-    if (chanceDiff !== 0) return chanceDiff;
-    return (a.closingRank || 0) - (b.closingRank || 0);
+    const o = { high: 1, medium: 2, low: 3 };
+    const d = o[a.chance] - o[b.chance];
+    return d !== 0 ? d : (a.closingRank || 0) - (b.closingRank || 0);
   });
 
   return {
-    success: raw.success ?? false,
+    success: raw.success,
     totalResults: colleges.length,
     colleges,
-    summary: { high, medium, low },
+    summary: {
+      high: colleges.filter(c => c.chance === 'high').length,
+      medium: colleges.filter(c => c.chance === 'medium').length,
+      low: colleges.filter(c => c.chance === 'low').length,
+    },
   };
 }
+
+// ─── JEE Main Config ──────────────────────────────────────────────────
 
 export const jeeConfig: PredictorConfig = {
   examName: 'JEE Main',
@@ -129,33 +154,39 @@ export const jeeConfig: PredictorConfig = {
       { label: 'Other State Quota', value: 'Other State', defaultChecked: false },
     ],
     institutionTypes: [
-      { label: 'IITs', value: 'IIT', defaultChecked: true },
       { label: 'NITs', value: 'NIT', defaultChecked: true },
       { label: 'IIITs', value: 'IIIT', defaultChecked: true },
-      { label: 'GFTIs', value: 'GFTI', defaultChecked: false },
+      { label: 'GFTIs', value: 'GFTI', defaultChecked: true },
+      { label: 'Private / Deemed', value: 'PVT', defaultChecked: false },
     ],
     branchInterests: [
       { label: 'Computer Science', value: 'Computer', defaultChecked: true },
       { label: 'Electronics', value: 'Electron', defaultChecked: false },
       { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
+      { label: 'Civil', value: 'Civil', defaultChecked: false },
+      { label: 'Electrical', value: 'Electric', defaultChecked: false },
     ],
   },
 
   apiConfig: {
-    predictEndpoint: '/predictor/jee-main',
-    predictMethod: 'POST',
-    buildRequestPayload: (input) => ({
-      rank: input.value,
-      category: input.category,
-      homeState: input.homeState,
-      gender: input.gender,
-    }),
-    parseResponse: parseJEEResponse,
+    predictEndpoint: '/colleges/predict',
+    predictMethod: 'GET',
+    buildRequestPayload: (input) => {
+      _lastUserRank = input.value;
+      _lastUserState = input.homeState || '';
+      return {
+        rank: input.value,
+        exam: 'JEE Main',
+        category: input.category,
+        state: input.homeState,
+      };
+    },
+    parseResponse,
   },
 
   sortOptions: [
-    { label: 'Closing Rank (Low to High)', value: 'closingRank' },
     { label: 'Admission Chance', value: 'chance' },
+    { label: 'Closing Rank (Low to High)', value: 'closingRank' },
     { label: 'NIRF Rank', value: 'nirfRank' },
   ],
 

@@ -6,139 +6,138 @@ const INDIAN_STATES = [
   'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
   'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
   'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
-  'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi',
-  'Jammu and Kashmir', 'Puducherry',
+  'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi', 'Jammu and Kashmir',
+  'Ladakh', 'Chandigarh', 'Puducherry', 'Andaman and Nicobar Islands',
 ];
 
-const SECTION_ABBREV: Record<string, string> = {
-  AIIMS: 'AIIMS',
-  JIPMER: 'JIPMER',
-  Government_Medical: 'GMC',
-  Private_Medical: 'PVT',
-  Dental: 'BDS',
+// ─── Shared parsing helpers ───────────────────────────────────────────
+
+interface CollegeRaw {
+  _id?: string;
+  name?: string;
+  location?: { city?: string; state?: string };
+  type?: string;
+  nirfRank?: number;
+  matchingCutoffs?: Array<{
+    branch?: string;
+    closing?: number;
+    category?: string;
+    quota?: string;
+  }>;
+}
+
+interface RawResponse {
+  success: boolean;
+  data?: CollegeRaw[];
+  count?: number;
+}
+
+function getMedType(name: string, type: string): { instType: string; abbrev: string } {
+  const n = (name || '').toLowerCase();
+  const t = (type || '').toLowerCase();
+  if (n.includes('aiims') || n.includes('all india institute of medical')) return { instType: 'AIIMS', abbrev: 'AIIMS' };
+  if (n.includes('jipmer')) return { instType: 'JIPMER', abbrev: 'JIPMER' };
+  if (n.includes('pgimer')) return { instType: 'PGIMER', abbrev: 'PGI' };
+  if (n.includes('nimhans')) return { instType: 'NIMHANS', abbrev: 'NIM' };
+  if (t.includes('private') || t.includes('deemed')) return { instType: 'Private', abbrev: 'PVT' };
+  return { instType: 'Govt Medical', abbrev: 'GMC' };
+}
+
+function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+  if (!closingRank || closingRank === 0) return 'medium';
+  if (closingRank > userRank * 1.2) return 'high';
+  if (closingRank >= userRank * 0.85) return 'medium';
+  return 'low';
+}
+
+const QUOTA_MAP: Record<string, string> = {
+  AI: 'All India',
+  HS: 'Home State',
+  OS: 'Other State',
 };
 
-interface NEETCollegeEntry {
-  college_name: string;
-  course?: string;
-  quota?: string;
-  ownership?: string;
-  last_year_cutoff?: number;
-  fees?: string;
-  state?: string;
-  city?: string;
-}
+let _lastScore = 0;
+let _lastRank = 0;
+let _lastUserState = '';
 
-interface NEETChanceGroup {
-  good_chances?: NEETCollegeEntry[];
-  may_get?: NEETCollegeEntry[];
-  tough_chances?: NEETCollegeEntry[];
-}
-
-interface NEETRawResponse {
-  success: boolean;
-  predictionId?: string;
-  input?: { score?: number; category?: string; homeState?: string; gender?: string };
-  estimated_rank?: number;
-  aiimsEligibility?: Record<string, unknown>;
-  summary?: { good_chances?: number; may_get?: number; tough_chances?: number };
-  results?: Record<string, NEETChanceGroup>;
-  predictor_status?: { powered_by?: string; model?: string };
-}
-
-function flattenSection(
-  sectionName: string,
-  sectionData: NEETChanceGroup,
-  out: FlatCollege[]
-): { high: number; medium: number; low: number } {
-  let high = 0;
-  let medium = 0;
-  let low = 0;
-  const abbrev = SECTION_ABBREV[sectionName] || sectionName.slice(0, 3).toUpperCase();
-
-  let entryIndex = 0;
-  const mapEntry = (entry: NEETCollegeEntry, chance: FlatCollege['chance']): FlatCollege => {
-    const collegeName = entry.college_name || 'Unknown College';
-    const courseName = entry.course || 'MBBS';
-    const cutoff = entry.last_year_cutoff || 0;
-    entryIndex++;
-    return {
-      id: `${collegeName.toLowerCase().replace(/\s+/g, '-')}-${courseName.toLowerCase().replace(/\s+/g, '-')}-${chance}-${cutoff}-${entryIndex}`,
-      collegeName,
-      location: [entry.city, entry.state].filter(Boolean).join(', '),
-      course: courseName,
-      quota: entry.quota || 'All India',
-      closingRank: cutoff,
-      chance,
-      institutionType: sectionName,
-      institutionAbbrev: abbrev,
-    };
-  };
-
-  for (const e of sectionData.good_chances || []) {
-    out.push(mapEntry(e, 'high'));
-    high++;
-  }
-  for (const e of sectionData.may_get || []) {
-    out.push(mapEntry(e, 'medium'));
-    medium++;
-  }
-  for (const e of sectionData.tough_chances || []) {
-    out.push(mapEntry(e, 'low'));
-    low++;
-  }
-
-  return { high, medium, low };
+// Estimate NEET rank from score
+function scoreToRank(score: number): number {
+  if (score >= 715) return Math.max(1, Math.floor((720 - score) * 10));
+  if (score >= 700) return Math.floor((720 - score) * 200) + 50;
+  if (score >= 680) return Math.floor((700 - score) * 500) + 2000;
+  if (score >= 650) return Math.floor((680 - score) * 1000) + 12000;
+  if (score >= 600) return Math.floor((650 - score) * 1500) + 42000;
+  if (score >= 550) return Math.floor((600 - score) * 2000) + 117000;
+  if (score >= 500) return Math.floor((550 - score) * 3000) + 217000;
+  return Math.floor((500 - score) * 5000) + 367000;
 }
 
 function parseNEETResponse(data: Record<string, unknown>): NormalizedPrediction {
-  const raw = data as unknown as NEETRawResponse;
+  const raw = data as unknown as RawResponse;
   const colleges: FlatCollege[] = [];
-  let totalHigh = 0;
-  let totalMedium = 0;
-  let totalLow = 0;
+  const userRank = _lastRank > 0 ? _lastRank : scoreToRank(_lastScore);
 
-  if (raw.results) {
-    for (const [section, sectionData] of Object.entries(raw.results)) {
-      const counts = flattenSection(section, sectionData as NEETChanceGroup, colleges);
-      totalHigh += counts.high;
-      totalMedium += counts.medium;
-      totalLow += counts.low;
+  for (const college of raw.data || []) {
+    const loc = college.location;
+    const locationStr = loc ? [loc.city, loc.state].filter(Boolean).join(', ') : '';
+    const collegeState = (loc?.state || '').toLowerCase();
+    const userState = _lastUserState.toLowerCase();
+
+    for (const cut of college.matchingCutoffs || []) {
+      const cutQuota = cut.quota || 'AI';
+      if (cutQuota === 'HS' && userState && collegeState !== userState) continue;
+      if (cutQuota === 'OS' && userState && collegeState === userState) continue;
+
+      const closingRank = cut.closing || 0;
+      const chance = userRank > 0 ? calculateChance(userRank, closingRank) : 'medium';
+      const { instType, abbrev } = getMedType(college.name || '', college.type || '');
+      const quotaLabel = QUOTA_MAP[cutQuota] || 'All India';
+
+      colleges.push({
+        id: `${college._id}-${cut.branch}-${closingRank}-${cutQuota}`,
+        collegeName: college.name || 'Unknown College',
+        location: locationStr,
+        nirfRank: college.nirfRank,
+        course: cut.branch || 'MBBS',
+        quota: quotaLabel,
+        closingRank,
+        chance,
+        institutionType: instType,
+        institutionAbbrev: abbrev,
+      });
     }
   }
 
   colleges.sort((a, b) => {
-    const chanceOrder = { high: 1, medium: 2, low: 3 };
-    const chanceDiff = chanceOrder[a.chance] - chanceOrder[b.chance];
-    if (chanceDiff !== 0) return chanceDiff;
-    return (a.closingRank || 0) - (b.closingRank || 0);
+    const o = { high: 1, medium: 2, low: 3 };
+    const d = o[a.chance] - o[b.chance];
+    return d !== 0 ? d : (a.closingRank || 0) - (b.closingRank || 0);
   });
 
   return {
     success: raw.success,
-    predictionId: raw.predictionId,
     totalResults: colleges.length,
     colleges,
     summary: {
-      high: raw.summary?.good_chances ?? totalHigh,
-      medium: raw.summary?.may_get ?? totalMedium,
-      low: raw.summary?.tough_chances ?? totalLow,
+      high: colleges.filter(c => c.chance === 'high').length,
+      medium: colleges.filter(c => c.chance === 'medium').length,
+      low: colleges.filter(c => c.chance === 'low').length,
     },
-    estimatedRank: raw.estimated_rank,
-    additionalInfo: raw.aiimsEligibility ? { aiimsEligibility: raw.aiimsEligibility } : undefined,
   };
 }
+
+// ─── NEET Config ──────────────────────────────────────────────────────
 
 export const neetConfig: PredictorConfig = {
   examName: 'NEET UG',
   examSlug: 'neet-ug',
   year: 2026,
-  pageTitle: 'NEET College Predictor 2026',
-  pageSubtitle: 'Based on previous year NEET cutoffs & counselling data',
+  pageTitle: 'NEET UG College Predictor 2026',
+  pageSubtitle: 'Based on previous year NEET counselling cutoff data',
 
   inputConfig: {
-    label: 'NEET-UG Score',
-    placeholder: 'Enter Score (e.g. 580)',
+    label: 'NEET Score (out of 720)',
+    placeholder: 'Enter Score (e.g. 650)',
     type: 'score',
     min: 0,
     max: 720,
@@ -146,12 +145,12 @@ export const neetConfig: PredictorConfig = {
     validationMessage: 'Please enter a valid NEET Score (0 - 720)',
   },
 
-  categories: ['General', 'OBC', 'SC', 'ST', 'EWS'],
+  categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
 
   steps: [
-    { number: 1, label: 'Exam Details' },
+    { number: 1, label: 'NEET Score' },
     { number: 2, label: 'Category & State' },
     { number: 3, label: 'Recommendations' },
   ],
@@ -159,39 +158,42 @@ export const neetConfig: PredictorConfig = {
   sidebarFilters: {
     quotaTypes: [
       { label: 'All India Quota', value: 'All India', defaultChecked: true },
-      { label: 'State Quota', value: 'State', defaultChecked: false },
-      { label: 'Management Quota', value: 'Management', defaultChecked: false },
+      { label: 'Home State Quota', value: 'Home State', defaultChecked: false },
+      { label: 'Other State Quota', value: 'Other State', defaultChecked: false },
     ],
     institutionTypes: [
+      { label: 'Govt Medical Colleges', value: 'Govt', defaultChecked: true },
       { label: 'AIIMS', value: 'AIIMS', defaultChecked: true },
-      { label: 'JIPMER', value: 'JIPMER', defaultChecked: true },
-      { label: 'Govt. Medical Colleges', value: 'Government_Medical', defaultChecked: true },
-      { label: 'Private Medical', value: 'Private_Medical', defaultChecked: false },
-      { label: 'Dental (BDS)', value: 'Dental', defaultChecked: false },
+      { label: 'JIPMER / PGIMER', value: 'JIPMER', defaultChecked: true },
+      { label: 'Private Medical', value: 'Private', defaultChecked: true },
     ],
     branchInterests: [
       { label: 'MBBS', value: 'MBBS', defaultChecked: true },
-      { label: 'BDS', value: 'BDS', defaultChecked: false },
-      { label: 'BAMS / BHMS', value: 'BAMS,BHMS', defaultChecked: false },
+      { label: 'BDS', value: 'BDS', defaultChecked: true },
     ],
   },
 
   apiConfig: {
-    predictEndpoint: '/predictor/neet-predict',
-    predictMethod: 'POST',
-    buildRequestPayload: (input) => ({
-      score: input.value,
-      category: input.category,
-      homeState: input.homeState,
-      gender: input.gender,
-    }),
+    predictEndpoint: '/colleges/predict',
+    predictMethod: 'GET',
+    buildRequestPayload: (input) => {
+      _lastScore = input.value;
+      _lastRank = scoreToRank(input.value);
+      _lastUserState = input.homeState || '';
+      return {
+        rank: scoreToRank(input.value),
+        exam: 'NEET',
+        category: input.category,
+        state: input.homeState,
+      };
+    },
     parseResponse: parseNEETResponse,
-    loadPredictionEndpoint: '/predictor/neet-prediction',
   },
 
   sortOptions: [
-    { label: 'Cutoff Rank (Low to High)', value: 'closingRank' },
     { label: 'Admission Chance', value: 'chance' },
+    { label: 'Closing Rank (Low to High)', value: 'closingRank' },
+    { label: 'NIRF Rank', value: 'nirfRank' },
   ],
 
   urlPath: '/predictors/neet-predictor',

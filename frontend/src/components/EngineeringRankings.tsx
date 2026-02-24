@@ -10,14 +10,14 @@ interface RankingCard {
 }
 
 const engineeringRankings: RankingCard[] = [
-    { title: 'Top Engineering Colleges in India', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top IITs in India', href: '/tools/colleges?search=Indian+Institute+of+Technology&sort=nirfRank' },
-    { title: 'Top NITs in India', href: '/tools/colleges?search=National+Institute+of+Technology&sort=nirfRank' },
-    { title: 'Top Government Engineering Colleges', href: '/tools/colleges?type=Government&sort=nirfRank' },
-    { title: 'Top Private Engineering Colleges', href: '/tools/colleges?type=Private&sort=nirfRank' },
-    { title: 'Top B.Tech Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Computer Science Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Mechanical Engineering Colleges', href: '/tools/colleges?sort=nirfRank' },
+    { title: 'Top Engineering Colleges in India', href: '/tools/colleges?stream=Engineering&sort=nirfRank' },
+    { title: 'Top IITs in India', href: '/tools/colleges?stream=Engineering&search=Indian+Institute+of+Technology&sort=nirfRank' },
+    { title: 'Top NITs in India', href: '/tools/colleges?stream=Engineering&search=National+Institute+of+Technology&sort=nirfRank' },
+    { title: 'Top Government Engineering Colleges', href: '/tools/colleges?stream=Engineering&ownership=Government&sort=nirfRank' },
+    { title: 'Top Private Engineering Colleges', href: '/tools/colleges?stream=Engineering&ownership=Private&sort=nirfRank' },
+    { title: 'Top B.Tech Colleges', href: '/tools/colleges?stream=Engineering&search=B.Tech&sort=nirfRank' },
+    { title: 'Top Computer Science Colleges', href: '/tools/colleges?stream=Engineering&search=Computer+Science&sort=nirfRank' },
+    { title: 'Top Mechanical Engineering Colleges', href: '/tools/colleges?stream=Engineering&search=Mechanical&sort=nirfRank' },
 ];
 
 const EngineeringRankings: React.FC = () => {
@@ -29,8 +29,8 @@ const EngineeringRankings: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                         Top Engineering Rankings
                     </h2>
-                    <Link 
-                        href="/tools/colleges?search=Engineering&sort=nirfRank" 
+                    <Link
+                        href="/tools/colleges?search=Engineering&sort=nirfRank"
                         className="flex items-center gap-2 text-primary hover:text-secondary font-semibold text-sm transition-colors"
                     >
                         View All

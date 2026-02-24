@@ -10,55 +10,77 @@ const INDIAN_STATES = [
   'Jammu and Kashmir', 'Puducherry',
 ];
 
-interface CUETCollegeRaw {
+// ─── Shared parsing ───────────────────────────────────────────────────
+
+interface CollegeRaw {
+  _id?: string;
   name?: string;
   location?: { city?: string; state?: string };
   type?: string;
   nirfRank?: number;
-  admissions?: Array<{
-    exam?: string;
-    cutoff?: number;
+  matchingCutoffs?: Array<{
+    branch?: string;
+    closing?: number;
     category?: string;
-    course?: string;
+    quota?: string;
   }>;
-  slug?: string;
 }
 
-interface CUETRawResponse {
+interface RawResponse {
   success: boolean;
-  data?: CUETCollegeRaw[];
+  data?: CollegeRaw[];
   count?: number;
 }
 
+function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+  if (!closingRank || closingRank === 0) return 'medium';
+  if (closingRank > userRank * 1.2) return 'high';
+  if (closingRank >= userRank * 0.85) return 'medium';
+  return 'low';
+}
+
+const QUOTA_MAP: Record<string, string> = { AI: 'All India', HS: 'Home State', OS: 'Other State' };
+
+let _lastUserRank = 0;
+let _lastUserState = '';
+
 function parseCUETResponse(data: Record<string, unknown>): NormalizedPrediction {
-  const raw = data as unknown as CUETRawResponse;
+  const raw = data as unknown as RawResponse;
   const colleges: FlatCollege[] = [];
 
   for (const college of raw.data || []) {
     const loc = college.location;
     const locationStr = loc ? [loc.city, loc.state].filter(Boolean).join(', ') : '';
+    const collegeState = (loc?.state || '').toLowerCase();
+    const userState = _lastUserState.toLowerCase();
 
-    // Each college may have multiple admission entries
-    for (const adm of college.admissions || []) {
-      const cutoff = adm.cutoff || 0;
-      // Simple chance heuristic — same logic as backend
-      const chance: FlatCollege['chance'] = 'high'; // Data returned means within acceptable range
+    for (const cut of college.matchingCutoffs || []) {
+      const cutQuota = cut.quota || 'AI';
+      if (cutQuota === 'HS' && userState && collegeState !== userState) continue;
+      if (cutQuota === 'OS' && userState && collegeState === userState) continue;
 
-      const collegeName = college.name || 'Unknown University';
-      const courseName = adm.course || 'General Programme';
-      const categoryName = adm.category || 'General';
+      const closingRank = cut.closing || 0;
+      const chance = _lastUserRank > 0 ? calculateChance(_lastUserRank, closingRank) : 'medium';
+      const quotaLabel = QUOTA_MAP[cutQuota] || 'All India';
+
+      const t = (college.type || '').toLowerCase();
+      let instType = 'University';
+      let abbrev = 'UNI';
+      if (t.includes('central')) { instType = 'Central University'; abbrev = 'CU'; }
+      else if (t.includes('state')) { instType = 'State University'; abbrev = 'SU'; }
+      else if (t.includes('private') || t.includes('deemed')) { instType = 'Private'; abbrev = 'PVT'; }
 
       colleges.push({
-        id: `${collegeName.toLowerCase().replace(/\s+/g, '-')}-${courseName.toLowerCase().replace(/\s+/g, '-')}-${categoryName.toLowerCase().replace(/\s+/g, '-')}`,
-        collegeName,
+        id: `${college._id}-${cut.branch}-${closingRank}-${cutQuota}`,
+        collegeName: college.name || 'Unknown University',
         location: locationStr,
         nirfRank: college.nirfRank,
-        course: courseName,
-        quota: categoryName,
-        closingRank: cutoff,
+        course: cut.branch || 'General Programme',
+        quota: quotaLabel,
+        closingRank,
         chance,
-        institutionType: college.type || 'Central University',
-        institutionAbbrev: (college.type || 'CU').slice(0, 3).toUpperCase(),
+        institutionType: instType,
+        institutionAbbrev: abbrev,
       });
     }
   }
@@ -70,12 +92,14 @@ function parseCUETResponse(data: Record<string, unknown>): NormalizedPrediction 
     totalResults: colleges.length,
     colleges,
     summary: {
-      high: colleges.filter((c) => c.chance === 'high').length,
-      medium: colleges.filter((c) => c.chance === 'medium').length,
-      low: colleges.filter((c) => c.chance === 'low').length,
+      high: colleges.filter(c => c.chance === 'high').length,
+      medium: colleges.filter(c => c.chance === 'medium').length,
+      low: colleges.filter(c => c.chance === 'low').length,
     },
   };
 }
+
+// ─── CUET Config ──────────────────────────────────────────────────────
 
 export const cuetConfig: PredictorConfig = {
   examName: 'CUET UG',
@@ -125,12 +149,16 @@ export const cuetConfig: PredictorConfig = {
   apiConfig: {
     predictEndpoint: '/colleges/predict',
     predictMethod: 'GET',
-    buildRequestPayload: (input) => ({
-      rank: input.value,
-      exam: 'CUET',
-      category: input.category,
-      state: input.homeState,
-    }),
+    buildRequestPayload: (input) => {
+      _lastUserRank = input.value;
+      _lastUserState = input.homeState || '';
+      return {
+        rank: input.value,
+        exam: 'CUET',
+        category: input.category,
+        state: input.homeState,
+      };
+    },
     parseResponse: parseCUETResponse,
   },
 

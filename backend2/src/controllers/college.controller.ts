@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import College from '../models/College';
+import { generateCollegeContent, validatePlacementStats } from '../services/collegeAI';
 
 // @desc    Get all colleges with filters and pagination
 // @route   GET /api/colleges
@@ -27,17 +28,46 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         // Search
         if (search) {
             const searchTerm = search as string;
-            const isAcronym = /^[A-Z]{2,4}$/.test(searchTerm);
-            const regex = isAcronym ? `\\b${searchTerm}\\b` : searchTerm;
+            const isAcronym = /^[A-Z]{2,6}$/i.test(searchTerm.trim());
 
-            conditions.push({
-                $or: [
-                    { name: { $regex: regex, $options: 'i' } },
-                    { 'location.city': { $regex: regex, $options: 'i' } },
-                    { 'location.state': { $regex: regex, $options: 'i' } },
-                    { aisheCode: { $regex: searchTerm, $options: 'i' } }
-                ]
-            });
+            // Acronym expansion map for common college abbreviations
+            const acronymExpansions: Record<string, string> = {
+                'IIM': 'Indian Institute of Management',
+                'IIT': 'Indian Institute of Technology',
+                'NIT': 'National Institute of Technology',
+                'IIIT': 'Indian Institute of Information Technology',
+                'NLU': 'National Law University',
+                'AIIMS': 'All India Institute of Medical Sciences',
+                'BITS': 'Birla Institute of Technology and Science',
+                'NIFT': 'National Institute of Fashion Technology',
+                'NID': 'National Institute of Design',
+            };
+
+            const upperTerm = searchTerm.trim().toUpperCase();
+            const expansion = acronymExpansions[upperTerm];
+
+            if (expansion) {
+                // Search for both the acronym (word-bounded) and the expanded name
+                conditions.push({
+                    $or: [
+                        { name: { $regex: `\\b${searchTerm}\\b`, $options: 'i' } },
+                        { name: { $regex: expansion, $options: 'i' } },
+                        { 'location.city': { $regex: searchTerm, $options: 'i' } },
+                        { 'location.state': { $regex: searchTerm, $options: 'i' } },
+                        { aisheCode: { $regex: searchTerm, $options: 'i' } }
+                    ]
+                });
+            } else {
+                const regex = isAcronym ? `\\b${searchTerm}\\b` : searchTerm;
+                conditions.push({
+                    $or: [
+                        { name: { $regex: regex, $options: 'i' } },
+                        { 'location.city': { $regex: regex, $options: 'i' } },
+                        { 'location.state': { $regex: regex, $options: 'i' } },
+                        { aisheCode: { $regex: searchTerm, $options: 'i' } }
+                    ]
+                });
+            }
         }
 
         // Filters
@@ -55,15 +85,15 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
         if (stream) {
             const streamArray = (stream as string).split(',');
             const streamKeywords: Record<string, string[]> = {
-                'Management': ['Management', 'Business', 'MBA', 'IIM', 'PGDM', 'BBA', 'FMS', 'XLRI'],
-                'Engineering': ['Engineering', 'Technology', 'B.Tech', 'IIT', 'NIT', 'IIIT'],
-                'Medicine': ['Medical', 'Medicine', 'AIIMS', 'MBBS', 'Dental', 'Nursing'],
-                'Law': ['Law', 'Legal', 'NLU', 'LLB', 'LLM'],
+                'Management': ['Management', 'Business', 'PGDM', 'Indian Institute of Management', 'FMS', 'XLRI'],
+                'Engineering': ['Engineering', 'Technology', 'B.Tech', 'Indian Institute of Technology', 'National Institute of Technology', 'Indian Institute of Information Technology'],
+                'Medicine': ['Medical', 'Medicine', 'All India Institute of Medical Sciences', 'MBBS', 'Dental', 'Nursing'],
+                'Law': ['Law', 'Legal', 'National Law University', 'LLB', 'LLM'],
                 'Pharmacy': ['Pharmacy', 'Pharma'],
                 'Science': ['Science', 'Research'],
                 'Commerce': ['Commerce', 'Economics', 'Finance'],
                 'Arts': ['Arts', 'Humanities'],
-                'Design': ['Design', 'NID', 'NIFT'],
+                'Design': ['Design', 'National Institute of Design', 'National Institute of Fashion Technology'],
                 'Education': ['Education', 'B.Ed'],
                 'Hospitality': ['Hospitality', 'Hotel'],
                 'Media': ['Media', 'Journalism'],
@@ -72,7 +102,10 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
             };
 
             const allKeywords = streamArray.flatMap(s => streamKeywords[s] || [s]);
-            const streamRegex = new RegExp(allKeywords.join('|'), 'i');
+            // Wrap each keyword with word boundaries to prevent partial matches
+            // e.g. \bMBA\b won't match inside "Mumbai" or "Bombay"
+            const boundedKeywords = allKeywords.map(k => `\\b${k}\\b`);
+            const streamRegex = new RegExp(boundedKeywords.join('|'), 'i');
 
             conditions.push({
                 $or: [
@@ -259,7 +292,7 @@ export const searchColleges = async (req: Request, res: Response): Promise<void>
 // @access  Public
 export const predictCollegesSimple = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { rank, category, state, exam } = req.query;
+        const { rank, category, state, exam, quota } = req.query;
 
         if (!rank) {
             res.status(400).json({ success: false, message: 'Please provide a rank' });
@@ -267,19 +300,42 @@ export const predictCollegesSimple = async (req: Request, res: Response): Promis
         }
 
         const rankNum = Number(rank);
+        const examStr = (exam as string) || 'JEE Main';
+        const categoryStr = (category as string) || 'General';
+        const stateStr = (state as string) || '';
+        const quotaStr = (quota as string) || ''; // AI, HS, OS or empty for all
 
-        // Basic logic: Find colleges where cutoff for the category is >= user rank
-        // This is a simplified version. Real prediction is complex.
-        const colleges = await College.aggregate([
+        // Wide range: find colleges where closing rank is between 0.5x and 2.5x of user rank
+        const lowerBound = Math.floor(rankNum * 0.5);
+        const upperBound = Math.ceil(rankNum * 2.5);
+
+        // Build cutoff match conditions
+        const cutoffMatch: any = {
+            exam: examStr,
+            category: categoryStr,
+            closingRank: { $gte: lowerBound, $lte: upperBound }
+        };
+
+        // If specific quota requested, add it to the match
+        if (quotaStr) {
+            cutoffMatch.quota = quotaStr;
+        }
+
+        // Build location filter for state-based quota
+        const locationMatch: any = {};
+        if (quotaStr === 'HS' && stateStr) {
+            // Home State Quota: only show colleges in user's state
+            locationMatch['location.state'] = { $regex: new RegExp(stateStr, 'i') };
+        } else if (quotaStr === 'OS' && stateStr) {
+            // Other State Quota: only show colleges NOT in user's state
+            locationMatch['location.state'] = { $not: { $regex: new RegExp(stateStr, 'i') } };
+        }
+
+        const pipeline: any[] = [
             {
                 $match: {
-                    cutoffs: {
-                        $elemMatch: {
-                            exam: exam || 'JEE Advanced', // Default
-                            category: category || 'General',
-                            closingRank: { $gte: rankNum }
-                        }
-                    }
+                    ...locationMatch,
+                    cutoffs: { $elemMatch: cutoffMatch }
                 }
             },
             {
@@ -290,20 +346,48 @@ export const predictCollegesSimple = async (req: Request, res: Response): Promis
                             as: 'cutoff',
                             cond: {
                                 $and: [
-                                    { $eq: ['$$cutoff.exam', exam || 'JEE Advanced'] },
-                                    { $eq: ['$$cutoff.category', category || 'General'] },
-                                    { $gte: ['$$cutoff.closingRank', rankNum] }
+                                    { $eq: ['$$cutoff.exam', examStr] },
+                                    { $eq: ['$$cutoff.category', categoryStr] },
+                                    { $gte: ['$$cutoff.closingRank', lowerBound] },
+                                    { $lte: ['$$cutoff.closingRank', upperBound] },
+                                    ...(quotaStr ? [{ $eq: ['$$cutoff.quota', quotaStr] }] : [])
                                 ]
                             }
                         }
                     }
                 }
             },
-            { $limit: 20 }
-        ]);
+            {
+                $project: {
+                    _id: 1,
+                    name: 1,
+                    slug: 1,
+                    location: 1,
+                    type: 1,
+                    nirfRank: 1,
+                    matchingCutoffs: {
+                        $map: {
+                            input: '$matchingCutoffs',
+                            as: 'c',
+                            in: {
+                                branch: '$$c.branch',
+                                closing: '$$c.closingRank',
+                                category: '$$c.category',
+                                quota: { $ifNull: ['$$c.quota', 'AI'] },
+                                year: '$$c.year'
+                            }
+                        }
+                    }
+                }
+            },
+            { $limit: 100 }
+        ];
+
+        const colleges = await College.aggregate(pipeline);
 
         res.status(200).json({
             success: true,
+            count: colleges.length,
             data: colleges
         });
     } catch (error: any) {
@@ -345,6 +429,24 @@ export const compareColleges = async (req: Request, res: Response): Promise<void
 export const createCollege = async (req: Request, res: Response): Promise<void> => {
     try {
         const college = await College.create(req.body);
+
+        // Fire-and-forget AI content generation (non-blocking)
+        if (process.env.OPENAI_API_KEY) {
+            generateCollegeContent(college)
+                .then(async (aiContent) => {
+                    const stats = validatePlacementStats(aiContent.placementStats);
+                    aiContent.placementStats = stats;
+                    await College.findByIdAndUpdate(college._id, {
+                        aiContent,
+                        aiGenerated: true,
+                        aiGeneratedAt: new Date()
+                    });
+                    console.log(`AI content generated for: ${college.name}`);
+                })
+                .catch((err) => {
+                    console.error(`AI generation failed for ${college.name}: ${err.message}`);
+                });
+        }
 
         res.status(201).json({
             success: true,
@@ -439,3 +541,47 @@ export const getCollegeById = async (req: Request, res: Response): Promise<void>
     }
 };
 
+// @desc    Generate AI content for a college
+// @route   POST /api/colleges/:id/generate-ai
+// @access  Private/Admin
+export const generateAIContent = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const college = await College.findById(req.params.id);
+
+        if (!college) {
+            res.status(404).json({ success: false, message: 'College not found' });
+            return;
+        }
+
+        // If already generated, return existing content
+        if (college.aiGenerated && college.aiContent) {
+            res.status(200).json({
+                success: true,
+                message: 'AI content already exists',
+                data: college.aiContent
+            });
+            return;
+        }
+
+        // Generate AI content
+        const aiContent = await generateCollegeContent(college);
+
+        // Validate placement stats
+        aiContent.placementStats = validatePlacementStats(aiContent.placementStats);
+
+        // Save to database
+        college.aiContent = aiContent;
+        college.aiGenerated = true;
+        college.aiGeneratedAt = new Date();
+        await college.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'AI content generated successfully',
+            data: aiContent
+        });
+    } catch (error: any) {
+        console.error(`AI content generation error: ${error.message}`);
+        res.status(500).json({ success: false, message: error.message });
+    }
+};

@@ -19,6 +19,7 @@ export interface ICutoff {
     category: string;
     closingRank: number;
     year: number;
+    quota?: string; // 'AI' (All India), 'HS' (Home State), 'OS' (Other State)
 }
 
 export interface IScholarship {
@@ -37,6 +38,31 @@ export interface IAdmissionProcess {
     step: number;
     title: string;
     description: string;
+}
+
+// AI Content interfaces
+export interface IPlacementStats {
+    averagePackage: number;
+    medianPackage: number;
+    highestPackage: number;
+    placementRate: number;
+}
+
+export interface IFAQ {
+    question: string;
+    answer: string;
+}
+
+export interface IAIContent {
+    description: string;
+    highlights: string[];
+    placements: string;
+    placementStats: IPlacementStats;
+    facilities: string[];
+    coursesSummary: string;
+    faqs: IFAQ[];
+    seoTitle: string;
+    seoDescription: string;
 }
 
 export interface ICollege extends Document {
@@ -65,15 +91,19 @@ export interface ICollege extends Document {
     importantDates: IImportantDate[];
     admissionProcess: IAdmissionProcess[];
     requiredDocuments: string[];
-    // New fields from AISHE Excel data
+    // AISHE Excel data
     aisheCode?: string;
     yearOfEstablishment?: string;
     collegeType?: string;
     management?: string;
     universityName?: string;
     universityType?: string;
-    institutionCategory?: string; // 'College' | 'Standalone' | 'University'
-    locationType?: string; // 'Rural' | 'Urban'
+    institutionCategory?: string;
+    locationType?: string;
+    // AI-generated content
+    aiContent?: IAIContent;
+    aiGenerated: boolean;
+    aiGeneratedAt?: Date;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -130,7 +160,8 @@ const collegeSchema = new Schema<ICollege>({
         branch: String,
         category: String,
         closingRank: Number,
-        year: Number
+        year: Number,
+        quota: { type: String, default: 'AI' }
     }],
     facilities: [String],
     scholarships: [{
@@ -153,15 +184,37 @@ const collegeSchema = new Schema<ICollege>({
         description: String
     }],
     requiredDocuments: [String],
-    // New fields from AISHE Excel data
+    // AISHE Excel data
     aisheCode: { type: String, index: true, sparse: true },
     yearOfEstablishment: String,
     collegeType: { type: String, index: true },
     management: { type: String, index: true },
     universityName: String,
     universityType: String,
-    institutionCategory: { type: String, index: true }, // 'College', 'Standalone', 'University'
-    locationType: String // 'Rural', 'Urban'
+    institutionCategory: { type: String, index: true },
+    locationType: String,
+    // AI-generated content
+    aiContent: {
+        description: String,
+        highlights: [String],
+        placements: String,
+        placementStats: {
+            averagePackage: Number,
+            medianPackage: Number,
+            highestPackage: Number,
+            placementRate: Number
+        },
+        facilities: [String],
+        coursesSummary: String,
+        faqs: [{
+            question: String,
+            answer: String
+        }],
+        seoTitle: String,
+        seoDescription: String
+    },
+    aiGenerated: { type: Boolean, default: false },
+    aiGeneratedAt: Date
 }, {
     timestamps: true
 });

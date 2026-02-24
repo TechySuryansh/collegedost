@@ -9,17 +9,23 @@ import RankTrend from '../models/RankTrend';
 // @access  Public
 export const predictByPercentile = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { percentile, category, homeState, gender, exam = 'JEE Main' } = req.body;
+        const { percentile, rank, category, homeState, gender, exam = 'JEE Main' } = req.body;
 
-        if (!percentile || !category || !homeState || !gender) {
-            res.status(400).json({ success: false, message: 'Please provide all details' });
+        if ((!percentile && !rank) || !category || !homeState || !gender) {
+            res.status(400).json({ success: false, message: 'Please provide all details (percentile or rank, category, homeState, gender)' });
             return;
         }
 
-        // Logic to calculate expected rank from percentile (approximate)
-        // Total candidates ~12 Lakhs
-        const totalCandidates = 1200000;
-        const expectedRank = Math.floor((100 - percentile) * totalCandidates / 100);
+        // If rank is directly provided, use it; otherwise calculate from percentile
+        let expectedRank: number;
+        if (rank) {
+            expectedRank = Number(rank);
+        } else {
+            // Logic to calculate expected rank from percentile (approximate)
+            // Total candidates ~12 Lakhs
+            const totalCandidates = 1200000;
+            expectedRank = Math.floor((100 - percentile) * totalCandidates / 100);
+        }
 
         // Fetch colleges based on cutoffs
         // We will categorize them into Good, May Get, Tough

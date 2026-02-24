@@ -54,5 +54,23 @@ export interface CollegeData {
     description?: string;
     city?: string;
     state?: string;
+    // AI-generated content
+    aiContent?: {
+        description: string;
+        highlights: string[];
+        placements: string;
+        placementStats: {
+            averagePackage: number;
+            medianPackage: number;
+            highestPackage: number;
+            placementRate: number;
+        };
+        facilities: string[];
+        coursesSummary: string;
+        faqs: { question: string; answer: string }[];
+        seoTitle: string;
+        seoDescription: string;
+    };
+    aiGenerated?: boolean;
+    aiGeneratedAt?: string;
 }
-

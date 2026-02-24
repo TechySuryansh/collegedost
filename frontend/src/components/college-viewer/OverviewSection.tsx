@@ -42,7 +42,9 @@ const OverviewSection: React.FC<OverviewSectionProps> = ({ college, sectionRef }
                 About {college.name.split(',')[0]}
             </h2>
             <div className="prose max-w-none text-text-muted-light text-sm leading-7">
-                {college.overview ? (
+                {college.aiContent?.description ? (
+                    <p>{college.aiContent.description}</p>
+                ) : college.overview ? (
                     <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(college.overview) }} />
                 ) : college.description ? (
                     <p>{college.description}</p>
@@ -54,6 +56,23 @@ const OverviewSection: React.FC<OverviewSectionProps> = ({ college, sectionRef }
                     </p>
                 )}
             </div>
+
+            {/* AI Highlights */}
+            {college.aiContent?.highlights && college.aiContent.highlights.length > 0 && (
+                <div className="mt-6">
+                    <h3 className="text-lg font-bold text-text-main-light mb-3 flex items-center gap-2">
+                        <span className="text-yellow-500">✨</span> Key Highlights
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {college.aiContent.highlights.map((highlight, idx) => (
+                            <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-gradient-to-r from-primary/5 to-transparent border border-primary/10">
+                                <span className="text-primary font-bold text-sm mt-0.5">✓</span>
+                                <span className="text-sm text-text-main-light">{highlight}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             {/* Website Link */}
             {college.website && (

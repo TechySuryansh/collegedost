@@ -21,6 +21,7 @@ interface GenericCollegeRaw {
     closing?: number;
     opening?: number;
     category?: string;
+    quota?: string;
   }>;
 }
 
@@ -30,53 +31,91 @@ interface GenericRawResponse {
   count?: number;
 }
 
-function getAbbrev(type: string): string {
+function getInstType(name: string, type: string): { instType: string; abbrev: string } {
+  const n = (name || '').toLowerCase();
   const t = (type || '').toLowerCase();
-  if (t.includes('iit') && !t.includes('iiit')) return 'IIT';
-  if (t.includes('iiit')) return 'IIIT';
-  if (t.includes('nit')) return 'NIT';
-  if (t.includes('gfti')) return 'GFTI';
-  if (t.includes('private') || t.includes('deemed')) return 'PVT';
-  return type?.slice(0, 3).toUpperCase() || 'COL';
+  if (n.includes('indian institute of technology') || (n.includes('iit') && !n.includes('iiit'))) return { instType: 'IIT', abbrev: 'IIT' };
+  if (n.includes('indian institute of information technology') || n.includes('iiit')) return { instType: 'IIIT', abbrev: 'IIIT' };
+  if (n.includes('national institute of technology') || n.startsWith('nit ')) return { instType: 'NIT', abbrev: 'NIT' };
+  if (n.includes('aiims') || n.includes('all india institute of medical')) return { instType: 'AIIMS', abbrev: 'AIIMS' };
+  if (n.includes('jipmer')) return { instType: 'JIPMER', abbrev: 'JIPMER' };
+  if (t.includes('private') || t.includes('deemed')) return { instType: 'Private', abbrev: 'PVT' };
+  if (t.includes('government')) return { instType: 'GFTI', abbrev: 'GFTI' };
+  return { instType: type || 'Other', abbrev: type?.slice(0, 3).toUpperCase() || 'COL' };
 }
 
 function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
   if (!closingRank || closingRank === 0) return 'medium';
-  const ratio = userRank / closingRank;
-  if (ratio <= 0.8) return 'high';
-  if (ratio <= 1.0) return 'medium';
+  // If closing rank > user rank * 1.2 → high chance (college accepts worse ranks)
+  // If closing rank is between rank * 0.85 and rank * 1.2 → medium chance
+  // If closing rank < rank * 0.85 → low chance (college is more competitive)
+  if (closingRank > userRank * 1.2) return 'high';
+  if (closingRank >= userRank * 0.85) return 'medium';
   return 'low';
 }
 
-function parseGenericResponse(data: Record<string, unknown>, userRank?: number): NormalizedPrediction {
+// Map backend quota codes to frontend filter labels
+const QUOTA_MAP: Record<string, string> = {
+  AI: 'All India',
+  HS: 'Home State',
+  OS: 'Other State',
+};
+
+// Store user input in module-level variables for parseResponse
+let _lastUserRank = 0;
+let _lastUserState = '';
+
+function parseGenericResponse(data: Record<string, unknown>): NormalizedPrediction {
   const raw = data as unknown as GenericRawResponse;
   const colleges: FlatCollege[] = [];
 
   for (const college of raw.data || []) {
     const loc = college.location;
     const locationStr = loc ? [loc.city, loc.state].filter(Boolean).join(', ') : '';
+    const collegeState = (loc?.state || '').toLowerCase();
+    const userState = _lastUserState.toLowerCase();
 
     for (const cut of college.matchingCutoffs || []) {
+      const cutQuota = cut.quota || 'AI';
+
+      // Filter HS/OS cutoffs based on the college's state vs user's state
+      if (cutQuota === 'HS' && userState && collegeState !== userState) {
+        // Skip Home State cutoffs for colleges NOT in user's state
+        continue;
+      }
+      if (cutQuota === 'OS' && userState && collegeState === userState) {
+        // Skip Other State cutoffs for colleges IN user's state
+        // (user would use HS quota for their own state)
+        continue;
+      }
+
       const closingRank = cut.closing || 0;
-      const chance = userRank ? calculateChance(userRank, closingRank) : 'high';
-      const categoryName = cut.category || 'General';
+      const chance = _lastUserRank > 0 ? calculateChance(_lastUserRank, closingRank) : 'medium';
+      const { instType, abbrev } = getInstType(college.name || '', college.type || '');
+      const quotaLabel = QUOTA_MAP[cutQuota] || 'All India';
 
       colleges.push({
-        id: `${college._id}-${cut.branch}-${closingRank}-${categoryName}`,
+        id: `${college._id}-${cut.branch}-${closingRank}-${cut.category}-${cutQuota}`,
         collegeName: college.name || 'Unknown College',
         location: locationStr,
         nirfRank: college.nirfRank,
         course: cut.branch || 'General',
-        quota: categoryName,
+        quota: quotaLabel,
         closingRank,
         chance,
-        institutionType: college.type || 'Other',
-        institutionAbbrev: getAbbrev(college.type || ''),
+        institutionType: instType,
+        institutionAbbrev: abbrev,
       });
     }
   }
 
-  colleges.sort((a, b) => (a.closingRank || 0) - (b.closingRank || 0));
+  // Sort by chance (high first) then by closing rank
+  colleges.sort((a, b) => {
+    const chanceOrder = { high: 1, medium: 2, low: 3 };
+    const chanceDiff = chanceOrder[a.chance] - chanceOrder[b.chance];
+    if (chanceDiff !== 0) return chanceDiff;
+    return (a.closingRank || 0) - (b.closingRank || 0);
+  });
 
   return {
     success: raw.success,
@@ -128,27 +167,36 @@ export const predictCollegesConfig: PredictorConfig = {
       { label: 'NITs', value: 'NIT', defaultChecked: true },
       { label: 'IIITs', value: 'IIIT', defaultChecked: true },
       { label: 'GFTIs', value: 'GFTI', defaultChecked: false },
+      { label: 'Private / Deemed', value: 'PVT', defaultChecked: false },
     ],
     branchInterests: [
       { label: 'Computer Science', value: 'Computer', defaultChecked: true },
       { label: 'Electronics', value: 'Electron', defaultChecked: false },
       { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
+      { label: 'Civil', value: 'Civil', defaultChecked: false },
+      { label: 'Electrical', value: 'Electric', defaultChecked: false },
     ],
   },
 
   apiConfig: {
     predictEndpoint: '/colleges/predict',
     predictMethod: 'GET',
-    buildRequestPayload: (input) => ({
-      rank: input.value,
-      exam: 'JEE Main',
-      category: input.category,
-      state: input.homeState,
-    }),
+    buildRequestPayload: (input) => {
+      // Store user input for the parseResponse function
+      _lastUserRank = input.value;
+      _lastUserState = input.homeState || '';
+      return {
+        rank: input.value,
+        exam: 'JEE Main',
+        category: input.category,
+        state: input.homeState,
+      };
+    },
     parseResponse: parseGenericResponse,
   },
 
   sortOptions: [
+    { label: 'Admission Chance', value: 'chance' },
     { label: 'Closing Rank (Low to High)', value: 'closingRank' },
     { label: 'NIRF Rank', value: 'nirfRank' },
   ],

@@ -9,7 +9,8 @@ import {
     updateCollege,
     deleteCollege,
     syncColleges,
-    getCollegeById
+    getCollegeById,
+    generateAIContent
 } from '../controllers/college.controller';
 
 
@@ -26,6 +27,7 @@ router.get('/predict', predictCollegesSimple);
 router.post('/compare', compareColleges);
 router.post('/sync', protect, authorize('admin'), syncColleges);
 router.get('/id/:id', getCollegeById);
+router.post('/:id/generate-ai', protect, authorize('admin'), generateAIContent);
 
 
 router.route('/:slug')

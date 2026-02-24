@@ -18,6 +18,7 @@ import GallerySection from './GallerySection';
 import ReviewsSection from './ReviewsSection';
 import CollegeSidebar from './CollegeSidebar';
 import GalleryLightbox from './GalleryLightbox';
+import AIContentSection from './AIContentSection';
 
 interface CollegeViewerProps {
     initialData?: CollegeData;
@@ -83,6 +84,7 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
         admission: useRef<HTMLDivElement>(null),
         placement: useRef<HTMLDivElement>(null),
         scholarship: useRef<HTMLDivElement>(null),
+        'ai-content': useRef<HTMLDivElement>(null),
         gallery: useRef<HTMLDivElement>(null),
         reviews: useRef<HTMLDivElement>(null),
     };
@@ -377,6 +379,7 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
         { id: 'admission', label: 'Admissions' },
         { id: 'placement', label: 'Placements' },
         { id: 'scholarship', label: 'Scholarships' },
+        ...(college.aiContent ? [{ id: 'ai-content', label: 'More Info' }] : []),
         { id: 'gallery', label: 'Gallery' },
         { id: 'reviews', label: 'Reviews' },
     ];
@@ -417,6 +420,9 @@ const CollegeViewer: React.FC<CollegeViewerProps> = ({ initialData }) => {
                         <AdmissionSection college={college} sectionRef={sectionRefs.admission} />
                         <PlacementsSection college={college} sectionRef={sectionRefs.placement} />
                         <ScholarshipsSection sectionRef={sectionRefs.scholarship} scrollToSection={scrollToSection} />
+                        {college.aiContent && (
+                            <AIContentSection college={college} sectionRef={sectionRefs['ai-content']} />
+                        )}
                         <GallerySection
                             college={college}
                             sectionRef={sectionRefs.gallery}

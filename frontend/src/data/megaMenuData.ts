@@ -64,7 +64,7 @@ const mbaMenu: MegaMenuItem = {
         {
           links: [
             { label: 'Top MBA Colleges in India', href: '/streams/management' },
-            { label: 'Top Private MBA Colleges in India', href: '/tools/colleges?search=MBA&type=Private' },
+            { label: 'Top Private MBA Colleges in India', href: '/tools/colleges?stream=Management&ownership=Private' },
             { label: 'Top MBA Colleges in Bangalore', href: '/tools/colleges?search=MBA&city=Bangalore' },
             { label: 'Top MBA Colleges in Mumbai', href: '/tools/colleges?search=MBA&city=Mumbai' },
             { label: 'Top MBA Colleges in Pune', href: '/tools/colleges?search=MBA&city=Pune' },
@@ -258,7 +258,7 @@ const engineeringMenu: MegaMenuItem = {
         {
           links: [
             { label: 'Top Engineering Colleges in India', href: '/streams/engineering' },
-            { label: 'Top Private Engineering Colleges in India', href: '/tools/colleges?search=Engineering&type=Private' },
+            { label: 'Top Private Engineering Colleges in India', href: '/tools/colleges?stream=Engineering&ownership=Private' },
             { label: 'Top IITs in India', href: '/tools/colleges?search=Indian+Institute+of+Technology' },
             { label: 'Top NITs in India', href: '/tools/colleges?search=National+Institute+of+Technology' },
             { label: 'Top Engineering Colleges in Bangalore', href: '/tools/colleges?search=Engineering&city=Bangalore' },

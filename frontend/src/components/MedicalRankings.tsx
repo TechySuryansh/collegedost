@@ -10,14 +10,14 @@ interface RankingCard {
 }
 
 const medicalRankings: RankingCard[] = [
-    { title: 'Top Medical Colleges in India', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top AIIMS in India', href: '/tools/colleges?search=AIIMS&sort=nirfRank' },
-    { title: 'Top MBBS Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Government Medical Colleges', href: '/tools/colleges?type=Government&sort=nirfRank' },
-    { title: 'Top Private Medical Colleges', href: '/tools/colleges?type=Private&sort=nirfRank' },
-    { title: 'Top Dental Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Pharmacy Colleges', href: '/tools/colleges?sort=nirfRank' },
-    { title: 'Top Nursing Colleges', href: '/tools/colleges?sort=nirfRank' },
+    { title: 'Top Medical Colleges in India', href: '/tools/colleges?stream=Medicine&sort=nirfRank' },
+    { title: 'Top AIIMS in India', href: '/tools/colleges?stream=Medicine&search=AIIMS&sort=nirfRank' },
+    { title: 'Top MBBS Colleges', href: '/tools/colleges?stream=Medicine&search=MBBS&sort=nirfRank' },
+    { title: 'Top Government Medical Colleges', href: '/tools/colleges?stream=Medicine&ownership=Government&sort=nirfRank' },
+    { title: 'Top Private Medical Colleges', href: '/tools/colleges?stream=Medicine&ownership=Private&sort=nirfRank' },
+    { title: 'Top Dental Colleges', href: '/tools/colleges?stream=Medicine&search=Dental&sort=nirfRank' },
+    { title: 'Top Pharmacy Colleges', href: '/tools/colleges?stream=Pharmacy&sort=nirfRank' },
+    { title: 'Top Nursing Colleges', href: '/tools/colleges?stream=Medicine&search=Nursing&sort=nirfRank' },
 ];
 
 const MedicalRankings: React.FC = () => {
@@ -29,8 +29,8 @@ const MedicalRankings: React.FC = () => {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                         Top Medical Rankings
                     </h2>
-                    <Link 
-                        href="/tools/colleges?search=Medical&sort=nirfRank" 
+                    <Link
+                        href="/tools/colleges?search=Medical&sort=nirfRank"
                         className="flex items-center gap-2 text-primary hover:text-secondary font-semibold text-sm transition-colors"
                     >
                         View All

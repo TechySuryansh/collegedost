@@ -538,8 +538,8 @@ export const browseByStreamData = [
       ],
       resources: [
         { title: 'Top Commerce Colleges in India', href: '/tools/colleges?stream=Commerce' },
-        { title: 'Top Government Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&type=Government' },
-        { title: 'Top Private Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&type=Private' },
+        { title: 'Top Government Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&ownership=Government' },
+        { title: 'Top Private Commerce Colleges in India', href: '/tools/colleges?stream=Commerce&ownership=Private' },
         { title: 'Top M.Com Colleges in Mumbai', href: '/tools/colleges?stream=Commerce&degree=M.Com&search=Mumbai' },
         { title: 'Top B.Com Colleges in India', href: '/tools/colleges?stream=Commerce&degree=B.Com' },
         { title: 'View All', href: '/tools/colleges?stream=Commerce', isLink: true }
@@ -1298,7 +1298,7 @@ export const rankingsData = [
         { title: 'NIRF Management Ranking', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&nirfCategory=Management' }
       ],
       colleges: [
-        { title: 'Top Private MBA Colleges', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&type=Private&degree=MBA' }
+        { title: 'Top Private MBA Colleges', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&ownership=Private&degree=MBA' }
       ],
       predictors: [
         { title: 'One Year MBA Ranking', href: '/tools/colleges?goal=Colleges&stream=Management And Business Administration&degree=MBA' }
