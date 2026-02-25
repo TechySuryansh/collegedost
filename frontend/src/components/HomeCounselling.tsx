@@ -70,7 +70,7 @@ const CounsellingNew: React.FC<CounsellingNewProps> = ({ onOpenAskModal }) => {
                     <Image
                         alt="Counselling Illustration"
                         className="w-full max-w-md object-contain drop-shadow-xl relative z-10"
-                        src="https://img.freepik.com/free-vector/online-consulting-concept-illustration_114360-1730.jpg"
+                        src="/mba-counselling.jpg"
                         width={400}
                         height={400}
                     />
