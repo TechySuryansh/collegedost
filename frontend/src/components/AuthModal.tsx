@@ -21,10 +21,10 @@ const AuthInputField = ({
     extraInputClass?: string;
 }) => (
     <div className="space-y-1">
-        <label className="text-[10px] font-bold text-gray-400 uppercase tracking-widest ml-1">{label}</label>
+        <label className="text-[10px] font-bold text-text-muted-light uppercase tracking-widest ml-1">{label}</label>
         <div className="relative group">
-            <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs" />
-            <input type={type} placeholder={placeholder} className={`w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all font-medium text-sm text-gray-800 placeholder-gray-400 ${extraInputClass}`} value={value} onChange={onChange} required={required} />
+            <Icon className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted-light text-xs" />
+            <input type={type} placeholder={placeholder} className={`w-full pl-9 pr-3 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all font-medium text-sm text-text-main-light placeholder:text-text-muted-light ${extraInputClass}`} value={value} onChange={onChange} required={required} />
         </div>
     </div>
 );
@@ -252,7 +252,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                 </button>
 
                                 {/* Left Side: Premium Theme Marketing (Hidden on Mobile) */}
-                                <div className="hidden md:flex md:w-5/12 bg-linear-to-br from-brand-dark via-[#1e3a8a] to-brand-dark text-white p-8 flex-col relative overflow-hidden">
+                                <div className="hidden md:flex md:w-5/12 bg-linear-to-br from-primary/10 via-accent-lavender/5 to-primary/5 p-8 flex-col relative overflow-hidden">
                                     {/* Decorative Elements */}
                                     <div className="absolute top-0 left-0 w-64 h-64 bg-brand-cyan/20 rounded-full blur-20 -translate-x-1/2 -translate-y-1/2"></div>
                                     <div className="absolute bottom-0 right-0 w-64 h-64 bg-brand-violet/20 rounded-full blur-20 translate-x-1/2 -translate-y-1/2"></div>
@@ -261,23 +261,23 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
 
                                     <div className="relative z-10 flex flex-col h-full">
                                         <div className="mb-auto">
-                                            <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center text-brand-cyan font-bold text-xl mb-6 shadow-2xl border border-white/10">CD</div>
-                                            <h2 className="text-3xl font-bold font-heading leading-tight mb-4">
+                                            <div className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-xl flex items-center justify-center text-primary font-bold text-xl mb-6 shadow-2xl border border-white/10">CD</div>
+                                            <h2 className="text-3xl font-bold font-heading leading-tight mb-4 text-deep-indigo">
                                                 Unlock Your <br />
-                                                <span className="text-transparent bg-clip-text bg-linear-to-r from-brand-cyan to-brand-mint">Dream College</span>
+                                                <span className="text-primary">Dream College</span>
                                             </h2>
-                                            <p className="text-blue-200/80 text-sm leading-relaxed">
+                                            <p className="text-sm leading-relaxed text-text-muted-light">
                                                 Join 50,000+ students leveraging AI tools, premium counselling, and 100+ ebooks to get ahead.
                                             </p>
                                         </div>
 
-                                        <div className="mt-8 space-y-4">
+                                            <div className="mt-8 space-y-4">
                                             <div className="bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10">
-                                                <div className="text-brand-cyan text-xs font-bold uppercase tracking-wider mb-1">Premium Access</div>
+                                                <div className="text-primary text-xs font-bold uppercase tracking-wider mb-1">Premium Access</div>
                                                 <div className="text-sm font-medium opacity-90">Get AI Rank Predictors & Exams Alerts</div>
                                             </div>
                                             <div className="bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/10">
-                                                <div className="text-brand-mint text-xs font-bold uppercase tracking-wider mb-1">Community</div>
+                                                <div className="text-accent-lavender text-xs font-bold uppercase tracking-wider mb-1">Community</div>
                                                 <div className="text-sm font-medium opacity-90">Connect with Toppers & Experts</div>
                                             </div>
                                         </div>
@@ -304,10 +304,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                     </div>
 
                                     <div className="mb-6">
-                                        <h3 className="text-2xl font-bold text-gray-900">
+                                        <h3 className="text-2xl font-bold text-text-main-light">
                                             {activeTab === 'signup' ? 'Create Account' : activeTab === 'forgotPassword' ? 'Reset Password' : 'Welcome Back'}
                                         </h3>
-                                        <p className="text-sm text-gray-500 mt-1">
+                                        <p className="text-sm text-text-muted-light mt-1">
                                             {activeTab === 'signup' ? 'Get started for free today.' : activeTab === 'forgotPassword' ? (step === 1 ? 'Enter your email to receive a reset code.' : 'Enter the code sent to your email.') : 'Enter your details to access your account.'}
                                         </p>
                                     </div>
@@ -419,15 +419,15 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                                 )}
 
                                                 {error && (
-                                                    <div className="bg-red-50 text-red-600 text-xs font-medium px-3 py-2 rounded-lg flex items-center gap-2">
-                                                        <FaTimes className="" /> {error}
+                                                    <div className={`text-xs font-medium px-3 py-2 rounded-lg flex items-center gap-2 ${error.includes('sent') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
+                                                        {error.includes('sent') ? <FaCheckCircle /> : <FaTimes />} {error}
                                                     </div>
                                                 )}
 
                                                 <button
                                                     type="submit"
                                                     disabled={loading}
-                                                    className="w-full bg-brand-deep-bg hover:bg-brand-blue-dark text-white shadow-lg shadow-brand-blue/30 font-bold py-3.5 rounded-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
+                                                    className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 font-bold py-3.5 rounded-xl transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2"
                                                 >
                                                     {loading ? (
                                                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -439,7 +439,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                                     )}
                                                 </button>
 
-{/* 
+                                                {/*
                                                 <div className="relative flex py-2 items-center justify-center">
                                                     <span className="shrink-0 mx-4 text-gray-400 text-xs">Or continue with</span>
                                                 </div>
@@ -456,7 +456,7 @@ const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, initialTab = 'si
                                                         shape="pill"
                                                         text="continue_with"
                                                     />
-                                                </div> 
+                                                </div>
                                                 */}
                                             </>
                                         )}
