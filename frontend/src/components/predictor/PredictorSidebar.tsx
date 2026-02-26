@@ -64,10 +64,15 @@ export const PredictorSidebar: React.FC<PredictorSidebarProps> = ({
             'institutionTypes',
             sidebarFilters.institutionTypes
           )}
-          {renderGroup(
+          {sidebarFilters.branchInterests.length > 0 && renderGroup(
             'Branch Interest',
             'branchInterests',
             sidebarFilters.branchInterests
+          )}
+          {sidebarFilters.programTypes && sidebarFilters.programTypes.length > 0 && renderGroup(
+            'Program Type',
+            'programTypes',
+            sidebarFilters.programTypes
           )}
         </div>
       </div>

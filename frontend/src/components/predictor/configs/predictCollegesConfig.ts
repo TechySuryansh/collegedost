@@ -1,4 +1,4 @@
-import type { PredictorConfig, FlatCollege, NormalizedPrediction } from '../types';
+import type { PredictorConfig, FlatCollege, NormalizedPrediction, AdmissionChance } from '../types';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -44,7 +44,7 @@ function getInstType(name: string, type: string): { instType: string; abbrev: st
   return { instType: type || 'Other', abbrev: type?.slice(0, 3).toUpperCase() || 'COL' };
 }
 
-function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+function calculateChance(userRank: number, closingRank: number): AdmissionChance {
   if (!closingRank || closingRank === 0) return 'medium';
   // If closing rank > user rank * 1.2 → high chance (college accepts worse ranks)
   // If closing rank is between rank * 0.85 and rank * 1.2 → medium chance
@@ -111,7 +111,7 @@ function parseGenericResponse(data: Record<string, unknown>): NormalizedPredicti
 
   // Sort by chance (high first) then by closing rank
   colleges.sort((a, b) => {
-    const chanceOrder = { high: 1, medium: 2, low: 3 };
+    const chanceOrder: Record<AdmissionChance, number> = { high: 1, medium: 2, low: 3, 'not-eligible': 4 };
     const chanceDiff = chanceOrder[a.chance] - chanceOrder[b.chance];
     if (chanceDiff !== 0) return chanceDiff;
     return (a.closingRank || 0) - (b.closingRank || 0);
@@ -125,6 +125,7 @@ function parseGenericResponse(data: Record<string, unknown>): NormalizedPredicti
       high: colleges.filter((c) => c.chance === 'high').length,
       medium: colleges.filter((c) => c.chance === 'medium').length,
       low: colleges.filter((c) => c.chance === 'low').length,
+      'not-eligible': colleges.filter((c) => c.chance === 'not-eligible').length,
     },
   };
 }
@@ -149,6 +150,7 @@ export const predictCollegesConfig: PredictorConfig = {
   categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
+  programTypes: ['B.E. / B.Tech', 'Medical', 'Management'],
 
   steps: [
     { number: 1, label: 'Exam Details' },
@@ -175,6 +177,9 @@ export const predictCollegesConfig: PredictorConfig = {
       { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
       { label: 'Civil', value: 'Civil', defaultChecked: false },
       { label: 'Electrical', value: 'Electric', defaultChecked: false },
+    ],
+    programTypes: [
+      { label: 'B.E. / B.Tech', value: 'B.E.', defaultChecked: true },
     ],
   },
 

@@ -1,4 +1,4 @@
-import type { PredictorConfig, FlatCollege, NormalizedPrediction } from '../types';
+import type { PredictorConfig, FlatCollege, NormalizedPrediction, AdmissionChance } from '../types';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -42,7 +42,7 @@ function getInstType(name: string, type: string): { instType: string; abbrev: st
   return { instType: type || 'Other', abbrev: type?.slice(0, 3).toUpperCase() || 'COL' };
 }
 
-function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+function calculateChance(userRank: number, closingRank: number): AdmissionChance {
   if (!closingRank || closingRank === 0) return 'medium';
   if (closingRank > userRank * 1.2) return 'high';
   if (closingRank >= userRank * 0.85) return 'medium';
@@ -92,7 +92,7 @@ function parseRankResponse(data: Record<string, unknown>): NormalizedPrediction 
   }
 
   colleges.sort((a, b) => {
-    const o = { high: 1, medium: 2, low: 3 };
+    const o: Record<AdmissionChance, number> = { high: 1, medium: 2, low: 3, 'not-eligible': 4 };
     const d = o[a.chance] - o[b.chance];
     return d !== 0 ? d : (a.closingRank || 0) - (b.closingRank || 0);
   });
@@ -105,6 +105,7 @@ function parseRankResponse(data: Record<string, unknown>): NormalizedPrediction 
       high: colleges.filter(c => c.chance === 'high').length,
       medium: colleges.filter(c => c.chance === 'medium').length,
       low: colleges.filter(c => c.chance === 'low').length,
+      'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
     },
     estimatedRank: _lastRank,
   };
@@ -132,6 +133,7 @@ export const rankPredictorConfig: PredictorConfig = {
   categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
+  programTypes: ['B.E. / B.Tech'],
 
   steps: [
     { number: 1, label: 'Enter Score' },
@@ -153,6 +155,9 @@ export const rankPredictorConfig: PredictorConfig = {
       { label: 'Computer Science', value: 'Computer', defaultChecked: true },
       { label: 'Electronics', value: 'Electron', defaultChecked: false },
       { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
+    ],
+    programTypes: [
+      { label: 'B.E. / B.Tech', value: 'B.E.', defaultChecked: true },
     ],
   },
 

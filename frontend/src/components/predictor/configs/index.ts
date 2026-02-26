@@ -9,3 +9,4 @@ export { catConfig } from './catConfig';
 export { clatConfig } from './clatConfig';
 export { gateConfig } from './gateConfig';
 export { viteeeConfig } from './viteeeConfig';
+export { mhtcetConfig } from './mhtcetConfig';

@@ -7,6 +7,7 @@ import {
   FaExclamationTriangle,
   FaMapMarkerAlt,
   FaGraduationCap,
+  FaTimes,
 } from 'react-icons/fa';
 import type { CollegeResultCardProps, AdmissionChance } from './types';
 
@@ -29,6 +30,11 @@ const chanceBadge: Record<
     label: 'Low Chance',
     icon: <FaExclamationTriangle className="text-xs" />,
     classes: 'bg-rose-50 text-rose-700 border-rose-100',
+  },
+  'not-eligible': {
+    label: 'Not Eligible',
+    icon: <FaTimes className="text-xs" />,
+    classes: 'bg-gray-50 text-gray-700 border-gray-100',
   },
 };
 

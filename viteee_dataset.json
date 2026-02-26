@@ -1,0 +1,161 @@
+[
+    {
+        "name": "VIT Vellore",
+        "location": "Vellore, Tamil Nadu",
+        "branches": [
+            {
+                "name": "Computer Science Engineering",
+                "category": 1,
+                "closing_rank": 8000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 2,
+                "closing_rank": 15000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 3,
+                "closing_rank": 25000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 4,
+                "closing_rank": 35000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 5,
+                "closing_rank": 45000
+            },
+            {
+                "name": "CSE with AI & ML",
+                "category": 1,
+                "closing_rank": 10000
+            },
+            {
+                "name": "CSE with AI & ML",
+                "category": 2,
+                "closing_rank": 18000
+            },
+            {
+                "name": "CSE with Data Science",
+                "category": 1,
+                "closing_rank": 12000
+            },
+            {
+                "name": "Information Technology",
+                "category": 1,
+                "closing_rank": 14000
+            },
+            {
+                "name": "Electronics & Communication",
+                "category": 1,
+                "closing_rank": 16000
+            },
+            {
+                "name": "Electrical & Electronics",
+                "category": 1,
+                "closing_rank": 22000
+            },
+            {
+                "name": "Mechanical Engineering",
+                "category": 1,
+                "closing_rank": 28000
+            },
+            {
+                "name": "Biotechnology",
+                "category": 1,
+                "closing_rank": 35000
+            }
+        ]
+    },
+    {
+        "name": "VIT Chennai",
+        "location": "Chennai, Tamil Nadu",
+        "branches": [
+            {
+                "name": "Computer Science Engineering",
+                "category": 1,
+                "closing_rank": 18000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 2,
+                "closing_rank": 28000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 3,
+                "closing_rank": 40000
+            },
+            {
+                "name": "CSE with AI & ML",
+                "category": 1,
+                "closing_rank": 20000
+            },
+            {
+                "name": "Electronics & Communication",
+                "category": 1,
+                "closing_rank": 25000
+            },
+            {
+                "name": "Mechanical Engineering",
+                "category": 1,
+                "closing_rank": 45000
+            }
+        ]
+    },
+    {
+        "name": "VIT AP (Amaravati)",
+        "location": "Amaravati, Andhra Pradesh",
+        "branches": [
+            {
+                "name": "Computer Science Engineering",
+                "category": 1,
+                "closing_rank": 35000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 2,
+                "closing_rank": 55000
+            },
+            {
+                "name": "CSE with AI & ML",
+                "category": 1,
+                "closing_rank": 40000
+            },
+            {
+                "name": "Electronics & Communication",
+                "category": 1,
+                "closing_rank": 50000
+            }
+        ]
+    },
+    {
+        "name": "VIT Bhopal",
+        "location": "Bhopal, Madhya Pradesh",
+        "branches": [
+            {
+                "name": "Computer Science Engineering",
+                "category": 1,
+                "closing_rank": 45000
+            },
+            {
+                "name": "Computer Science Engineering",
+                "category": 2,
+                "closing_rank": 70000
+            },
+            {
+                "name": "CSE with AI & ML",
+                "category": 1,
+                "closing_rank": 50000
+            },
+            {
+                "name": "Electronics & Communication",
+                "category": 1,
+                "closing_rank": 65000
+            }
+        ]
+    }
+]

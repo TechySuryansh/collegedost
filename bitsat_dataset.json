@@ -1,0 +1,248 @@
+[
+    {
+        "name": "BITS Pilani, Pilani Campus",
+        "location": "Pilani, Rajasthan",
+        "branches": [
+            {
+                "name": "Computer Science (CSE)",
+                "2023": 331,
+                "2022": 320,
+                "2021": 364
+            },
+            {
+                "name": "Electronics & Communication (ECE)",
+                "2023": 296,
+                "2022": 284,
+                "2021": 333
+            },
+            {
+                "name": "Electrical & Electronics (EEE)",
+                "2023": 272,
+                "2022": 258,
+                "2021": 304
+            },
+            {
+                "name": "Mechanical",
+                "2023": 244,
+                "2022": 223,
+                "2021": 269
+            },
+            {
+                "name": "Chemical",
+                "2023": 224,
+                "2022": 191,
+                "2021": 237
+            },
+            {
+                "name": "Civil",
+                "2023": 213,
+                "2022": 167,
+                "2021": 214
+            },
+            {
+                "name": "Manufacturing",
+                "2023": 220,
+                "2022": 184,
+                "2021": 231
+            },
+            {
+                "name": "Instrumentation",
+                "2023": 266,
+                "2022": 249,
+                "2021": 294
+            },
+            {
+                "name": "B.Pharm",
+                "2023": 153,
+                "2022": 125,
+                "2021": 161
+            },
+            {
+                "name": "Physics (Integrated MSc)",
+                "2023": 245,
+                "2022": 210,
+                "2021": 260
+            },
+            {
+                "name": "Mathematics (Integrated MSc)",
+                "2023": 240,
+                "2022": 212,
+                "2021": 257
+            },
+            {
+                "name": "Economics (Integrated MSc)",
+                "2023": 257,
+                "2022": 252,
+                "2021": 290
+            },
+            {
+                "name": "Chemistry (Integrated MSc)",
+                "2023": 215,
+                "2022": 168,
+                "2021": 213
+            },
+            {
+                "name": "Biology (Integrated MSc)",
+                "2023": 212,
+                "2022": 164,
+                "2021": 212
+            }
+        ]
+    },
+    {
+        "name": "BITS Pilani, Goa Campus",
+        "location": "Zuarinagar, Goa",
+        "branches": [
+            {
+                "name": "Computer Science (CSE)",
+                "2023": 295,
+                "2022": 286,
+                "2021": 328
+            },
+            {
+                "name": "Electronics & Communication (ECE)",
+                "2023": 267,
+                "2022": 256,
+                "2021": 293
+            },
+            {
+                "name": "Electrical & Electronics (EEE)",
+                "2023": 252,
+                "2022": 245,
+                "2021": 273
+            },
+            {
+                "name": "Mechanical",
+                "2023": 223,
+                "2022": 191,
+                "2021": 221
+            },
+            {
+                "name": "Chemical",
+                "2023": 209,
+                "2022": 165,
+                "2021": 215
+            },
+            {
+                "name": "Instrumentation",
+                "2023": 244,
+                "2022": 224,
+                "2021": 252
+            },
+            {
+                "name": "Physics (Integrated MSc)",
+                "2023": 224,
+                "2022": 188,
+                "2021": 220
+            },
+            {
+                "name": "Mathematics (Integrated MSc)",
+                "2023": 221,
+                "2022": 187,
+                "2021": 215
+            },
+            {
+                "name": "Economics (Integrated MSc)",
+                "2023": 239,
+                "2022": 230,
+                "2021": 255
+            },
+            {
+                "name": "Chemistry (Integrated MSc)",
+                "2023": 205,
+                "2022": 163,
+                "2021": 195
+            },
+            {
+                "name": "Biology (Integrated MSc)",
+                "2023": 204,
+                "2022": 161,
+                "2021": 192
+            }
+        ]
+    },
+    {
+        "name": "BITS Pilani, Hyderabad Campus",
+        "location": "Hyderabad, Telangana",
+        "branches": [
+            {
+                "name": "Computer Science (CSE)",
+                "2023": 284,
+                "2022": 279,
+                "2021": 319
+            },
+            {
+                "name": "Electronics & Communication (ECE)",
+                "2023": 265,
+                "2022": 252,
+                "2021": 288
+            },
+            {
+                "name": "Electrical & Electronics (EEE)",
+                "2023": 251,
+                "2022": 241,
+                "2021": 268
+            },
+            {
+                "name": "Mechanical",
+                "2023": 218,
+                "2022": 182,
+                "2021": 216
+            },
+            {
+                "name": "Chemical",
+                "2023": 207,
+                "2022": 162,
+                "2021": 202
+            },
+            {
+                "name": "Civil",
+                "2023": 204,
+                "2022": 158,
+                "2021": 199
+            },
+            {
+                "name": "Instrumentation",
+                "2023": 244,
+                "2022": 222,
+                "2021": 250
+            },
+            {
+                "name": "B.Pharm",
+                "2023": 143,
+                "2022": 109,
+                "2021": 153
+            },
+            {
+                "name": "Physics (Integrated MSc)",
+                "2023": 219,
+                "2022": 174,
+                "2021": 209
+            },
+            {
+                "name": "Mathematics (Integrated MSc)",
+                "2023": 219,
+                "2022": 177,
+                "2021": 211
+            },
+            {
+                "name": "Economics (Integrated MSc)",
+                "2023": 236,
+                "2022": 220,
+                "2021": 245
+            },
+            {
+                "name": "Chemistry (Integrated MSc)",
+                "2023": 205,
+                "2022": 160,
+                "2021": 190
+            },
+            {
+                "name": "Biology (Integrated MSc)",
+                "2023": 203,
+                "2022": 158,
+                "2021": 188
+            }
+        ]
+    }
+]

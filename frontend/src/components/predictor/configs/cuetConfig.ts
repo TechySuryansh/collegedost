@@ -1,4 +1,4 @@
-import type { PredictorConfig, FlatCollege, NormalizedPrediction } from '../types';
+import type { PredictorConfig, FlatCollege, NormalizedPrediction, AdmissionChance } from '../types';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -32,7 +32,7 @@ interface RawResponse {
   count?: number;
 }
 
-function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
+function calculateChance(userRank: number, closingRank: number): AdmissionChance {
   if (!closingRank || closingRank === 0) return 'medium';
   if (closingRank > userRank * 1.2) return 'high';
   if (closingRank >= userRank * 0.85) return 'medium';
@@ -95,6 +95,7 @@ function parseCUETResponse(data: Record<string, unknown>): NormalizedPrediction 
       high: colleges.filter(c => c.chance === 'high').length,
       medium: colleges.filter(c => c.chance === 'medium').length,
       low: colleges.filter(c => c.chance === 'low').length,
+      'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
     },
   };
 }
@@ -121,6 +122,7 @@ export const cuetConfig: PredictorConfig = {
   categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
+  programTypes: ['Undergraduate (UG)', 'Postgraduate (PG)'],
 
   steps: [
     { number: 1, label: 'Exam Details' },
@@ -143,6 +145,9 @@ export const cuetConfig: PredictorConfig = {
       { label: 'Science', value: 'Science', defaultChecked: true },
       { label: 'Commerce', value: 'Commerce', defaultChecked: false },
       { label: 'Arts / Humanities', value: 'Arts', defaultChecked: false },
+    ],
+    programTypes: [
+      { label: 'Undergraduate (UG)', value: 'UG', defaultChecked: true },
     ],
   },
 

@@ -24,6 +24,9 @@ function buildDefaultFilters(config: PredictorConfig): FilterState {
     branchInterests: config.sidebarFilters.branchInterests
       .filter((f) => f.defaultChecked)
       .map((f) => f.value),
+    programTypes: config.sidebarFilters.programTypes
+      .filter((f) => f.defaultChecked)
+      .map((f) => f.value),
   };
 }
 
@@ -34,7 +37,8 @@ export function usePredictor(config: PredictorConfig) {
   const [inputValue, setInputValue] = useState('');
   const [category, setCategory] = useState(config.categories[0]);
   const [homeState, setHomeState] = useState('');
-  const [gender, setGender] = useState(config.genders[0]);
+  const [gender, setGender] = useState(config.genders[0] || '');
+  const [programType, setProgramType] = useState(config.programTypes[0] || '');
 
   // ─── Results State ───
   const [loading, setLoading] = useState(false);
@@ -57,7 +61,7 @@ export function usePredictor(config: PredictorConfig) {
     if (id && config.apiConfig.loadPredictionEndpoint) {
       loadPredictionById(id);
     }
-     
+
   }, [searchParams]);
 
   const loadPredictionById = async (id: string) => {
@@ -108,6 +112,7 @@ export function usePredictor(config: PredictorConfig) {
         category,
         homeState,
         gender,
+        programType,
       });
 
       let response;
@@ -186,6 +191,16 @@ export function usePredictor(config: PredictorConfig) {
       );
     }
 
+    // Program type filter
+    if (activeFilters.programTypes && activeFilters.programTypes.length > 0) {
+      filtered = filtered.filter((c) => {
+        const collegeProgram = (c as any).programType || '';
+        return activeFilters.programTypes.some((pt) =>
+          collegeProgram.toLowerCase().includes(pt.toLowerCase())
+        );
+      });
+    }
+
     // Sort
     const sorted = [...filtered];
     switch (sortBy) {
@@ -240,6 +255,7 @@ export function usePredictor(config: PredictorConfig) {
       quotaTypes: config.sidebarFilters.quotaTypes.map((f) => f.value),
       institutionTypes: config.sidebarFilters.institutionTypes.map((f) => f.value),
       branchInterests: config.sidebarFilters.branchInterests.map((f) => f.value),
+      programTypes: config.sidebarFilters.programTypes.map((f) => f.value),
     });
     setDisplayCount(PAGE_SIZE);
   }, [config]);
@@ -254,6 +270,8 @@ export function usePredictor(config: PredictorConfig) {
     setHomeState,
     gender,
     setGender,
+    programType,
+    setProgramType,
 
     // Loading / errors
     loading,

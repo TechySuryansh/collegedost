@@ -1,4 +1,4 @@
-import type { PredictorConfig, FlatCollege, NormalizedPrediction } from '../types';
+import type { PredictorConfig, FlatCollege, NormalizedPrediction, AdmissionChance } from '../types';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -109,7 +109,7 @@ function parseNEETResponse(data: Record<string, unknown>): NormalizedPrediction 
   }
 
   colleges.sort((a, b) => {
-    const o = { high: 1, medium: 2, low: 3 };
+    const o: Record<AdmissionChance, number> = { high: 1, medium: 2, low: 3, 'not-eligible': 4 };
     const d = o[a.chance] - o[b.chance];
     return d !== 0 ? d : (a.closingRank || 0) - (b.closingRank || 0);
   });
@@ -122,6 +122,7 @@ function parseNEETResponse(data: Record<string, unknown>): NormalizedPrediction 
       high: colleges.filter(c => c.chance === 'high').length,
       medium: colleges.filter(c => c.chance === 'medium').length,
       low: colleges.filter(c => c.chance === 'low').length,
+      'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
     },
   };
 }
@@ -148,6 +149,7 @@ export const neetConfig: PredictorConfig = {
   categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
+  programTypes: ['MBBS', 'BDS', 'Ayush'],
 
   steps: [
     { number: 1, label: 'NEET Score' },
@@ -170,6 +172,9 @@ export const neetConfig: PredictorConfig = {
     branchInterests: [
       { label: 'MBBS', value: 'MBBS', defaultChecked: true },
       { label: 'BDS', value: 'BDS', defaultChecked: true },
+    ],
+    programTypes: [
+      { label: 'Full-time', value: 'Full-time', defaultChecked: true },
     ],
   },
 

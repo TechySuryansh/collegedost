@@ -1,4 +1,4 @@
-import type { PredictorConfig, FlatCollege, NormalizedPrediction } from '../types';
+import type { PredictorConfig, FlatCollege, NormalizedPrediction, AdmissionChance } from '../types';
 
 const INDIAN_STATES = [
   'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
@@ -101,7 +101,7 @@ function parseResponse(data: Record<string, unknown>): NormalizedPrediction {
 
   // Sort by chance (high first) then closing rank
   colleges.sort((a, b) => {
-    const o = { high: 1, medium: 2, low: 3 };
+    const o: Record<AdmissionChance, number> = { high: 1, medium: 2, low: 3, 'not-eligible': 4 };
     const d = o[a.chance] - o[b.chance];
     return d !== 0 ? d : (a.closingRank || 0) - (b.closingRank || 0);
   });
@@ -114,6 +114,7 @@ function parseResponse(data: Record<string, unknown>): NormalizedPrediction {
       high: colleges.filter(c => c.chance === 'high').length,
       medium: colleges.filter(c => c.chance === 'medium').length,
       low: colleges.filter(c => c.chance === 'low').length,
+      'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
     },
   };
 }
@@ -140,6 +141,7 @@ export const jeeConfig: PredictorConfig = {
   categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
   states: INDIAN_STATES,
   genders: ['Male', 'Female'],
+  programTypes: ['B.E. / B.Tech', 'Dual Degree'],
 
   steps: [
     { number: 1, label: 'Exam Details' },
@@ -165,6 +167,10 @@ export const jeeConfig: PredictorConfig = {
       { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
       { label: 'Civil', value: 'Civil', defaultChecked: false },
       { label: 'Electrical', value: 'Electric', defaultChecked: false },
+    ],
+    programTypes: [
+      { label: 'B.E. / B.Tech', value: 'B.E.', defaultChecked: true },
+      { label: 'Dual Degree', value: 'Dual', defaultChecked: false },
     ],
   },
 

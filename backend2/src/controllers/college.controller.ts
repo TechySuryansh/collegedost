@@ -162,10 +162,8 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
             }
         }
 
-        // ✅ Default NIRF filter
-        if (isNirfSort) {
-            conditions.push({ nirfRank: { $ne: null, $gt: 0 } });
-        }
+        // ✅ No longer filter out non-NIRF colleges — show ALL colleges.
+        // Colleges with a NIRF rank will naturally sort first via _sortRank aggregation.
 
         const query = conditions.length > 0 ? { $and: conditions } : {};
 
@@ -211,7 +209,7 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
                     }
                 }
             },
-            ...(isNirfSort ? [{ $match: { _sortRank: { $lt: 999999 } } }] : []),
+            // Filter out the line that restricted to only NIRF-ranked colleges:
             { $sort: sortOption },
             { $skip: skip },
             { $limit: limitNum },

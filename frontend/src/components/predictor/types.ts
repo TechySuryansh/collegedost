@@ -27,6 +27,7 @@ export interface SidebarFilterConfig {
   quotaTypes: FilterOption[];
   institutionTypes: FilterOption[];
   branchInterests: FilterOption[];
+  programTypes: FilterOption[];
 }
 
 /** Step indicator configuration */
@@ -53,6 +54,8 @@ export interface PredictorConfig {
   categories: string[];
   states: string[];
   genders: string[];
+  programTypes: string[];
+  rankBasedPrograms?: string[];
 
   steps: StepConfig[];
   sidebarFilters: SidebarFilterConfig;
@@ -79,13 +82,14 @@ export interface PredictorFormInput {
   category: string;
   homeState: string;
   gender: string;
+  programType: string;
 }
 
 // ═══════════════════════════════════════════
 // RESULT / PREDICTION TYPES
 // ═══════════════════════════════════════════
 
-export type AdmissionChance = 'high' | 'medium' | 'low';
+export type AdmissionChance = 'high' | 'medium' | 'low' | 'not-eligible';
 
 export interface FlatCollege {
   id: string;
@@ -104,6 +108,7 @@ export interface PredictionSummary {
   high: number;
   medium: number;
   low: number;
+  'not-eligible': number;
 }
 
 export interface NormalizedPrediction {
@@ -124,6 +129,7 @@ export interface FilterState {
   quotaTypes: string[];
   institutionTypes: string[];
   branchInterests: string[];
+  programTypes: string[];
 }
 
 export type SortOption = 'closingRank' | 'chance' | 'nirfRank';
@@ -152,6 +158,8 @@ export interface PredictorFormProps {
   setHomeState: (v: string) => void;
   gender: string;
   setGender: (v: string) => void;
+  programType: string;
+  setProgramType: (v: string) => void;
   loading: boolean;
   error: string;
   onSubmit: () => void;

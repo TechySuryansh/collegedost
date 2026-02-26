@@ -59,6 +59,8 @@ export const PredictorBase: React.FC<PredictorBaseProps> = ({ config }) => {
               setHomeState={predictor.setHomeState}
               gender={predictor.gender}
               setGender={predictor.setGender}
+              programType={predictor.programType}
+              setProgramType={predictor.setProgramType}
               loading={predictor.loading}
               error={predictor.error}
               onSubmit={predictor.handlePredict}

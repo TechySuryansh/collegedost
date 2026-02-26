@@ -95,14 +95,14 @@ const allPredictors = [
         featured: false,
     },
     {
-        id: 'predict-colleges',
-        name: 'College Predictor',
-        shortName: 'CP',
-        subtitle: 'Find Best-Fit Colleges',
+        id: 'mht-cet',
+        name: 'MHT CET',
+        shortName: 'CET',
+        subtitle: 'Maharashtra State Entrance',
         category: 'Engineering',
         usersCount: '1.2M+',
         rating: '4.8',
-        href: '/predictors/predict-colleges',
+        href: '/predictors/mht-cet-predictor',
         featured: true,
     },
 ];
@@ -159,8 +159,8 @@ export default function PredictorsPageContent() {
                                 key={cat}
                                 onClick={() => setActiveCategory(cat)}
                                 className={`px-5 py-2 rounded-full text-sm font-semibold transition-all ${activeCategory === cat
-                                        ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                                        : 'bg-white text-text-muted-light border border-gray-200 hover:border-primary hover:text-primary'
+                                    ? 'bg-primary text-white shadow-lg shadow-primary/20'
+                                    : 'bg-white text-text-muted-light border border-gray-200 hover:border-primary hover:text-primary'
                                     }`}
                             >
                                 {cat}
