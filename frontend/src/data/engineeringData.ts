@@ -13,8 +13,8 @@ export const engineeringRankings = [
 export const engineeringExams = [
     { name: "JEE Main 2026", link: "/tools/exams/jee-main" },
     { name: "JEE Advanced 2026", link: "/coming-soon" },
-    { name: "BITSAT 2026", link: "/coming-soon" },
-    { name: "VITEEE 2026", link: "/coming-soon" },
+    { name: "BITSAT 2026", link: "/predictors/bitsat-predictor" },
+    { name: "VITEEE 2026", link: "/predictors/viteee-predictor" },
     { name: "SRMJEEE 2026", link: "/coming-soon" },
     { name: "WBJEE 2026", link: "/coming-soon" },
     { name: "MHT CET 2026", link: "/coming-soon" },

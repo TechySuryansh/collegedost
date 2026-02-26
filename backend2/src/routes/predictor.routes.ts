@@ -4,7 +4,9 @@ import {
     getPredictionById,
     neetPredict,
     getNeetPredictionById,
-    predictRank
+    predictRank,
+    bitsatPredict,
+    viteeePredict
 } from '../controllers/predictor.controller';
 
 const router = express.Router();
@@ -12,6 +14,8 @@ const router = express.Router();
 router.post('/predict-by-percentile', predictByPercentile);
 router.post('/jee-main', predictByPercentile);
 router.post('/neet-predict', neetPredict);
+router.post('/bitsat-predict', bitsatPredict);
+router.post('/viteee-predict', viteeePredict);
 router.post('/predict-rank', predictRank);
 router.get('/prediction/:id', getPredictionById);
 router.get('/neet-prediction/:id', getNeetPredictionById);

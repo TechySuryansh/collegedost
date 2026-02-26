@@ -70,7 +70,7 @@ export const PredictorBase: React.FC<PredictorBaseProps> = ({ config }) => {
             {(predictor.loading || (predictor.prediction && predictor.prediction.totalResults > 0)) && (
               <PredictorResults
                 colleges={predictor.colleges}
-                totalResults={predictor.prediction?.totalResults || 0}
+                totalResults={predictor.totalResults}
                 sortBy={predictor.sortBy}
                 onSortChange={predictor.setSortBy}
                 sortOptions={config.sortOptions}

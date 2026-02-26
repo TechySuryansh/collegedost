@@ -95,7 +95,8 @@ export function usePredictor(config: PredictorConfig) {
       setError(config.inputConfig.validationMessage);
       return;
     }
-    if (!homeState) {
+    // Only require homeState if the config actually uses states
+    if (config.states.length > 0 && !homeState) {
       setError('Please select your Home State');
       return;
     }
@@ -161,8 +162,15 @@ export function usePredictor(config: PredictorConfig) {
   const filteredColleges = useMemo(() => {
     let filtered = [...allColleges];
 
-    // Quota filter
-    if (activeFilters.quotaTypes.length > 0) {
+    // Helper: check if all options in a filter group are selected (= show everything)
+    const allChecked = (filterKey: 'quotaTypes' | 'institutionTypes' | 'branchInterests' | 'programTypes') => {
+      const allValues = (config.sidebarFilters[filterKey] ?? []).map(f => f.value);
+      if (allValues.length === 0) return true;
+      return allValues.every(v => activeFilters[filterKey].includes(v));
+    };
+
+    // Quota filter — skip when all checked
+    if (!allChecked('quotaTypes') && activeFilters.quotaTypes.length > 0) {
       filtered = filtered.filter((c) =>
         activeFilters.quotaTypes.some((qt) =>
           c.quota.toLowerCase().includes(qt.toLowerCase())
@@ -170,8 +178,8 @@ export function usePredictor(config: PredictorConfig) {
       );
     }
 
-    // Institution type filter
-    if (activeFilters.institutionTypes.length > 0) {
+    // Institution type filter — skip when all checked
+    if (!allChecked('institutionTypes') && activeFilters.institutionTypes.length > 0) {
       filtered = filtered.filter((c) =>
         activeFilters.institutionTypes.some((it) => {
           const instLower = c.institutionType.toLowerCase();
@@ -182,8 +190,8 @@ export function usePredictor(config: PredictorConfig) {
       );
     }
 
-    // Branch filter
-    if (activeFilters.branchInterests.length > 0) {
+    // Branch filter — skip when all checked
+    if (!allChecked('branchInterests') && activeFilters.branchInterests.length > 0) {
       filtered = filtered.filter((c) =>
         activeFilters.branchInterests.some((bi) =>
           c.course.toLowerCase().includes(bi.toLowerCase())
@@ -191,14 +199,27 @@ export function usePredictor(config: PredictorConfig) {
       );
     }
 
-    // Program type filter
-    if (activeFilters.programTypes && activeFilters.programTypes.length > 0) {
-      filtered = filtered.filter((c) => {
-        const collegeProgram = (c as any).programType || '';
-        return activeFilters.programTypes.some((pt) =>
-          collegeProgram.toLowerCase().includes(pt.toLowerCase())
+    // Program type filter — skip when all checked
+    if (!allChecked('programTypes') && activeFilters.programTypes && activeFilters.programTypes.length > 0) {
+      const hasViteeeFilter = activeFilters.programTypes.includes('viteee');
+      const hasNonViteeeFilter = activeFilters.programTypes.includes('non-viteee');
+
+      if (hasViteeeFilter || hasNonViteeeFilter) {
+        // VITEEE style: filter by quota presence (category 1-5 = VITEEE, others = non-VITEEE)
+        filtered = filtered.filter((c) => {
+          const isViteee = c.quota.toLowerCase().startsWith('category');
+          if (hasViteeeFilter && hasNonViteeeFilter) return true; // both → show all
+          return hasViteeeFilter ? isViteee : !isViteee;
+        });
+      } else {
+        // Course-name matching: works for BITSAT (B.E./B.Pharm/M.Sc. prefixes),
+        // Dual Degree, B.Arch, Integrated M.Tech (identifiable in course name)
+        filtered = filtered.filter((c) =>
+          activeFilters.programTypes.some((pt) =>
+            c.course.toLowerCase().includes(pt.toLowerCase())
+          )
         );
-      });
+      }
     }
 
     // Sort

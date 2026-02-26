@@ -43,7 +43,8 @@ function getInstType(name: string, type: string): { instType: string; abbrev: st
   if (n.includes('jipmer')) return { instType: 'JIPMER', abbrev: 'JIPMER' };
   if (t.includes('private') || t.includes('deemed')) return { instType: 'Private', abbrev: 'PVT' };
   if (t.includes('government')) return { instType: 'GFTI', abbrev: 'GFTI' };
-  return { instType: type || 'Other', abbrev: type?.slice(0, 3).toUpperCase() || 'COL' };
+  if (t.includes('university')) return { instType: 'University', abbrev: 'UNI' };
+  return { instType: type || 'Other', abbrev: 'UNI' };
 }
 
 function calculateChance(userRank: number, closingRank: number): 'high' | 'medium' | 'low' {
@@ -152,26 +153,43 @@ export const jeeConfig: PredictorConfig = {
   sidebarFilters: {
     quotaTypes: [
       { label: 'All India Quota', value: 'All India', defaultChecked: true },
-      { label: 'Home State Quota', value: 'Home State', defaultChecked: false },
-      { label: 'Other State Quota', value: 'Other State', defaultChecked: false },
+      { label: 'Home State Quota', value: 'Home State', defaultChecked: true },
+      { label: 'Other State Quota', value: 'Other State', defaultChecked: true },
     ],
     institutionTypes: [
+      { label: 'IITs', value: 'IIT', defaultChecked: true },
       { label: 'NITs', value: 'NIT', defaultChecked: true },
       { label: 'IIITs', value: 'IIIT', defaultChecked: true },
       { label: 'GFTIs', value: 'GFTI', defaultChecked: true },
-      { label: 'Private / Deemed', value: 'PVT', defaultChecked: false },
+      { label: 'Private / Deemed', value: 'PVT', defaultChecked: true },
+      { label: 'University / Other', value: 'UNI', defaultChecked: true },
     ],
     branchInterests: [
-      { label: 'Computer Science', value: 'Computer', defaultChecked: true },
-      { label: 'Electronics', value: 'Electron', defaultChecked: false },
-      { label: 'Mechanical', value: 'Mechanic', defaultChecked: false },
-      { label: 'Civil', value: 'Civil', defaultChecked: false },
-      { label: 'Electrical', value: 'Electric', defaultChecked: false },
+      { label: 'Computer Science (CSE)', value: 'Computer', defaultChecked: true },
+      { label: 'CSE (AI & Machine Learning)', value: 'Artificial Intelligence', defaultChecked: true },
+      { label: 'CSE (Data Science)', value: 'Data Science', defaultChecked: true },
+      { label: 'CSE (Cyber Security)', value: 'Cyber', defaultChecked: true },
+      { label: 'CSE (IoT)', value: 'Internet of Things', defaultChecked: true },
+      { label: 'Software Engineering', value: 'Software', defaultChecked: true },
+      { label: 'Information Technology (IT)', value: 'Information Technology', defaultChecked: true },
+      { label: 'Electronics & Communication (ECE)', value: 'Electron', defaultChecked: true },
+      { label: 'Electrical Engineering (EE)', value: 'Electric', defaultChecked: true },
+      { label: 'Mechanical Engineering', value: 'Mechanic', defaultChecked: true },
+      { label: 'Civil Engineering', value: 'Civil', defaultChecked: true },
+      { label: 'Chemical Engineering', value: 'Chemical', defaultChecked: true },
+      { label: 'Metallurgical Engineering', value: 'Metallurg', defaultChecked: true },
+      { label: 'Aerospace / Avionics', value: 'Aero', defaultChecked: true },
+      { label: 'Biotechnology', value: 'Biotech', defaultChecked: true },
+      { label: 'Mathematics & Computing', value: 'Mathematics', defaultChecked: true },
+      { label: 'Engineering Physics', value: 'Engineering Physics', defaultChecked: true },
+      { label: 'Instrumentation', value: 'Instrument', defaultChecked: true },
+      { label: 'Production / Industrial', value: 'Production', defaultChecked: true },
+      { label: 'Mining Engineering', value: 'Mining', defaultChecked: true },
+      { label: 'Ocean / Naval Architecture', value: 'Ocean', defaultChecked: true },
+      { label: 'Architecture / Planning', value: 'Architect', defaultChecked: true },
+      { label: 'Pharmaceutical / Pharmacy', value: 'Pharma', defaultChecked: true },
     ],
-    programTypes: [
-      { label: 'B.E. / B.Tech', value: 'B.E.', defaultChecked: true },
-      { label: 'Dual Degree', value: 'Dual', defaultChecked: false },
-    ],
+    programTypes: [],
   },
 
   apiConfig: {
