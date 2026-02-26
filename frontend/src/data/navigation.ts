@@ -255,8 +255,9 @@ export const browseByStreamData = [
       ],
       predictors: [
         { title: 'JEE Main College Predictor', href: '/predictors/jee-main-predictor' },
+        { title: 'BITSAT College Predictor', href: '/predictors/bitsat-predictor' },
+        { title: 'VITEEE College Predictor', href: '/predictors/viteee-predictor' },
         { title: 'JEE Main Rank Predictor', href: '/predictors/jee-rank-predictor' },
-        { title: 'MHT CET College Predictor', href: '/predictors/mht-cet-predictor' },
         { title: 'AP EAMCET College Predictor', href: '#' },
         { title: 'GATE College Predictor', href: '#' },
         { title: 'KCET College Predictor', href: '#' },

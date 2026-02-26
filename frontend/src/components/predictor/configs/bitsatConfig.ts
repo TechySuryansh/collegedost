@@ -8,144 +8,159 @@ const INDIAN_STATES = [
   'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
   'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Delhi', 'Jammu and Kashmir',
   'Ladakh', 'Chandigarh', 'Puducherry', 'Andaman and Nicobar Islands',
-  'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep',
 ];
 
-let _lastUserScore = 0;
+interface BitsatResult {
+  college_name: string;
+  college_slug: string;
+  course: string;
+  cutoff_score: number;
+  chance: string;
+}
+
+interface BitsatResponse {
+  success: boolean;
+  predictionId?: string;
+  results: Record<string, Record<string, BitsatResult[]>>;
+}
+
+function parseBITSATResponse(data: Record<string, unknown>): NormalizedPrediction {
+  const raw = data as unknown as BitsatResponse;
+  const colleges: FlatCollege[] = [];
+
+  const campusMetadata: Record<string, { location: string; nirf?: number; abbrev: string }> = {
+    'BITS_Pilani': { location: 'Pilani, Rajasthan', nirf: 25, abbrev: 'BITSP' },
+    'BITS_Goa': { location: 'Goa', nirf: 30, abbrev: 'BITSG' },
+    'BITS_Hyderabad': { location: 'Hyderabad, Telangana', nirf: 28, abbrev: 'BITSH' }
+  };
+
+  const chanceMap: Record<string, AdmissionChance> = {
+    'good_chances': 'high',
+    'may_get': 'medium',
+    'tough_chances': 'low'
+  };
+
+  if (raw.results) {
+    Object.entries(raw.results).forEach(([campus, groups]) => {
+      const meta = campusMetadata[campus] || { location: 'India', nirf: 0, abbrev: 'BITS' };
+
+      Object.entries(groups).forEach(([chanceKey, list]) => {
+        const chance = chanceMap[chanceKey] || 'low';
+
+        list.forEach((item) => {
+          colleges.push({
+            id: `${item.college_slug}-${item.course}-${item.cutoff_score}`,
+            collegeName: item.college_name,
+            location: meta.location,
+            nirfRank: meta.nirf,
+            course: item.course,
+            quota: 'All India',
+            closingRank: item.cutoff_score,
+            chance,
+            institutionType: 'BITS Campus',
+            institutionAbbrev: meta.abbrev,
+          });
+        });
+      });
+    });
+  }
+
+  // Sort by chance (high to low) then by cutoff score (high to low)
+  colleges.sort((a, b) => {
+    const o: Record<AdmissionChance, number> = { high: 1, medium: 2, low: 3, 'not-eligible': 4 };
+    const d = o[a.chance] - o[b.chance];
+    if (d !== 0) return d;
+    return b.closingRank - a.closingRank;
+  });
+
+  return {
+    success: raw.success,
+    predictionId: raw.predictionId,
+    totalResults: colleges.length,
+    colleges,
+    summary: {
+      high: colleges.filter(c => c.chance === 'high').length,
+      medium: colleges.filter(c => c.chance === 'medium').length,
+      low: colleges.filter(c => c.chance === 'low').length,
+      'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
+    },
+  };
+}
 
 export const bitsatConfig: PredictorConfig = {
   examName: 'BITSAT',
   examSlug: 'bitsat',
   year: 2026,
-  pageTitle: 'BITSAT College Predictor',
-  pageSubtitle: 'Comprehensive Merit-Based Predictor for BITS Pilani, Goa and Hyderabad Campuses',
+  pageTitle: 'BITSAT College Predictor 2026',
+  pageSubtitle: 'Get the most accurate campus and branch predictions for BITS Pilani campuses',
 
   inputConfig: {
-    label: 'BITSAT Score',
-    placeholder: 'Enter BITSAT Score (0-390)',
+    label: 'BITSAT Score (out of 390)',
+    placeholder: 'Enter your score (e.g. 310)',
     type: 'score',
     min: 0,
     max: 390,
-    validationMessage: 'Please enter a valid BITSAT Score (0-390)',
+    step: 1,
+    validationMessage: 'Please enter a valid BITSAT score (0-390)',
   },
 
-  categories: ['General', 'OBC-NCL', 'SC', 'ST', 'EWS'],
-  states: INDIAN_STATES,
+  categories: ['General'], // BITS only has General category for BITSAT
+  states: [], // BITSAT is a national merit-based exam with no state quota
   genders: ['Male', 'Female'],
-  programTypes: ['B.E.', 'B.Pharm', 'Integrated M.Sc.'],
 
+  programTypes: ['B.E.', 'B.Pharm', 'Integrated M.Sc.'],
   steps: [
-    { number: 1, label: 'Score & Gender' },
-    { number: 2, label: 'Category & State' },
-    { number: 3, label: 'Get Prediction' }
+    { number: 1, label: 'Score' },
+    { number: 2, label: 'Preferences' },
+    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {
     quotaTypes: [
-      { label: 'General / Merit', value: 'All India', defaultChecked: true },
-      { label: 'Category Quota', value: 'Category', defaultChecked: false }
+      { label: 'All India Quota', value: 'All India', defaultChecked: true },
     ],
     institutionTypes: [
-      { label: 'BITS Pilani', value: 'BITS Pilani', defaultChecked: true },
-      { label: 'BITS Goa', value: 'BITS Goa', defaultChecked: true },
-      { label: 'BITS Hyderabad', value: 'BITS Hyderabad', defaultChecked: true },
+      { label: 'BITS Pilani (Main)', value: 'BITSP', defaultChecked: true },
+      { label: 'BITS Goa', value: 'BITSG', defaultChecked: true },
+      { label: 'BITS Hyderabad', value: 'BITSH', defaultChecked: true },
     ],
     branchInterests: [
-      // B.E. Branches
       { label: 'Computer Science', value: 'Computer Science', defaultChecked: true },
-      { label: 'Electronics & Communication', value: 'Electronics & Communication', defaultChecked: true },
-      { label: 'Electrical & Electronics', value: 'Electrical & Electronics', defaultChecked: true },
-      { label: 'Electronics & Instrumentation', value: 'Electronics & Instrumentation', defaultChecked: false },
-      { label: 'Mechanical', value: 'Mechanical', defaultChecked: false },
-      { label: 'Civil', value: 'Civil', defaultChecked: false },
-      { label: 'Chemical', value: 'Chemical', defaultChecked: false },
-      { label: 'Manufacturing Engineering', value: 'Manufacturing', defaultChecked: false },
-      // B.Pharm
-      { label: 'Pharmacy', value: 'Pharmacy', defaultChecked: false },
-      // Integrated M.Sc.
-      { label: 'Biological Sciences', value: 'Biological', defaultChecked: false },
-      { label: 'Chemistry', value: 'Chemistry', defaultChecked: false },
-      { label: 'Economics', value: 'Economics', defaultChecked: false },
-      { label: 'Mathematics', value: 'Mathematics', defaultChecked: false },
-      { label: 'Physics', value: 'Physics', defaultChecked: false },
+      { label: 'Electronics', value: 'Electronics', defaultChecked: true },
+      { label: 'Electrical', value: 'Electrical', defaultChecked: true },
+      { label: 'Mechanical', value: 'Mechanical', defaultChecked: true },
+      { label: 'Chemical', value: 'Chemical', defaultChecked: true },
+      { label: 'Civil', value: 'Civil', defaultChecked: true },
+      { label: 'B.Pharm', value: 'B.Pharm', defaultChecked: true },
+      { label: 'M.Sc. Economics', value: 'Economics', defaultChecked: true },
+      { label: 'M.Sc. Physics', value: 'Physics', defaultChecked: true },
+      { label: 'M.Sc. Mathematics', value: 'Mathematics', defaultChecked: true },
+      { label: 'M.Sc. Chemistry', value: 'Chemistry', defaultChecked: true },
+      { label: 'M.Sc. Biology', value: 'Biological', defaultChecked: true },
     ],
     programTypes: [
-      { label: 'B.E. (Engineering)', value: 'B.E.', defaultChecked: true },
+      { label: 'B.E.', value: 'B.E.', defaultChecked: true },
       { label: 'B.Pharm', value: 'B.Pharm', defaultChecked: true },
-      { label: 'Integrated M.Sc.', value: 'Integrated M.Sc.', defaultChecked: true },
+      { label: 'Integrated M.Sc.', value: 'M.Sc.', defaultChecked: true },
     ],
   },
 
   apiConfig: {
-    predictEndpoint: '/colleges/predict',
-    predictMethod: 'GET',
-    buildRequestPayload: (input) => {
-      _lastUserScore = input.value;
-      return {
-        rank: input.value,
-        exam: 'BITSAT',
-        category: input.category,
-        state: input.homeState,
-        gender: input.gender,
-      };
-    },
-
-    parseResponse: (response: any): NormalizedPrediction => {
-      const colleges: FlatCollege[] = (response.data || []).map((item: any) => {
-        const matchingCutoff = item.matchingCutoffs?.[0];
-        const cutoff = matchingCutoff?.closingRank || 0;
-        const score = _lastUserScore;
-        const diff = score - cutoff;
-
-        let chance: AdmissionChance = 'not-eligible';
-
-        if (diff >= 0) {
-          chance = 'high';
-        } else if (diff >= -10) {
-          chance = 'medium';
-        } else if (diff >= -20) {
-          chance = 'low';
-        } else {
-          chance = 'not-eligible';
-        }
-
-        const courseName = matchingCutoff?.branch || '';
-        let programType = 'B.E.';
-        if (courseName.toLowerCase().includes('pharm')) programType = 'B.Pharm';
-        else if (courseName.toLowerCase().includes('m.sc') || courseName.toLowerCase().includes('integrated')) programType = 'Integrated M.Sc.';
-
-        return {
-          id: `${item._id}-${courseName}`,
-          collegeName: item.name,
-          institutionAbbrev: 'BITS',
-          location: `${item.location?.city}, ${item.location?.state}`,
-          course: courseName || 'Degree Program',
-          quota: matchingCutoff?.quota || 'General Merit',
-          closingRank: cutoff,
-          chance: chance,
-          institutionType: 'Deemed University',
-          programType: programType
-        };
-      });
-
-      return {
-        success: response.success,
-        totalResults: colleges.length,
-        colleges,
-        summary: {
-          high: colleges.filter(c => c.chance === 'high').length,
-          medium: colleges.filter(c => c.chance === 'medium').length,
-          low: colleges.filter(c => c.chance === 'low').length,
-          'not-eligible': colleges.filter(c => c.chance === 'not-eligible').length,
-        }
-      };
-    },
+    predictEndpoint: '/predictor/bitsat-predict',
+    predictMethod: 'POST',
+    buildRequestPayload: (input) => ({
+      score: input.value,
+      category: input.category,
+      gender: input.gender,
+    }),
+    parseResponse: parseBITSATResponse,
+    loadPredictionEndpoint: '/predictor/prediction',
   },
 
   sortOptions: [
     { label: 'Admission Chance', value: 'chance' },
-    { label: 'Closing Score (High to Low)', value: 'closingRank' },
-    { label: 'NIRF Rank', value: 'nirfRank' }
+    { label: 'Cutoff Score', value: 'closingRank' },
+    { label: 'NIRF Rank', value: 'nirfRank' },
   ],
 
   urlPath: '/predictors/bitsat-predictor',

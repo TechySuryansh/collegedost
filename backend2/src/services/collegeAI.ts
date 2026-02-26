@@ -1,15 +1,22 @@
 import OpenAI from 'openai';
 import { ICollege, IAIContent } from '../models/College';
 
-const apiKey = process.env.OPENAI_API_KEY || '';
-const isGroq = apiKey.startsWith('gsk_');
+// Lazy initialization — reads env vars when first called, not at import time
+let _openai: OpenAI | null = null;
+let _model: string = '';
 
-const openai = new OpenAI({
-    apiKey,
-    ...(isGroq ? { baseURL: 'https://api.groq.com/openai/v1' } : {})
-});
-
-const MODEL = isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini';
+function getClient() {
+    if (!_openai) {
+        const apiKey = process.env.OPENAI_API_KEY || '';
+        const isGroq = apiKey.startsWith('gsk_');
+        _openai = new OpenAI({
+            apiKey,
+            ...(isGroq ? { baseURL: 'https://api.groq.com/openai/v1' } : {})
+        });
+        _model = isGroq ? 'llama-3.3-70b-versatile' : 'gpt-4o-mini';
+    }
+    return { openai: _openai, model: _model, isGroq: _model.includes('llama') };
+}
 
 /**
  * Generate AI content for a college using OpenAI GPT.
@@ -70,8 +77,9 @@ Generate 5-7 FAQs covering admissions, placements, fees, campus life, and eligib
 
     for (let attempt = 0; attempt <= maxRetries; attempt++) {
         try {
+            const { openai, model, isGroq } = getClient();
             const response = await openai.chat.completions.create({
-                model: MODEL,
+                model,
                 messages: [
                     {
                         role: 'system',

@@ -246,6 +246,40 @@ export const getCollegeBySlug = async (req: Request, res: Response): Promise<voi
             return;
         }
 
+        // On-demand AI content generation: if college has no AI content yet, generate it
+        // Fire-and-forget so the user doesn't wait — content appears on next visit
+        if (!college.aiGenerated && process.env.OPENAI_API_KEY) {
+            // Mark as in-progress to avoid duplicate generation from concurrent requests
+            College.findByIdAndUpdate(college._id, { aiGenerated: true }).exec();
+
+            generateCollegeContent(college)
+                .then(async (aiContent) => {
+                    const stats = validatePlacementStats(aiContent.placementStats);
+                    aiContent.placementStats = stats;
+                    await College.findByIdAndUpdate(college._id, {
+                        aiContent,
+                        aiGenerated: true,
+                        aiGeneratedAt: new Date(),
+                        // Fill empty base fields from AI content
+                        ...(college.description ? {} : { description: aiContent.description }),
+                        ...(college.facilities?.length ? {} : { facilities: aiContent.facilities }),
+                        ...(college.placements?.averagePackage ? {} : {
+                            placements: {
+                                averagePackage: aiContent.placementStats?.averagePackage || 0,
+                                highestPackage: aiContent.placementStats?.highestPackage || 0,
+                                placementPercentage: aiContent.placementStats?.placementRate || 0,
+                            }
+                        }),
+                    });
+                    console.log(`✓ AI content generated on-demand for: ${college.name}`);
+                })
+                .catch(async (err) => {
+                    // Reset flag so it retries on next visit
+                    await College.findByIdAndUpdate(college._id, { aiGenerated: false });
+                    console.error(`✗ AI generation failed for ${college.name}: ${err.message}`);
+                });
+        }
+
         res.status(200).json({
             success: true,
             data: college
@@ -303,9 +337,10 @@ export const predictCollegesSimple = async (req: Request, res: Response): Promis
         const stateStr = (state as string) || '';
         const quotaStr = (quota as string) || ''; // AI, HS, OS or empty for all
 
-        // Wide range: find colleges where closing rank is between 0.5x and 2.5x of user rank
-        const lowerBound = Math.floor(rankNum * 0.5);
-        const upperBound = Math.ceil(rankNum * 2.5);
+        // Wide range: find colleges where closing rank overlaps with user rank
+        // Uses 0.3x to 5x range with guardrails for extreme ranks
+        const lowerBound = Math.max(1, Math.floor(rankNum * 0.3));
+        const upperBound = Math.max(100000, Math.ceil(rankNum * 5));
 
         // Build cutoff match conditions
         const cutoffMatch: any = {
@@ -378,7 +413,7 @@ export const predictCollegesSimple = async (req: Request, res: Response): Promis
                     }
                 }
             },
-            { $limit: 100 }
+            { $limit: 500 }
         ];
 
         const colleges = await College.aggregate(pipeline);
