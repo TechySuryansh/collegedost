@@ -94,11 +94,13 @@ export type AdmissionChance = 'high' | 'medium' | 'low' | 'not-eligible';
 export interface FlatCollege {
   id: string;
   collegeName: string;
+  collegeSlug?: string;
   location: string;
   nirfRank?: number;
   course: string;
   quota: string;
   closingRank: number;
+  cutoffLabel?: string;
   chance: AdmissionChance;
   institutionType: string;
   institutionAbbrev: string;

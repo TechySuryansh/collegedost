@@ -51,6 +51,7 @@ function parseBITSATResponse(data: Record<string, unknown>): NormalizedPredictio
           colleges.push({
             id: `${item.college_slug}-${item.course}-${item.cutoff_score}`,
             collegeName: item.college_name,
+            collegeSlug: (item.college_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
             location: meta.location,
             nirfRank: meta.nirf,
             course: item.course,
@@ -112,7 +113,6 @@ export const bitsatConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'Score' },
     { number: 2, label: 'Preferences' },
-    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {
