@@ -169,11 +169,11 @@ export function usePredictor(config: PredictorConfig) {
       return allValues.every(v => activeFilters[filterKey].includes(v));
     };
 
-    // Quota filter — skip when all checked
+    // Quota filter — skip when all checked; use exact match to avoid 'HU' matching 'OHU'
     if (!allChecked('quotaTypes') && activeFilters.quotaTypes.length > 0) {
       filtered = filtered.filter((c) =>
         activeFilters.quotaTypes.some((qt) =>
-          c.quota.toLowerCase().includes(qt.toLowerCase())
+          c.quota.toLowerCase() === qt.toLowerCase()
         )
       );
     }

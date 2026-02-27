@@ -73,6 +73,7 @@ function parseCUETResponse(data: Record<string, unknown>): NormalizedPrediction 
       colleges.push({
         id: `${college._id}-${cut.branch}-${closingRank}-${cutQuota}`,
         collegeName: college.name || 'Unknown University',
+        collegeSlug: (college.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         location: locationStr,
         nirfRank: college.nirfRank,
         course: cut.branch || 'General Programme',
@@ -127,7 +128,6 @@ export const cuetConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'Exam Details' },
     { number: 2, label: 'Category & State' },
-    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {

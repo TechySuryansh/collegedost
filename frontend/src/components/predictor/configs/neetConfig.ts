@@ -96,6 +96,7 @@ function parseNEETResponse(data: Record<string, unknown>): NormalizedPrediction 
       colleges.push({
         id: `${college._id}-${cut.branch}-${closingRank}-${cutQuota}`,
         collegeName: college.name || 'Unknown College',
+        collegeSlug: (college.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         location: locationStr,
         nirfRank: college.nirfRank,
         course: cut.branch || 'MBBS',
@@ -154,14 +155,13 @@ export const neetConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'NEET Score' },
     { number: 2, label: 'Category & State' },
-    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {
     quotaTypes: [
       { label: 'All India Quota', value: 'All India', defaultChecked: true },
-      { label: 'Home State Quota', value: 'Home State', defaultChecked: false },
-      { label: 'Other State Quota', value: 'Other State', defaultChecked: false },
+      { label: 'Home State Quota', value: 'Home State', defaultChecked: true },
+      { label: 'Other State Quota', value: 'Other State', defaultChecked: true },
     ],
     institutionTypes: [
       { label: 'Govt Medical Colleges', value: 'Govt', defaultChecked: true },

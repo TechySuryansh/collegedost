@@ -19,54 +19,45 @@ export const clatConfig: PredictorConfig = {
   },
 
   categories: ['General', 'OBC', 'SC', 'ST', 'EWS', 'PwD'],
-  states: [], // CLAT mostly uses AIQ and Domicile (handled via Quota Type if needed)
+  states: [],
   genders: ['Male', 'Female', 'Neutral'],
   programTypes: [
-    'BA LLB (Hons.)',
-    'BBA LLB',
-    'B.Com LLB',
-    'B.Sc LLB',
-    'LLM (Specializations)',
-    'PhD in Law'
+    'BA LLB (Hons.)', 'BBA LLB', 'B.Com LLB', 'B.Sc LLB',
+    'LLM (Specializations)', 'PhD in Law'
   ],
   rankBasedPrograms: [
-    'BA LLB (Hons.)',
-    'BBA LLB',
-    'B.Com LLB',
-    'B.Sc LLB',
+    'BA LLB (Hons.)', 'BBA LLB', 'B.Com LLB', 'B.Sc LLB',
     'LLM (Specializations)'
   ],
 
   steps: [
     { number: 1, label: 'Program & Rank' },
     { number: 2, label: 'Category & Gender' },
-    { number: 3, label: 'Law School Matching' }
   ],
 
   sidebarFilters: {
     quotaTypes: [
       { label: 'All India Quota', value: 'AI', defaultChecked: true },
-      { label: 'Domicile / State Quota', value: 'Domicile', defaultChecked: false },
-      { label: 'NRI / Foreign Quota', value: 'NRI', defaultChecked: false },
+      { label: 'Domicile / State Quota', value: 'Domicile', defaultChecked: true },
+      { label: 'NRI / Foreign Quota', value: 'NRI', defaultChecked: true },
     ],
     institutionTypes: [
       { label: 'National Law Universities (NLUs)', value: 'NLU', defaultChecked: true },
       { label: 'Top Private Law Schools (JGLS/ILS)', value: 'Private', defaultChecked: true },
     ],
     branchInterests: [
-      // UG Law
       { label: 'Constitutional Law', value: 'Constitutional', defaultChecked: true },
       { label: 'Criminal Law', value: 'Criminal', defaultChecked: true },
       { label: 'Corporate Law', value: 'Corporate', defaultChecked: true },
-      { label: 'Human Rights', value: 'Human Rights', defaultChecked: false },
-      { label: 'IPR / Cyber Law', value: 'IPR', defaultChecked: false },
-      { label: 'Environmental Law', value: 'Environmental', defaultChecked: false },
-      { label: 'International Law', value: 'International', defaultChecked: false },
-      { label: 'Tax Law', value: 'Tax', defaultChecked: false },
+      { label: 'Human Rights', value: 'Human Rights', defaultChecked: true },
+      { label: 'IPR / Cyber Law', value: 'IPR', defaultChecked: true },
+      { label: 'Environmental Law', value: 'Environmental', defaultChecked: true },
+      { label: 'International Law', value: 'International', defaultChecked: true },
+      { label: 'Tax Law', value: 'Tax', defaultChecked: true },
     ],
     programTypes: [
       { label: 'Undergraduate (BA/BBA LLB)', value: 'UG', defaultChecked: true },
-      { label: 'Postgraduate (LLM)', value: 'PG', defaultChecked: false },
+      { label: 'Postgraduate (LLM)', value: 'PG', defaultChecked: true },
     ],
   },
 
@@ -75,48 +66,55 @@ export const clatConfig: PredictorConfig = {
     predictMethod: 'GET',
     buildRequestPayload: (input) => {
       _lastUserRank = input.value;
-      const isRankMode = clatConfig.rankBasedPrograms?.includes(input.programType);
       return {
-        rank: isRankMode ? input.value : 0,
+        rank: input.value,
         exam: 'CLAT',
         category: input.category,
-        programType: input.programType,
         gender: input.gender,
       };
     },
 
     parseResponse: (response: any): NormalizedPrediction => {
-      const colleges: FlatCollege[] = (response.data || []).map((item: any) => {
-        const matchingCutoff = item.matchingCutoffs?.[0];
-        const cutoff = matchingCutoff?.closingRank || 0;
-        const rank = _lastUserRank;
+      const colleges: FlatCollege[] = [];
+      const rank = _lastUserRank;
 
-        let chance: AdmissionChance = 'not-eligible';
+      for (const item of response.data || []) {
+        const instName = item.name || '';
+        const slug = instName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const locationStr = `${item.location?.city || ''}, ${item.location?.state || ''}`;
 
-        // CLAT Rank Logic (highly competitive)
-        if (rank <= cutoff) {
-          chance = 'high';
-        } else if (rank <= cutoff * 1.05) {
-          chance = 'medium';
-        } else if (rank <= cutoff * 1.15) {
-          chance = 'low';
-        } else {
-          chance = 'not-eligible';
+        let abbrev = 'Law';
+        let derivedInstType = 'Private';
+
+        if (instName.includes('National Law') || instName.includes('NLU')) {
+          abbrev = 'NLU'; derivedInstType = 'NLU';
+        } else if (/JGLS|Jindal|ILS|Symbiosis/.test(instName)) {
+          abbrev = 'PVT'; derivedInstType = 'Private';
         }
 
-        return {
-          id: `${item._id}-${matchingCutoff?.branch || 'Law'}`,
-          collegeName: item.name,
-          institutionAbbrev: item.name.includes('National Law') ? 'NLU' : 'Law',
-          location: `${item.location?.city}, ${item.location?.state}`,
-          course: matchingCutoff?.branch || 'Law Program',
-          quota: matchingCutoff?.category || 'General',
-          closingRank: cutoff,
-          chance: chance,
-          institutionType: 'Law Institute',
-          programType: matchingCutoff?.programType || 'Integrated LLB'
-        };
-      });
+        for (const cut of item.matchingCutoffs || []) {
+          const cutoff = cut.closing || cut.closingRank || 0;
+
+          let chance: AdmissionChance = 'not-eligible';
+          if (rank <= cutoff) chance = 'high';
+          else if (rank <= cutoff * 1.05) chance = 'medium';
+          else if (rank <= cutoff * 1.15) chance = 'low';
+
+          colleges.push({
+            id: `${item._id}-${cut.branch}-${cut.quota}-${cutoff}`,
+            collegeName: instName,
+            collegeSlug: slug,
+            institutionAbbrev: abbrev,
+            location: locationStr,
+            course: cut.branch || 'Law Program',
+            quota: cut.quota || 'AI',
+            closingRank: cutoff,
+            cutoffLabel: 'Closing Rank',
+            chance,
+            institutionType: derivedInstType,
+          });
+        }
+      }
 
       return {
         success: response.success,

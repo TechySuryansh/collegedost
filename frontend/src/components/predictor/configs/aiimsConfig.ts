@@ -19,36 +19,24 @@ export const aiimsConfig: PredictorConfig = {
   },
 
   categories: ['General', 'OBC', 'SC', 'ST', 'EWS', 'PwD', 'PwBD'],
-  states: [], // AIIMS/INI-CET does not use Home State quota
+  states: [],
   genders: ['Male', 'Female'],
   programTypes: [
-    'MBBS',
-    'MD',
-    'MS',
-    'DM (6-year)',
-    'DM (3-year)',
-    'M.Ch (6-year)',
-    'M.Ch (3-year)',
-    'MDS',
-    'B.Sc Nursing',
-    'B.Sc Paramedical',
-    'M.Sc Nursing',
-    'MPH',
-    'MHA',
-    'PhD'
+    'MBBS', 'MD', 'MS', 'DM (6-year)', 'DM (3-year)',
+    'M.Ch (6-year)', 'M.Ch (3-year)', 'MDS',
+    'B.Sc Nursing', 'B.Sc Paramedical', 'M.Sc Nursing', 'MPH', 'MHA', 'PhD'
   ],
   rankBasedPrograms: ['MBBS', 'MD', 'MS', 'DM (6-year)', 'DM (3-year)', 'M.Ch (6-year)', 'M.Ch (3-year)', 'MDS'],
 
   steps: [
     { number: 1, label: 'Program & Rank' },
     { number: 2, label: 'Category & Preference' },
-    { number: 3, label: 'Institute Matching' }
   ],
 
   sidebarFilters: {
     quotaTypes: [
       { label: 'All India (Open)', value: 'AI', defaultChecked: true },
-      { label: 'Institute Internal', value: 'Internal', defaultChecked: false }
+      { label: 'Institute Internal', value: 'Internal', defaultChecked: true },
     ],
     institutionTypes: [
       { label: 'AIIMS New Delhi', value: 'AIIMS New Delhi', defaultChecked: true },
@@ -64,39 +52,34 @@ export const aiimsConfig: PredictorConfig = {
       { label: 'SCTIMST Trivandrum', value: 'SCTIMST', defaultChecked: true },
     ],
     branchInterests: [
-      // MBBS
       { label: 'MBBS (Single Branch)', value: 'MBBS', defaultChecked: true },
-      // MD Branches
-      { label: 'MD Anaesthesiology', value: 'Anaesthesiology', defaultChecked: false },
-      { label: 'MD Anatomy', value: 'Anatomy', defaultChecked: false },
-      { label: 'MD Biochemistry', value: 'Biochemistry', defaultChecked: false },
-      { label: 'MD Community Medicine', value: 'Community Medicine', defaultChecked: false },
-      { label: 'MD Dermatology', value: 'Dermatology', defaultChecked: false },
-      { label: 'MD Emergency Medicine', value: 'Emergency Medicine', defaultChecked: false },
-      { label: 'MD General Medicine', value: 'General Medicine', defaultChecked: false },
-      { label: 'MD Obstetrics & Gynaecology', value: 'Obstetrics', defaultChecked: false },
-      { label: 'MD Paediatrics', value: 'Paediatrics', defaultChecked: false },
-      { label: 'MD Radiodiagnosis', value: 'Radiodiagnosis', defaultChecked: false },
-      // MS Branches
-      { label: 'MS ENT', value: 'ENT', defaultChecked: false },
-      { label: 'MS General Surgery', value: 'General Surgery', defaultChecked: false },
-      { label: 'MS Ophthalmology', value: 'Ophthalmology', defaultChecked: false },
-      { label: 'MS Orthopaedics', value: 'Orthopaedics', defaultChecked: false },
-      // MDS
-      { label: 'Conservative Dentistry', value: 'Conservative', defaultChecked: false },
-      { label: 'Oral Surgery', value: 'Oral Surgery', defaultChecked: false },
-      { label: 'Orthodontics', value: 'Orthodontics', defaultChecked: false },
-      // DM & M.Ch (6-yr)
-      { label: 'Cardiology', value: 'Cardiology', defaultChecked: false },
-      { label: 'Neurology', value: 'Neurology', defaultChecked: false },
-      { label: 'Gastroenterology', value: 'Gastroenterology', defaultChecked: false },
-      { label: 'Neurosurgery (M.Ch)', value: 'Neurosurgery', defaultChecked: false },
-      { label: 'Urology (M.Ch)', value: 'Urology', defaultChecked: false },
+      { label: 'MD Anaesthesiology', value: 'Anaesthesiology', defaultChecked: true },
+      { label: 'MD Anatomy', value: 'Anatomy', defaultChecked: true },
+      { label: 'MD Biochemistry', value: 'Biochemistry', defaultChecked: true },
+      { label: 'MD Community Medicine', value: 'Community Medicine', defaultChecked: true },
+      { label: 'MD Dermatology', value: 'Dermatology', defaultChecked: true },
+      { label: 'MD Emergency Medicine', value: 'Emergency Medicine', defaultChecked: true },
+      { label: 'MD General Medicine', value: 'General Medicine', defaultChecked: true },
+      { label: 'MD Obstetrics & Gynaecology', value: 'Obstetrics', defaultChecked: true },
+      { label: 'MD Paediatrics', value: 'Paediatrics', defaultChecked: true },
+      { label: 'MD Radiodiagnosis', value: 'Radiodiagnosis', defaultChecked: true },
+      { label: 'MS ENT', value: 'ENT', defaultChecked: true },
+      { label: 'MS General Surgery', value: 'General Surgery', defaultChecked: true },
+      { label: 'MS Ophthalmology', value: 'Ophthalmology', defaultChecked: true },
+      { label: 'MS Orthopaedics', value: 'Orthopaedics', defaultChecked: true },
+      { label: 'Conservative Dentistry', value: 'Conservative', defaultChecked: true },
+      { label: 'Oral Surgery', value: 'Oral Surgery', defaultChecked: true },
+      { label: 'Orthodontics', value: 'Orthodontics', defaultChecked: true },
+      { label: 'Cardiology', value: 'Cardiology', defaultChecked: true },
+      { label: 'Neurology', value: 'Neurology', defaultChecked: true },
+      { label: 'Gastroenterology', value: 'Gastroenterology', defaultChecked: true },
+      { label: 'Neurosurgery (M.Ch)', value: 'Neurosurgery', defaultChecked: true },
+      { label: 'Urology (M.Ch)', value: 'Urology', defaultChecked: true },
     ],
     programTypes: [
       { label: 'UG (AIIMS)', value: 'UG', defaultChecked: true },
-      { label: 'PG (INI-CET)', value: 'PG', defaultChecked: false },
-      { label: 'Super-Specialty', value: 'SS', defaultChecked: false },
+      { label: 'PG (INI-CET)', value: 'PG', defaultChecked: true },
+      { label: 'Super-Specialty', value: 'SS', defaultChecked: true },
     ],
   },
 
@@ -105,48 +88,70 @@ export const aiimsConfig: PredictorConfig = {
     predictMethod: 'GET',
     buildRequestPayload: (input) => {
       _lastUserRank = input.value;
-      const isRankMode = aiimsConfig.rankBasedPrograms?.includes(input.programType);
       return {
-        rank: isRankMode ? input.value : 0,
+        rank: input.value,
         exam: input.programType === 'MBBS' ? 'AIIMS' : 'INI-CET',
         category: input.category,
-        programType: input.programType,
         gender: input.gender,
       };
     },
 
     parseResponse: (response: any): NormalizedPrediction => {
-      const colleges: FlatCollege[] = (response.data || []).map((item: any) => {
-        const matchingCutoff = item.matchingCutoffs?.[0];
-        const cutoff = matchingCutoff?.closingRank || 0;
-        const rank = _lastUserRank;
+      const colleges: FlatCollege[] = [];
+      const rank = _lastUserRank;
 
-        let chance: AdmissionChance = 'not-eligible';
+      for (const item of response.data || []) {
+        const instName = item.name || '';
+        const slug = instName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        const locationStr = `${item.location?.city || ''}, ${item.location?.state || ''}`;
 
-        // Medical Rank Logic
-        if (rank <= cutoff) {
-          chance = 'high';
-        } else if (rank <= cutoff * 1.1) {
-          chance = 'medium';
-        } else if (rank <= cutoff * 1.2) {
-          chance = 'low';
-        } else {
-          chance = 'not-eligible';
+        let abbrev = 'INI';
+        let derivedInstType = 'AIIMS New Delhi'; // default fallback
+
+        if (instName.includes('AIIMS')) {
+          abbrev = 'AIIMS';
+          // Match specific AIIMS for institution type filter
+          if (instName.includes('New Delhi') || instName.includes('Delhi')) derivedInstType = 'AIIMS New Delhi';
+          else if (instName.includes('Rishikesh')) derivedInstType = 'AIIMS Rishikesh';
+          else if (instName.includes('Jodhpur')) derivedInstType = 'AIIMS Jodhpur';
+          else if (instName.includes('Bhopal')) derivedInstType = 'AIIMS Bhopal';
+          else if (instName.includes('Bhubaneswar')) derivedInstType = 'AIIMS Bhubaneswar';
+          else if (instName.includes('Patna')) derivedInstType = 'AIIMS Patna';
+          else if (instName.includes('Raipur')) derivedInstType = 'AIIMS Raipur';
+          else derivedInstType = 'AIIMS New Delhi'; // other AIIMS
+        } else if (instName.includes('PGIMER') || instName.includes('PGI')) {
+          abbrev = 'PGI'; derivedInstType = 'PGIMER';
+        } else if (instName.includes('JIPMER')) {
+          abbrev = 'JIPMER'; derivedInstType = 'JIPMER';
+        } else if (instName.includes('NIMHANS')) {
+          abbrev = 'NIMH'; derivedInstType = 'NIMHANS';
+        } else if (instName.includes('SCTIMST')) {
+          abbrev = 'SCTI'; derivedInstType = 'SCTIMST';
         }
 
-        return {
-          id: `${item._id}-${matchingCutoff?.branch || 'Medicine'}`,
-          collegeName: item.name,
-          institutionAbbrev: item.name.includes('AIIMS') ? 'AIIMS' : 'INI',
-          location: `${item.location?.city}, ${item.location?.state}`,
-          course: matchingCutoff?.branch || 'Medical Program',
-          quota: matchingCutoff?.category || 'General',
-          closingRank: cutoff,
-          chance: chance,
-          institutionType: 'Government Medical Institute',
-          programType: matchingCutoff?.programType || 'MBBS'
-        };
-      });
+        for (const cut of item.matchingCutoffs || []) {
+          const cutoff = cut.closing || cut.closingRank || 0;
+
+          let chance: AdmissionChance = 'not-eligible';
+          if (rank <= cutoff) chance = 'high';
+          else if (rank <= cutoff * 1.1) chance = 'medium';
+          else if (rank <= cutoff * 1.2) chance = 'low';
+
+          colleges.push({
+            id: `${item._id}-${cut.branch}-${cut.quota}-${cutoff}`,
+            collegeName: instName,
+            collegeSlug: slug,
+            institutionAbbrev: abbrev,
+            location: locationStr,
+            course: cut.branch || 'Medical Program',
+            quota: cut.quota || 'AI',
+            closingRank: cutoff,
+            cutoffLabel: 'Closing Rank',
+            chance,
+            institutionType: derivedInstType,
+          });
+        }
+      }
 
       return {
         success: response.success,

@@ -47,6 +47,7 @@ function parseVITEEEResponse(data: Record<string, unknown>): NormalizedPredictio
           colleges.push({
             id: `${item.college_slug}-${item.course}-${item.closing_rank}-${item.category}`,
             collegeName: item.college_name,
+            collegeSlug: (item.college_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
             location: meta.location,
             nirfRank: meta.nirf,
             course: item.course,
@@ -108,7 +109,6 @@ export const viteeeConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'Rank' },
     { number: 2, label: 'Category' },
-    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {

@@ -88,6 +88,7 @@ function parseResponse(data: Record<string, unknown>): NormalizedPrediction {
       colleges.push({
         id: `${college._id}-${cut.branch}-${closingRank}-${cut.category}-${cutQuota}`,
         collegeName: college.name || 'Unknown College',
+        collegeSlug: (college.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
         location: locationStr,
         nirfRank: college.nirfRank,
         course: cut.branch || 'General',
@@ -147,7 +148,6 @@ export const jeeConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'Exam Details' },
     { number: 2, label: 'Category & State' },
-    { number: 3, label: 'Recommendations' },
   ],
 
   sidebarFilters: {

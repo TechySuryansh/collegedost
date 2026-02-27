@@ -19,8 +19,8 @@ export const gateConfig: PredictorConfig = {
   },
 
   categories: ['General', 'OBC', 'SC', 'ST', 'EWS', 'PwD'],
-  states: [], // GATE (IITs) does not use Home State quota
-  genders: [], // Mostly merit-based, no standard gender quota in GATE
+  states: [], // GATE does not use Home State quota
+  genders: [],
   programTypes: [
     'M.Tech',
     'M.E.',
@@ -40,37 +40,36 @@ export const gateConfig: PredictorConfig = {
   steps: [
     { number: 1, label: 'Score & Program' },
     { number: 2, label: 'Paper & Category' },
-    { number: 3, label: 'College Matching' }
   ],
 
   sidebarFilters: {
     quotaTypes: [
       { label: 'General / Open', value: 'Open', defaultChecked: true },
-      { label: 'OBC/SC/ST Quota', value: 'Category', defaultChecked: false }
+      { label: 'OBC/SC/ST Quota', value: 'Category', defaultChecked: true },
     ],
     institutionTypes: [
       { label: 'IITs / IISc', value: 'IIT', defaultChecked: true },
       { label: 'NITs', value: 'NIT', defaultChecked: true },
       { label: 'IIITs', value: 'IIIT', defaultChecked: true },
-      { label: 'GFTIs / Research Govt.', value: 'GFTI', defaultChecked: false },
+      { label: 'GFTIs / Research Govt.', value: 'GFTI', defaultChecked: true },
     ],
     branchInterests: [
       { label: 'CS – Computer Science', value: 'CS', defaultChecked: true },
       { label: 'EC – Electronics & Comm.', value: 'EC', defaultChecked: true },
       { label: 'EE – Electrical Eng.', value: 'EE', defaultChecked: true },
-      { label: 'ME – Mechanical Eng.', value: 'ME', defaultChecked: false },
-      { label: 'CE – Civil Engineering', value: 'CE', defaultChecked: false },
-      { label: 'DA – Data Science & AI', value: 'DA', defaultChecked: false },
-      { label: 'CH – Chemical Eng.', value: 'CH', defaultChecked: false },
-      { label: 'IN – Instrumentation', value: 'IN', defaultChecked: false },
-      { label: 'BT – Biotechnology', value: 'BT', defaultChecked: false },
-      { label: 'AE – Aerospace Eng.', value: 'AE', defaultChecked: false },
-      { label: 'MA – Mathematics', value: 'MA', defaultChecked: false },
-      { label: 'PH – Physics', value: 'PH', defaultChecked: false },
+      { label: 'ME – Mechanical Eng.', value: 'ME', defaultChecked: true },
+      { label: 'CE – Civil Engineering', value: 'CE', defaultChecked: true },
+      { label: 'DA – Data Science & AI', value: 'DA', defaultChecked: true },
+      { label: 'CH – Chemical Eng.', value: 'CH', defaultChecked: true },
+      { label: 'IN – Instrumentation', value: 'IN', defaultChecked: true },
+      { label: 'BT – Biotechnology', value: 'BT', defaultChecked: true },
+      { label: 'AE – Aerospace Eng.', value: 'AE', defaultChecked: true },
+      { label: 'MA – Mathematics', value: 'MA', defaultChecked: true },
+      { label: 'PH – Physics', value: 'PH', defaultChecked: true },
     ],
     programTypes: [
       { label: 'M.Tech / M.E.', value: 'Engineering', defaultChecked: true },
-      { label: 'MS / Research', value: 'Research', defaultChecked: false },
+      { label: 'MS / Research', value: 'Research', defaultChecked: true },
     ],
   },
 
@@ -79,9 +78,8 @@ export const gateConfig: PredictorConfig = {
     predictMethod: 'GET',
     buildRequestPayload: (input) => {
       _lastUserScore = input.value;
-      const isRankMode = gateConfig.rankBasedPrograms?.includes(input.programType);
       return {
-        score: isRankMode ? input.value : 0,
+        rank: input.value,
         exam: 'GATE',
         category: input.category,
         programType: input.programType,
@@ -89,37 +87,51 @@ export const gateConfig: PredictorConfig = {
     },
 
     parseResponse: (response: any): NormalizedPrediction => {
-      const colleges: FlatCollege[] = (response.data || []).map((item: any) => {
-        const matchingCutoff = item.matchingCutoffs?.[0];
-        const cutoff = matchingCutoff?.closingRank || 0; // Using score as cutoff
-        const score = _lastUserScore;
+      const colleges: FlatCollege[] = [];
+      const score = _lastUserScore;
 
-        let chance: AdmissionChance = 'not-eligible';
+      for (const item of response.data || []) {
+        const instName = item.name || '';
+        const locationStr = `${item.location?.city || ''}, ${item.location?.state || ''}`;
+        const slug = instName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-        // GATE Score Logic
-        if (score >= cutoff) {
-          chance = 'high';
-        } else if (score >= cutoff - 40) {
-          chance = 'medium';
-        } else if (score >= cutoff - 80) {
-          chance = 'low';
-        } else {
-          chance = 'not-eligible';
+        // Derive abbreviation and institution type
+        let abbrev = 'GATE';
+        let derivedInstType = 'GFTI';
+
+        if (instName.includes('Indian Institute of Technology') || instName.includes('IIT')) {
+          abbrev = 'IIT'; derivedInstType = 'IIT';
+        } else if (instName.includes('Indian Institute of Science') || instName.includes('IISc')) {
+          abbrev = 'IISc'; derivedInstType = 'IIT';
+        } else if (instName.includes('National Institute of Technology') || instName.includes('NIT')) {
+          abbrev = 'NIT'; derivedInstType = 'NIT';
+        } else if (instName.includes('Indian Institute of Information Technology') || instName.includes('IIIT')) {
+          abbrev = 'IIIT'; derivedInstType = 'IIIT';
         }
 
-        return {
-          id: `${item._id}-${matchingCutoff?.branch || 'GATE'}`,
-          collegeName: item.name,
-          institutionAbbrev: item.name.includes('Indian Institute of Technology') ? 'IIT' : 'M.Tech',
-          location: `${item.location?.city}, ${item.location?.state}`,
-          course: matchingCutoff?.branch || 'Engineering Program',
-          quota: matchingCutoff?.category || 'General',
-          closingRank: cutoff,
-          chance: chance,
-          institutionType: 'Postgraduate Engineering Institute',
-          programType: matchingCutoff?.programType || 'M.Tech'
-        };
-      });
+        for (const cut of item.matchingCutoffs || []) {
+          const cutoff = cut.closing || cut.closingRank || 0;
+
+          let chance: AdmissionChance = 'not-eligible';
+          if (score >= cutoff) chance = 'high';
+          else if (score >= cutoff - 40) chance = 'medium';
+          else if (score >= cutoff - 80) chance = 'low';
+
+          colleges.push({
+            id: `${item._id}-${cut.branch}-${cut.quota}-${cutoff}`,
+            collegeName: instName,
+            collegeSlug: slug,
+            institutionAbbrev: abbrev,
+            location: locationStr,
+            course: cut.branch || 'Engineering Program',
+            quota: cut.quota || 'Open',
+            closingRank: cutoff,
+            cutoffLabel: 'GATE Score',
+            chance,
+            institutionType: derivedInstType,
+          });
+        }
+      }
 
       return {
         success: response.success,
