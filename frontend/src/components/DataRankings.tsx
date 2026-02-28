@@ -18,8 +18,8 @@ const defaultItems: RankingItem[] = [
     { type: 'top', label: 'Engineering Colleges', href: '/tools/colleges?stream=Engineering' },
     { type: 'top', label: 'MBA Colleges', href: '/tools/colleges?stream=Management' },
     { type: 'top', label: 'Medical Colleges', href: '/tools/colleges?stream=Medicine' },
-    { type: 'exam', label: 'JEE Main', href: '/exams/jee-main' },
-    { type: 'exam', label: 'NEET', href: '/exams/neet' },
+    { type: 'exam', label: 'JEE Main', href: '/predictors/jee-main-predictor' },
+    { type: 'exam', label: 'NEET', href: '/predictors/neet-predictor' },
     { type: 'exam', label: 'CAT', href: '/exams/cat' },
 ];
 

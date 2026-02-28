@@ -18,8 +18,8 @@ const HomeHero: React.FC<HomeHeroProps> = ({
     title,
     subtitle = "Navigate your career path with personalized insights, real-time data, and expert counseling. Discover colleges, exams, and courses tailored for your success.",
     trending = [
-        { text: "JEE Main Predictor", link: "/predictors/jee-main" },
-        { text: "NEET 2026", link: "/exams/neet" },
+        { text: "JEE Main Predictor", link: "/predictors/jee-main-predictor" },
+        { text: "NEET 2026", link: "/predictors/neet-predictor" },
         { text: "MBA Rankings", link: "/streams/management" }
     ],
     showBadge = true
@@ -103,7 +103,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1] drop-shadow-lg">
                             {title || (
                                 <>
-                                    Empowering Your <br/>
+                                    Empowering Your <br />
                                     <span className="text-transparent bg-clip-text bg-linear-to-r from-teal-300 to-amber-300">Academic Journey</span>
                                 </>
                             )}
@@ -132,7 +132,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                     aria-controls="search-suggestions"
                                     aria-label="Search for colleges, exams, and courses"
                                 />
-                                <button 
+                                <button
                                     onClick={handleSearch}
                                     className="bg-primary hover:bg-secondary text-white rounded-full p-3 px-6 font-medium transition-colors shadow-lg"
                                 >
@@ -142,32 +142,32 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 
                             {/* Autocomplete Dropdown */}
                             {showSuggestions && suggestions.length > 0 && (
-                                <div 
+                                <div
                                     id="search-suggestions"
                                     role="listbox"
                                     className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-100 max-h-96 overflow-y-auto z-100 hide-scrollbar"
                                 >
-                                        {suggestions.map((item) => (
-                                            <div
-                                                key={item._id}
-                                                onClick={() => router.push(`/colleges/${item.slug}`)}
-                                                role="option"
-                                                aria-selected="false"
-                                                className="px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-primary/5 cursor-pointer flex items-center gap-4 transition-colors"
-                                            >
-                                                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
-                                                    <FaUniversity />
-                                                </div>
-                                                <div className="text-left">
-                                                    <h4 className="font-bold text-text-main-light text-sm">{item.name}</h4>
-                                                    <p className="text-xs text-text-muted-light flex items-center gap-1">
-                                                        <FaMapMarkerAlt className="text-gray-400" /> {item.location?.city}
-                                                        {item.nirfRank && <span className="ml-2 text-green-600 font-bold">• NIRF #{item.nirfRank}</span>}
-                                                    </p>
-                                                </div>
-                                                <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">{item.type}</span>
+                                    {suggestions.map((item) => (
+                                        <div
+                                            key={item._id}
+                                            onClick={() => router.push(`/colleges/${item.slug}`)}
+                                            role="option"
+                                            aria-selected="false"
+                                            className="px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-primary/5 cursor-pointer flex items-center gap-4 transition-colors"
+                                        >
+                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                                                <FaUniversity />
                                             </div>
-                                        ))}
+                                            <div className="text-left">
+                                                <h4 className="font-bold text-text-main-light text-sm">{item.name}</h4>
+                                                <p className="text-xs text-text-muted-light flex items-center gap-1">
+                                                    <FaMapMarkerAlt className="text-gray-400" /> {item.location?.city}
+                                                    {item.nirfRank && <span className="ml-2 text-green-600 font-bold">• NIRF #{item.nirfRank}</span>}
+                                                </p>
+                                            </div>
+                                            <span className="ml-auto text-xs bg-gray-100 px-2 py-1 rounded-full text-gray-600">{item.type}</span>
+                                        </div>
+                                    ))}
                                     <div
                                         onClick={handleSearch}
                                         className="px-6 py-3 bg-gray-50 text-center text-primary font-bold text-sm cursor-pointer hover:bg-gray-100"
@@ -199,9 +199,9 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         <div className="relative glass-card rounded-4xl p-6 lg:p-8 transform transition-transform duration-500 hover:scale-[1.02]">
                             {/* Featured Image */}
                             <div className="relative h-64 w-full rounded-2xl overflow-hidden mb-6">
-                                <img 
-                                    alt="Students collaborating" 
-                                    className="w-full h-full object-cover transform hover:scale-110 transition duration-700" 
+                                <img
+                                    alt="Students collaborating"
+                                    className="w-full h-full object-cover transform hover:scale-110 transition duration-700"
                                     src="https://images.unsplash.com/photo-1590161311659-852a5207c5b0?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                                 />
                                 <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent"></div>
@@ -209,7 +209,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                     <span className="bg-primary text-xs font-bold px-2 py-1 rounded mb-2 inline-block">FEATURED STORY</span>
                                     <h3 className="font-display font-bold text-xl leading-tight">The Future of Education: Welcome to Cambridge!</h3>
                                 </div>
-                                <button 
+                                <button
                                     onClick={() => window.open('https://www.youtube.com/watch?v=LlCwHnp3kL4', '_blank')}
                                     aria-label="Play featured video"
                                     className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/30 backdrop-blur-md rounded-full p-4 hover:bg-white/50 transition-colors group"

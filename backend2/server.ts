@@ -44,11 +44,13 @@ import reviews from './src/routes/review.routes';
 import articles from './src/routes/article.routes';
 import exams from './src/routes/exam.routes';
 import courses from './src/routes/course.routes';
+import search from './src/routes/search.routes';
 
 app.use('/api/auth', auth);
 app.use('/api/users', users);
 app.use('/api/admin', admin);
 app.use('/api/colleges', colleges);
+app.use('/api/search', search);
 app.use('/api/predictor', predictor);
 app.use('/api/reviews', reviews);
 app.use('/api/articles', articles);

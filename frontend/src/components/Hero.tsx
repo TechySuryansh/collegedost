@@ -66,7 +66,7 @@ const Hero: React.FC<HeroProps> = ({
 
     const handleSearch = () => {
         if (search.trim()) {
-            router.push(`/colleges?search=${encodeURIComponent(search)}`);
+            router.push(`/tools/colleges?search=${encodeURIComponent(search)}`);
             setShowSuggestions(false);
         }
     };
@@ -187,7 +187,7 @@ const Hero: React.FC<HeroProps> = ({
                                     {suggestions.map((item) => (
                                         <div
                                             key={item._id}
-                                            onClick={() => router.push(`/colleges/${item.slug}`)}
+                                            onClick={() => router.push(`/tools/colleges/${item.slug}`)}
                                             className="px-6 py-4 border-b border-gray-100 last:border-0 hover:bg-blue-50 cursor-pointer flex items-center gap-4 transition-colors"
                                         >
                                             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-brand-blue-dark shrink-0">

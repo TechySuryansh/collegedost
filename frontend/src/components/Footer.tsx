@@ -39,9 +39,9 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-bold mb-6">Top Exams</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/tools/exams/jee-main" className="hover:text-primary transition-colors">JEE Main 2026</Link></li>
+              <li><Link href="/predictors/jee-main-predictor" className="hover:text-primary transition-colors">JEE Main 2026</Link></li>
               <li><Link href="/tools/exams/cat" className="hover:text-primary transition-colors">CAT 2025</Link></li>
-              <li><Link href="/tools/exams/neet" className="hover:text-primary transition-colors">NEET 2026</Link></li>
+              <li><Link href="/predictors/neet-predictor" className="hover:text-primary transition-colors">NEET 2026</Link></li>
               <li><Link href="/tools/exams/gate" className="hover:text-primary transition-colors">GATE 2026</Link></li>
               <li><Link href="/tools/exams/clat" className="hover:text-primary transition-colors">CLAT 2026</Link></li>
             </ul>
