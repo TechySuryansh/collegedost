@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
-import { FaUserGraduate, FaUniversity, FaNewspaper, FaSync, FaRobot } from 'react-icons/fa';
+import { FaUserGraduate, FaUniversity, FaNewspaper, FaSync, FaRobot, FaCode } from 'react-icons/fa';
 import api from '@/api/axios';
 import { IconType } from 'react-icons';
 
@@ -54,7 +54,7 @@ const AdminDashboard: React.FC = () => {
     const handleSync = async (): Promise<void> => {
         setIsSyncing(true);
         try {
-            const { data } = await api.post('/colleges/sync');  
+            const { data } = await api.post('/colleges/sync');
             if (data.success) {
                 alert(data.message);
             }
@@ -119,8 +119,8 @@ const AdminDashboard: React.FC = () => {
                     <p className="text-gray-500 text-sm mt-1">Welcome back, Admin. Here&apos;s what&apos;s happening today.</p>
                 </div>
                 <div className="flex gap-2">
-                    <button 
-                        onClick={handleSync} 
+                    <button
+                        onClick={handleSync}
                         disabled={isSyncing}
                         className={`flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 text-sm font-medium transition-all ${isSyncing ? 'animate-pulse' : ''}`}
                     >
@@ -129,15 +129,15 @@ const AdminDashboard: React.FC = () => {
                 </div>
             </div>
 
-            <motion.div 
+            <motion.div
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
                 className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
             >
                 {statCards.map((card, i) => (
-                    <motion.div 
-                        key={i} 
+                    <motion.div
+                        key={i}
                         variants={itemVariants}
                         className="bg-white rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 flex items-start justify-between border border-gray-100 group cursor-default"
                     >
@@ -153,7 +153,7 @@ const AdminDashboard: React.FC = () => {
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.3 }}
@@ -163,7 +163,7 @@ const AdminDashboard: React.FC = () => {
                         <h3 className="font-bold text-lg text-gray-800">Recent Users</h3>
                         <Link href="/admin/users" className="text-sm text-brand-blue hover:text-blue-700 font-medium hover:underline">View All</Link>
                     </div>
-                    
+
                     <div className="flex flex-col gap-3">
                         {loading ? (
                             <p className="text-gray-500 text-sm text-center py-4">Loading users...</p>
@@ -190,7 +190,7 @@ const AdminDashboard: React.FC = () => {
                     </div>
                 </motion.div>
 
-                <motion.div 
+                <motion.div
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
@@ -225,6 +225,24 @@ const AdminDashboard: React.FC = () => {
                                 <p className="text-xs text-gray-500">Refresh content from ingestion</p>
                             </div>
                         </button>
+                        <Link href="/admin/users" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-green-600 group-hover:scale-110 transition-transform">
+                                <FaUserGraduate className="text-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 group-hover:text-brand-blue transition-colors">Manage Users</h4>
+                                <p className="text-xs text-gray-500">View and export user data</p>
+                            </div>
+                        </Link>
+                        <Link href="/admin/ingestion" className="p-4 bg-gray-50 hover:bg-brand-light border border-gray-200 hover:border-brand-blue/30 rounded-xl flex items-center gap-4 transition-all group">
+                            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-amber-500 group-hover:scale-110 transition-transform">
+                                <FaSync className="text-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 group-hover:text-brand-blue transition-colors">Data Ingestion</h4>
+                                <p className="text-xs text-gray-500">Import college data from CSV</p>
+                            </div>
+                        </Link>
                         <Link href="/admin/predictor-settings" className="p-4 bg-linear-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">
                             <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-purple-600 group-hover:scale-110 transition-transform">
                                 <FaRobot className="text-lg" />
@@ -232,6 +250,15 @@ const AdminDashboard: React.FC = () => {
                             <div>
                                 <h4 className="text-sm font-bold text-gray-800 group-hover:text-purple-700 transition-colors">AI Predictor</h4>
                                 <p className="text-xs text-gray-500">Configure college predictor</p>
+                            </div>
+                        </Link>
+                        <Link href="/admin/site-settings" className="p-4 bg-linear-to-br from-blue-50 to-cyan-50 hover:from-blue-100 hover:to-cyan-100 border border-blue-200 hover:border-cyan-300 rounded-xl flex items-center gap-4 transition-all group">
+                            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
+                                <FaCode className="text-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 group-hover:text-blue-700 transition-colors">Site Settings</h4>
+                                <p className="text-xs text-gray-500">Google and Meta tracking</p>
                             </div>
                         </Link>
                     </div>

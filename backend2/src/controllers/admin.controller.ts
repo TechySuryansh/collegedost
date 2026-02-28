@@ -3,6 +3,7 @@ import User from '../models/User';
 import College from '../models/College';
 import Article from '../models/Article';
 import PredictorSettings from '../models/PredictorSettings';
+import SiteSettings from '../models/SiteSettings';
 import Job from '../models/Job';
 import { AuthRequest } from '../middleware/auth.middleware';
 import { parse } from 'csv-parse';
@@ -101,6 +102,56 @@ export const updatePredictorSettings = async (req: AuthRequest, res: Response) =
             success: true,
             data: settings,
             message: 'Predictor settings updated successfully'
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server Error'
+        });
+    }
+};
+
+
+// @desc    Get site settings (tracking codes)
+// @route   GET /api/admin/site-settings
+// @access  Private/Admin
+export const getSiteSettings = async (req: AuthRequest, res: Response) => {
+    try {
+        let settings = await SiteSettings.findOne();
+
+        if (!settings) {
+            settings = await SiteSettings.create({});
+        }
+
+        res.status(200).json({
+            success: true,
+            data: settings
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: 'Server Error'
+        });
+    }
+};
+
+// @desc    Update site settings
+// @route   PUT /api/admin/site-settings
+// @access  Private/Admin
+export const updateSiteSettings = async (req: AuthRequest, res: Response) => {
+    try {
+        const { googleTrackingCode, metaTrackingCode } = req.body;
+
+        const settings = await SiteSettings.findOneAndUpdate(
+            {},
+            { googleTrackingCode, metaTrackingCode },
+            { new: true, upsert: true }
+        );
+
+        res.status(200).json({
+            success: true,
+            data: settings,
+            message: 'Site settings updated successfully'
         });
     } catch (error) {
         res.status(500).json({

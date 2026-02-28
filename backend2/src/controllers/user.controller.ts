@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import * as XLSX from 'xlsx';
 import User, { IUser } from '../models/User';
 import { AuthRequest } from '../middleware/auth.middleware';
 
@@ -264,6 +265,64 @@ export const toggleBookmark = async (req: AuthRequest, res: Response) => {
         res.status(500).json({
             success: false,
             message: 'Server Error'
+        });
+    }
+};
+
+// @desc    Export users to Excel (Admin only)
+// @route   GET /api/users/export
+// @access  Private/Admin
+export const exportUsers = async (req: AuthRequest, res: Response) => {
+    try {
+        const { startDate, endDate } = req.query;
+
+        let query: any = {};
+
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) {
+                query.createdAt.$gte = new Date(startDate as string);
+            }
+            if (endDate) {
+                const end = new Date(endDate as string);
+                end.setHours(23, 59, 59, 999);
+                query.createdAt.$lte = end;
+            }
+        }
+
+        const users = await User.find(query).select('-password').sort('-createdAt');
+
+        // Prepare data for Excel
+        const data = users.map(user => ({
+            Name: user.name || 'N/A',
+            Email: user.email || 'N/A',
+            Mobile: user.mobile || 'N/A',
+            City: user.city || 'N/A',
+            Class: user.currentClass || 'N/A',
+            Interest: user.interest || 'N/A',
+            Role: user.role,
+            Verified: user.isVerified ? 'Yes' : 'No',
+            'Joined Date': new Date(user.createdAt).toLocaleString()
+        }));
+
+        // Create Excel workbook
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Users');
+
+        // Write to buffer
+        const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+
+        // Set response headers
+        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        res.setHeader('Content-Disposition', `attachment; filename=users_export_${Date.now()}.xlsx`);
+
+        res.status(200).send(buffer);
+    } catch (error: any) {
+        console.error('Export Users Error:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server Error: ' + error.message
         });
     }
 };

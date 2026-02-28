@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { FaChartPie, FaUniversity, FaNewspaper, FaUserShield } from 'react-icons/fa';
+import { FaChartPie, FaUniversity, FaNewspaper, FaUserShield, FaCode } from 'react-icons/fa';
 import { AdminLink } from './types';
 
 const adminLinks: AdminLink[] = [
@@ -8,6 +8,7 @@ const adminLinks: AdminLink[] = [
   { title: 'Colleges', href: '/admin/colleges', icon: FaUniversity },
   { title: 'Articles', href: '/admin/articles', icon: FaNewspaper },
   { title: 'Users', href: '/admin/users', icon: FaUserShield },
+  { title: 'Site Settings', href: '/admin/site-settings', icon: FaCode },
 ];
 
 interface NavAdminBarProps {
@@ -25,9 +26,8 @@ const NavAdminBar: React.FC<NavAdminBarProps> = ({ pathname }) => (
         <Link
           key={link.href}
           href={link.href}
-          className={`flex items-center gap-2 text-sm font-medium ${
-            isActive ? 'text-white' : 'text-slate-400 hover:text-white'
-          }`}
+          className={`flex items-center gap-2 text-sm font-medium ${isActive ? 'text-white' : 'text-slate-400 hover:text-white'
+            }`}
         >
           <link.icon className={isActive ? 'text-primary' : ''} />
           {link.title}

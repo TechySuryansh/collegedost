@@ -39,6 +39,8 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
                 'NLU': 'National Law University',
                 'AIIMS': 'All India Institute of Medical Sciences',
                 'BITS': 'Birla Institute of Technology and Science',
+                'MBA': 'Management',
+                'PGDM': 'Management',
                 'NIFT': 'National Institute of Fashion Technology',
                 'NID': 'National Institute of Design',
             };
