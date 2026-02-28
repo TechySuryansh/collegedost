@@ -6,7 +6,8 @@ import {
     getUsers,
     getUser,
     deleteUser,
-    toggleBookmark
+    toggleBookmark,
+    exportUsers
 } from '../controllers/user.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -19,6 +20,7 @@ router.put('/updatepassword', protect, updatePassword);
 router.post('/bookmark', protect, toggleBookmark);
 
 // Admin routes (protected + admin role required)
+router.get('/export', protect, authorize('admin'), exportUsers);
 router.get('/', protect, authorize('admin'), getUsers);
 router.get('/:id', protect, authorize('admin'), getUser);
 router.delete('/:id', protect, authorize('admin'), deleteUser);

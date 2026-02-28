@@ -3,7 +3,7 @@
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import api from '@/api/axios';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { FaUser, FaTrash, FaUserShield, FaCheckCircle, FaSearch } from 'react-icons/fa';
+import { FaUser, FaTrash, FaUserShield, FaCheckCircle, FaSearch, FaFileExcel, FaFilter } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
 /**
@@ -26,6 +26,15 @@ const AdminUsers: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchTerm, setSearchTerm] = useState<string>('');
+    const [startDate, setStartDate] = useState<string>(() => {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth(), 1).toISOString().split('T')[0];
+    });
+    const [endDate, setEndDate] = useState<string>(() => {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().split('T')[0];
+    });
+    const [exporting, setExporting] = useState<boolean>(false);
 
     useEffect(() => {
         fetchUsers();
@@ -56,8 +65,35 @@ const AdminUsers: React.FC = () => {
         }
     };
 
-    const filteredUsers = users.filter(user => 
-        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+    const handleExport = async (): Promise<void> => {
+        try {
+            setExporting(true);
+            const params = new URLSearchParams();
+            if (startDate) params.append('startDate', startDate);
+            if (endDate) params.append('endDate', endDate);
+
+            const response = await api.get(`/users/export?${params.toString()}`, {
+                responseType: 'blob'
+            });
+
+            // Create download link
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `users_export_${new Date().toISOString().split('T')[0]}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        } catch (error) {
+            console.error('Error exporting users:', error);
+            alert('Failed to export users');
+        } finally {
+            setExporting(false);
+        }
+    };
+
+    const filteredUsers = users.filter(user =>
+        user.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.mobile?.includes(searchTerm)
     );
@@ -69,15 +105,54 @@ const AdminUsers: React.FC = () => {
                     <h1 className="text-2xl font-bold text-gray-900">Users Management</h1>
                     <p className="text-gray-500 text-sm">View and manage registered users</p>
                 </div>
-                <div className="relative w-full md:w-64">
-                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                    <input 
-                        type="text" 
-                        placeholder="Search users..." 
-                        value={searchTerm}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
-                    />
+
+                <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                    <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-lg px-3 py-1.5 shadow-sm">
+                        <FaFilter className="text-gray-400 text-xs" />
+                        <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Join Date:</span>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="text-sm bg-transparent border-none focus:ring-0 text-gray-700"
+                        />
+                        <span className="text-gray-300">to</span>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="text-sm bg-transparent border-none focus:ring-0 text-gray-700"
+                        />
+                        {(startDate || endDate) && (
+                            <button
+                                onClick={() => { setStartDate(''); setEndDate(''); }}
+                                className="text-xs text-brand-blue hover:underline ml-1"
+                            >
+                                Clear
+                            </button>
+                        )}
+                    </div>
+
+                    <div className="flex items-center gap-3 w-full md:w-64">
+                        <div className="relative flex-1">
+                            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search users..."
+                                value={searchTerm}
+                                onChange={(e: ChangeEvent<HTMLInputElement>) => setSearchTerm(e.target.value)}
+                                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-blue/20"
+                            />
+                        </div>
+                        <button
+                            onClick={handleExport}
+                            disabled={exporting}
+                            className={`flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium text-sm whitespace-nowrap shadow-sm ${exporting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        >
+                            <FaFileExcel />
+                            {exporting ? 'Exporting...' : 'Export Excel'}
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -100,8 +175,8 @@ const AdminUsers: React.FC = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-100">
                                 {filteredUsers.map((user) => (
-                                    <motion.tr 
-                                        key={user._id} 
+                                    <motion.tr
+                                        key={user._id}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         className="hover:bg-gray-50 transition-colors"
@@ -138,8 +213,8 @@ const AdminUsers: React.FC = () => {
                                             {new Date(user.createdAt).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4 text-right">
-                                            <button 
-                                                onClick={() => handleDelete(user._id)} 
+                                            <button
+                                                onClick={() => handleDelete(user._id)}
                                                 className="text-gray-400 hover:text-red-600 p-2 rounded-full hover:bg-red-50 transition-colors"
                                                 title="Delete User"
                                                 disabled={user.role === 'admin'}

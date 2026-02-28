@@ -5,6 +5,8 @@ import {
     getStats,
     getPredictorSettings,
     updatePredictorSettings,
+    getSiteSettings,
+    updateSiteSettings,
     ingestAicte,
     triggerNirf
 } from '../controllers/admin.controller';
@@ -39,6 +41,8 @@ router.use(protect, authorize('admin'));
 router.get('/stats', getStats);
 router.get('/predictor-settings', getPredictorSettings);
 router.put('/predictor-settings', updatePredictorSettings);
+router.get('/site-settings', getSiteSettings);
+router.put('/site-settings', updateSiteSettings);
 
 // Ingestion routes
 router.post('/ingest/aicte', upload.single('file'), ingestAicte);
