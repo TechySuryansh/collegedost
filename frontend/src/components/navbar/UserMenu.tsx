@@ -9,7 +9,7 @@ interface UserMenuProps {
   onToggleDropdown: () => void;
   onCloseDropdown: () => void;
   onLogout: () => void;
-  onOpenAuthModal: () => void;
+  onOpenAuthModal: (tab?: 'login' | 'signup' | 'forgotPassword') => void;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
@@ -25,13 +25,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
     return (
       <div className="flex items-center gap-3 shrink-0">
         <button
-          onClick={onOpenAuthModal}
+          onClick={() => onOpenAuthModal('login')}
           className="inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full text-white bg-primary hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
         >
           Login
         </button>
         <button
-          onClick={onOpenAuthModal}
+          onClick={() => onOpenAuthModal('signup')}
           className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
         >
           Sign Up

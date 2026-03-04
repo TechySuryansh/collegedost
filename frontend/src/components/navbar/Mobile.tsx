@@ -12,7 +12,7 @@ interface MobileProps {
   isOpen: boolean;
   onClose: () => void;
   user: any;
-  onOpenAuthModal: () => void;
+  onOpenAuthModal: (tab?: 'login' | 'signup' | 'forgotPassword') => void;
 }
 
 const Mobile: React.FC<MobileProps> = ({
@@ -177,7 +177,7 @@ const Mobile: React.FC<MobileProps> = ({
             <button
               onClick={() => {
                 closeMobile();
-                onOpenAuthModal();
+                onOpenAuthModal('login');
               }}
               className="w-full py-3 bg-primary text-white font-medium rounded-full"
             >

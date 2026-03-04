@@ -293,3 +293,38 @@ export async function generateCourseGuide(courseName: string, courseSlug: string
     throw new Error(`Failed to parse AI response: ${error.message}`);
   }
 }
+export async function generateLatestArticles(): Promise<any[]> {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+  const prompt = `You are a professional education news journalist in India. 
+  Generate 6-8 "Latest News & Articles" entries about Indian education, specifically focusing on 2026 exams (CUET, JEE, NEET, NIMCET, MAT, CAT, board exams, results, registration starts, etc.).
+
+  For each article, provide:
+  1. title: Catchy news headline
+  2. summary: 2-3 sentence summary of the news
+  3. category: One of ['Exam News', 'College News', 'Admission Alert', 'General']
+  4. content: Detailed article content in HTML (3-4 paragraphs)
+  5. author: A realistic name
+  6. tags: 2-3 relevant keywords
+  7. isLive: Boolean (True if it's currently happening/urgent like "Result (OUT)")
+
+  Return a JSON array of objects with these fields. 
+  IMPORTANT: Return ONLY valid JSON, no markdown fences, no extra text.
+  Make sure the news is realistic and timely (March 2026).`;
+
+  const result = await model.generateContent(prompt);
+  const text = result.response.text();
+
+  const jsonMatch = text.match(/\[[\s\S]*\]/);
+  if (!jsonMatch) {
+    console.error('[Gemini Service] No JSON array found in news response:', text);
+    throw new Error('Failed to parse AI news response');
+  }
+
+  try {
+    return JSON.parse(jsonMatch[0]);
+  } catch (error: any) {
+    console.error('[Gemini Service] News JSON Parse Error:', error.message);
+    throw new Error(`Failed to parse AI news: ${error.message}`);
+  }
+}

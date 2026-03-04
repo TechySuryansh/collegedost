@@ -12,6 +12,7 @@ import EngineeringRankings from './EngineeringRankings';
 import MedicalRankings from './MedicalRankings';
 import TopExams from './TopExams';
 import VideoSection from './VideoSection';
+import LatestNews from './LatestNews';
 import TrendingCourses from './TrendingCourses';
 import { useUI } from '@/context/UIContext';
 
@@ -50,6 +51,9 @@ const HomePage = () => {
 
                     {/* Personalized Counselling */}
                     <HomeCounselling onOpenAskModal={openAskModal} />
+
+                    {/* Latest News & Articles */}
+                    <LatestNews />
 
                     {/* Video Section */}
                     <VideoSection />

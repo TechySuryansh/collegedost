@@ -8,7 +8,7 @@ import AskModal from './AskModal';
 import ShareModal from './ShareModal';
 
 const ModalManager: React.FC = () => {
-    const { isAuthModalOpen, closeAuthModal } = useAuth();
+    const { isAuthModalOpen, closeAuthModal, authModalTab } = useAuth();
     const { isAskModalOpen, closeAskModal, isShareModalOpen, closeShareModal } = useUI();
 
     return (
@@ -16,6 +16,7 @@ const ModalManager: React.FC = () => {
             <AuthModal
                 isOpen={isAuthModalOpen}
                 onClose={closeAuthModal}
+                initialTab={authModalTab}
             />
             <AskModal
                 isOpen={isAskModalOpen}
