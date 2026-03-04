@@ -1,6 +1,7 @@
 import express from 'express';
 import {
     getArticles,
+    getAINews,
     getArticleBySlug,
     getArticleById,
     createArticle,
@@ -11,6 +12,8 @@ import {
 import { protect, authorize } from '../middleware/auth.middleware';
 
 const router = express.Router();
+
+router.get('/ai-news', getAINews);
 
 router.route('/')
     .get(getArticles)

@@ -6,11 +6,18 @@ import Article from '../models/Article';
 // @access  Public
 export const getArticles = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { category, page = 1, limit = 10 } = req.query;
+        const { category, search, page = 1, limit = 10 } = req.query;
         const query: any = {};
 
         if (category && category !== 'All') {
             query.category = category;
+        }
+
+        if (search) {
+            query.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { summary: { $regex: search, $options: 'i' } }
+            ];
         }
 
         const pageNum = Number(page);
@@ -153,6 +160,54 @@ export const getArticleById = async (req: Request, res: Response): Promise<void>
             data: article
         });
     } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+// @desc    Get AI Generated News
+// @route   GET /api/articles/ai-news
+// @access  Public
+export const getAINews = async (req: Request, res: Response): Promise<void> => {
+    try {
+        // Find news from the last 24 hours
+        const oneDayAgo = new Date();
+        oneDayAgo.setHours(oneDayAgo.getHours() - 24);
+
+        let articles = await Article.find({
+            createdAt: { $gte: oneDayAgo }
+        }).sort({ createdAt: -1 });
+
+        // If we have fewer than 4 recent news, generate more using AI
+        if (articles.length < 4) {
+            const { generateLatestArticles } = require('../services/gemini.service');
+            const aiNews = await generateLatestArticles();
+
+            const savedNews = [];
+            for (const item of aiNews) {
+                // Check if title already exists to avoid duplicates
+                const exists = await Article.findOne({ title: item.title });
+                if (!exists) {
+                    const slug = item.title.toLowerCase().split(' ').join('-').replace(/[^\w-]+/g, '') + '-' + Math.random().toString(36).substring(2, 5);
+                    const newArticle = await Article.create({
+                        ...item,
+                        slug
+                    });
+                    savedNews.push(newArticle);
+                }
+            }
+
+            // Re-fetch all recent news including newly generated ones
+            articles = await Article.find({
+                createdAt: { $gte: oneDayAgo }
+            }).sort({ createdAt: -1 }).limit(8);
+        }
+
+        res.status(200).json({
+            success: true,
+            count: articles.length,
+            data: articles
+        });
+    } catch (error: any) {
+        console.error('[Article Controller] Error getting AI news:', error.message);
         res.status(500).json({ success: false, message: error.message });
     }
 };

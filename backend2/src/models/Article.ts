@@ -9,6 +9,7 @@ export interface IArticle extends Document {
     author: string;
     image?: string;
     tags?: string[];
+    isLive?: boolean;
     links?: { title: string; url: string }[];
     createdAt: Date;
     updatedAt: Date;
@@ -49,6 +50,7 @@ const articleSchema = new Schema<IArticle>({
     },
     image: String,
     tags: [String],
+    isLive: { type: Boolean, default: false },
     links: [{
         title: { type: String, required: true },
         url: { type: String, required: true }

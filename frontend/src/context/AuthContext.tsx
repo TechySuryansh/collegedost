@@ -17,7 +17,8 @@ interface AuthContextType {
     login: (userData: User, token: string) => void;
     logout: () => void;
     isAuthModalOpen: boolean;
-    openAuthModal: () => void;
+    authModalTab: 'login' | 'signup' | 'forgotPassword';
+    openAuthModal: (tab?: 'login' | 'signup' | 'forgotPassword') => void;
     closeAuthModal: () => void;
     protectAction: (action: () => void) => void;
 }
@@ -40,6 +41,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+    const [authModalTab, setAuthModalTab] = useState<'login' | 'signup' | 'forgotPassword'>('signup');
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -70,7 +72,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         window.location.href = '/';
     };
 
-    const openAuthModal = () => setIsAuthModalOpen(true);
+    const openAuthModal = (tab: 'login' | 'signup' | 'forgotPassword' = 'signup') => {
+        setAuthModalTab(tab);
+        setIsAuthModalOpen(true);
+    };
 
     // --- Periodic login popup for unauthenticated users ---
     const popupTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -143,6 +148,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             login,
             logout,
             isAuthModalOpen,
+            authModalTab,
             openAuthModal,
             closeAuthModal,
             protectAction
