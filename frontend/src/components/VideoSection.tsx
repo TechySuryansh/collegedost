@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaPlay, FaThumbsUp, FaEye, FaCalendarAlt } from 'react-icons/fa';
+import api from '@/api/axios';
 
 interface VideoItem {
     id: string;
@@ -13,7 +14,7 @@ interface VideoItem {
     youtubeId: string;
 }
 
-const videos: VideoItem[] = [
+const fallbackVideos: VideoItem[] = [
     {
         id: '1',
         title: 'What Makes KLU Stand Out? An Exclusive Interview with Director Dr. M. Kishore Babu',
@@ -61,16 +62,47 @@ const videos: VideoItem[] = [
     },
 ];
 
-
-
 const VideoSection: React.FC = () => {
-    const [activeVideo, setActiveVideo] = useState<VideoItem>(videos[0]);
+    const [videoList, setVideoList] = useState<VideoItem[]>(fallbackVideos);
+    const [activeVideo, setActiveVideo] = useState<VideoItem>(fallbackVideos[0]);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchVideos = async () => {
+            try {
+                const response = await api.get('/youtube');
+                if (response.data.success && response.data.data.length > 0) {
+                    const fetchedVideos = response.data.data.map((v: any) => ({
+                        id: v._id,
+                        title: v.title,
+                        thumbnail: v.thumbnail || `https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`,
+                        views: '0', // These could be dynamic later
+                        date: new Date(v.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+                        likes: '0',
+                        youtubeId: v.videoId
+                    }));
+                    setVideoList(fetchedVideos);
+                    setActiveVideo(fetchedVideos[0]);
+                }
+            } catch (error) {
+                console.error('Error fetching videos:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchVideos();
+    }, []);
 
     const handleVideoClick = (video: VideoItem) => {
         setActiveVideo(video);
         setIsPlaying(true);
     };
+
+    if (loading && videoList === fallbackVideos) {
+        // Just a subtle indicator or nothing to avoid flicker
+    }
 
     return (
         <section className="mb-16">
@@ -145,7 +177,7 @@ const VideoSection: React.FC = () => {
                             <h3 className="font-bold text-gray-900 text-sm">Watch Next Videos</h3>
                         </div>
                         <div className="divide-y divide-gray-100 max-h-[420px] overflow-y-auto">
-                            {videos.map((video) => (
+                            {videoList.map((video) => (
                                 <div
                                     key={video.id}
                                     onClick={() => handleVideoClick(video)}
