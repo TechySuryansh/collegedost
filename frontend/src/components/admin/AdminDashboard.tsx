@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import { motion, Variants } from 'framer-motion';
 import Link from 'next/link';
-import { FaUserGraduate, FaUniversity, FaNewspaper, FaSync, FaRobot, FaCode, FaYoutube } from 'react-icons/fa';
+import { FaUserGraduate, FaUniversity, FaNewspaper, FaSync, FaRobot, FaCode, FaYoutube, FaBookOpen, FaGraduationCap } from 'react-icons/fa';
 import api from '@/api/axios';
 import { IconType } from 'react-icons';
 
@@ -250,6 +250,24 @@ const AdminDashboard: React.FC = () => {
                             <div>
                                 <h4 className="text-sm font-bold text-gray-800 group-hover:text-red-600 transition-colors">YouTube Videos</h4>
                                 <p className="text-xs text-gray-500">Manage video content</p>
+                            </div>
+                        </Link>
+                        <Link href="/admin/top-exams" className="p-4 bg-gray-50 hover:bg-purple-50 border border-gray-200 hover:border-purple-200 rounded-xl flex items-center gap-4 transition-all group">
+                            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-purple-600 group-hover:scale-110 transition-transform">
+                                <FaBookOpen className="text-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 group-hover:text-purple-600 transition-colors">Top Exams</h4>
+                                <p className="text-xs text-gray-500">Manage home page exams</p>
+                            </div>
+                        </Link>
+                        <Link href="/admin/trending-courses" className="p-4 bg-gray-50 hover:bg-blue-50 border border-gray-200 hover:border-blue-200 rounded-xl flex items-center gap-4 transition-all group">
+                            <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-sm text-blue-600 group-hover:scale-110 transition-transform">
+                                <FaGraduationCap className="text-lg" />
+                            </div>
+                            <div>
+                                <h4 className="text-sm font-bold text-gray-800 group-hover:text-blue-600 transition-colors">Trending Courses</h4>
+                                <p className="text-xs text-gray-500">Manage featured courses</p>
                             </div>
                         </Link>
                         <Link href="/admin/predictor-settings" className="p-4 bg-linear-to-br from-purple-50 to-indigo-50 hover:from-purple-100 hover:to-indigo-100 border border-purple-200 hover:border-purple-300 rounded-xl flex items-center gap-4 transition-all group">

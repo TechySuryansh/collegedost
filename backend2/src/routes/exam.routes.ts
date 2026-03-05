@@ -5,7 +5,8 @@ import {
     createExam,
     updateExam,
     deleteExam,
-    getExamGuide
+    getExamGuide,
+    getExamById
 } from '../controllers/exam.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -21,7 +22,8 @@ router.route('/:slug')
 router.route('/:slug/guide')
     .get(getExamGuide);
 
-router.route('/:id')
+router.route('/id/:id')
+    .get(getExamById)
     .put(protect, authorize('admin'), updateExam)
     .delete(protect, authorize('admin'), deleteExam);
 

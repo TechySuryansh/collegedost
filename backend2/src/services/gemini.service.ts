@@ -24,6 +24,13 @@ export interface CourseGuideData {
   faqs: { question: string; answer: string }[];
 }
 
+export interface BoardGuideData {
+  boardName: string;
+  sections: ExamGuideSection[];
+  highlights: { key: string; value: string }[];
+  faqs: { question: string; answer: string }[];
+}
+
 export async function generateExamGuide(examName: string, examSlug: string): Promise<ExamGuideData> {
   const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
@@ -326,5 +333,109 @@ export async function generateLatestArticles(): Promise<any[]> {
   } catch (error: any) {
     console.error('[Gemini Service] News JSON Parse Error:', error.message);
     throw new Error(`Failed to parse AI news: ${error.message}`);
+  }
+}
+
+export async function generateBoardGuide(boardName: string, boardSlug: string): Promise<BoardGuideData> {
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+
+  const prompt = `You are an expert Indian education counselor. Generate a comprehensive, detailed guide for the "${boardName}" educational board in India.
+    
+    Return a JSON object with this EXACT structure (no markdown, no code fences, just raw JSON):
+    
+    {
+      "boardName": "${boardName}",
+      "highlights": [
+        {"key": "Board Name", "value": "Full official name"},
+        {"key": "Conducting Body", "value": "..."},
+        {"key": "Exam Level", "value": "State / National"},
+        {"key": "Website", "value": "Official website link"},
+        {"key": "Exam Mode", "value": "Offline / Online"}
+      ],
+      "sections": [
+        {
+          "id": "overview",
+          "title": "About ${boardName}",
+          "content": "<p>Detailed introduction to the board, its history, and its significance...</p>"
+        },
+        {
+          "id": "dates",
+          "title": "${boardName} 2026 Exam Dates & Schedule",
+          "content": "<p>Detailed schedule including start date, end date, and practical exam dates...</p><ul><li>Theory Exams: ...</li><li>Practical Exams: ...</li></ul>"
+        },
+        {
+          "id": "admit-card",
+          "title": "${boardName} Admit Card 2026",
+          "content": "<p>Information on when and how students can download their admit card...</p>"
+        },
+        {
+          "id": "syllabus",
+          "title": "${boardName} Syllabus 2026",
+          "content": "<p>Overview of the updated syllabus for core subjects (Science, Commerce, Arts)...</p>"
+        },
+        {
+          "id": "pattern",
+          "title": "${boardName} Exam Pattern 2026",
+          "content": "<p>Marking scheme, question types, and duration of the exams...</p>"
+        },
+        {
+          "id": "timetable",
+          "title": "${boardName} Time Table 2026",
+          "content": "<p>Key dates for major subjects and how to download the official timetable PDF...</p>"
+        },
+        {
+          "id": "answer-key",
+          "title": "${boardName} Answer Key 2026",
+          "content": "<p>Details on when official answer keys are released and how to challenge them...</p>"
+        },
+        {
+          "id": "question-papers",
+          "title": "${boardName} Question Papers",
+          "content": "<p>Importance of previous year question papers and sample papers for preparation...</p>"
+        },
+        {
+          "id": "preparation",
+          "title": "${boardName} Preparation Tips",
+          "content": "<p>Expert strategies for scoring high marks in board exams...</p>"
+        },
+        {
+          "id": "result",
+          "title": "${boardName} Result 2026",
+          "content": "<p>Expected result date, websites to check results, and the grading system...</p>"
+        }
+      ],
+      "faqs": [
+        {"question": "How to register for ${boardName} 2026?", "answer": "..."},
+        {"question": "When will the ${boardName} 2026 time table be released?", "answer": "..."},
+        {"question": "...", "answer": "..."}
+      ]
+    }
+    
+    IMPORTANT RULES:
+    1. Content must be factually accurate and up-to-date for 2025-2026.
+    2. Each section's "content" must be rich HTML with <p>, <ul>, <ol>, <li>, <strong>, <em> tags.
+    3. Each section should have at least 2-3 detailed paragraphs.
+    4. If you don't know exact 2026 dates, use "Expected" or "Tentative" with previous year references.
+    5. Return ONLY valid JSON, no markdown fences, no formatting.`;
+
+  const result = await model.generateContent(prompt);
+  const text = result.response.text();
+
+  // Robust JSON Extraction using regex
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    console.error('[Gemini Service] No JSON found in response:', text);
+    throw new Error('Failed to parse AI response: No JSON found');
+  }
+
+  const cleanedText = jsonMatch[0];
+
+  try {
+    const guideData: BoardGuideData = JSON.parse(cleanedText);
+    return guideData;
+  } catch (error: any) {
+    console.error('[Gemini Service] JSON Parse Error:', error.message);
+    console.error('[Gemini Service] Raw response segment:', text.substring(0, 500));
+    throw new Error(`Failed to parse AI response: ${error.message}`);
   }
 }

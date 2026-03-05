@@ -47,6 +47,7 @@ import courses from './src/routes/course.routes';
 import search from './src/routes/search.routes';
 import site from './src/routes/site.routes';
 import youtube from './src/routes/youtube.routes';
+import boards from './src/routes/board.routes';
 
 app.use('/api/auth', auth);
 app.use('/api/users', users);
@@ -60,6 +61,7 @@ app.use('/api/exams', exams);
 app.use('/api/courses', courses);
 app.use('/api/site', site);
 app.use('/api/youtube', youtube);
+app.use('/api/boards', boards);
 
 // Base route
 app.get('/', (req: Request, res: Response) => {

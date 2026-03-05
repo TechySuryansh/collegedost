@@ -7,11 +7,15 @@ import { generateExamGuide } from '../services/gemini.service';
 // @access  Public
 export const getExams = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { level } = req.query;
+        const { level, top } = req.query;
         const query: any = {};
 
         if (level) {
             query.examLevel = level;
+        }
+
+        if (top === 'true') {
+            query.isTop = true;
         }
 
         const exams = await Exam.find(query).sort({ examName: 1 });
@@ -32,6 +36,27 @@ export const getExams = async (req: Request, res: Response): Promise<void> => {
 export const getExamBySlug = async (req: Request, res: Response): Promise<void> => {
     try {
         const exam = await Exam.findOne({ examSlug: req.params.slug });
+
+        if (!exam) {
+            res.status(404).json({ success: false, message: 'Exam not found' });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: exam
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get exam by ID
+// @route   GET /api/exams/id/:id
+// @access  Public
+export const getExamById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const exam = await Exam.findById(req.params.id);
 
         if (!exam) {
             res.status(404).json({ success: false, message: 'Exam not found' });

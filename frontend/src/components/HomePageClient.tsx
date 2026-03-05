@@ -14,6 +14,7 @@ import TopExams from './TopExams';
 import VideoSection from './VideoSection';
 import LatestNews from './LatestNews';
 import TrendingCourses from './TrendingCourses';
+import TopBoards from './TopBoards';
 import { useUI } from '@/context/UIContext';
 
 const HomePage = () => {
@@ -60,6 +61,9 @@ const HomePage = () => {
 
                     {/* Top Exams this month */}
                     <TopExams />
+
+                    {/* Top Boards in India */}
+                    <TopBoards />
 
                     {/* Trending Courses */}
                     <TrendingCourses />

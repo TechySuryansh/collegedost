@@ -64,8 +64,18 @@ const AdminVideoForm: React.FC = () => {
         }
     };
 
+    const extractVideoId = (input: string): string => {
+        const regex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+        const match = input.match(regex);
+        return match ? match[1] : input;
+    };
+
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        let value = e.target.value;
+        if (e.target.name === 'videoId') {
+            value = extractVideoId(value);
+        }
+        setFormData({ ...formData, [e.target.name]: value });
     };
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {

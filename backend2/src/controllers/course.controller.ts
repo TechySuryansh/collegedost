@@ -7,11 +7,15 @@ import { generateCourseGuide } from '../services/gemini.service';
 // @access  Public
 export const getCourses = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { level } = req.query;
+        const { level, trending } = req.query;
         const query: any = {};
 
         if (level && level !== 'All') {
             query.degreeLevel = level;
+        }
+
+        if (trending === 'true') {
+            query.isTrending = true;
         }
 
         const courses = await CourseEntity.find(query).sort({ courseName: 1 });
@@ -32,6 +36,27 @@ export const getCourses = async (req: Request, res: Response): Promise<void> => 
 export const getCourseBySlug = async (req: Request, res: Response): Promise<void> => {
     try {
         const course = await CourseEntity.findOne({ slug: req.params.slug });
+
+        if (!course) {
+            res.status(404).json({ success: false, message: 'Course not found' });
+            return;
+        }
+
+        res.status(200).json({
+            success: true,
+            data: course
+        });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+};
+
+// @desc    Get course by ID
+// @route   GET /api/courses/id/:id
+// @access  Public
+export const getCourseById = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const course = await CourseEntity.findById(req.params.id);
 
         if (!course) {
             res.status(404).json({ success: false, message: 'Course not found' });
