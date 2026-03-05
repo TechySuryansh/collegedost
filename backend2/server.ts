@@ -48,6 +48,7 @@ import search from './src/routes/search.routes';
 import site from './src/routes/site.routes';
 import youtube from './src/routes/youtube.routes';
 import boards from './src/routes/board.routes';
+import careerCounseling from './src/routes/careerCounseling.routes';
 
 app.use('/api/auth', auth);
 app.use('/api/users', users);
@@ -62,6 +63,7 @@ app.use('/api/courses', courses);
 app.use('/api/site', site);
 app.use('/api/youtube', youtube);
 app.use('/api/boards', boards);
+app.use('/api/career-counseling', careerCounseling);
 
 // Base route
 app.get('/', (req: Request, res: Response) => {

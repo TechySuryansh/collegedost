@@ -472,8 +472,8 @@ const counselingMenu: MegaMenuItem = {
   title: 'Counseling',
   subcategories: [
     {
-      title: 'Career Guidance',
-      directLink: '/coming-soon',
+      title: 'AI Career Counseling',
+      directLink: '/career-counseling',
       columns: [],
     },
   ],
