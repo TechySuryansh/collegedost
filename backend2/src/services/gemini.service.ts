@@ -420,11 +420,12 @@ export async function generateBoardGuide(boardName: string, boardSlug: string): 
 
   const result = await model.generateContent(prompt);
   const text = result.response.text();
+  console.log(`[Gemini Service] Raw response length: ${text.length}`);
 
   // Robust JSON Extraction using regex
   const jsonMatch = text.match(/\{[\s\S]*\}/);
   if (!jsonMatch) {
-    console.error('[Gemini Service] No JSON found in response:', text);
+    console.error('[Gemini Service] No JSON found in response. Raw text:', text);
     throw new Error('Failed to parse AI response: No JSON found');
   }
 

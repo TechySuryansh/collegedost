@@ -20,6 +20,15 @@ const slugToNameMap: Record<string, string> = {
 // @access  Public
 export const getBoardGuide = async (req: Request, res: Response): Promise<void> => {
     try {
+        if (!process.env.GEMINI_API_KEY) {
+            console.error('[Board Controller] Missing GEMINI_API_KEY in environment variables');
+            res.status(500).json({
+                success: false,
+                message: 'Backend Configuration Error: Missing GEMINI_API_KEY on server.'
+            });
+            return;
+        }
+
         const slug = req.params.slug as string;
 
         // Note: For now, we are generating it directly every time without database caching
