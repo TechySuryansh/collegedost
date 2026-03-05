@@ -22,8 +22,17 @@ const L3Link = ({
 }) => {
   if (link.isHeader) {
     return (
-      <li className="mb-1.5 mt-4 first:mt-0">
+      <li className="mb-1.5 mt-4 first:pt-0">
         <span className="text-[11px] font-bold text-gray-900 uppercase tracking-widest border-b border-gray-100 pb-1 block">
+          {link.label}
+        </span>
+      </li>
+    );
+  }
+  if (link.isSubHeader) {
+    return (
+      <li className="mb-1 mt-3 first:mt-0">
+        <span className="text-[12px] font-bold text-gray-700 tracking-wide block">
           {link.label}
         </span>
       </li>
@@ -34,11 +43,10 @@ const L3Link = ({
       <Link
         href={link.href}
         onClick={onClick}
-        className={`text-[13px] leading-relaxed block py-0.75 transition-colors ${
-          link.isViewAll
+        className={`text-[13px] leading-relaxed block py-0.75 transition-colors ${link.isViewAll
             ? 'text-primary font-semibold mt-1.5 hover:underline'
             : 'text-gray-600 hover:text-primary'
-        }`}
+          }`}
       >
         {link.label}
       </Link>
@@ -84,11 +92,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                     href={sub.directLink}
                     onClick={onCloseAll}
                     onMouseEnter={() => onSubHover(sIdx)}
-                    className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium transition-all ${
-                      isActive
+                    className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium transition-all ${isActive
                         ? 'text-primary bg-white border-l-[3px] border-primary'
                         : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
-                    }`}
+                      }`}
                   >
                     {sub.title}
                   </Link>
@@ -99,11 +106,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                 <div
                   key={sIdx}
                   onMouseEnter={() => onSubHover(sIdx)}
-                  className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium cursor-default transition-all ${
-                    isActive
+                  className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium cursor-default transition-all ${isActive
                       ? 'text-primary bg-white border-l-[3px] border-primary'
                       : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
-                  }`}
+                    }`}
                 >
                   <span>{sub.title}</span>
                   {hasContent && (
@@ -118,13 +124,12 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
           <div className="flex-1 p-6 overflow-y-auto">
             {activeSub && colCount > 0 && (
               <div
-                className={`grid gap-8 ${
-                  colCount >= 3
+                className={`grid gap-8 ${colCount >= 3
                     ? 'grid-cols-3'
                     : colCount === 2
-                    ? 'grid-cols-2'
-                    : 'grid-cols-1'
-                }`}
+                      ? 'grid-cols-2'
+                      : 'grid-cols-1'
+                  }`}
               >
                 {activeSub.columns.map((col, cIdx) => (
                   <ul key={cIdx} className="space-y-0">

@@ -10,13 +10,16 @@ import {
 } from 'react-icons/fa';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 import SearchBar from './SearchBar';
+import SearchDropdown from './SearchDropdown';
 import UserMenu from './UserMenu';
 import AdminBar from './AdminBar';
 import MegaMenu from './MegaMenu';
 import Mobile from './Mobile';
+import api from '@/api/axios';
 
 // ──────────────────────────────────────────────────────────
 // Navbar Component — 3-level Shiksha-style mega menu
@@ -39,6 +42,51 @@ const Navbar = () => {
 
   /* ── Search state ── */
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<{ colleges: any[], exams: any[], courses: any[] }>({
+    colleges: [],
+    exams: [],
+    courses: []
+  });
+  const [isSearchLoading, setIsSearchLoading] = useState(false);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+
+  // Debounced Search
+  useEffect(() => {
+    if (searchQuery.trim().length < 2) {
+      // Don't hide dropdown here — trending searches should show on focus
+      setSearchResults({ colleges: [], exams: [], courses: [] });
+      setIsSearchLoading(false);
+      return;
+    }
+
+    setIsSearchLoading(true);
+    const timer = setTimeout(async () => {
+      try {
+        const res = await api.get(`/search?q=${encodeURIComponent(searchQuery)}`);
+        if (res.data.success) {
+          setSearchResults(res.data.data);
+        }
+      } catch (error) {
+        console.error('Search failed:', error);
+      } finally {
+        setIsSearchLoading(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
+  // Close search results on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowSearchResults(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // ─── Desktop hover handlers ────────────────────────────
   const openMenu = useCallback((idx: number) => {
@@ -83,19 +131,18 @@ const Navbar = () => {
   // ═══════════════════════════════════════════════════════
   return (
     <nav
-      className={`sticky top-0 z-50 ${
-        isAdminMode
-          ? 'bg-slate-900 border-b border-slate-800'
-          : 'bg-white border-b border-gray-200 shadow-sm'
-      }`}
+      className={`sticky top-0 z-50 ${isAdminMode
+        ? 'bg-slate-900 border-b border-slate-800'
+        : 'bg-[#0B1F3A] border-b border-slate-800 shadow-lg'
+        }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* ────── ROW 1: Logo + Search + Auth ────── */}
-        <div className="flex items-center justify-between h-14 border-b border-gray-100">
+        <div className="flex items-center justify-between h-16 border-b border-slate-800/50">
           {/* LEFT: Hamburger + Logo */}
           <div className="flex items-center gap-4 shrink-0">
             <button
-              className="lg:hidden text-gray-500 text-xl"
+              className="lg:hidden text-slate-400 hover:text-white text-xl transition-colors"
               onClick={() => setIsMobileOpen(true)}
               aria-label="Open menu"
             >
@@ -118,19 +165,51 @@ const Navbar = () => {
                   </div>
                 </div>
               ) : (
-                <span className="font-display font-bold text-2xl tracking-tight text-primary">
-                  COLLEGE DOST
-                </span>
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/logo.png"
+                    alt="College Dost Logo"
+                    width={72}
+                    height={72}
+                    className="object-fill"
+                  />
+                  <span className="font-display font-bold text-2xl tracking-tight text-white">
+                    COLLEGE <span className="text-secondary">DOST</span>
+                  </span>
+                </div>
               )}
             </Link>
           </div>
 
           {/* CENTER: Search Bar */}
           {!isAdminMode && (
-            <SearchBar
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-            />
+            <div className="hidden md:flex flex-1 max-w-2xl mx-8 relative" ref={searchContainerRef}>
+              <SearchBar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onFocus={() => setShowSearchResults(true)}
+                onClear={() => {
+                  setSearchQuery('');
+                  setShowSearchResults(false);
+                }}
+                onSearch={() => {
+                  if (searchQuery.trim()) {
+                    window.location.href = `/tools/colleges?search=${encodeURIComponent(searchQuery)}`;
+                  }
+                }}
+                isActive={showSearchResults}
+              />
+              <SearchDropdown
+                results={searchResults}
+                isVisible={showSearchResults}
+                onClose={() => {
+                  setShowSearchResults(false);
+                  setSearchQuery('');
+                }}
+                isLoading={isSearchLoading}
+                searchQuery={searchQuery}
+              />
+            </div>
           )}
 
           {/* RIGHT: Auth / User */}
@@ -156,17 +235,15 @@ const Navbar = () => {
                 onMouseLeave={scheduleClose}
               >
                 <button
-                  className={`flex items-center gap-1 px-3 py-2 text-[12px] font-bold uppercase tracking-wider transition-colors ${
-                    activeMenu === idx
-                      ? 'text-primary'
-                      : 'text-gray-700 hover:text-primary'
-                  }`}
+                  className={`flex items-center gap-1 px-3 py-2 text-[12px] font-bold uppercase tracking-wider transition-colors ${activeMenu === idx
+                    ? 'text-primary'
+                    : 'text-slate-300 hover:text-white'
+                    }`}
                 >
                   {item.title}
                   <FaChevronDown
-                    className={`text-[8px] opacity-60 transition-transform duration-200 ${
-                      activeMenu === idx ? 'rotate-180' : ''
-                    }`}
+                    className={`text-[8px] opacity-60 transition-transform duration-200 ${activeMenu === idx ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
               </div>
@@ -197,6 +274,17 @@ const Navbar = () => {
         user={user}
         onOpenAuthModal={openAuthModal}
       />
+
+      {/* ════ SEARCH OVERLAY (Shiksha-style dimming) ════ */}
+      {showSearchResults && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => {
+            setShowSearchResults(false);
+            setSearchQuery('');
+          }}
+        />
+      )}
     </nav>
   );
 };

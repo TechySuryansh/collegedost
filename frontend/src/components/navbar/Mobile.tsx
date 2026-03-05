@@ -6,12 +6,13 @@ import {
 } from 'react-icons/fa';
 import { megaMenuItems } from '@/data/megaMenuData';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface MobileProps {
   isOpen: boolean;
   onClose: () => void;
   user: any;
-  onOpenAuthModal: () => void;
+  onOpenAuthModal: (tab?: 'login' | 'signup' | 'forgotPassword') => void;
 }
 
 const Mobile: React.FC<MobileProps> = ({
@@ -43,9 +44,18 @@ const Mobile: React.FC<MobileProps> = ({
       <div className="fixed top-0 left-0 h-screen w-[85%] max-w-100 bg-white z-1000 lg:hidden shadow-2xl flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-100">
-          <span className="font-display font-bold text-xl text-primary">
-            COLLEGE DOST
-          </span>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="College Dost Logo"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="font-display font-bold text-xl text-primary">
+              COLLEGE DOST
+            </span>
+          </div>
           <button
             onClick={closeMobile}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-500"
@@ -69,9 +79,8 @@ const Mobile: React.FC<MobileProps> = ({
               >
                 {item.title}
                 <FaChevronDown
-                  className={`text-xs text-gray-400 transition-transform duration-200 ${
-                    menuIdx === mIdx ? 'rotate-180' : ''
-                  }`}
+                  className={`text-xs text-gray-400 transition-transform duration-200 ${menuIdx === mIdx ? 'rotate-180' : ''
+                    }`}
                 />
               </button>
 
@@ -106,9 +115,8 @@ const Mobile: React.FC<MobileProps> = ({
                         >
                           {sub.title}
                           <FaAngleRight
-                            className={`text-[10px] text-gray-400 transition-transform duration-200 ${
-                              subIdx === sIdx ? 'rotate-90' : ''
-                            }`}
+                            className={`text-[10px] text-gray-400 transition-transform duration-200 ${subIdx === sIdx ? 'rotate-90' : ''
+                              }`}
                           />
                         </button>
 
@@ -128,16 +136,25 @@ const Mobile: React.FC<MobileProps> = ({
                                     </div>
                                   );
                                 }
+                                if (link.isSubHeader) {
+                                  return (
+                                    <div
+                                      key={lIdx}
+                                      className="text-[11px] font-bold text-gray-500 tracking-wide pt-2 pb-0.5 first:pt-0"
+                                    >
+                                      {link.label}
+                                    </div>
+                                  );
+                                }
                                 return (
                                   <Link
                                     key={lIdx}
                                     href={link.href}
                                     onClick={closeMobile}
-                                    className={`block py-1 text-[13px] transition-colors ${
-                                      link.isViewAll
-                                        ? 'text-primary font-semibold'
-                                        : 'text-gray-600 hover:text-primary'
-                                    }`}
+                                    className={`block py-1 text-[13px] transition-colors ${link.isViewAll
+                                      ? 'text-primary font-semibold'
+                                      : 'text-gray-600 hover:text-primary'
+                                      }`}
                                   >
                                     {link.label}
                                   </Link>
@@ -160,7 +177,7 @@ const Mobile: React.FC<MobileProps> = ({
             <button
               onClick={() => {
                 closeMobile();
-                onOpenAuthModal();
+                onOpenAuthModal('login');
               }}
               className="w-full py-3 bg-primary text-white font-medium rounded-full"
             >
