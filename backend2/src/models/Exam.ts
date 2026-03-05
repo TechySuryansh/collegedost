@@ -28,6 +28,7 @@ export interface IExam extends Document {
     news: IExamNews[];
     aiGuideContent?: any;
     aiGuideGeneratedAt?: Date;
+    isTop: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -79,6 +80,10 @@ const examSchema = new Schema<IExam>({
     aiGuideGeneratedAt: {
         type: Date,
         default: null
+    },
+    isTop: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

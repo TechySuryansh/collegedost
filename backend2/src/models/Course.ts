@@ -10,6 +10,7 @@ export interface ICourseEntity extends Document {
     careerOptions: string[];
     aiGuideContent?: any;
     aiGuideGeneratedAt?: Date;
+    isTrending: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -53,6 +54,10 @@ const courseSchema = new Schema<ICourseEntity>({
     aiGuideGeneratedAt: {
         type: Date,
         default: null
+    },
+    isTrending: {
+        type: Boolean,
+        default: false
     }
 }, {
     timestamps: true

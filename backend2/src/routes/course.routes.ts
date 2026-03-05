@@ -5,7 +5,8 @@ import {
     createCourse,
     updateCourse,
     deleteCourse,
-    getCourseGuide
+    getCourseGuide,
+    getCourseById
 } from '../controllers/course.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -21,7 +22,8 @@ router.route('/:slug/guide')
 router.route('/:slug')
     .get(getCourseBySlug);
 
-router.route('/:id')
+router.route('/id/:id')
+    .get(getCourseById)
     .put(protect, authorize('admin'), updateCourse)
     .delete(protect, authorize('admin'), deleteCourse);
 

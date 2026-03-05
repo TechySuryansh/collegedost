@@ -29,7 +29,13 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
         try {
             // Verify token
             const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
-            req.user = await User.findById(decoded.id) as IUser;
+            const user = await User.findById(decoded.id);
+
+            if (!user) {
+                return res.status(401).json({ success: false, message: 'User no longer exists' });
+            }
+
+            req.user = user as IUser;
             next();
         } catch (err) {
             return res.status(401).json({ success: false, message: 'Not authorized to access this route' });
@@ -42,10 +48,14 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
 // Grant access to specific roles
 export const authorize = (...roles: string[]) => {
     return (req: AuthRequest, res: Response, next: NextFunction) => {
-        if (!req.user || !roles.includes(req.user.role)) {
+        if (!req.user) {
+            return res.status(401).json({ success: false, message: 'User not authenticated' });
+        }
+
+        if (!roles.includes(req.user.role)) {
             return res.status(403).json({
                 success: false,
-                message: `User role '${req.user?.role}' is not authorized to access this route`
+                message: `User role '${req.user.role}' is not authorized to access this route. Required roles: ${roles.join(', ')}`
             });
         }
         next();
