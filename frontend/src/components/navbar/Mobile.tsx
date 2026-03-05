@@ -70,19 +70,29 @@ const Mobile: React.FC<MobileProps> = ({
           {megaMenuItems.map((item, mIdx) => (
             <div key={mIdx} className="border-b border-gray-50">
               {/* Level 1 */}
-              <button
-                onClick={() => {
-                  setMenuIdx(menuIdx === mIdx ? null : mIdx);
-                  setSubIdx(null);
-                }}
-                className="flex items-center justify-between w-full px-5 py-3.5 text-left text-gray-800 font-semibold text-[15px]"
-              >
-                {item.title}
-                <FaChevronDown
-                  className={`text-xs text-gray-400 transition-transform duration-200 ${menuIdx === mIdx ? 'rotate-180' : ''
-                    }`}
-                />
-              </button>
+              {item.directLink ? (
+                <Link
+                  href={item.directLink}
+                  onClick={closeMobile}
+                  className="flex items-center w-full px-5 py-3.5 text-left text-gray-800 font-semibold text-[15px]"
+                >
+                  {item.title}
+                </Link>
+              ) : (
+                <button
+                  onClick={() => {
+                    setMenuIdx(menuIdx === mIdx ? null : mIdx);
+                    setSubIdx(null);
+                  }}
+                  className="flex items-center justify-between w-full px-5 py-3.5 text-left text-gray-800 font-semibold text-[15px]"
+                >
+                  {item.title}
+                  <FaChevronDown
+                    className={`text-xs text-gray-400 transition-transform duration-200 ${menuIdx === mIdx ? 'rotate-180' : ''
+                      }`}
+                  />
+                </button>
+              )}
 
               {/* Level 2 (subcategories) */}
               {menuIdx === mIdx && (
