@@ -70,11 +70,11 @@ const HomePage = () => {
                     {/* Trending Colleges & Universities */}
                     <TrendingColleges />
 
-                    {/* Featured Articles */}
-                    <FeaturedArticles />
-
                     {/* Trending Courses */}
                     <TrendingCourses />
+
+                    {/* Featured Articles */}
+                    <FeaturedArticles />
 
                     {/* Data & Rankings + Smart Predictors */}
                     <DataRankings />
