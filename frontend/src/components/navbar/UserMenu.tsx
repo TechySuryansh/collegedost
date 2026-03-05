@@ -9,7 +9,7 @@ interface UserMenuProps {
   onToggleDropdown: () => void;
   onCloseDropdown: () => void;
   onLogout: () => void;
-  onOpenAuthModal: (tab?: 'login' | 'signup' | 'forgotPassword') => void;
+  onOpenAuthModal: () => void;
 }
 
 const UserMenu: React.FC<UserMenuProps> = ({
@@ -25,13 +25,13 @@ const UserMenu: React.FC<UserMenuProps> = ({
     return (
       <div className="flex items-center gap-3 shrink-0">
         <button
-          onClick={() => onOpenAuthModal('login')}
+          onClick={onOpenAuthModal}
           className="inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full text-white bg-primary hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
         >
           Login
         </button>
         <button
-          onClick={() => onOpenAuthModal('signup')}
+          onClick={onOpenAuthModal}
           className="hidden sm:inline-flex items-center px-5 py-2 text-sm font-semibold rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white transition-colors"
         >
           Sign Up
@@ -45,10 +45,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
       <div className="relative">
         <button
           onClick={onToggleDropdown}
-          className={`flex items-center gap-2 border px-3 py-1.5 rounded-full transition-colors ${isAdminMode
-            ? 'bg-slate-800 border-slate-700 text-slate-200'
-            : 'bg-slate-900 border-slate-800 text-slate-200 hover:border-slate-700'
-            }`}
+          className={`flex items-center gap-2 border px-3 py-1.5 rounded-full transition-colors ${
+            isAdminMode
+              ? 'bg-slate-800 border-slate-700 text-slate-200'
+              : 'bg-white border-gray-200 text-gray-700 hover:border-primary/30'
+          }`}
         >
           <div className="w-7 h-7 rounded-full flex items-center justify-center font-bold text-sm bg-primary text-white">
             {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
@@ -56,7 +57,7 @@ const UserMenu: React.FC<UserMenuProps> = ({
           <span className="text-sm font-medium hidden md:block max-w-25 truncate">
             {user?.name || 'Guest'}
           </span>
-          <FaChevronDown className="text-xs text-slate-500" />
+          <FaChevronDown className="text-xs text-gray-400" />
         </button>
 
         {isUserDropdownOpen && (
@@ -66,24 +67,28 @@ const UserMenu: React.FC<UserMenuProps> = ({
               onClick={onCloseDropdown}
             />
             <div
-              className={`absolute right-0 mt-2 w-56 rounded-xl shadow-xl border border-slate-800 py-2 z-50 ${isAdminMode
-                ? 'bg-slate-800'
-                : 'bg-slate-900 text-slate-200'
-                }`}
+              className={`absolute right-0 mt-2 w-56 rounded-xl shadow-xl border py-2 z-50 ${
+                isAdminMode
+                  ? 'bg-slate-800 border-slate-700'
+                  : 'bg-white border-gray-100'
+              }`}
             >
               <div
-                className={`px-4 py-3 border-b ${isAdminMode ? 'border-slate-700' : 'border-gray-100'
-                  }`}
+                className={`px-4 py-3 border-b ${
+                  isAdminMode ? 'border-slate-700' : 'border-gray-100'
+                }`}
               >
                 <p
-                  className={`text-sm font-bold truncate ${isAdminMode ? 'text-white' : 'text-white'
-                    }`}
+                  className={`text-sm font-bold truncate ${
+                    isAdminMode ? 'text-white' : 'text-gray-900'
+                  }`}
                 >
                   {user.name}
                 </p>
                 <p
-                  className={`text-xs truncate ${isAdminMode ? 'text-slate-400' : 'text-slate-400'
-                    }`}
+                  className={`text-xs truncate ${
+                    isAdminMode ? 'text-slate-400' : 'text-gray-500'
+                  }`}
                 >
                   {user.email}
                 </p>
@@ -91,10 +96,11 @@ const UserMenu: React.FC<UserMenuProps> = ({
               <Link
                 href="/profile"
                 onClick={onCloseDropdown}
-                className={`block px-4 py-2.5 text-sm ${isAdminMode
-                  ? 'text-slate-300 hover:bg-slate-700'
-                  : 'text-slate-300 hover:bg-slate-800'
-                  }`}
+                className={`block px-4 py-2.5 text-sm ${
+                  isAdminMode
+                    ? 'text-slate-300 hover:bg-slate-700'
+                    : 'text-gray-700 hover:bg-gray-50'
+                }`}
               >
                 Profile Settings
               </Link>
@@ -102,20 +108,22 @@ const UserMenu: React.FC<UserMenuProps> = ({
                 <Link
                   href="/admin"
                   onClick={onCloseDropdown}
-                  className={`block px-4 py-2.5 text-sm ${isAdminMode
-                    ? 'text-slate-300 hover:bg-slate-700'
-                    : 'text-slate-300 hover:bg-slate-800'
-                    }`}
+                  className={`block px-4 py-2.5 text-sm ${
+                    isAdminMode
+                      ? 'text-slate-300 hover:bg-slate-700'
+                      : 'text-gray-700 hover:bg-gray-50'
+                  }`}
                 >
                   Admin Panel
                 </Link>
               )}
               <button
                 onClick={onLogout}
-                className={`w-full text-left px-4 py-2.5 text-sm ${isAdminMode
-                  ? 'text-red-400 hover:bg-slate-700'
-                  : 'text-red-600 hover:bg-red-50'
-                  }`}
+                className={`w-full text-left px-4 py-2.5 text-sm ${
+                  isAdminMode
+                    ? 'text-red-400 hover:bg-slate-700'
+                    : 'text-red-600 hover:bg-red-50'
+                }`}
               >
                 Logout
               </button>
