@@ -2,7 +2,18 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
 dotenv.config();
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+/**
+ * Helper to get a configured Gemini model instance.
+ * Ensures the API key is read from the environment at the time of creation.
+ */
+function getGeminiModel(modelName: string = 'gemini-2.0-flash') {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    throw new Error('GEMINI_API_KEY is not defined in environment variables');
+  }
+  const genAI = new GoogleGenerativeAI(apiKey);
+  return genAI.getGenerativeModel({ model: modelName });
+}
 
 export interface ExamGuideSection {
   id: string;
@@ -32,7 +43,7 @@ export interface BoardGuideData {
 }
 
 export async function generateExamGuide(examName: string, examSlug: string): Promise<ExamGuideData> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = getGeminiModel();
 
   const prompt = `You are an expert Indian education counselor. Generate a comprehensive, detailed exam guide for "${examName}" exam in India.
 
@@ -170,7 +181,7 @@ IMPORTANT RULES:
 }
 
 export async function generateCourseGuide(courseName: string, courseSlug: string): Promise<CourseGuideData> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = getGeminiModel();
 
   const prompt = `You are an expert Indian education counselor. Generate a comprehensive, detailed course guide for "${courseName}" course in India.
     
@@ -301,7 +312,7 @@ export async function generateCourseGuide(courseName: string, courseSlug: string
   }
 }
 export async function generateLatestArticles(): Promise<any[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = getGeminiModel();
 
   const prompt = `You are a professional education news journalist in India. 
   Generate 6-8 "Latest News & Articles" entries about Indian education, specifically focusing on 2026 exams (CUET, JEE, NEET, NIMCET, MAT, CAT, board exams, results, registration starts, etc.).
@@ -337,7 +348,7 @@ export async function generateLatestArticles(): Promise<any[]> {
 }
 
 export async function generateBoardGuide(boardName: string, boardSlug: string): Promise<BoardGuideData> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
+  const model = getGeminiModel();
 
   const prompt = `You are an expert Indian education counselor. Generate a comprehensive, detailed guide for the "${boardName}" educational board in India.
     
