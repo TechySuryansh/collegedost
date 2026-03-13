@@ -42,6 +42,13 @@ export interface BoardGuideData {
   faqs: { question: string; answer: string }[];
 }
 
+export interface SpecializationGuideData {
+  specName: string;
+  sections: ExamGuideSection[];
+  highlights: { key: string; value: string }[];
+  faqs: { question: string; answer: string }[];
+}
+
 export async function generateExamGuide(examName: string, examSlug: string): Promise<ExamGuideData> {
   const model = getGeminiModel();
 
@@ -599,6 +606,100 @@ IMPORTANT RULES:
   } catch (error: any) {
     console.error('[Gemini Service] College Guide JSON Parse Error:', error.message);
     console.error('[Gemini Service] Raw response segment:', text.substring(0, 500));
+    throw new Error(`Failed to parse AI response: ${error.message}`);
+  }
+}
+
+export async function generateSpecializationGuide(specName: string, specSlug: string): Promise<SpecializationGuideData> {
+  const model = getGeminiModel();
+
+  const prompt = `You are an expert Indian education counselor. Generate a comprehensive, detailed guide for the "${specName}" engineering specialization in India.
+    
+    Return a JSON object with this EXACT structure (no markdown, no code fences, just raw JSON):
+    
+    {
+      "specName": "${specName}",
+      "highlights": [
+        {"key": "Specialization Name", "value": "${specName}"},
+        {"key": "Course Levels", "value": "UG, PG, Diploma, Doctorate"},
+        {"key": "Duration", "value": "4 Years (UG), 2 Years (PG)"},
+        {"key": "Eligibility", "value": "10+2 with PCM (UG), B.Tech (PG)"},
+        {"key": "Entrance Exams", "value": "JEE Main, JEE Advanced, GATE, State CETs"},
+        {"key": "Average Fees", "value": "INR 1 - 10 Lakhs"},
+        {"key": "Average Salary", "value": "INR 4 - 15 LPA"}
+      ],
+      "sections": [
+        {
+          "id": "overview",
+          "title": "What is ${specName}?",
+          "content": "<p>Detailed introduction to the field, what it covers, and its importance in the modern world...</p>"
+        },
+        {
+          "id": "eligibility",
+          "title": "${specName} Eligibility & Admission Process",
+          "content": "<p>Minimum requirements for UG and PG courses, marks required, and how admission works...</p>"
+        },
+        {
+          "id": "entrance-exams",
+          "title": "Top Entrance Exams for ${specName}",
+          "content": "<p>Major national and state level exams required for admission...</p><ul><li>JEE Main</li><li>GATE</li></ul>"
+        },
+        {
+          "id": "subjects",
+          "title": "${specName} Subjects & Syllabus",
+          "content": "<p>Overview of core subjects taught during the course (e.g., Mathematics, Thermodynamics, Structure, etc.)...</p>"
+        },
+        {
+          "id": "career-scope",
+          "title": "Career Scope & Job Profiles in ${specName}",
+          "content": "<p>Job opportunities after graduation, roles like Project Manager, Lead Engineer, etc...</p>"
+        },
+        {
+          "id": "salary",
+          "title": "${specName} Salary in India",
+          "content": "<p>Salary trends for freshers and experienced professionals in this field...</p>"
+        },
+        {
+          "id": "recruiters",
+          "title": "Top Recruiters for ${specName}",
+          "content": "<p>Major private companies and PSUs that hire graduates from this branch...</p>"
+        },
+        {
+          "id": "colleges",
+          "title": "Top Colleges for ${specName}",
+          "content": "<p>Premier institutions known for this specialization (IITs, NITs, Bits Pilani, etc.)...</p>"
+        }
+      ],
+      "faqs": [
+        {"question": "Is ${specName} a good career option?", "answer": "..."},
+        {"question": "What is the average salary for ${specName} graduates?", "answer": "..."},
+        {"question": "...", "answer": "..."}
+      ]
+    }
+    
+    IMPORTANT RULES:
+    1. Content must be factually accurate and up-to-date for 2025-2026.
+    2. Each section's "content" must be rich HTML with <p>, <ul>, <ol>, <li>, <strong>, <em> tags.
+    3. Each section should have at least 2-3 detailed paragraphs.
+    4. Include real data: actual salaries, company names, and subjects.
+    5. Return ONLY valid JSON, no markdown fences, no extra text.`;
+
+  const result = await model.generateContent(prompt);
+  const text = result.response.text();
+
+  const jsonMatch = text.match(/\{[\s\S]*\}/);
+  if (!jsonMatch) {
+    console.error('[Gemini Service] No JSON found in specialization guide response:', text);
+    throw new Error('Failed to parse AI response: No JSON found');
+  }
+
+  const cleanedText = jsonMatch[0];
+
+  try {
+    const guideData: SpecializationGuideData = JSON.parse(cleanedText);
+    return guideData;
+  } catch (error: any) {
+    console.error('[Gemini Service] Specialization Guide JSON Parse Error:', error.message);
     throw new Error(`Failed to parse AI response: ${error.message}`);
   }
 }

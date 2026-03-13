@@ -14,6 +14,7 @@ import {
     getCollegeGuide,
     getCollegeCategoryCounts
 } from '../controllers/college.controller';
+import { getSpecializationGuide } from '../controllers/specialization.controller';
 
 
 import { protect, authorize } from '../middleware/auth.middleware';
@@ -34,6 +35,8 @@ router.post('/:id/generate-ai', protect, authorize('admin'), generateAIContent);
 
 router.route('/:slug/guide')
     .get(getCollegeGuide);
+
+router.get('/specialization/:slug/guide', getSpecializationGuide);
 
 router.route('/:slug')
     .get(getCollegeBySlug);
