@@ -7,6 +7,31 @@ interface OverviewSectionProps {
     sectionRef: React.RefObject<HTMLDivElement | null>;
 }
 
+interface OverviewSectionProps {
+    college: CollegeData;
+    sectionRef: React.RefObject<HTMLDivElement | null>;
+}
+
+const formatPackage = (value?: any): string | null => {
+    if (value === undefined || value === null || value === 0 || value === '0') return null;
+    if (typeof value === 'string' && value.includes('LPA')) return value;
+
+    const num = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) : value;
+    if (isNaN(num) || num <= 0) return typeof value === 'string' ? value : null;
+
+    if (num < 100) {
+        return `${num % 1 === 0 ? num.toFixed(0) : num.toFixed(1)} LPA`;
+    }
+    if (num >= 100000) {
+        const lpa = num / 100000;
+        return `${lpa % 1 === 0 ? lpa.toFixed(0) : lpa.toFixed(1)} LPA`;
+    }
+    if (num >= 1000) {
+        return `${(num / 1000).toFixed(0)}K`;
+    }
+    return `${num}`;
+};
+
 const OverviewSection: React.FC<OverviewSectionProps> = ({ college, sectionRef }) => {
     // Build info items from available data
     const infoItems: { label: string; value: string }[] = [];
@@ -126,7 +151,7 @@ const OverviewSection: React.FC<OverviewSectionProps> = ({ college, sectionRef }
                     </div>
                     <div className="p-4 rounded-xl bg-background-light text-center border border-gray-100">
                         <div className="text-primary font-bold text-3xl mb-1">
-                            {college.placements?.averagePackage || college.placementStats?.averagePackage || 'N/A'}
+                            {formatPackage(college.placements?.averagePackage || college.placementStats?.averagePackage) || 'N/A'}
                         </div>
                         <div className="text-[10px] text-text-muted-light uppercase tracking-wider font-bold">Avg Package (INR)</div>
                     </div>

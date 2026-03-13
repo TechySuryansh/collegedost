@@ -11,7 +11,8 @@ import {
     syncColleges,
     getCollegeById,
     generateAIContent,
-    getCollegeGuide
+    getCollegeGuide,
+    getCollegeCategoryCounts
 } from '../controllers/college.controller';
 
 
@@ -23,6 +24,7 @@ router.route('/')
     .get(getColleges)
     .post(protect, authorize('admin'), createCollege);
 
+router.get('/category-counts', getCollegeCategoryCounts);
 router.get('/search', searchColleges);
 router.get('/predict', predictCollegesSimple);
 router.post('/compare', compareColleges);

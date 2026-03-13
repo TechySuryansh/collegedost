@@ -44,8 +44,8 @@ const L3Link = ({
         href={link.href}
         onClick={onClick}
         className={`text-[13px] leading-relaxed block py-0.75 transition-colors ${link.isViewAll
-            ? 'text-primary font-semibold mt-1.5 hover:underline'
-            : 'text-gray-600 hover:text-primary'
+          ? 'text-primary font-semibold mt-1.5 hover:underline'
+          : 'text-gray-600 hover:text-primary'
           }`}
       >
         {link.label}
@@ -93,8 +93,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                     onClick={onCloseAll}
                     onMouseEnter={() => onSubHover(sIdx)}
                     className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium transition-all ${isActive
-                        ? 'text-primary bg-white border-l-[3px] border-primary'
-                        : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
+                      ? 'text-primary bg-white border-l-[3px] border-primary'
+                      : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
                       }`}
                   >
                     {sub.title}
@@ -107,8 +107,8 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
                   key={sIdx}
                   onMouseEnter={() => onSubHover(sIdx)}
                   className={`flex items-center justify-between px-5 py-2.5 text-[13px] font-medium cursor-default transition-all ${isActive
-                      ? 'text-primary bg-white border-l-[3px] border-primary'
-                      : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
+                    ? 'text-primary bg-white border-l-[3px] border-primary'
+                    : 'text-gray-700 hover:text-primary border-l-[3px] border-transparent'
                     }`}
                 >
                   <span>{sub.title}</span>
@@ -125,10 +125,10 @@ const MegaMenu: React.FC<MegaMenuProps> = ({
             {activeSub && colCount > 0 && (
               <div
                 className={`grid gap-8 ${colCount >= 3
-                    ? 'grid-cols-3'
-                    : colCount === 2
-                      ? 'grid-cols-2'
-                      : 'grid-cols-1'
+                  ? 'grid-cols-3'
+                  : colCount === 2
+                    ? 'grid-cols-2'
+                    : 'grid-cols-1'
                   }`}
               >
                 {activeSub.columns.map((col, cIdx) => (

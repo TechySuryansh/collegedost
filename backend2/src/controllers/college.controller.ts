@@ -205,10 +205,34 @@ export const getColleges = async (req: Request, res: Response): Promise<void> =>
             {
                 $addFields: {
                     _sortRank: {
-                        $cond: {
-                            if: { $and: [{ $ne: ['$nirfRank', null] }, { $gt: ['$nirfRank', 0] }] },
-                            then: '$nirfRank',
-                            else: 999999
+                        $let: {
+                            vars: {
+                                streamRank: stream ? {
+                                    $switch: {
+                                        branches: [
+                                            { case: { $regexMatch: { input: stream as string, regex: /Engineering/i } }, then: '$nirfRankings.Engineering' },
+                                            { case: { $regexMatch: { input: stream as string, regex: /Management/i } }, then: '$nirfRankings.Management' },
+                                            { case: { $regexMatch: { input: stream as string, regex: /Medical/i } }, then: '$nirfRankings.Medical' },
+                                            { case: { $regexMatch: { input: stream as string, regex: /Pharmacy/i } }, then: '$nirfRankings.Pharmacy' },
+                                            { case: { $regexMatch: { input: stream as string, regex: /Law/i } }, then: '$nirfRankings.Law' }
+                                        ],
+                                        default: '$nirfRank'
+                                    }
+                                } : '$nirfRank'
+                            },
+                            in: {
+                                $cond: {
+                                    if: { $and: [{ $ne: ['$$streamRank', null] }, { $gt: ['$$streamRank', 0] }] },
+                                    then: '$$streamRank',
+                                    else: {
+                                        $cond: {
+                                            if: { $and: [{ $ne: ['$nirfRank', null] }, { $gt: ['$nirfRank', 0] }] },
+                                            then: '$nirfRank',
+                                            else: 999999
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -672,5 +696,85 @@ export const getCollegeGuide = async (req: Request, res: Response): Promise<void
             message: 'Failed to generate college guide. Please try again later.',
             error: error.message
         });
+    }
+};
+
+// Stream keyword map reused for category counts
+const streamKeywordsMap: Record<string, string[]> = {
+    'Engineering': ['Engineering', 'Technology', 'B.Tech', 'Indian Institute of Technology', 'National Institute of Technology'],
+    'Management': ['Management', 'Business', 'PGDM', 'Indian Institute of Management'],
+    'Medicine': ['Medical', 'Medicine', 'MBBS', 'Dental', 'Nursing'],
+    'Law': ['Law', 'Legal', 'National Law University', 'LLB'],
+    'Design': ['Design', 'National Institute of Design', 'Fashion'],
+    'Science': ['Science', 'Research'],
+    'Commerce': ['Commerce', 'Economics', 'Finance'],
+    'Arts': ['Arts', 'Humanities'],
+    'Computer Application': ['Computer', 'MCA', 'BCA', 'IT', 'Software'],
+    'Pharmacy': ['Pharmacy', 'Pharma'],
+    'Education': ['Education', 'B.Ed'],
+    'Architecture': ['Architecture', 'Planning'],
+    'Hospitality': ['Hospitality', 'Hotel'],
+    'Media': ['Media', 'Journalism'],
+    'Animation': ['Animation', 'Multimedia', 'Visual Effects'],
+    'Event Management': ['Event Management'],
+};
+
+// @desc    Get college counts for predefined categories (Shiksha-style sidebar)
+// @route   GET /api/colleges/category-counts
+// @access  Public
+export const getCollegeCategoryCounts = async (_req: Request, res: Response): Promise<void> => {
+    try {
+        // Predefined categories: { label, stream, city?, state? }
+        const categories = [
+            { label: 'Engineering Colleges in India', stream: 'Engineering' },
+            { label: 'Fashion Design Colleges in Hyderabad', stream: 'Design', city: 'Hyderabad' },
+            { label: 'Culinary Arts colleges in Visakhapatnam', stream: 'Hospitality', city: 'Visakhapatnam' },
+            { label: 'Journalism Colleges in Andhra Pradesh', stream: 'Media', state: 'Andhra Pradesh' },
+            { label: 'Fashion Design Colleges in Bangalore', stream: 'Design', city: 'Bangalore' },
+            { label: 'Animation colleges in Andhra Pradesh', stream: 'Animation', state: 'Andhra Pradesh' },
+            { label: 'Event Management Colleges in Hyderabad', stream: 'Event Management', city: 'Hyderabad' },
+            { label: 'IT & Software colleges in Visakhapatnam', stream: 'Computer Application', city: 'Visakhapatnam' },
+            { label: 'Management Colleges in India', stream: 'Management' },
+            { label: 'Medical Colleges in India', stream: 'Medicine' },
+        ];
+
+        const results = await Promise.all(
+            categories.map(async (cat) => {
+                const conditions: any[] = [];
+
+                // Stream condition using keywords
+                const keywords = streamKeywordsMap[cat.stream] || [cat.stream];
+                const bounded = keywords.map(k => `\\b${k}\\b`);
+                const regex = bounded.join('|');
+                conditions.push({
+                    $or: [
+                        { name: { $regex: regex, $options: 'i' } },
+                        { collegeType: { $regex: regex, $options: 'i' } }
+                    ]
+                });
+
+                // Location condition
+                if (cat.city) conditions.push({ 'location.city': { $regex: cat.city, $options: 'i' } });
+                if (cat.state) conditions.push({ 'location.state': { $regex: cat.state, $options: 'i' } });
+
+                const query = conditions.length > 0 ? { $and: conditions } : {};
+                const count = await College.countDocuments(query);
+
+                return {
+                    label: cat.label,
+                    count,
+                    stream: cat.stream,
+                    city: cat.city || null,
+                    state: cat.state || null,
+                };
+            })
+        );
+
+        // Filter out zero-count categories
+        const filtered = results.filter(r => r.count > 0);
+
+        res.status(200).json({ success: true, data: filtered });
+    } catch (error: any) {
+        res.status(500).json({ success: false, message: error.message });
     }
 };
