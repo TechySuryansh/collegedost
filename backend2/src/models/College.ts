@@ -77,6 +77,13 @@ export interface ICollege extends Document {
     };
     type: string; // e.g., Private, Government
     nirfRank?: number;
+    nirfRankings?: {
+        Engineering?: number;
+        Management?: number;
+        Medical?: number;
+        Pharmacy?: number;
+        Law?: number;
+    };
     rating?: number;
     coursesOffered: ICourse[];
     placements: IPlacement;
@@ -133,6 +140,13 @@ const collegeSchema = new Schema<ICollege>({
     },
     type: String,
     nirfRank: Number,
+    nirfRankings: {
+        Engineering: Number,
+        Management: Number,
+        Medical: Number,
+        Pharmacy: Number,
+        Law: Number
+    },
     rating: {
         type: Number,
         min: 0,

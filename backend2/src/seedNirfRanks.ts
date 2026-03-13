@@ -495,15 +495,28 @@ async function matchAndUpdateRankings(entries: NirfEntry[], category: string): P
         }
 
         if (college) {
+            // Update the specific category rank
+            const updateField = `nirfRankings.${category}`;
+
             // Only update if the new rank is better (lower) than existing, or no existing rank
-            if (!college.nirfRank || entry.rank < college.nirfRank) {
-                await College.updateOne(
-                    { _id: college._id },
-                    { $set: { nirfRank: entry.rank } }
-                );
-                console.log(`  ✅ [${category}] #${entry.rank}: "${entry.name}" → matched to "${college.name}"`);
+            const currentOverallRank = college.nirfRank;
+            const newRankIsBetter = !currentOverallRank || entry.rank < currentOverallRank;
+
+            await College.updateOne(
+                { _id: college._id },
+                {
+                    $set: {
+                        [updateField]: entry.rank,
+                        // For backward compatibility, keep the best overall rank in nirfRank
+                        ...(newRankIsBetter ? { nirfRank: entry.rank } : {})
+                    }
+                }
+            );
+
+            if (newRankIsBetter) {
+                console.log(`  ✅ [${category}] #${entry.rank}: "${entry.name}" → matched to "${college.name}" (Updated overall rank)`);
             } else {
-                console.log(`  ⏭️  [${category}] #${entry.rank}: "${entry.name}" → already has better rank #${college.nirfRank}`);
+                console.log(`  ✅ [${category}] #${entry.rank}: "${entry.name}" → matched to "${college.name}" (Kept better overall rank #${currentOverallRank})`);
             }
             matched++;
         } else {
@@ -526,8 +539,8 @@ async function seedNirfRanks() {
         // First, clear all existing NIRF ranks to start fresh
         console.log('\n🗑️  Clearing existing NIRF ranks...');
         const cleared = await College.updateMany(
-            { nirfRank: { $exists: true } },
-            { $unset: { nirfRank: '' } }
+            { $or: [{ nirfRank: { $exists: true } }, { nirfRankings: { $exists: true } }] },
+            { $unset: { nirfRank: '', nirfRankings: '' } }
         );
         console.log(`   Cleared nirfRank from ${cleared.modifiedCount} colleges`);
 

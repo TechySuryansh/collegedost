@@ -10,6 +10,26 @@ interface PlacementsSectionProps {
     sectionRef: React.RefObject<HTMLDivElement | null>;
 }
 
+const formatPackage = (value?: any): string | null => {
+    if (value === undefined || value === null || value === 0 || value === '0') return null;
+    if (typeof value === 'string' && value.includes('LPA')) return value;
+
+    const num = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) : value;
+    if (isNaN(num) || num <= 0) return typeof value === 'string' ? value : null;
+
+    if (num < 100) {
+        return `${num % 1 === 0 ? num.toFixed(0) : num.toFixed(1)} LPA`;
+    }
+    if (num >= 100000) {
+        const lpa = num / 100000;
+        return `${lpa % 1 === 0 ? lpa.toFixed(0) : lpa.toFixed(1)} LPA`;
+    }
+    if (num >= 1000) {
+        return `${(num / 1000).toFixed(0)}K`;
+    }
+    return `${num}`;
+};
+
 const PlacementsSection: React.FC<PlacementsSectionProps> = ({ college, sectionRef }) => {
     return (
         <div
@@ -28,21 +48,21 @@ const PlacementsSection: React.FC<PlacementsSectionProps> = ({ college, sectionR
                     <div className="bg-linear-to-br from-green-50 to-emerald-50 border border-green-100 rounded-xl p-5 text-center">
                         <FaRupeeSign className="text-2xl text-green-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-text-main-light">
-                            {college.aiContent.placementStats.highestPackage} LPA
+                            {formatPackage(college.aiContent.placementStats.highestPackage)}
                         </div>
                         <div className="text-xs text-text-muted-light uppercase tracking-wide font-medium">Highest Package</div>
                     </div>
                     <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5 text-center">
                         <FaRupeeSign className="text-2xl text-blue-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-text-main-light">
-                            {college.aiContent.placementStats.averagePackage} LPA
+                            {formatPackage(college.aiContent.placementStats.averagePackage)}
                         </div>
                         <div className="text-xs text-text-muted-light uppercase tracking-wide font-medium">Average Package</div>
                     </div>
                     <div className="bg-linear-to-br from-purple-50 to-violet-50 border border-purple-100 rounded-xl p-5 text-center">
                         <FaRupeeSign className="text-2xl text-purple-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-text-main-light">
-                            {college.aiContent.placementStats.medianPackage} LPA
+                            {formatPackage(college.aiContent.placementStats.medianPackage)}
                         </div>
                         <div className="text-xs text-text-muted-light uppercase tracking-wide font-medium">Median Package</div>
                     </div>
@@ -59,14 +79,14 @@ const PlacementsSection: React.FC<PlacementsSectionProps> = ({ college, sectionR
                     <div className="bg-linear-to-br from-green-50 to-emerald-50 border border-green-100 rounded-xl p-5 text-center">
                         <FaRupeeSign className="text-2xl text-green-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-text-main-light">
-                            {college.placements?.highestPackage || college.placementStats?.highestPackage || 'N/A'}
+                            {formatPackage(college.placements?.highestPackage || college.placementStats?.highestPackage) || 'N/A'}
                         </div>
                         <div className="text-xs text-text-muted-light uppercase tracking-wide font-medium">Highest Package</div>
                     </div>
                     <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-5 text-center">
                         <FaRupeeSign className="text-2xl text-blue-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-text-main-light">
-                            {college.placements?.averagePackage || college.placementStats?.averagePackage || 'N/A'}
+                            {formatPackage(college.placements?.averagePackage || college.placementStats?.averagePackage) || 'N/A'}
                         </div>
                         <div className="text-xs text-text-muted-light uppercase tracking-wide font-medium">Average Package</div>
                     </div>
@@ -135,9 +155,9 @@ const PlacementsSection: React.FC<PlacementsSectionProps> = ({ college, sectionR
                                 college.placementHistory.slice(0, 3).map((record, idx) => (
                                     <tr key={idx} className="hover:bg-gray-50">
                                         <td className="p-4 font-medium">{record.year}</td>
-                                        <td className="p-4 text-green-600 font-bold">{record.highestPackage}</td>
-                                        <td className="p-4">{record.averagePackage}</td>
-                                        <td className="p-4">{record.placedPercentage}</td>
+                                        <td className="p-4 text-green-600 font-bold">{formatPackage(record.highestPackage)}</td>
+                                        <td className="p-4">{formatPackage(record.averagePackage)}</td>
+                                        <td className="p-4">{record.placedPercentage}%</td>
                                     </tr>
                                 ))
                             ) : (

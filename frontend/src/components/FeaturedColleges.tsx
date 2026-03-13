@@ -20,8 +20,8 @@ interface FeaturedCollege {
     nirfRank?: number;
     streams?: string[];
     placements?: {
-        averagePackage?: string;
-        highestPackage?: string;
+        averagePackage?: number;
+        highestPackage?: number;
     };
     accreditation?: {
         body?: string;
@@ -44,6 +44,28 @@ const getCollegeImage = (college: FeaturedCollege, index: number): string => {
     if (college.bannerImage) return college.bannerImage;
     if (college.gallery && college.gallery.length > 0) return college.gallery[0];
     return fallbackImages[index % fallbackImages.length];
+};
+
+const formatPackage = (value?: number): string | null => {
+    if (value === undefined || value === null || value <= 0) return null;
+
+    // If the value is very small (e.g., 18, 32.7), treat it as LPA directly
+    if (value < 100) {
+        return `${value % 1 === 0 ? value.toFixed(0) : value.toFixed(1)} LPA`;
+    }
+
+    // If the value is in Lakhs (e.g., 1800000)
+    if (value >= 100000) {
+        const lpa = value / 100000;
+        return `${lpa % 1 === 0 ? lpa.toFixed(0) : lpa.toFixed(1)} LPA`;
+    }
+
+    // If the value is in Thousands (e.g., 50000)
+    if (value >= 1000) {
+        return `${(value / 1000).toFixed(0)}K`;
+    }
+
+    return `${value}`;
 };
 
 const FeaturedColleges: React.FC = () => {
@@ -239,9 +261,9 @@ const FeaturedColleges: React.FC = () => {
                                                     {college.accreditation.body} {college.accreditation.grade}
                                                 </span>
                                             )}
-                                            {college.placements?.averagePackage && (
+                                            {college.placements?.averagePackage != null && formatPackage(college.placements.averagePackage) && (
                                                 <span className="text-xs text-text-muted-light">
-                                                    Avg: ₹{college.placements.averagePackage}
+                                                    Avg: ₹{formatPackage(college.placements.averagePackage)}
                                                 </span>
                                             )}
                                             <span className="ml-auto text-primary text-sm font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
