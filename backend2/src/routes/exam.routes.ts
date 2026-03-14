@@ -6,7 +6,9 @@ import {
     updateExam,
     deleteExam,
     getExamGuide,
-    getExamById
+    getExamById,
+    getBankingExamsList,
+    getExamsListByCategory
 } from '../controllers/exam.controller';
 import { protect, authorize } from '../middleware/auth.middleware';
 
@@ -15,6 +17,9 @@ const router = express.Router();
 router.route('/')
     .get(getExams)
     .post(protect, authorize('admin'), createExam);
+
+router.get('/banking/list', getBankingExamsList);
+router.get('/category/:category/list', getExamsListByCategory);
 
 router.route('/id/:id')
     .get(getExamById);

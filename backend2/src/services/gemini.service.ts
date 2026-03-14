@@ -703,3 +703,144 @@ export async function generateSpecializationGuide(specName: string, specSlug: st
     throw new Error(`Failed to parse AI response: ${error.message}`);
   }
 }
+
+export interface BankingExamListItem {
+  examName: string;
+  slug: string;
+  fullForm: string;
+  conductingBody: string;
+  examLevel: string;
+  upcomingDates: { event: string; date: string }[];
+  quickLinks: string[];
+}
+
+export async function generateExamsList(category: string): Promise<BankingExamListItem[]> {
+  const model = getGeminiModel();
+
+  const prompt = `You are an expert on Indian government and ${category} exams. Generate a comprehensive list of ALL major ${category} Exams in India for 2026.
+
+Return a JSON array of objects with this EXACT structure (no markdown, no code fences, just raw JSON):
+
+[
+  {
+    "examName": "Example Exam",
+    "slug": "example-exam",
+    "fullForm": "Full Form of Example Exam",
+    "conductingBody": "Conducting Agency",
+    "examLevel": "National",
+    "upcomingDates": [
+      { "event": "Notification", "date": "Jun 2026" },
+      { "event": "Prelims", "date": "Aug 2026" }
+    ],
+    "quickLinks": ["Dates", "Notification", "Application Form", "Admit Card", "Syllabus", "Cut Off"]
+  }
+]
+
+Include at least 15 ${category} exams. 
+
+${category === 'Banking' ? `The list MUST include:
+- IBPS PO, IBPS Clerk, IBPS SO, IBPS RRB
+- SBI PO, SBI Clerk, SBI SO
+- RBI Grade B, RBI Assistant
+- NABARD, SEBI Grade A
+- SBI CBO, BOB PO, Indian Bank PO, Canara Bank PO, NRA CET, IPPB` : ''}
+
+${category === 'Teaching' ? `The list MUST include:
+- CTET, UPTET, REET
+- KVS (PRT/TGT/PGT), NVS
+- DSSSB, HTET
+- Bihar STET, Super TET
+- UGC NET, CSIR NET
+- TS TET, AP TET, OTET` : ''}
+
+${category === 'SSC' ? `The list MUST include:
+- SSC CGL, SSC CHSL
+- SSC MTS, SSC GD Constables
+- SSC CPO (Sub-Inspector)
+- SSC Stenographer (C & D)
+- SSC Selection Post
+- SSC JHT (Junior Hindi Translator)
+- SSC JE (Junior Engineer)` : ''}
+
+${category === 'Defence' ? `The list MUST include:
+- NDA, CDS, AFCAT
+- Indian Air Force X & Y Group
+- Indian Navy SSR/AA, Indian Navy MR
+- CAPF (AC), CISF (AC)
+- Indian Army B.Sc Nursing
+- Territorial Army, Coast Guard Navik` : ''}
+
+${category === 'Railway' ? `The list MUST include:
+- RRB NTPC, RRB Group D
+- RRB ALP (Assistant Loco Pilot)
+- RRB JE (Junior Engineer)
+- RPF SI, RPF Constable
+- RRB SSE, RRB Paramedical
+- RRB MI (Ministerial & Isolated)` : ''}
+
+${category === 'UPSC' ? `The list MUST include:
+- UPSC CSE (IAS/IFS), UPSC ESE
+- UPSC NDA, UPSC CDS
+- UPSC CAPF (AC), UPSC CMS
+- UPSC IES/ISS, UPSC Geoscientist` : ''}
+
+${category === 'State PSC' ? `The list MUST include major state PSC exams:
+- UPPCS (UP), BPSC (Bihar), MPSC (Maharashtra)
+- RAS (Rajasthan), WBPSC (West Bengal)
+- GPSC (Gujarat), KPSC (Karnataka)
+- TNPSC (Tamil Nadu), APPSC (Andhra)` : ''}
+
+${category === 'PSU' ? `The list MUST include major PSU recruitment exams:
+- GATE (for PSU recruitment)
+- ONGC, IOCL, BPCL
+- Coal India, NTPC, BHEL
+- SAIL, GAIL, HAL, BEL` : ''}
+
+${category === 'Insurance' ? `The list MUST include:
+- LIC AAO, LIC ADO
+- NIACL AO, NIACL Assistant
+- OICL AO, UIIC AO
+- GIC Assistant Manager` : ''}
+
+${category === 'Police' ? `The list MUST include:
+- SSC CPO (SI in Delhi Police)
+- State Police Constables (UP, Bihar, MP)
+- State Police SI, CISF, CRPF, BSF
+- ITBP, SSB, RPF Constable` : ''}
+
+${category === 'Scholarship' ? `The list MUST include:
+- NTSE, KVPY, INSPIRE
+- NMMS, PM Yasasvi
+- HDFC Badhte Kadam
+- Reliance Foundation Scholarship` : ''}
+
+${category === 'All' ? `The list MUST include a diverse mix of:
+- Major Banking exams (SBI/IBPS PO)
+- Major SSC exams (SSC CGL/CHSL)
+- Major Railway exams (RRB NTPC)
+- Major Defence exams (NDA/CDS)
+- Major Teaching exams (CTET/KVS)` : ''}
+
+IMPORTANT RULES:
+1. Use realistic 2026 dates (estimated if exact dates unknown)
+2. Each exam must have at least 2 upcoming dates
+3. quickLinks should include relevant sub-pages
+4. Return ONLY valid JSON array, no markdown, no extra text
+5. Slugs must be URL-friendly (lowercase, hyphens)`;
+
+  const result = await model.generateContent(prompt);
+  const text = result.response.text();
+
+  const jsonMatch = text.match(/\[[\s\S]*\]/);
+  if (!jsonMatch) {
+    console.error(`[Gemini Service] No JSON array found in ${category} exams list response:`, text);
+    throw new Error('Failed to parse AI response: No JSON array found');
+  }
+
+  try {
+    return JSON.parse(jsonMatch[0]);
+  } catch (error: any) {
+    console.error(`[Gemini Service] ${category} Exams List JSON Parse Error:`, error.message);
+    throw new Error(`Failed to parse AI response: ${error.message}`);
+  }
+}
