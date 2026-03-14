@@ -21,7 +21,7 @@ interface ExamListItem {
 }
 
 interface Props {
-    category: 'Banking' | 'SSC' | 'Teaching';
+    category: string;
     title: string;
     description: string;
 }

@@ -29,9 +29,13 @@ interface GuideData {
     faqs: GuideFAQ[];
 }
 
-const PageContent: React.FC = () => {
+interface PageContentProps {
+    slug?: string;
+}
+
+const PageContent: React.FC<PageContentProps> = ({ slug: propSlug }) => {
     const params = useParams();
-    const slug = params?.slug as string;
+    const slug = propSlug || (params?.slug as string);
     const [exam, setExam] = useState<any>(null);
     const [guide, setGuide] = useState<GuideData | null>(null);
     const [loading, setLoading] = useState(true);
