@@ -24,6 +24,7 @@ export interface MegaMenuSubCategory {
 export interface MegaMenuItem {
   title: string;
   directLink?: string;
+  requiresAuth?: boolean;
   subcategories: MegaMenuSubCategory[];
 }
 
@@ -57,6 +58,12 @@ const viewAll = (label: string, href: string, comingSoon = true): MegaMenuLink =
   href: comingSoon ? '/coming-soon' : href,
   isViewAll: true,
   comingSoon,
+});
+
+const sarkariExamLink = (label: string): MegaMenuLink => ({
+  label,
+  href: `/exams/${label.toLowerCase().replace(/\s+/g, '-')}`,
+  comingSoon: false,
 });
 
 // ════════════════════════════════════════════════════════════
@@ -793,68 +800,68 @@ const moreMenu: MegaMenuItem = {
         {
           links: [
             hdr('Banking'),
-            cs('IBPS Clerk'),
-            cs('IBPS PO'),
-            cs('SBI Clerk'),
-            cs('SBI PO'),
-            cs('IBPS RRB'),
-            viewAll('All Banking Exams →', '/coming-soon'),
+            sarkariExamLink('IBPS Clerk'),
+            sarkariExamLink('IBPS PO'),
+            sarkariExamLink('SBI Clerk'),
+            sarkariExamLink('SBI PO'),
+            sarkariExamLink('IBPS RRB'),
+            viewAll('All Banking Exams →', '/exams/banking', false),
           ],
         },
         {
           links: [
             hdr('Teaching'),
-            cs('CTET'),
-            cs('UPTET'),
-            cs('UGC NET'),
-            cs('CSIR NET'),
-            cs('APSET'),
-            viewAll('All Teaching Exams →', '/coming-soon'),
+            sarkariExamLink('CTET'),
+            sarkariExamLink('UPTET'),
+            sarkariExamLink('UGC NET'),
+            sarkariExamLink('CSIR NET'),
+            sarkariExamLink('APSET'),
+            viewAll('All Teaching Exams →', '/exams/teaching', false),
           ],
         },
         {
           links: [
             hdr('SSC'),
-            cs('SSC CGL'),
-            cs('SSC JE'),
-            cs('SSC CHSL'),
-            cs('SSC GD'),
-            cs('SSC JHT'),
-            viewAll('All SSC Exams →', '/coming-soon'),
+            sarkariExamLink('SSC CGL'),
+            sarkariExamLink('SSC JE'),
+            sarkariExamLink('SSC CHSL'),
+            sarkariExamLink('SSC GD'),
+            sarkariExamLink('SSC JHT'),
+            viewAll('All SSC Exams →', '/exams/ssc', false),
           ],
         },
         {
           links: [
             hdr('Defence'),
-            cs('NDA'),
-            cs('AFCAT'),
-            cs('CDS'),
-            cs('DRDO CEPTAM'),
-            cs('RPF SI'),
-            viewAll('All Defence Exams →', '/coming-soon'),
+            sarkariExamLink('NDA'),
+            sarkariExamLink('AFCAT'),
+            sarkariExamLink('CDS'),
+            sarkariExamLink('DRDO CEPTAM'),
+            sarkariExamLink('Coast Guard'),
+            viewAll('All Defence Exams →', '/exams/defence', false),
           ],
         },
         {
           links: [
             hdr('Railway'),
-            cs('RRB Group D'),
-            cs('RRB NTPC'),
-            cs('RRB JE'),
-            cs('RPF Constable'),
-            viewAll('All Railway Exams →', '/coming-soon'),
+            sarkariExamLink('RRB Group D'),
+            sarkariExamLink('RRB NTPC'),
+            sarkariExamLink('RRB JE'),
+            sarkariExamLink('RPF Constable'),
+            viewAll('All Railway Exams →', '/exams/railway', false),
           ],
         },
         {
           links: [
             hdr('All Exams'),
-            cs('All UPSC Exams'),
-            cs('All State PSC Exams'),
-            cs('All Scholarship Exams'),
-            cs('All PSU Exams'),
-            cs('All State Exams'),
-            cs('All Insurance Exams'),
-            cs('All Police Exams'),
-            cs('All Sarkari Exams'),
+            viewAll('All UPSC Exams', '/exams/upsc', false),
+            viewAll('All State PSC Exams', '/exams/state-psc', false),
+            viewAll('All Scholarship Exams', '/exams/scholarship', false),
+            viewAll('All PSU Exams', '/exams/psu', false),
+            viewAll('All State Exams', '/exams/state', false),
+            viewAll('All Insurance Exams', '/exams/insurance', false),
+            viewAll('All Police Exams', '/exams/police', false),
+            viewAll('All Sarkari Exams →', '/exams/all', false),
           ],
         },
       ],
@@ -1529,7 +1536,7 @@ const moreMenu: MegaMenuItem = {
             cs('SBI PO'),
             cs('RBI Grade B'),
             cs('IRDA'),
-            viewAll('All Banking Exams →', '/coming-soon'),
+            viewAll('All Banking Exams →', '/exams/banking', false),
           ],
         },
       ],
@@ -1970,6 +1977,7 @@ const studyAbroadMenu: MegaMenuItem = {
 const counselingMenu: MegaMenuItem = {
   title: 'Counseling',
   directLink: '/career-counseling',
+  requiresAuth: true,
   subcategories: [],
 };
 

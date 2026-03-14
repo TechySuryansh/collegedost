@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Exam from '../models/Exam';
-import { generateExamGuide } from '../services/gemini.service';
+import { generateExamGuide, generateExamsList } from '../services/gemini.service';
 
 // @desc    Get all exams
 // @route   GET /api/exams
@@ -202,4 +202,64 @@ export const getExamGuide = async (req: Request, res: Response): Promise<void> =
             error: error.message
         });
     }
+};
+
+// In-memory cache for exams list by category
+const examsListCache: Record<string, { data: any; timestamp: number }> = {};
+const CACHE_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// @desc    Get exams list by category (AI-generated)
+// @route   GET /api/exams/category/:category/list
+// @access  Public
+export const getExamsListByCategory = async (req: Request, res: Response): Promise<void> => {
+    try {
+        let category = (req.params.category as string).trim();
+        console.log(`[Exam Controller] Received category: "${category}"`);
+
+        // Normalize category
+        const lowerCategory = category.toLowerCase();
+        if (lowerCategory === 'ssc') {
+            category = 'SSC';
+        } else if (lowerCategory === 'upsc') {
+            category = 'UPSC';
+        } else if (lowerCategory === 'psu') {
+            category = 'PSU';
+        } else if (lowerCategory === 'state psc') {
+            category = 'State PSC';
+        } else {
+            category = category.charAt(0).toUpperCase() + category.slice(1).toLowerCase();
+        }
+
+        console.log(`[Exam Controller] Normalized category: "${category}"`);
+
+        // Check if it's a valid category we support
+        const supportedCategories = ['Banking', 'SSC', 'Teaching', 'Defence', 'Railway', 'All', 'UPSC', 'State PSC', 'PSU', 'Insurance', 'Police', 'Scholarship', 'State'];
+        if (!supportedCategories.includes(category)) {
+            res.status(400).json({ success: false, message: `Category ${category} not supported yet` });
+            return;
+        }
+
+        // Return cached data if available and fresh
+        const cached = examsListCache[category];
+        if (cached && (Date.now() - cached.timestamp) < CACHE_DURATION_MS) {
+            res.status(200).json({ success: true, cached: true, data: cached.data });
+            return;
+        }
+
+        console.log(`[Exam Controller] Generating ${category} exams list via Gemini...`);
+        const examsList = await generateExamsList(category);
+
+        examsListCache[category] = { data: examsList, timestamp: Date.now() };
+
+        res.status(200).json({ success: true, cached: false, data: examsList });
+    } catch (error: any) {
+        console.error(`[Exam Controller] ${req.params.category} Exams List Error:`, error.message);
+        res.status(500).json({ success: false, message: error.message || `Failed to generate ${req.params.category} exams list` });
+    }
+};
+
+// @desc    Get all banking exams list (AI-generated) - DEPRECATED: Use getExamsListByCategory
+export const getBankingExamsList = async (req: Request, res: Response): Promise<void> => {
+    req.params.category = 'Banking';
+    return getExamsListByCategory(req, res);
 };

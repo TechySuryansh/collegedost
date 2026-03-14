@@ -227,27 +227,53 @@ const Navbar = () => {
         {/* ────── ROW 2: Menu Items (centered) ────── */}
         {!isAdminMode && (
           <div className="hidden lg:flex items-center justify-center h-12">
-            {megaMenuItems.map((item, idx) => (
-              <div
-                key={item.title}
-                className="relative"
-                onMouseEnter={() => openMenu(idx)}
-                onMouseLeave={scheduleClose}
-              >
-                <button
-                  className={`flex items-center gap-1 px-3 py-2 text-[12px] font-bold uppercase tracking-wider transition-colors ${activeMenu === idx
-                    ? 'text-primary'
-                    : 'text-slate-300 hover:text-white'
-                    }`}
-                >
+            {megaMenuItems.map((item, idx) => {
+              const hasSubcategories = item.subcategories && item.subcategories.length > 0;
+              const isDirectLink = item.directLink && !hasSubcategories;
+
+              const NavItemContent = (
+                <>
                   {item.title}
-                  <FaChevronDown
-                    className={`text-[8px] opacity-60 transition-transform duration-200 ${activeMenu === idx ? 'rotate-180' : ''
-                      }`}
-                  />
-                </button>
-              </div>
-            ))}
+                  {hasSubcategories && (
+                    <FaChevronDown
+                      className={`text-[8px] opacity-60 transition-transform duration-200 ${activeMenu === idx ? 'rotate-180' : ''
+                        }`}
+                    />
+                  )}
+                </>
+              );
+
+              const className = `flex items-center gap-1 px-3 py-2 text-[12px] font-bold uppercase tracking-wider transition-colors ${activeMenu === idx ? 'text-primary' : 'text-slate-300 hover:text-white'
+                }`;
+
+              return (
+                <div
+                  key={item.title}
+                  className="relative"
+                  onMouseEnter={() => hasSubcategories && openMenu(idx)}
+                  onMouseLeave={hasSubcategories ? scheduleClose : undefined}
+                >
+                  {isDirectLink ? (
+                    <Link
+                      href={item.directLink!}
+                      className={className}
+                      onClick={(e) => {
+                        if (item.requiresAuth && !user) {
+                          e.preventDefault();
+                          openAuthModal('login');
+                        }
+                      }}
+                    >
+                      {NavItemContent}
+                    </Link>
+                  ) : (
+                    <button className={className}>
+                      {NavItemContent}
+                    </button>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
 
